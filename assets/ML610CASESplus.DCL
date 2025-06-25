@@ -1,0 +1,710 @@
+;;*********************************************************
+;;		DCL FILE for ML610CASESplus, Ver.1.00
+;;*********************************************************
+
+#CORE			"nX-U8/100"			;U16 wont be recognized
+#REVISION		"A3"
+#TARGET			"ML610CASESplus"
+#VERSION		"1.00"
+
+;+++++++++++++++++++++++++++++++++++++++++++++++++++++
+;		MEMORY RANGE
+;+++++++++++++++++++++++++++++++++++++++++++++++++++++
+;Program memory space (physical segment #0)
+#ROM	0H	,	0FFFFH
+		SWI_VECTOR	00080H	,	000FFH
+		CODE		00000H	,	0FFFFH
+
+;Data memory space (physical segment #0)
+#RAM	0H	,	0FFFFH
+		DATA		08000H	,	08DFFH
+		DATA		0F000H	,	0FFFFH
+		INTERNALRAM	08000H	,	08DFFH
+		SFR			0F000H	,	0FFFFH
+;;					start_adr	end_adr		WINVAL
+		ROMWINDOW	00000H	,	07FFFH	,	0FFH ; WINVAL is dummy
+
+;;definition of physical segment #1 and over memory space
+
+;; #EXTEND  cs_max, ds_max
+;;	  cs_max : number of physical segment for Program memory
+;;	  ds_max : number of physical segment for Data memory
+
+#EXTEND	16	,	32
+		ROM	01H:00000H	,	01H:0FFFFH
+		ROM	08H:00000H	,	08H:0FFFFH
+
+;+++++++++++++++++++++++++++++++++++++++++++++++++++++
+;	   CODE ADDRESS SYMBOLS
+;
+;	   definition of CODE type symbols
+;	   - SYNTAX -
+;	   #DEFCODE
+;			   Symbol  Code_Address
+;			   ....................
+;+++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+#DEFCODE
+;+++++++++++++++++++++++++++++++++++++++++++++++++++++
+;	   VECTOR AREA
+;+++++++++++++++++++++++++++++++++++++++++++++++++++++
+		WDTINT			0008H
+		XI0INT			000AH
+		XI1INT			000CH
+		XI2INT			000EH
+		XI3INT			0010H
+		TM0INT			0012H
+		L256SINT		0014H
+		L1024SINT		0016H
+		L4096SINT		0018H
+		L16384SINT		001AH
+		SIO0INT			001CH
+		I2C0INT			001EH
+		I2C1INT			0020H
+
+;++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+;	   DATA ADDRESS SYMBOLS
+;
+;	   definition of DATA type symbols
+;
+;	   - SYNTAX -
+;	   #DEFDATA
+;			   Symbol  Data_Address
+;			   ....................
+;++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#DEFDATA
+;++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+;	   SFR AREA
+;++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		DSR				0F000H
+		LTBADJ			0F006H
+			LTBADJL		0F006H
+			LTBADJH		0F007H
+		STPACP			0F008H
+		SBYCON			0F009H
+		FCON			0F00AH
+		LTBR			0F00CH
+		HTBR			0F00DH			;Not sure what this is, but it's counting nonstop even when LSCLK is stopped
+		WDTCON			0F00EH
+;		WDTMOD			0F00FH			;Only in cwii
+
+		IE0				0F010H
+		IE1				0F011H
+		IE2				0F012H
+		IRQ0			0F014H
+		IRQ1			0F015H
+		IRQ2			0F016H
+		EXICON0			0F018H
+
+		TM0D			0F020H
+			TM0D0		0F020H
+			TM0D1		0F021H
+		TM0C			0F022H
+			TM0C0		0F022H
+			TM0C1		0F023H
+		TM0CON			0F024H
+			TM0CON0		0F024H
+			TM0CON1		0F025H
+		BLKCON0			0F028H
+
+;KI/KO ports are considered to be P00
+		KID				0F040H			;P00 Input Data Register
+		KICON			0F041H			;P00 Input Control Register
+		KIMASK			0F042H			;P00 Input Mask Register
+		KOMASK			0F044H			;P00 Output Mask Register
+			KOMASK0		0F044H
+			KOMASK1		0F045H
+		KOD				0F046H			;P00 Output Data Register
+			KOD0		0F046H
+			KOD1		0F047H
+		P0D				0F048H
+		P0MOD			0F049H
+			P0MOD0		0F049H
+		P0CON			0F04AH
+			P0CON0		0F04AH
+			P0CON1		0F04BH
+		P0DIR			0F04CH
+
+		P1D				0F220H
+		P1DIR			0F221H
+		P1CON			0F222H
+			P1CON0		0F222H
+			P1CON1		0F223H
+		P1MOD			0F224H
+			P1MOD0		0F224H
+;			P1MOD1		0F225H			;Only in cwii
+
+		SIO0BUF			0F280H
+			SIO0BUFL	0F280H
+			SIO0BUFH	0F281H
+		SIO0CON			0F282H
+		SIO0MOD			0F284H
+			SIO0MOD0	0F284H
+			SIO0MOD1	0F285H
+
+		I2C0RD			0F2A0H
+		I2C0SA			0F2A1H
+		I2C0TD			0F2A2H
+		I2C0CON			0F2A3H
+		I2C0MOD			0F2A4H
+		I2C0STAT		0F2A5H
+		I2CSL			0F2A7H			;Strange register at F2A7H, wont be disabled by BLKCON
+		I2C1RD			0F2A8H
+		I2C1SA			0F2A9H
+		I2C1TD			0F2AAH
+		I2C1CON			0F2ABH
+		I2C1MOD			0F2ACH
+		I2C1STAT		0F2ADH
+
+;++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+;	   BIT ADDRESS SYMBOLS
+;
+;	   definition of BIT type symbols
+;
+;	   - SYNTAX -
+;	   #DEFBIT
+;			   Symbol  Bit_Address
+;			   ....................
+;++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#DEFBIT
+
+;++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+;	   SFR AREA
+;++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		DSR0			DSR.0
+		DSR1			DSR.1
+		DSR2			DSR.2
+		DSR3			DSR.3
+		DSR4			DSR.4
+
+		LADJ0			LTBADJL.0
+		LADJ1			LTBADJL.1
+		LADJ2			LTBADJL.2
+		LADJ3			LTBADJL.3
+		LADJ4			LTBADJL.4
+		LADJ5			LTBADJL.5
+		LADJ6			LTBADJL.6
+		LADJ7			LTBADJL.7
+
+		LADJ8			LTBADJH.0
+		LADJ9			LTBADJH.1
+		LADJS			LTBADJH.2
+
+		HLT				SBYCON.0
+		STP				SBYCON.1
+
+		XTM0			FCON.0			;not really know what these 2 bits are, but they controls the low speed clock
+		XTM1			FCON.1
+		SYSC0			FCON.4
+		SYSC1			FCON.5
+		SYSC2			FCON.6
+
+;The low speed clock in classwiz x seems to run at 16kHz, which is half the speed of that in the manuals
+
+		T64HZ			LTBR.0
+		T32HZ			LTBR.1
+		T16HZ			LTBR.2
+		T8HZ			LTBR.3
+		T4HZ			LTBR.4
+		T2HZ			LTBR.5
+		T1HZ			LTBR.6
+		THFHZ			LTBR.7
+
+;No manuals seem to be mentioning such a counter, so names it referring to LTBR
+
+		HT8KHZ			HTBR.0
+		HT4KHZ			HTBR.1
+		HT2KHZ			HTBR.2
+		HT1KHZ			HTBR.3
+		HT512HZ			HTBR.4
+		HT256HZ			HTBR.5
+		HT128HZ			HTBR.6
+		HT64HZ			HTBR.7
+
+		WDP				WDTCON.0
+
+;		WDT0			WDTMOD.0
+;		WDT1			WDTMOD.1
+
+		EWDT			IE0.0
+		EXI0			IE0.1
+		EXI1			IE0.2
+		EXI2			IE0.3
+		EXI3			IE0.4
+		ETM0			IE0.5
+		EL256S			IE0.6
+		EL1024S			IE0.7
+
+		EL4096S			IE1.0
+		EL16384S		IE1.1
+		ESIO0			IE1.2
+		EI2C0			IE1.3
+		EI2C1			IE1.4
+		EBEND			IE1.5
+		EBLOW			IE1.6
+		ERTC			IE1.7
+
+		EAL0			IE2.0
+		EAL1			IE2.1
+
+		QWDT			IRQ0.0
+		QXI0			IRQ0.1
+		QXI1			IRQ0.2
+		QXI2			IRQ0.3
+		QXI3			IRQ0.4
+		QTM0			IRQ0.5
+		QL256S			IRQ0.6
+		QL1024S			IRQ0.7
+
+		QL4096S			IRQ1.0
+		QL16384S		IRQ1.1
+		QSIO0			IRQ1.2
+		QI2C0			IRQ1.3
+		QI2C1			IRQ1.4
+		QBEND			IRQ1.5
+		QBLOW			IRQ1.6
+		QRTC			IRQ1.7
+
+		QAL0			IRQ2.0
+		QAL1			IRQ2.1
+
+		P00E0			EXICON0.0
+		P00E1			EXICON0.1
+		P01E0			EXICON0.2
+		P01E1			EXICON0.3
+		P02E0			EXICON0.4
+		P02E1			EXICON0.5
+		P03E0			EXICON0.6
+		P03E1			EXICON0.7
+
+		T0D0			TM0D0.0
+		T0D1			TM0D0.1
+		T0D2			TM0D0.2
+		T0D3			TM0D0.3
+		T0D4			TM0D0.4
+		T0D5			TM0D0.5
+		T0D6			TM0D0.6
+		T0D7			TM0D0.7
+		T0D8			TM0D1.0
+		T0D9			TM0D1.1
+		T0D10			TM0D1.2
+		T0D11			TM0D1.3
+		T0D12			TM0D1.4
+		T0D13			TM0D1.5
+		T0D14			TM0D1.6
+		T0D15			TM0D1.7
+
+		T0C0			TM0C0.0
+		T0C1			TM0C0.1
+		T0C2			TM0C0.2
+		T0C3			TM0C0.3
+		T0C4			TM0C0.4
+		T0C5			TM0C0.5
+		T0C6			TM0C0.6
+		T0C7			TM0C0.7
+		T0C8			TM0C1.0
+		T0C9			TM0C1.1
+		T0C10			TM0C1.2
+		T0C11			TM0C1.3
+		T0C12			TM0C1.4
+		T0C13			TM0C1.5
+		T0C14			TM0C1.6
+		T0C15			TM0C1.7
+
+		T0DIV0			TM0CON0.0
+		T0DIV1			TM0CON0.1
+		T0DIV2			TM0CON0.2
+		T0CS			TM0CON0.3
+
+		T0RUN			TM0CON1.0
+
+		DSIO0			BLKCON0.0
+		DI2C0			BLKCON0.1
+		DI2C1			BLKCON0.2
+		DTM0			BLKCON0.3
+
+;Will index KI/KO from 0
+		KI0				KID.0
+		KI1				KID.1
+		KI2				KID.2
+		KI3				KID.3
+		KI4				KID.4
+		KI5				KID.5
+		KI6				KID.6
+		KI7				KID.7
+
+		KIC0			KICON.0
+		KIC1			KICON.1
+		KIC2			KICON.2
+		KIC3			KICON.3
+		KIC4			KICON.4
+		KIC5			KICON.5
+		KIC6			KICON.6
+		KIC7			KICON.7
+
+		KIM0			KIMASK.0
+		KIM1			KIMASK.1
+		KIM2			KIMASK.2
+		KIM3			KIMASK.3
+		KIM4			KIMASK.4
+		KIM5			KIMASK.5
+		KIM6			KIMASK.6
+		KIM7			KIMASK.7
+
+		KOM0			KOMASK0.0
+		KOM1			KOMASK0.1
+		KOM2			KOMASK0.2
+		KOM3			KOMASK0.3
+		KOM4			KOMASK0.4
+		KOM5			KOMASK0.5
+		KOM6			KOMASK0.6
+		KOM7			KOMASK0.7
+
+		KOM8			KOMASK1.0
+		KOM9			KOMASK1.1
+
+		KO0				KOD0.0
+		KO1				KOD0.1
+		KO2				KOD0.2
+		KO3				KOD0.3
+		KO4				KOD0.4
+		KO5				KOD0.5
+		KO6				KOD0.6
+		KO7				KOD0.7
+
+		KO8				KOD1.0
+		KO9				KOD1.1
+		KO15			KOD1.7
+
+		P01D			P0D.0
+		P02D			P0D.1
+		P03D			P0D.2
+
+		P01MD0			P0MOD0.0
+
+		P01C0			P0CON0.0
+		P02C0			P0CON0.1
+		P03C0			P0CON0.2
+
+		P01C1			P0CON1.0
+		P02C1			P0CON1.1
+		P03C1			P0CON1.2
+
+		P01DIR			P0DIR.0
+		P02DIR			P0DIR.1
+		P03DIR			P0DIR.2
+
+		P10D			P1D.0
+		P11D			P1D.1
+		P12D			P1D.2
+		P13D			P1D.3
+		P14D			P1D.4
+		P15D			P1D.5
+		P16D			P1D.6
+
+		P10DIR			P1DIR.0
+		P11DIR			P1DIR.1
+		P12DIR			P1DIR.2
+		P13DIR			P1DIR.3
+		P14DIR			P1DIR.4
+		P15DIR			P1DIR.5
+		P16DIR			P1DIR.6
+
+		P10C0			P1CON0.0
+		P11C0			P1CON0.1
+		P12C0			P1CON0.2
+		P13C0			P1CON0.3
+		P14C0			P1CON0.4
+		P15C0			P1CON0.5
+		P16C0			P1CON0.6
+
+		P10C1			P1CON1.0
+		P11C1			P1CON1.1
+		P12C1			P1CON1.2
+		P13C1			P1CON1.3
+		P14C1			P1CON1.4
+		P15C1			P1CON1.5
+		P16C1			P1CON1.6
+
+		P10MD0			P1MOD0.0
+		P11MD0			P1MOD0.1
+		P12MD0			P1MOD0.2
+		P13MD0			P1MOD0.3
+		P14MD0			P1MOD0.4
+		P15MD0			P1MOD0.5
+		P16MD0			P1MOD0.6
+
+;		P10MD1			P1MOD1.0
+;		P11MD1			P1MOD1.1
+;		P12MD1			P1MOD1.2
+;		P13MD1			P1MOD1.3
+;		P14MD1			P1MOD1.4
+;		P15MD1			P1MOD1.5
+;		P16MD1			P1MOD1.6
+
+		S0B0			SIO0BUFL.0
+		S0B1			SIO0BUFL.1
+		S0B2			SIO0BUFL.2
+		S0B3			SIO0BUFL.3
+		S0B4			SIO0BUFL.4
+		S0B5			SIO0BUFL.5
+		S0B6			SIO0BUFL.6
+		S0B7			SIO0BUFL.7
+
+		S0B8			SIO0BUFH.0
+		S0B9			SIO0BUFH.1
+		S0B10			SIO0BUFH.2
+		S0B11			SIO0BUFH.3
+		S0B12			SIO0BUFH.4
+		S0B13			SIO0BUFH.5
+		S0B14			SIO0BUFH.6
+		S0B15			SIO0BUFH.7
+
+		S0EN			SIO0CON.0
+
+		S0DIR			SIO0MOD0.0
+		S0MD0			SIO0MOD0.1
+		S0MD1			SIO0MOD0.2
+		S0LG			SIO0MOD0.3
+
+		S0CK0			SIO0MOD1.0
+		S0CK1			SIO0MOD1.1
+		S0CK2			SIO0MOD1.2
+		S0CK3			SIO0MOD1.3
+		S0CKT			SIO0MOD1.4
+
+		I20R0			I2C0RD.0
+		I20R1			I2C0RD.1
+		I20R2			I2C0RD.2
+		I20R3			I2C0RD.3
+		I20R4			I2C0RD.4
+		I20R5			I2C0RD.5
+		I20R6			I2C0RD.6
+		I20R7			I2C0RD.7
+
+		I20RW			I2C0SA.0
+		I20A0			I2C0SA.1
+		I20A1			I2C0SA.2
+		I20A2			I2C0SA.3
+		I20A3			I2C0SA.4
+		I20A4			I2C0SA.5
+		I20A5			I2C0SA.6
+		I20A6			I2C0SA.7
+
+		I20T0			I2C0TD.0
+		I20T1			I2C0TD.1
+		I20T2			I2C0TD.2
+		I20T3			I2C0TD.3
+		I20T4			I2C0TD.4
+		I20T5			I2C0TD.5
+		I20T6			I2C0TD.6
+		I20T7			I2C0TD.7
+
+		I20ST			I2C0CON.0
+		I20SP			I2C0CON.1
+		I20RS			I2C0CON.2
+		I20ACT			I2C0CON.7
+
+		I20EN			I2C0MOD.0
+		I20MD			I2C0MOD.1
+		I20DW0			I2C0MOD.2
+		I20DW1			I2C0MOD.3
+		I20SYN			I2C0MOD.4
+
+		I20BB			I2C0STAT.0
+		I20ACR			I2C0STAT.1
+		I20ER			I2C0STAT.2
+
+		I2SL			I2CSL.0
+
+		I21R0			I2C1RD.0
+		I21R1			I2C1RD.1
+		I21R2			I2C1RD.2
+		I21R3			I2C1RD.3
+		I21R4			I2C1RD.4
+		I21R5			I2C1RD.5
+		I21R6			I2C1RD.6
+		I21R7			I2C1RD.7
+
+		I21A0			I2C1SA.1
+		I21A1			I2C1SA.2
+		I21A2			I2C1SA.3
+		I21A3			I2C1SA.4
+		I21A4			I2C1SA.5
+		I21A5			I2C1SA.6
+		I21A6			I2C1SA.7
+
+		I21T0			I2C1TD.0
+		I21T1			I2C1TD.1
+		I21T2			I2C1TD.2
+		I21T3			I2C1TD.3
+		I21T4			I2C1TD.4
+		I21T5			I2C1TD.5
+		I21T6			I2C1TD.6
+		I21T7			I2C1TD.7
+
+		I21WT			I2C1CON.5
+		I21ACT			I2C1CON.7
+
+		I21EN			I2C1MOD.0
+		I21PIE			I2C1MOD.5
+		I21SIE			I2C1MOD.6
+
+		I21BB			I2C1STAT.0
+		I21ACR			I2C1STAT.1
+		I21ER			I2C1STAT.2
+		I21SAA			I2C1STAT.3
+		I21TR			I2C1STAT.4
+
+;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+;	   SFR ACCESS ATTRIBUTE DEFINITIONS
+;
+;	   - SYNTAX -
+;	   #ACCESS
+;  Data_Address:| Access_Unit |		Bit_Pattern		|
+;   Address	 |   Word/Byte |   Read	  |	  Write  |
+;   .......		 .........	 ....			 .....
+;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#ACCESS
+	DSR				:	--RW	0001_1111B	0000_0001B
+	LTBADJL			:	RWRW	1111_1111B	1111_1111B
+	LTBADJH			:	--RW	0000_0111B	0000_0111B
+	STPACP			:	---W	-			-			
+	SBYCON			:	---W	0000_0011B	0000_0011B
+	FCON			:	--RW	0111_0011B	0111_0011B
+	LTBR			:	--RW	1111_1111B	1111_1111B
+	HTBR			:	--RW	1111_1111B	1111_1111B
+	WDTCON			:	--RW	1111_1111B	1111_1111B
+;	WDTMOD			:	--RW	0000_0011B	0000_0011B
+;	IE0				:	--RW	1111_1111B	1111_1111B
+	IE0				:	--RW	1111_1111B	1111_1110B
+	IE1				:	--RW	1111_1111B	1111_1111B
+	IE2				:	--RW	0000_0011B	0000_0011B
+;	IRQ0			:	--RW	1111_1111B	1111_1111B
+	IRQ0			:	--RW	1111_1111B	1111_1110B
+	IRQ1			:	--RW	1111_1111B	1111_1111B
+	IRQ2			:	--RW	0000_0011B	0000_0011B
+	EXICON0			:	--RW	1111_1111B	1111_1111B
+	TM0D0			:	RWRW	1111_1111B	1111_1111B
+	TM0D1			:	--RW	1111_1111B	1111_1111B
+	TM0C0			:	RWRW	1111_1111B	1111_1111B
+	TM0C1			:	--RW	1111_1111B	1111_1111B
+	TM0CON0			:	RWRW	0000_1111B	0000_1111B
+	TM0CON1			:	--RW	0000_0001B	0000_0001B
+	BLKCON0			:	--RW	0001_1111B	0001_1111B
+	KID				:	--R-	1111_1111B	-
+	KICON			:	--RW	1111_1111B	1111_1111B
+	KIMASK			:	--RW	1111_1111B	1111_1111B
+	KOMASK0			:	RWRW	1111_1111B	1111_1111B
+	KOMASK1			:	--RW	0000_0011B	0000_0011B
+	KOD0			:	RWRW	1111_1111B	1111_1111B
+	KOD1			:	--RW	1000_0011B	1000_0011B
+	P0D				:	--RW	0000_0111B	0000_0111B
+	P0MOD0			:	--RW	0000_0001B	0000_0001B
+	P0CON0			:	RWRW	0000_0111B	0000_0111B
+	P0CON1			:	--RW	0000_0111B	0000_0111B
+	P0DIR			:	--RW	0000_0111B	0000_0111B
+	P1D				:	--RW	0111_1111B	0111_1111B
+	P1DIR			:	--RW	0111_1111B	0111_1111B
+	P1CON0			:	RWRW	0111_1111B	0111_1111B
+	P1CON1			:	--RW	0111_1111B	0111_1111B
+	P1MOD0			:	--RW	0111_1111B	0111_1111B
+;	P1MOD0			:	RWRW	0111_1111B	0111_1111B
+;	P1MOD1			:	--RW	0111_1111B	0111_1111B
+	SIO0BUFL		:	RWRW	1111_1111B	1111_1111B
+	SIO0BUFH		:	--RW	1111_1111B	1111_1111B
+	SIO0CON			:	--RW	0000_0001B	0000_0001B
+	SIO0MOD0		:	RWRW	0000_1111B	0000_1111B
+	SIO0MOD1		:	--RW	0001_1111B	0001_1111B
+	I2C0RD			:	--R-	1111_1111B	-			
+	I2C0SA			:	--RW	1111_1111B	1111_1111B
+	I2C0TD			:	--RW	1111_1111B	1111_1111B
+	I2C0CON			:	--RW	1000_0111B	1000_0111B
+	I2C0MOD			:	--RW	0001_1111B	0001_1111B
+	I2C0STAT		:	--R-	0000_0111B	-			
+	I2CSL			:	--RW	0000_0001B	0000_0001B
+	I2C1RD			:	--R-	1111_1111B	-			
+	I2C1SA			:	--RW	1111_1110B	1111_1110B
+	I2C1TD			:	--RW	1111_1111B	1111_1111B
+	I2C1CON			:	--RW	1010_0000B	1010_0000B
+	I2C1MOD			:	--RW	0110_0001B	0110_0001B
+	I2C1STAT		:	--R-	0001_1111B	-			
+
+
+;+++++++++++++++++++++++++++++++++++++++++++++++++++++
+;	   INSTRUCTION
+;
+;	   definition of basic instruction mnemonic symbols
+;	   - SYNTAX -
+;	   #INSTRUCTION
+;			   Mnemonic List
+;			   .............
+;+++++++++++++++++++++++++++++++++++++++++++++++++++++
+#INSTRUCTION
+L	ST	LEA
+MOV	CMP	ADD	SUB	AND	OR	XOR	SLL	SRL	SRA
+CMPC	ADDC	SUBC	SLLC	SRLC
+NEG	DAA	DAS
+SB	RB	TB
+INC	DEC
+PUSH	POP
+EI	DI	SC	RC	CPLC
+EXTBW
+MUL	DIV
+BEQ	BNE	BAL
+BLT	BLE	BGT	BGE
+BLTS	BLES	BGTS	BGES
+BOV	BNV	BPS	BNS
+BNC	BCY	BNZ	BZ
+BC
+SWI	B	BL	RTI	RT	NOP
+BRK
+
+;#COPROCESSOR
+
+;+++++++++++++++++++++++++++++++++++++++++++++++++++++
+;		Absolute Assembler Information.
+;+++++++++++++++++++++++++++++++++++++++++++++++++++++
+#CASE	ASM
+
+
+
+#ENDCASE
+
+;+++++++++++++++++++++++++++++++++++++++++++++++++++++
+;		Relocatable Assembler Information.
+;+++++++++++++++++++++++++++++++++++++++++++++++++++++
+#CASE	RAS
+
+;   definition depends on RASU8
+
+#ENDCASE
+
+;+++++++++++++++++++++++++++++++++++++++++++++++++++++
+;		Debugger Information.
+;+++++++++++++++++++++++++++++++++++++++++++++++++++++
+#CASE	DEBUGGER
+
+;   definition depends on DEBUGGER
+
+;+++++++++++++++++++++++++++++++++++++++++++++++++++++
+;		Interrupt Information.
+;+++++++++++++++++++++++++++++++++++++++++++++++++++++
+#INTERRUPT
+	WDTINT,			EWDT,		QWDT
+	XI0INT,			EXI0,		QXI0
+	XI1INT,			EXI1,		QXI1
+	XI2INT,			EXI2,		QXI2
+	XI3INT,			EXI3,		QXI3
+	TM0INT,			ETM0,		QTM0
+	L256SINT,		EL256S,		QL256S
+	L1024SINT,		EL1024S,	QL1024S
+	L4096SINT,		EL4096S,	QL4096S
+	L16384SINT,		EL16384S,	QL16384S
+	SIO0INT,		ESIO0,		QSIO0
+	I2C0INT,		EI2C0,		QI2C0
+	I2C1INT,		EI2C1,		QI2C1
+
+#ENDCASE
+
+;------------- END OF DCL (ML620906) -------------

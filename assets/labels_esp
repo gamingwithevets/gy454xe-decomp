@@ -1,0 +1,148 @@
+d_08000		reg0
+d_08002		reg0.2
+d_08004		reg0.4
+d_08005		reg0.5
+d_08006		reg0.6
+d_08007		reg0.7
+d_08008		reg0.8
+d_08009		reg0.9
+d_0800A
+d_0800B
+d_0800C
+d_0800D
+d_0800E
+d_0800F
+d_08010		reg1
+d_08011		reg1.1
+d_08012		reg1.2
+d_08018		reg1.8
+d_08019		reg1.9
+d_0801A
+d_0801C
+d_0801D
+d_0801E		arith_op       # (-, +, ÷, ×) = 9, 8, 7, 6
+d_0801F
+d_08020		reg2
+d_08022		reg2.2
+d_08029		reg2.9
+d_0802A
+d_0802B
+d_0802C
+d_0802D
+d_0802E
+d_0802F
+d_08030		reg3
+d_08032		reg3.2
+d_08039		reg3.9
+d_0803A
+d_0803B
+d_0803C		reg4
+d_08044		reg4.8
+d_08046		reg5
+d_0804C		reg5.6
+d_08050		reg6
+d_08052		reg6.2
+d_08059		reg6.9
+d_0805A
+d_0805B
+d_0805C		arg0_ref      # functions that manipulate numbers (such as
+d_0805E		arg1_ref      # num_add) save the arguments reference here
+d_080DC
+d_080DD		cursor_noflash
+d_080DE
+d_080DF
+d_080E0
+d_080E1
+d_080F2
+d_080F4
+d_080F5		last_fn_key  # example: 'sin' = A0, 'sin^-1' = B0
+d_080F7
+d_080F8		modifiers     # 08:shift,04:alpha,02:RCL,01:STO
+d_080F9		mode
+				# comp 193, cmplx 196, stat 3, basen 2, eqn 69, mat 6,
+				# table 136, vct 7, ratio 74, ineq 75, dist 12
+
+d_080FA		submode       # base-n:(base-1),ineq:(degree+1),stat:1~8,etc.
+d_080FB		screen_state  # normal: 0, mode: 1, setup: 2, hyp/deg...: 3
+d_080FC
+d_080FD
+d_080FE
+d_080FF
+d_08100
+d_08101
+d_08102		setup.number_form   # fix: 8, sci: 9, norm1: 0, norm2: 4
+d_08103		setup.num_ndigit    # for fix and sci mode (0~9)
+d_08104
+d_08105		setup.deg_form      # d: 4, r: 5, g: 6
+d_08106		setup.mthio
+d_08107
+d_08108
+d_08109		setup.stat_freq
+d_0810A		setup.rdec
+d_0810C
+d_0810E		setup.contrast
+d_0810F
+d_08110		cursor_pos_byte
+d_08111
+d_08112		formula_xcor
+d_08113		formula_ycor
+d_08114		cursor_xcor
+d_08115		cursor_ycor
+d_08116
+d_08117
+d_08118		viewport_table  # 1 or 2 for 4-column tables
+d_08119		row_in_table    # relative to current viewport
+d_0811A		col_in_table
+d_0811B		font_size
+d_0811C		draw_mode
+				# 0: white background
+				# 4: white background (sanitize, only draw inside background)
+				# 1: transparent background
+				# 2: AND with screen
+				# 3 (otherwise): xor with screen
+
+d_0811D		use_buffer   # real screen or screen buffer
+d_08120
+d_08122
+d_08123		use_output_charset
+				# example: 0x4E is '×' input but 'N' output
+d_08124
+d_08125
+d_08126
+d_08128		formula_ptr   # usually 0x8154
+d_0812A
+d_0812C
+d_0821C		random_state  # Used in the random generator.
+d_08224		timer         # 2-byte value. Part of the random state.
+
+d_08226		var_m
+d_08230		var_ans
+d_0823A		var_a
+d_08244		var_b
+d_0824E		var_c
+d_08258		var_d
+d_08262		var_e
+d_0826C		var_f
+d_08276		var_x
+d_08280		var_y
+
+d_083FC
+d_083FD
+d_083FE
+
+d_0860E		magic_string  # 15 bytes '0f 0e 0d 0c ... 02 01', the calculator
+				# is reset on startup if this is corrupted
+
+d_087D0		screen_buffer
+d_087D1 	screen_buffer.1
+d_087D2 	screen_buffer.2
+d_087D3 	screen_buffer.3
+d_087D4 	screen_buffer.4
+d_087D5 	screen_buffer.5
+d_087D7 	screen_buffer.7
+d_087D8 	screen_buffer.8
+d_087D9 	screen_buffer.9
+d_087DA 	screen_buffer.A
+d_087DB 	screen_buffer.B
+d_08DEA
+

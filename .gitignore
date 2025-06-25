@@ -1,3 +1,6 @@
 build/
+obj/
 commit.bat
 *.s
+*.txt
+assets/__pycache__/

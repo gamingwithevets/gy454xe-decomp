@@ -1,0 +1,23384 @@
+TYPE(ML610CASESplus)
+MODEL LARGE
+
+; NOTE:
+; unk5 may be partially written in C (at least 1 C source and 1 ASM source), however full assembly will be used for now.
+
+_reg0				EQU 8000H
+_reg0_2				EQU 8002H
+_reg0_4				EQU 8004H
+_reg0_5				EQU 8005H
+_reg0_6				EQU 8006H
+_reg0_7				EQU 8007H
+_reg0_8				EQU 8008H
+_reg0_9				EQU 8009H
+_d_0800A			EQU 800AH
+_d_0800B			EQU 800BH
+_d_0800C			EQU 800CH
+_d_0800D			EQU 800DH
+_d_0800E			EQU 800EH
+_d_0800F			EQU 800FH
+_reg1				EQU 8010H
+_reg1_1				EQU 8011H
+_reg1_2				EQU 8012H
+_reg1_8				EQU 8018H
+_reg1_9				EQU 8019H
+_d_0801A			EQU 801AH
+_d_0801C			EQU 801CH
+_d_0801D			EQU 801DH
+_arith_op			EQU 801EH
+_d_0801F			EQU 801FH
+_reg2				EQU 8020H
+_reg2_2				EQU 8022H
+_reg2_9				EQU 8029H
+_d_0802A			EQU 802AH
+_d_0802B			EQU 802BH
+_d_0802C			EQU 802CH
+_d_0802D			EQU 802DH
+_d_0802E			EQU 802EH
+_d_0802F			EQU 802FH
+_reg3				EQU 8030H
+_reg3_2				EQU 8032H
+_reg3_9				EQU 8039H
+_d_0803A			EQU 803AH
+_d_0803B			EQU 803BH
+_reg4				EQU 803CH
+_reg4_8				EQU 8044H
+_reg5				EQU 8046H
+_reg5_6				EQU 804CH
+_reg6				EQU 8050H
+_reg6_2				EQU 8052H
+_reg6_9				EQU 8059H
+_d_0805A			EQU 805AH
+_d_0805B			EQU 805BH
+_arg0_ref			EQU 805CH
+_arg1_ref			EQU 805EH
+_d_0805F			EQU 805FH
+_d_08060			EQU 8060H
+_d_08078			EQU 8060H
+_d_080E0			EQU 80E0H
+_last_key_keycode	EQU 80F5H
+_modifiers			EQU 80F8H
+_mode				EQU 80F9H
+_submode			EQU 80FAH
+_table_mode			EQU 80FCH
+_d_080FF			EQU 80FFH
+_setup_start		EQU 8102H
+_setup_num_fmt		EQU 8102H
+_setup_num_fmt_n	EQU 8103H
+_setup_decimal_mark	EQU 8104H
+_setup_angle_unit	EQU 8105H
+_setup_mathi		EQU 8106H
+_setup_stat_freq	EQU 8109H
+_setup_rdec			EQU 810AH
+_setup_decimalo		EQU 810CH
+_d_0810F			EQU 810FH
+_cursor_pos_byte	EQU 8110H
+_formula_x			EQU 8112H
+_cursor_char		EQU 8116H
+_d_08120			EQU 8120H
+_d_08121			EQU 8121H
+_d_08122			EQU 8122H
+_use_output_charset	EQU 8123H
+_d_08124			EQU 8124H
+_d_08126			EQU 8126H
+_input_area_ptr		EQU 8128H
+_input_area			EQU 8154H
+_random_seed		EQU 821CH
+_d_0829E			EQU 829EH
+_d_08300			EQU 8300H
+_d_08398			EQU 8398H
+_d_083FC			EQU 83FCH
+_d_08406			EQU 8406H
+_d_08546			EQU 8546H
+_d_08640			EQU 8640H
+
+$$NTABunk5_0 SEGMENT TABLE 2H #0
+$$NTABunk5_1 SEGMENT TABLE 2H #0
+$$NTABunk5_2 SEGMENT TABLE 2H #0
+$$NCODunk5 SEGMENT CODE 2H ANY
+
+RSEG $$NTABunk5_0
+
+; 010AC
+_unk_010ac:
+
+
+; 010B2
+_unk_010b2:
+
+
+; 010BB
+_unk_010bb:
+
+
+; 010D4
+_unk_010d4:
+
+
+; 010DA
+_unk_010da:
+	DB "\xb8", 0
+
+; 010DC
+_unk_010dc:
+	DB "\xb9", 0
+
+; 010DE
+_unk_010de:
+	DB "\xb9\xb8", 0
+
+; 010E1
+_unk_010e1:
+	DB "\xb9\xbc", 0
+
+; 010E4
+_unk_010e4:
+	DB "\xae\xbb\xb8", 0
+
+; 010E8
+_unk_010e8:
+	DB "\x93", 0
+
+; 010EA
+_unk_010ea:
+	DB "+", 0
+
+; 010EC
+_unk_010ec:
+	DB "`", 0
+
+; 010EE
+_unk_010ee:
+	DB ",", 0
+
+; 010F0
+_unk_010f0:
+	DB ";", 0
+
+RSEG $$NTABunk5_1
+
+; 017A8
+_jmp_017a8:
+	DW _num_sum__
+	DW _f_15682
+	DW _f_15712
+	DW _f_157B0
+	DW _f_158C6
+	DW _f_15AA0
+	DW _f_15AFE
+	DW _f_15B64
+	DW _f_15B96
+	DW _f_15C30
+	DW _f_15CAC
+
+; 017BE
+_unk_017be:
+
+
+; 017C8
+_unk_017c8:
+
+
+; 017D2
+_unk_017d2:
+
+
+; 017DC
+_unk_017dc:
+
+
+; 017E6
+_unk_017e6:
+
+
+; 017F0
+_unk_017f0:
+
+
+; 017FA
+_unk_017fa:
+
+
+
+RSEG $$NTABunk5_2
+
+; 019A8
+_unk_019a8:
+
+
+; 01AAE
+_unk_01aae:
+
+
+; 01AB8
+_unk_01ab8:
+
+
+; 01AE6
+_unk_01ae6:
+	DW _f_13B4A
+	DW _f_135C6
+	DW _f_13542
+	DW _mat_det
+	DW _f_136BE
+	DW _f_14430
+	DW _f_13860
+	DW _f_14776
+	DW _f_1477A
+	DW _mat_add
+	DW _mat_sub
+	DW _mat_mul_num
+	DW _mat_div
+	DW _f_139E4
+	DW _f_13A72
+	DW _mat_mul
+	DW _f_14796
+	DW _num_stat_P
+	DW _num_stat_Q
+	DW _num_stat_R
+	DW _f_1479A
+	DW _f_147C4
+	DW _f_171D2
+	DW _f_171E6
+	DW _num_abs
+	DW _num_rnd
+	DW _f_14792
+	DW _f_14792
+	DW _num_sinh
+	DW _num_cosh
+	DW _num_tanh
+	DW _num_asinh
+	DW _num_acosh
+	DW _num_atanh
+	DW _num_exp
+	DW _num_10xp
+	DW _num_sqrt
+	DW _num_ln
+	DW _num_cbrt
+	DW _num_sin
+	DW _num_cos
+	DW _num_tan
+	DW _num_asin
+	DW _num_acos
+	DW _num_atan
+	DW _num_log10
+	DW _f_14792
+	DW _f_14792
+	DW _num_log
+	DW _num_pol
+	DW _num_rec
+	DW _f_148E0
+	DW _f_1491C
+	DW _f_14958
+	DW _f_1499C
+	DW _f_14796
+	DW _num_add
+	DW _num_sub
+	DW _num_mul
+	DW _num_div
+	DW _f_14792
+	DW _f_14BBC
+	DW _num_permu
+	DW _num_combi
+	DW _f_12C68
+	DW _f_12CB6
+	DW _f_12C3A
+	DW _f_12C4C
+	DW _num_negate
+	DW _f_14792
+	DW _f_14792
+	DW _f_14792
+	DW _f_14792
+	DW _num_frac
+	DW _num_cmplx_pow
+	DW _num_nthroot
+	DW _f_14792
+	DW _num_stat_to_t
+	DW _f_14792
+	DW _f_14792
+	DW _num_inverse
+	DW _num_square
+	DW _num_cube
+	DW _num_percent
+	DW _num_factorial
+	DW _num_deg
+	DW _num_rad
+	DW _num_grad
+	DW _cmplx_abs
+	DW _cmplx_rnd
+	DW _f_1AF44
+	DW _cmplx_add
+	DW _cmplx_sub
+	DW _cmplx_mul
+	DW _cmplx_div
+	DW _cmplx_negate
+	DW _cmplx_inverse
+	DW _cmplx_square
+	DW _cmplx_cube
+	DW _f_1A5A4
+	DW _num_randint
+
+; 01BD8
+_unk_01bd8:
+
+
+
+RSEG $$NCODunk5
+
+; 10000
+_f_10000:
+	PUSH LR
+	PUSH FP
+	MOV FP, SP
+	ADD SP, #-64H
+	ADD SP, #-64H
+	PUSH XR8
+	PUSH BP
+	PUSH XR4
+	ST ER0, -2H[FP]
+	ST ER2, -6H[FP]
+	L ER4, [ER0]
+	ST ER4, -4H[FP]
+	MOV BP, #-14H
+	ADD BP, FP
+	MOV ER10, #-1EH
+	ADD ER10, FP
+	L R0, _d_083FC
+	ST R0, -0AH[FP]
+	MOV ER2, ER10
+	BL _l_var
+	MOV ER0, ER10
+	BL _f_1B208
+	MOV ER0, ER10
+	BL _f_1AC56
+	MOV ER2, ER10
+	MOV R0, #0BAH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _num_cpy
+	L R0, -0AH[FP]
+	MOV R2, #74H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	BL _l_var
+	MOV ER4, #0H
+	MOV ER6, #0H
+	MOV R8, #0H
+_$j_10056:
+	MOV R6, #0H
+	MOV R2, #0H
+	MOV R0, #0B0H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _num_fromdigit
+	MOV R2, #0BAH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, #-3CH
+	ADD ER0, FP
+	BL _num_cpy
+	BL _f_1074C
+	CMP R0, #2H
+	BEQ _$j_10086
+	CMP R0, #7H
+	BEQ _$j_10086
+	CMP R0, #0H
+	BEQ _$j_1008e
+	B _$j_10216
+_$j_10086:
+	BL _f_1071A
+	B _$j_105e0
+_$j_1008e:
+	BL _f_106EC
+	CMP R0, #1H
+	BNE _$j_1009a
+	B _$j_10538
+_$j_1009a:
+	MOV R2, #0A6H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV R0, #92H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _num_cpy
+	MOV ER2, #-3CH
+	ADD ER2, FP
+	MOV R0, #88H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _num_cpy
+	MOV ER0, #-3CH
+	ADD ER0, FP
+	BL _num_invalid__
+	CMP R0, #1H
+	BNE _$j_100da
+	MOV R2, #1H
+	MOV R0, #7EH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _num_fromdigit
+	MOV R1, #0H
+	MOV R0, #85H
+	ST ER0, -7AH[FP]
+	BAL _$j_100e8
+_$j_100da:
+	MOV ER2, #-3CH
+	ADD ER2, FP
+	MOV R0, #7EH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _num_cpy
+_$j_100e8:
+	BL _f_107AA
+	CMP R0, #0H
+	BEQ _$j_100f4
+	B _$j_10216
+_$j_100f4:
+	MOV ER2, BP
+	MOV R0, #4CH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _num_cpy
+	MOV R0, #4CH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _num_invalid__
+	CMP R0, #1H
+	BNE _$j_10112
+	B _$j_10216
+_$j_10112:
+	MOV R2, #0A6H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _num_cpy
+	MOV R2, #4CH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _f_1A44C
+	MOV ER2, #-3CH
+	ADD ER2, FP
+	MOV R0, #0B0H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _num_cpy
+	MOV ER2, BP
+	MOV ER0, #-3CH
+	ADD ER0, FP
+	BL _f_1A424
+	MOV ER2, #-3CH
+	ADD ER2, FP
+	MOV R0, #0BAH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _num_cpy
+	BL _f_1074C
+	CMP R0, #0H
+	BNE _$j_10216
+	BL _f_106EC
+	CMP R0, #1H
+	BNE _$j_10164
+	B _$j_10538
+_$j_10164:
+	MOV ER2, #-3CH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _num_cpy
+	MOV R2, #88H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _f_1A424
+	MOV ER0, BP
+	BL _num_abs
+	MOV R2, #7EH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, ER10
+	BL _num_cpy
+	MOV ER0, ER10
+	BL _num_abs
+	MOV ER2, ER10
+	MOV ER0, BP
+	BL _f_1A44C
+	MOV ER0, BP
+	BL _num_abs
+	MOV R2, #1H
+	MOV ER0, ER10
+	BL _num_fromdigit
+	MOV R1, #0H
+	MOV R0, #87H
+	ST ER0, -16H[FP]
+	MOV ER2, ER10
+	MOV ER0, BP
+	BL _num_cmp
+	CMP R0, #2H
+	BNE _$j_101be
+	B _$j_10538
+_$j_101be:
+	MOV R2, #0A6H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _num_cpy
+	MOV ER0, BP
+	BL _num_abs
+	MOV R2, #92H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, ER10
+	BL _num_cpy
+	MOV ER0, ER10
+	BL _num_abs
+	MOV ER2, BP
+	MOV ER0, ER10
+	BL _f_1A424
+	MOV ER0, ER10
+	BL _num_invalid__
+	CMP R0, #4H
+	BGE _$j_101f8
+	B _$j_103bc
+_$j_101f8:
+	BL _check_ac
+	CMP R0, #0H
+	BEQ _$j_10208
+	BL _f_1071A
+	B _$j_105e0
+_$j_10208:
+	ADD R4, #1H
+	CMP R4, #28H
+	BLT _$j_10212
+	B _$j_10564
+_$j_10212:
+	B _$j_1009a
+_$j_10216:
+	CMP R6, #0DH
+	BLT _$j_1021e
+	B _$j_104f2
+_$j_1021e:
+	MOV R5, #0H
+	MOV ER0, #-3CH
+	ADD ER0, FP
+	BL _num_invalid__
+	CMP R0, #1H
+	BNE _$j_1023e
+	MOV R0, #0B0H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _num_invalid__
+	CMP R0, #1H
+	BNE _$j_1023e
+	B _$j_104f2
+_$j_1023e:
+	BL _check_ac
+	CMP R0, #0H
+	BEQ _$j_1024e
+	BL _f_1071A
+	B _$j_105e0
+_$j_1024e:
+	MOV R0, #60H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _f_1B288
+	CMP R0, #0H
+	BEQ _$j_10268
+	CMP R0, #3H
+	BEQ _$j_10268
+	BL _f_1071A
+	B _$j_105e0
+_$j_10268:
+	ADD R5, #1H
+	CMP R5, #0FH
+	BLT _$j_10272
+	B _$j_104f2
+_$j_10272:
+	MOV ER2, #-3CH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _num_cpy
+	MOV ER0, BP
+	BL _num_abs
+	MOV R2, #0B0H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, ER10
+	BL _num_cpy
+	MOV ER0, ER10
+	BL _num_abs
+	MOV ER2, ER10
+	MOV ER0, BP
+	BL _num_cmp
+	CMP R0, #4H
+	BGE _$j_102ba
+	MOV R2, #0B0H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, #-28H
+	ADD ER0, FP
+	BL _num_cpy
+	MOV ER2, #-3CH
+	ADD ER2, FP
+	MOV ER0, ER10
+	BL _num_cpy
+	BAL _$j_102d2
+_$j_102ba:
+	MOV ER2, #-3CH
+	ADD ER2, FP
+	MOV ER0, #-28H
+	ADD ER0, FP
+	BL _num_cpy
+	MOV R2, #0B0H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, ER10
+	BL _num_cpy
+_$j_102d2:
+	MOV ER2, ER10
+	MOV ER0, #-28H
+	ADD ER0, FP
+	BL _f_1A424
+	MOV ER2, #2H
+	MOV ER0, ER10
+	BL _num_fromdigit
+	MOV ER2, ER10
+	MOV ER0, #-28H
+	ADD ER0, FP
+	BL _f_1A44C
+	MOV ER2, #-3CH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _num_cpy
+	MOV R2, #0B0H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, ER10
+	BL _num_cpy
+	MOV ER2, ER10
+	MOV ER0, BP
+	BL _num_cmp
+	CMP R0, #4H
+	BGE _$j_1031a
+	MOV ER2, #-3CH
+	ADD ER2, FP
+	MOV ER0, ER10
+	BL _num_cpy
+_$j_1031a:
+	MOV ER0, #-28H
+	ADD ER0, FP
+	BL _num_abs
+	MOV ER2, ER10
+	MOV ER0, #-28H
+	ADD ER0, FP
+	BL _f_1A460
+	MOV ER2, #-28H
+	ADD ER2, FP
+	MOV ER0, #-3CH
+	ADD ER0, FP
+	BL _num_cpy
+	MOV ER2, #-3CH
+	ADD ER2, FP
+	MOV R0, #0BAH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _num_cpy
+	BL _f_1074C
+	CMP R0, #0H
+	BEQ _$j_10352
+	B _$j_1023e
+_$j_10352:
+	ADD R6, #1H
+	BL _f_106EC
+	CMP R0, #1H
+	BNE _$j_10360
+	B _$j_1058a
+_$j_10360:
+	MOV R2, #60H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV R0, #38H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _f_1B474
+	MOV ER2, #-3CH
+	ADD ER2, FP
+	MOV R0, #0BAH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _num_cpy
+	MOV R2, #4H
+	MOV R0, #0BAH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _f_1AFD8
+	BL _f_1074C
+	CMP R0, #0H
+	BNE _$j_103a8
+	BL _f_106EC
+	CMP R0, #1H
+	BNE _$j_103a8
+	MOV R2, #4H
+	MOV ER0, #-3CH
+	ADD ER0, FP
+	BL _f_1AFD8
+	B _$j_10538
+_$j_103a8:
+	MOV R2, #38H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV R0, #60H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _f_1B474
+	B _$j_1008e
+_$j_103bc:
+	BL _f_107AA
+	CMP R0, #0H
+	BEQ _$j_103c8
+	B _$j_10216
+_$j_103c8:
+	MOV R0, #4CH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _num_invalid__
+	CMP R0, #2H
+	BNE _$j_103e4
+	MOV ER0, BP
+	BL _num_invalid__
+	CMP R0, #4H
+	BNE _$j_103e4
+	B _$j_104f2
+_$j_103e4:
+	MOV R0, #4CH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _num_invalid__
+	CMP R0, #4H
+	BNE _$j_103fe
+	MOV ER0, BP
+	BL _num_invalid__
+	CMP R0, #2H
+	BNE _$j_103fe
+	BAL _$j_104f2
+_$j_103fe:
+	CMP R7, #32H
+	BLT _$j_10406
+	B _$j_10568
+_$j_10406:
+	MOV R5, #0H
+_$j_10408:
+	BL _check_ac
+	CMP R0, #0H
+	BEQ _$j_10418
+	BL _f_1071A
+	B _$j_105e0
+_$j_10418:
+	ADD R5, #1H
+	CMP R5, #1EH
+	BGE _$j_104f2
+	MOV R2, #0B0H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _num_cpy
+	MOV ER2, #-3CH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _f_1A424
+	MOV R0, #6H
+	MOV R1, #66H
+	ST ER0, -1EH[FP]
+	MOV R0, #66H
+	ST ER0, -1CH[FP]
+	ST ER0, -1AH[FP]
+	ST ER0, -18H[FP]
+	MOV R1, #0H
+	MOV R0, #99H
+	ST ER0, -16H[FP]
+	MOV ER2, ER10
+	MOV ER0, BP
+	BL _f_1A438
+	MOV ER2, BP
+	MOV ER0, #-3CH
+	ADD ER0, FP
+	BL _f_1A460
+	MOV ER2, #-3CH
+	ADD ER2, FP
+	MOV R0, #0BAH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _num_cpy
+	BL _f_1074C
+	CMP R0, #0H
+	BEQ _$j_10474
+	B _$j_1023e
+_$j_10474:
+	MOV R2, #60H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _num_cpy
+	MOV R2, #6AH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _f_1A424
+	MOV ER0, BP
+	BL _num_abs
+	MOV R2, #92H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, ER10
+	BL _num_cpy
+	MOV ER0, ER10
+	BL _num_abs
+	MOV ER2, ER10
+	MOV ER0, BP
+	BL _num_cmp
+	CMP R0, #2H
+	BEQ _$j_104b6
+	CMP R0, #-10H
+	BEQ _$j_104b6
+	BAL _$j_10408
+_$j_104b6:
+	ADD R7, #1H
+	MOV R2, #60H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV R0, #38H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _f_1B474
+	BL _f_10668
+	CMP R0, #0H
+	BEQ _$j_104e4
+	MOV R2, #38H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV R0, #60H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _f_1B474
+	B _$j_1008e
+_$j_104e4:
+	MOV ER2, #-32H
+	ADD ER2, FP
+	MOV ER0, #-3CH
+	ADD ER0, FP
+	BL _num_cpy
+	BAL _$j_1058a
+_$j_104f2:
+	ADD R8, #1H
+	CMP R8, #8H
+	BLT _$j_10500
+	MOV R0, #0AH
+	BL _f_1071A
+	BAL _$j_105e0
+_$j_10500:
+	MOV R2, #1H
+	MOV R0, #0BAH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _num_fromdigit
+	CMP R8, #1H
+	BEQ _$j_10526
+	MOV R2, R8
+	ADD R2, #-2H
+	ADD R2, R2
+	MOV R3, #0H
+	MOV R0, #74H
+	MOV R1, #1CH
+	ADD ER2, ER0
+	L ER0, [ER2]
+	ST ER0, -3EH[FP]
+	BAL _$j_10532
+_$j_10526:
+	MOV R2, #0H
+	MOV R0, #0BAH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _num_fromdigit
+_$j_10532:
+	MOV ER4, #0H
+	B _$j_10056
+_$j_10538:
+	BL _f_1067A
+	CMP R0, #0H
+	BNE _$j_1054e
+_$j_10540:
+	MOV ER2, #-32H
+	ADD ER2, FP
+	MOV ER0, #-3CH
+	ADD ER0, FP
+	BL _num_cpy
+	BAL _$j_10562
+_$j_1054e:
+	BL _f_105FE
+	CMP R0, #2H
+	BNE _$j_1055e
+_$j_10556:
+	MOV R0, #0AH
+	BL _f_1071A
+	BAL _$j_105e0
+_$j_1055e:
+	CMP R0, #0H
+	BEQ _$j_10540
+_$j_10562:
+	BAL _$j_1058a
+_$j_10564:
+	CMP R6, #0H
+	BNE _$j_104f2
+_$j_10568:
+	BL _f_1067A
+	CMP R0, #0H
+	BEQ _$j_1057e
+	BL _f_105FE
+	CMP R0, #2H
+	BEQ _$j_10556
+	CMP R0, #0H
+	BEQ _$j_1057e
+	BAL _$j_105f8
+_$j_1057e:
+	MOV ER2, #-32H
+	ADD ER2, FP
+	MOV ER0, #-3CH
+	ADD ER0, FP
+	BL _num_cpy
+_$j_1058a:
+	MOV R0, #0H
+	ST R0, -9H[FP]
+_$j_1058e:
+	MOV ER2, #-3CH
+	ADD ER2, FP
+	MOV R0, #0BAH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _num_cpy
+	BL _f_1074C
+	CMP R0, #0H
+	BNE _$j_10556
+	MOV R2, #6AH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV R0, #60H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	L R4, -9H[FP]
+	BNE _$j_105ba
+	BL _f_1A3FC
+	BAL _$j_105be
+_$j_105ba:
+	BL _f_1A424
+_$j_105be:
+	MOV R2, #60H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, ER10
+	BL _num_cpy
+	MOV ER2, #-3CH
+	ADD ER2, FP
+	MOV ER0, #-28H
+	ADD ER0, FP
+	BL _num_cpy
+	L R0, -0AH[FP]
+	MOV ER2, #-3CH
+	ADD ER2, FP
+	BL _st_var
+_$j_105e0:
+	MOV ER2, #-28H
+	ADD ER2, FP
+	L ER0, -6H[FP]
+	BL _f_1B474
+	L R0, -9H[FP]
+	POP XR4
+	POP BP
+	POP XR8
+	MOV SP, FP
+	POP FP
+	POP PC
+_$j_105f8:
+	MOV R0, #24H
+	ST R0, -9H[FP]
+	BAL _$j_1058e
+
+; 105FE
+_f_105FE:
+	PUSH LR
+	MOV R9, #6H
+_$j_10602:
+	MOV ER2, #-3CH
+	ADD ER2, FP
+	MOV ER0, #-32H
+	ADD ER0, FP
+	BL _num_cpy
+	MOV R2, R9
+	MOV ER0, #-32H
+	ADD ER0, FP
+	BL _f_1AFD8
+	MOV ER0, #-32H
+	ADD ER0, FP
+	BL _f_1B288
+	CMP R0, #0H
+	BEQ _$j_10628
+	MOV R0, #1H
+	BAL _$j_10662
+_$j_10628:
+	MOV R2, #0CEH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV R0, #0BAH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _num_cpy
+	BL _f_1074C
+	CMP R0, #0H
+	BEQ _$j_10644
+	MOV R0, #2H
+	BAL _$j_10662
+_$j_10644:
+	MOV R2, #60H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV R0, #6AH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _num_cmp
+	CMP R0, #1H
+	BEQ _$j_10664
+	CMP R9, #0BH
+	BEQ _$j_10660
+	MOV R9, #0BH
+	BAL _$j_10602
+_$j_10660:
+	MOV R0, #1H
+_$j_10662:
+	POP PC
+_$j_10664:
+	MOV R0, #0H
+	POP PC
+
+; 10668
+_f_10668:
+	PUSH LR
+	MOV R2, #1H
+	MOV ER0, ER10
+	BL _num_fromdigit
+	MOV R1, #0H
+	MOV R0, #50H
+	ST ER0, -16H[FP]
+	BAL _$j_1068a
+
+; 1067A
+_f_1067A:
+	PUSH LR
+	MOV R2, #1H
+	MOV ER0, ER10
+	BL _num_fromdigit
+	MOV R1, #0H
+	MOV R0, #88H
+	ST ER0, -16H[FP]
+_$j_1068a:
+	MOV ER2, #-3CH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _num_cpy
+	MOV ER0, BP
+	BL _num_abs
+	MOV ER2, ER10
+	MOV ER0, BP
+	BL _num_cmp
+	CMP R0, #2H
+	BEQ _$j_106aa
+	MOV R0, #1H
+	BAL _$j_106e6
+_$j_106aa:
+	MOV R2, #0H
+	MOV ER0, #-32H
+	ADD ER0, FP
+	BL _num_fromdigit
+	MOV R2, #0CEH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV R0, #0BAH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _num_cpy
+	BL _f_1074C
+	CMP R0, #0H
+	BEQ _$j_106d0
+	MOV R0, #1H
+	BAL _$j_106e6
+_$j_106d0:
+	MOV R2, #60H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV R0, #6AH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _num_cmp
+	CMP R0, #1H
+	BEQ _$j_106e8
+	MOV R0, #1H
+_$j_106e6:
+	POP PC
+_$j_106e8:
+	MOV R0, #0H
+	POP PC
+
+; 106EC
+_f_106EC:
+	PUSH LR
+	MOV R2, #60H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV R0, #0A6H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _num_cpy
+	MOV R2, #6AH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV R0, #0A6H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _f_1A424
+	MOV R0, #0A6H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _num_invalid__
+	POP PC
+
+; 1071A
+_f_1071A:
+	PUSH LR
+	CMP R0, #0AH
+	BEQ _$j_10724
+	CMP R0, #1H
+	BNE _$j_1072a
+_$j_10724:
+	L ER2, -2H[FP]
+	LEA [ER2]
+	DEC [EA]
+_$j_1072a:
+	ST R0, -9H[FP]
+	MOV R2, R0
+	MOV ER0, #-28H
+	ADD ER0, FP
+	BL _f_1B12C
+	MOV R2, #0H
+	MOV ER0, ER10
+	BL _num_fromdigit
+	L R0, -0AH[FP]
+	MOV R2, #74H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	BL _st_var
+	POP PC
+
+; 1074C
+_f_1074C:
+	PUSH LR
+	MOV R0, #0BAH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _f_1B288
+	CMP R0, #0H
+	BNE _$j_1078c
+	MOV R2, #0BAH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _num_cpy
+	MOV ER0, BP
+	BL _f_1B238
+	L R0, -0AH[FP]
+	MOV ER2, BP
+	BL _st_var
+	L ER2, -4H[FP]
+	L ER0, -2H[FP]
+	ST ER2, [ER0]
+	MOV R2, #60H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	BL _f_15CEE
+	CMP R0, #0H
+	BNE _$j_1078c
+	POP PC
+_$j_1078c:
+	MOV R9, R0
+	MOV R2, R0
+	MOV R0, #60H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _f_1B12C
+	MOV R2, R9
+	MOV R0, #6AH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _f_1B12C
+	MOV R0, R9
+	POP PC
+
+; 107AA
+_f_107AA:
+	PUSH LR
+	MOV ER2, #-3CH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _num_cpy
+	MOV ER0, BP
+	BL _num_abs
+	MOV R2, #0H
+	MOV ER0, ER10
+	BL _num_fromdigit
+	MOV R2, #1H
+	MOV ER0, #-28H
+	ADD ER0, FP
+	BL _num_fromdigit
+	MOV ER0, #7H
+	ST ER0, -20H[FP]
+	MOV ER0, BP
+	BL _num_invalid__
+	CMP R0, #1H
+	BNE _$j_107ec
+	MOV R2, #1H
+	MOV ER0, BP
+	BL _num_fromdigit
+	MOV R1, #0H
+	MOV R0, #93H
+	ST ER0, -0CH[FP]
+	BAL _$j_1081c
+_$j_107ec:
+	MOV ER2, #-28H
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _num_cmp
+	CMP R0, #2H
+	BNE _$j_10806
+	MOV ER2, #-28H
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _num_cpy
+	BAL _$j_1081c
+_$j_10806:
+	MOV R2, #1H
+	MOV ER0, ER10
+	BL _num_fromdigit
+	MOV R1, #0H
+	MOV R0, #93H
+	ST ER0, -16H[FP]
+	MOV ER2, ER10
+	MOV ER0, BP
+	BL _f_1A438
+_$j_1081c:
+	MOV ER2, BP
+	MOV R0, #9CH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _num_cpy
+	MOV ER2, #-3CH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _f_1A460
+	MOV ER2, BP
+	MOV R0, #0BAH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _num_cpy
+	BL _f_1074C
+	CMP R0, #0H
+	BNE _$j_1090c
+	MOV R2, #60H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV R0, #56H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _num_cpy
+	MOV R2, #6AH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV R0, #56H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _f_1A424
+	MOV ER2, #-3CH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _num_cpy
+	MOV R2, #9CH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _f_1A424
+	MOV ER2, BP
+	MOV R0, #0BAH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _num_cpy
+	BL _f_1074C
+	CMP R0, #0H
+	BNE _$j_108e4
+	MOV R2, #60H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _num_cpy
+	MOV R2, #6AH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _f_1A424
+	MOV ER2, BP
+	MOV R0, #56H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _f_1A424
+	MOV R2, #9CH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, ER10
+	BL _num_cpy
+	MOV ER2, ER10
+	MOV ER0, ER2
+	BL _f_1A460
+	MOV R2, #56H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _num_cpy
+	MOV ER2, ER10
+	MOV ER0, BP
+	BL _f_1A44C
+	MOV ER0, BP
+	BL _f_1B288
+_$j_108e2:
+	POP PC
+_$j_108e4:
+	MOV R2, #9CH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, ER10
+	BL _num_cpy
+	MOV R2, #56H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _num_cpy
+_$j_108fc:
+	MOV ER2, ER10
+	MOV ER0, BP
+	BL _f_1A44C
+	MOV ER0, BP
+	BL _f_1B288
+	POP PC
+_$j_1090c:
+	MOV ER2, #-3CH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _num_cpy
+	MOV R2, #9CH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _f_1A424
+	MOV ER2, BP
+	MOV R0, #0BAH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _num_cpy
+	BL _f_1074C
+	CMP R0, #0H
+	BNE _$j_108e2
+	MOV R2, #60H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _num_cpy
+	MOV R2, #6AH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _f_1A424
+	MOV ER0, BP
+	BL _num_negate
+	MOV R2, #9CH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, ER10
+	BL _num_cpy
+	BAL _$j_108fc
+
+; 10962
+_f_10962:
+	PUSH LR
+	PUSH R9
+	PUSH BP
+	PUSH ER4
+	PUSH R4
+	MOV FP, ER10
+	MOV ER0, BP
+	ADD ER0, #28H
+	BL _f_154CE
+	ADD ER0, #-1EH
+	BL _f_154CE
+	ADD ER0, #0AH
+	BL _f_154CE
+	L ER4, 8H[BP]
+	MOV ER0, #13H
+	SUB R4, R0
+	DAS R4
+	SUBC R5, R1
+	DAS R5
+	MOV R0, #BYTE1 _unk_017e6
+	MOV R1, #BYTE2 _unk_017e6
+	MOV ER2, BP
+	ADD ER2, #1EH
+	BL _f_154E0
+	POP R6
+	PUSH R6
+	MOV R5, #0H
+	ST ER4, 8H[ER2]
+	MOV ER0, BP
+	ADD ER0, #14H
+	PUSH XR0
+	BL _f_1A424
+	POP XR0
+	ADD ER0, #-0AH
+	BL _f_1A460
+	MOV ER0, FP
+	BL _f_154CE
+	BL _num_trunc__
+	MOV R6, #0H
+_$j_109c2:
+	ADD BP, #0AH
+	MOV ER0, BP
+	BL _f_1B378
+	L R0, 8H[BP]
+	CMP R0, #56H
+	BGE _$j_109d8
+_$j_109d0:
+	POP R2
+	MOV R0, #0H
+	B _$j_10b58
+_$j_109d8:
+	SB R6.0
+	BEQ _$j_109c2
+	MOV ER0, BP
+	MOV ER2, BP
+	ADD ER2, #-0AH
+	BL _num_cmp
+	CMP R0, #4H
+	BEQ _$j_109d0
+	MOV ER6, #0H
+	MOV FP, ER10
+	MOV R0, #BYTE1 _unk_017c8
+	MOV R1, #BYTE2 _unk_017c8
+	MOV ER2, BP
+	ADD ER2, #0AH
+	BL _f_154E0
+	ADD FP, #0AH
+	MOV ER0, FP
+	BL _f_154CE
+_$j_10a02:
+	MOV ER0, BP
+	ADD ER0, #0AH
+	MOV ER2, FP
+	BL _num_unk_1_1__
+	ADD R6, #1H
+	CMP R6, #15H
+	BEQ _$j_10a34
+	L R0, 0AH[BP]
+	BEQ _$j_10a34
+	ADD FP, #0AH
+	MOV ER0, BP
+	ADD ER0, #0AH
+	MOV ER2, FP
+	BL _f_154E0
+	MOV ER2, ER0
+	MOV ER0, BP
+	BL _f_154E0
+	MOV ER0, FP
+	MOV ER2, BP
+	BL _f_154E0
+	BAL _$j_10a02
+_$j_10a34:
+	POP R9
+	ADD BP, #-0AH
+	MOV FP, ER10
+	MOV R0, #BYTE1 _unk_017c8
+	MOV R1, #BYTE2 _unk_017c8
+	MOV ER2, BP
+	ADD ER2, #14H
+	BL _f_154E0
+	MOV ER0, BP
+	ADD ER2, #-0AH
+	BL _f_154E0
+	MOV ER4, ER2
+	ADD FP, #0AH
+_$j_10a52:
+	MOV ER0, BP
+	ADD ER0, #14H
+	MOV ER2, ER4
+	BL _num_unk_1_1__
+	MOV ER0, ER4
+	MOV ER2, FP
+	BL _num_cmp
+	CMP R0, #1H
+	BNE _$j_10a90
+	ADD R7, #1H
+	CMP R7, R6
+	BEQ _$j_10ace
+	L R0, 14H[BP]
+	BEQ _$j_10ace
+	ADD FP, #0AH
+	MOV ER0, BP
+	ADD ER0, #14H
+	MOV ER2, ER4
+	BL _f_154E0
+	MOV ER2, ER0
+	MOV ER0, BP
+	BL _f_154E0
+	MOV ER0, ER4
+	MOV ER2, BP
+	BL _f_154E0
+	BAL _$j_10a52
+_$j_10a90:
+	TB R7.0
+	BNE _$j_10ab4
+	MOV ER0, FP
+	MOV ER2, ER4
+	BL _f_1A424
+	MOV ER0, ER4
+	MOV ER2, FP
+	BL _f_154E0
+	L R0, 14H[BP]
+	BEQ _$j_10acc
+	MOV ER0, FP
+	MOV R2, #BYTE1 _unk_017c8
+	MOV R3, #BYTE2 _unk_017c8
+	BL _f_1A460
+	BAL _$j_10acc
+_$j_10ab4:
+	MOV ER0, ER4
+	MOV ER2, FP
+	BL _f_1A424
+	SUB R6, R7
+	CMP R6, #1H
+	BEQ _$j_10acc
+	MOV ER0, FP
+	MOV R2, #BYTE1 _unk_017c8
+	MOV R3, #BYTE2 _unk_017c8
+	BL _f_1A460
+_$j_10acc:
+	ADD R7, #1H
+_$j_10ace:
+	MOV FP, ER10
+	MOV R4, #0AH
+	MUL ER4, R7
+	ADD FP, ER4
+	CMP R7, #15H
+	BGE _$j_10b56
+	PUSH FP
+	MOV R0, #BYTE1 _unk_017c8
+	MOV R1, #BYTE2 _unk_017c8
+	MOV ER2, BP
+	BL _f_154E0
+	MOV ER0, FP
+	ADD ER2, #0AH
+	BL _f_154E0
+	MOV R6, R7
+_$j_10af0:
+	ADD R6, #-1H
+	BEQ _$j_10b28
+	ADD FP, #-0AH
+	MOV ER0, BP
+	ADD ER0, #0AH
+	MOV ER2, BP
+	ADD ER2, #14H
+	BL _f_154E0
+	MOV ER0, ER2
+	MOV ER2, FP
+	BL _f_1A438
+	MOV ER0, BP
+	ADD ER0, #14H
+	MOV ER2, BP
+	BL _f_1A460
+	MOV ER0, BP
+	ADD ER0, #0AH
+	MOV ER2, BP
+	BL _f_154E0
+	ADD ER0, #0AH
+	ADD ER2, #0AH
+	BL _f_154E0
+	BAL _$j_10af0
+_$j_10b28:
+	POP FP
+	L R0, [ER10]
+	BEQ _$j_10b34
+	L R0, 8H[ER10]
+	ADD R0, #2H
+_$j_10b34:
+	L R1, 8H[BP]
+	CMP R1, #8H
+	BGE _$j_10b56
+	ADD R0, R1
+	L R1, 12H[BP]
+	CMP R1, #8H
+	BGE _$j_10b56
+	ADD R0, R1
+	CMP R0, #8H
+	BGE _$j_10b56
+	MOV ER0, ER10
+	MOV ER2, BP
+	ADD ER2, #-0AH
+	BL _f_154E0
+	MOV R0, #1H
+	BAL _$j_10b58
+_$j_10b56:
+	MOV R0, #0H
+_$j_10b58:
+	POP ER4
+	POP BP
+	POP R9
+	POP PC
+
+; 10B60
+_f_10B60:
+	PUSH LR
+	L R0, 7H[BP]
+	CMP R0, #50H
+	MOV R0, #0H
+	BLT _$j_10b6c
+	MOV R0, #-67H
+_$j_10b6c:
+	ST R0, 7H[BP]
+	MOV ER0, BP
+	BL _f_1B238
+	MOV ER0, BP
+	BL _f_1AE06
+	CMP R0, #0H
+	POP PC
+
+; 10B7E
+_f_10B7E:
+	PUSH LR
+	PUSH XR4
+	PUSH QR8
+	ADD SP, #-78H
+	ADD SP, #-78H
+	ADD SP, #-64H
+	MOV ER10, SP
+	MOV BP, ER0
+	L R5, 9H[BP]
+	MOV R2, R5
+	CMP R2, #5H
+	BLT _$j_10b9a
+	ADD R2, #-5H
+	ST R2, 9H[BP]
+_$j_10b9a:
+	L R3, 8H[BP]
+	CMP R2, #0H
+	BNE _$j_10ba6
+	CMP R3, #-6EH
+	BLT _$j_10c0e
+	BAL _$j_10baa
+_$j_10ba6:
+	CMP R3, #6H
+	BGT _$j_10c0e
+_$j_10baa:
+	MOV ER2, BP
+	ADD ER2, #28H
+	BL _f_154E0
+	PUSH BP
+	ADD BP, #28H
+	BL _f_10B60
+	POP BP
+	BNE _$j_10bde
+	MOV ER0, BP
+	ADD ER0, #28H
+	BL _f_154D6
+	MOV R0, #BYTE1 _unk_017be
+	MOV R1, #BYTE2 _unk_017be
+	MOV ER2, BP
+	ADD ER2, #0AH
+	BL _f_154E0
+	ADD ER0, #0AH
+	ADD ER2, #0AH
+	BL _f_154E0
+_$j_10bda:
+	MOV R0, #1H
+	BAL _$j_10bf2
+_$j_10bde:
+	L ER2, 8H[BP]
+	CMP R3, #0H
+	BEQ _$j_10be8
+	CMP R2, #6H
+	BGE _$j_10c0e
+_$j_10be8:
+	BL _f_10962
+	CMP R0, #1H
+	BEQ _$j_10bda
+	BAL _$j_10c10
+_$j_10bf2:
+	CMP R5, #5H
+	BLT _$j_10c12
+	MOV R4, R0
+	MOV ER0, BP
+	BL _num_negate
+	MOV ER0, BP
+	ADD ER0, #0AH
+	BL _num_negate
+	MOV R0, R4
+	BAL _$j_10c12
+	MOV R0, #0H
+	BAL _$j_10c10
+_$j_10c0e:
+	MOV R0, #-1H
+_$j_10c10:
+	ST R5, 9H[BP]
+_$j_10c12:
+	ADD SP, #78H
+	ADD SP, #78H
+	ADD SP, #64H
+	POP QR8
+	POP XR4
+	POP PC
+
+; 10C1E
+_f_10C1E:
+	PUSH LR
+	BL _f_10B7E
+	CMP R0, #-1H
+	BNE _$j_10c2a
+	MOV R0, #0H
+_$j_10c2a:
+	POP PC
+
+; 10C2C
+_f_10C2C:
+	PUSH LR
+	PUSH QR8
+	MOV FP, ER0
+	ADD FP, #14H
+	MOV BP, ER0
+	ADD BP, #0AH
+	BL _f_154D6
+	L ER8, 8H[BP]
+	ADD R9, #-5H
+	BGE _$j_10c44
+	ST R9, 9H[BP]
+_$j_10c44:
+	L R0, 9H[BP]
+	BEQ _$j_10c4c
+	CMP R8, #6H
+	BGE _$j_10cbc
+_$j_10c4c:
+	MOV ER0, FP
+	BL _f_1B4B6
+	MOV ER0, BP
+	MOV ER2, FP
+	BL _f_1A44C
+	MOV ER0, BP
+	MOV R2, #0EH
+	MOV R3, #18H
+	BL _f_1A438
+	BL _f_10B60
+	BNE _$j_10cbc
+	MOV R0, #0EH
+	MOV R1, #18H
+	MOV ER2, FP
+	BL _f_154E0
+	ADD ER2, #0AH
+	BL _f_154E0
+	MOV ER0, ER2
+	MOV ER2, BP
+	BL _f_1ACD6
+	MOV ER0, BP
+	MOV ER2, FP
+	ADD ER2, #0AH
+	BL _f_1A44C
+	MOV ER0, FP
+	MOV ER2, FP
+	ADD ER2, #0AH
+	BL _f_1A44C
+	MOV ER0, FP
+	MOV ER2, BP
+	ADD ER2, #-0AH
+	BL _f_154E0
+	MOV ER0, BP
+	BL _num_unk_1_1__
+	MOV R0, #-1H
+	ADD R9, #5H
+	BLT _$j_10cbe
+	MOV R1, #6H
+	L R9, -1H[BP]
+	BEQ _$j_10cb4
+	ST R1, -1H[BP]
+_$j_10cb4:
+	L R9, 9H[BP]
+	BEQ _$j_10cbe
+	ST R1, 9H[BP]
+	BAL _$j_10cbe
+_$j_10cbc:
+	MOV R0, #0H
+_$j_10cbe:
+	POP QR8
+	POP PC
+
+; 10CC2
+_f_10CC2:
+	PUSH LR
+	PUSH QR8
+	MOV ER8, ER0
+	BL _f_02AAA
+	MOV R11, R0
+	BL _f_02AB2
+	MOV R10, R0
+	CMP R0, #2H
+	BLT _$j_10da2
+	CMP R0, #9H
+	BGT _$j_10da2
+	L ER0, 10H[ER8]
+	MOV FP, ER0
+	MOV ER2, #3H
+	BL __imodu8lw
+	MOV BP, ER0
+	BPS _$j_10cee
+	ADD BP, #3H
+_$j_10cee:
+	L R0, [ER8]
+	BNE _$j_10cf8
+	MOV R10, #6H
+	MOV FP, #0H
+	BAL _$j_10d86
+_$j_10cf8:
+	CMP R10, #5H
+	BGT _$j_10d38
+	MOV BP, BP
+	BNE _$j_10d0a
+	CMP R11, #6H
+	BNE _$j_10d0a
+	CMP R10, #5H
+	BNE _$j_10d0a
+	ADD R10, #-1H
+_$j_10d0a:
+	SUB R14, R12
+	SUBC R15, R13
+	MOV BP, FP
+	MOV R0, R10
+	MOV R1, #0H
+	ADD ER0, #-5H
+	MOV ER2, ER0
+	ADD ER0, ER0
+	ADD ER0, ER2
+	ADD FP, ER0
+	CMP R14, #-63H
+	CMPC R15, #-1H
+	BC LTS, _$j_10d2e
+	L R0, 10H[ER8]
+	SUB R0, R14
+	CMP R0, #0AH
+	BLT _$j_10d86
+_$j_10d2e:
+	ADD R10, #1H
+	MOV R0, R10
+	MOV R1, #0H
+	ADD ER0, #-5H
+	BAL _$j_10d7c
+_$j_10d38:
+	MOV BP, BP
+	BEQ _$j_10d46
+	MOV ER0, #3H
+	SUB R0, R12
+	SUBC R1, R13
+	MOV BP, ER0
+	BAL _$j_10d50
+_$j_10d46:
+	CMP R11, #5H
+	BNE _$j_10d50
+	CMP R10, #6H
+	BNE _$j_10d50
+	ADD R10, #1H
+_$j_10d50:
+	ADD FP, BP
+	MOV BP, FP
+	MOV R0, R10
+	MOV R1, #0H
+	ADD ER0, #-6H
+	MOV ER2, ER0
+	ADD ER0, ER0
+	ADD ER0, ER2
+	ADD FP, ER0
+	CMP R14, #63H
+	CMPC R15, #0H
+	BC GTS, _$j_10d74
+	MOV R0, R14
+	L R1, 10H[ER8]
+	SUB R0, R1
+	CMP R0, #0AH
+	BLT _$j_10d86
+_$j_10d74:
+	ADD R10, #-1H
+	MOV R0, R10
+	MOV R1, #0H
+	ADD ER0, #-6H
+_$j_10d7c:
+	MOV ER2, ER0
+	ADD ER0, ER0
+	ADD ER0, ER2
+	ADD ER0, BP
+	MOV FP, ER0
+_$j_10d86:
+	MOV R0, R10
+	BL _f_02ACA
+	L ER0, 10H[ER8]
+	SUB R0, R14
+	SUBC R1, R15
+	ST ER0, 12H[ER8]
+	ST FP, 10H[ER8]
+	MOV R0, #1H
+_$j_10d9e:
+	POP QR8
+	POP PC
+_$j_10da2:
+	MOV R0, #0H
+	BAL _$j_10d9e
+
+; 10DA6
+_f_10DA6:
+	PUSH XR8
+	MOV ER8, ER0
+	L R10, 14H[ER8]
+	L ER2, 12H[ER8]
+	BPS _$j_10dc2
+	MOV R0, R10
+	MOV R1, #0H
+	ADD ER0, ER2
+	ADD ER0, #-1H
+	CMP R0, R10
+	BGE _$j_10dc2
+	MOV R10, R0
+_$j_10dc2:
+	ST R10, 14H[ER8]
+	POP XR8
+	RT
+
+; 10DCA
+_f_10DCA:
+	PUSH XR8
+	MOV ER8, ER0
+	L R10, 14H[ER8]
+	L ER2, 12H[ER8]
+	BPS _$j_10df0
+	MOV R0, #1H
+	SUB R0, R2
+	ADD R10, R0
+	MOV ER0, ER2
+	ADD ER0, #0AH
+	CMP R0, R10
+	BGE _$j_10de8
+	MOV R10, R0
+_$j_10de8:
+	MOV R0, #1H
+	ST R0, 15H[ER8]
+	BAL _$j_10e06
+_$j_10df0:
+	MOV R0, R10
+	MOV R1, #0H
+	CMP ER0, ER2
+	BC LES, _$j_10e00
+	MOV R0, #1H
+	ST R0, 15H[ER8]
+	BAL _$j_10e06
+_$j_10e00:
+	MOV R0, R2
+	ADD R0, #1H
+	MOV R10, R0
+_$j_10e06:
+	CMP R10, #0BH
+	BLE _$j_10e0c
+	MOV R10, #0BH
+_$j_10e0c:
+	ST R10, 14H[ER8]
+	POP XR8
+	RT
+
+; 10E14
+_f_10E14:
+	PUSH LR
+	PUSH ER8
+	MOV ER8, ER2
+	MOV R2, #0H
+	ST R2, [ER8]
+	BL _f_1B288
+	CMP R0, #0DH
+	BEQ _$j_10e30
+	MOV R2, #BYTE1 _unk_010ac
+	MOV R3, #BYTE2 _unk_010ac
+	MOV ER0, ER8
+	BL _smart_strcpy
+_$j_10e30:
+	POP ER8
+	POP PC
+
+; 10E34
+_f_10E34:
+	PUSH ER8
+	MOV ER8, ER0
+	CMP R0, #-10H
+	BNE _$j_10e3e
+	MOV R8, R1
+_$j_10e3e:
+	MOV R0, R8
+	CMP R1, R8
+	BEQ _$j_10e58
+	MOV ER0, ER8
+	CMP R9, R8
+	BLE _$j_10e4e
+	MOV R0, R9
+	MOV R1, R8
+_$j_10e4e:
+	CMP R0, #0DH
+	BNE _$j_10e58
+	CMP R1, #0AH
+	BEQ _$j_10e58
+	MOV R0, R1
+_$j_10e58:
+	POP ER8
+	RT
+
+; 10E5C
+_f_10E5C:
+	PUSH LR
+	L R1, _d_08124
+	BNE _$j_10e66
+	MOV R1, #0AH
+_$j_10e66:
+	ADD R0, R1
+	CMP R0, #1FH
+	BLE _$j_10e72
+	ADD R0, #-1FH
+	BL _f_02D52
+_$j_10e72:
+	MOV R0, #0H
+	ST R0, _d_08124
+	POP PC
+
+; 10E7A
+_f_10E7A:
+	PUSH LR
+	PUSH XR8
+	MOV R8, R0
+	MOV ER10, ER2
+	L R0, _d_080FF
+	MOV R2, R0
+	AND R2, #00010000B
+	CMP R2, #0H
+	BEQ _$j_10ef4
+	CMP R0, #11H
+	BNE _$j_10ea2
+	CMP R8, #0H
+	BNE _$j_10e9a
+	MOV R2, #58H
+	BAL _$j_10e9c
+_$j_10e9a:
+	MOV R2, #59H
+_$j_10e9c:
+	ST R2, [ER10]
+	MOV R0, #1H
+	BAL _$j_10ede
+_$j_10ea2:
+	CMP R0, #12H
+	BNE _$j_10ebc
+	CMP R8, #0H
+	BNE _$j_10eb8
+	L R0, _use_output_charset
+	BNE _$j_10eb4
+	MOV R2, #72H
+	BAL _$j_10e9c
+_$j_10eb4:
+	MOV R2, #-63H
+	BAL _$j_10e9c
+_$j_10eb8:
+	MOV R2, #-3CH
+	BAL _$j_10e9c
+_$j_10ebc:
+	CMP R8, #0H
+	BNE _$j_10ecc
+	L R0, _d_083FC
+	MOV R1, #0H
+	L R2, 844H[ER0]
+	BAL _$j_10e9c
+_$j_10ecc:
+	MOV R2, #4CH
+	ST R2, [ER10]
+	MOV R0, #2DH
+	ST R0, 1H[ER10]
+	MOV R0, #52H
+	ST R0, 2H[ER10]
+	MOV R0, #3H
+_$j_10ede:
+	MOV R1, #0H
+	ADD ER0, ER10
+	MOV ER8, ER0
+	MOV R2, #3DH
+	ST R2, [ER0]
+	ADD ER8, #1H
+_$j_10eea:
+	MOV R2, #0H
+	ST R2, [ER8]
+	MOV ER0, ER10
+	POP XR8
+	POP PC
+_$j_10ef4:
+	MOV ER8, ER10
+	BAL _$j_10eea
+
+; 10EF8
+_f_10EF8:
+	PUSH LR
+	PUSH FP
+	MOV FP, SP
+	ADD SP, #-6H
+	PUSH ER8
+	BL _buffer_clear
+	L R8, _d_0810F
+	ADD R8, #-1H
+	MOV R9, #0H
+	L R0, _submode
+	CMP R0, #3H
+	BLT _$j_10f1e
+	BL _f_0BC34
+	CMP R0, #1H
+	BNE _$j_10f2a
+_$j_10f1e:
+	MOV ER0, ER8
+	ADD ER0, ER0
+	ADD ER0, ER8
+	MOV R2, #BYTE1 _unk_010b2
+	MOV R3, #BYTE2 _unk_010b2
+	BAL _$j_10f34
+_$j_10f2a:
+	MOV ER0, ER8
+	SLLC R1, #2
+	SLL R0, #2
+	MOV R2, #BYTE1 _unk_010bb
+	MOV R3, #BYTE2 _unk_010bb
+_$j_10f34:
+	ADD ER2, ER0
+	MOV ER0, FP
+	ADD ER0, #-6H
+	BL _smart_strcpy
+	MOV ER2, FP
+	ADD ER2, #-6H
+	MOV R1, #1H
+	MOV R0, #0H
+	BL _line_print
+	POP ER8
+	MOV SP, FP
+	POP FP
+	POP PC
+
+; 10F52
+_f_10F52:
+	PUSH LR
+	PUSH FP
+	MOV FP, SP
+	ADD SP, #-2H
+	MOV R1, R0
+	MOV R0, #-61H
+	ST R0, -2H[FP]
+	L R0, _formula_x
+_$j_10f64:
+	MOV R2, #0H
+	ST R2, -1H[FP]
+	MOV ER2, FP
+	ADD ER2, #-2H
+	BL _line_print
+	MOV SP, FP
+	POP FP
+	POP PC
+
+; 10F76
+_f_10F76:
+	PUSH LR
+	PUSH FP
+	MOV FP, SP
+	ADD SP, #-2H
+	MOV R1, R0
+	MOV R0, #-62H
+	ST R0, -2H[FP]
+	L R0, _d_08122
+	BNE _$j_10f8e
+	MOV R0, #-41H
+	ST R0, -2H[FP]
+_$j_10f8e:
+	MOV R0, #5AH
+	BAL _$j_10f64
+
+; 10F92
+_f_10F92:
+	PUSH LR
+	PUSH FP
+	MOV FP, SP
+	ADD SP, #-2H
+	MOV R0, #-12H
+	ST R0, -2H[FP]
+	MOV ER0, #2EH
+	BAL _$j_10f64
+
+; 10FA2
+_f_10FA2:
+	PUSH LR
+	PUSH FP
+	MOV FP, SP
+	ADD SP, #-2H
+	MOV R0, #-11H
+	ST R0, -2H[FP]
+	MOV R0, #2EH
+	MOV R1, #1AH
+	BAL _$j_10f64
+
+; 10FB4
+_table_prompt_print:
+	MOV R2, #BYTE1 _unk_010d4
+	MOV R3, #BYTE2 _unk_010d4
+	MOV R1, R0
+	MOV R0, #0H
+	B _line_print
+
+; 10FC0
+_f_10FC0:
+	L R0, _modifiers
+	TB R0.7
+	BEQ _$j_10fd0
+	ADD R0, #-80H
+	RB R0.3
+	ST R0, _modifiers
+_$j_10fd0:
+	RT
+
+; 10FD2
+_f_10FD2:
+	PUSH LR
+	PUSH ER8
+	BL _f_087BA
+	MOV R8, R0
+	CMP R0, #0H
+	BEQ _$j_10ffa
+	L R0, _cursor_pos_byte
+	MOV R1, #0H
+	ADD R0, #BYTE1 _input_area
+	ADDC R1, #BYTE2 _input_area
+	BL _f_05658
+	BL _f_08A0A
+	CMP R0, #0H
+	BEQ _$j_10ffa
+	BL _f_10FC0
+_$j_10ffa:
+	L R9, _modifiers
+	AND R9, #10000000B
+	MOV R0, #BYTE1 _input_area
+	MOV R1, #BYTE2 _input_area
+	BL _smart_strlen
+	ADD R0, #0BH
+	MOV R2, #64H
+	CMP R2, R0
+	BGT _$j_11014
+	MOV R0, #0CCH
+	BAL _$j_1101e
+_$j_11014:
+	CMP R9, #0H
+	BNE _$j_1101c
+	MOV R0, #7CH
+	BAL _$j_1101e
+_$j_1101c:
+	MOV R0, #0CFH
+_$j_1101e:
+	CMP R8, #0H
+	BEQ _$j_11028
+	CMP R9, #0H
+	BEQ _$j_11028
+	MOV R0, #9EH
+_$j_11028:
+	ST R0, _cursor_char
+	POP ER8
+	POP PC
+
+; 11030
+_f_11030:
+	L R0, _mode
+	CMP R0, #88H  ; TABLE mode
+	BEQ _$j_11046
+	TB R0.7
+	BEQ _$j_11042
+	MOV R0, #BYTE1 _d_08398
+	MOV R1, #BYTE2 _d_08398
+	RT
+_$j_11042:
+	TB R0.6
+	BEQ _$j_1104c
+_$j_11046:
+	MOV R0, #BYTE1 _d_08546
+	MOV R1, #BYTE2 _d_08546
+	RT
+_$j_1104c:
+	MOV ER0, #0H
+	RT
+
+; 11050
+_f_11050:
+	PUSH ER8
+	L R0, _mode
+	CMP R0, #4AH  ; INEQ mode
+	BEQ _$j_1105e
+	CMP R0, #45H  ; EQN mode
+	BNE _$j_11064
+_$j_1105e:
+	MOV R8, #BYTE1 _d_08406
+	MOV R9, #BYTE2 _d_08406
+	BAL _$j_1107c
+_$j_11064:
+	MOV R8, #BYTE1 _d_0829E
+	MOV R9, #BYTE2 _d_0829E
+	CMP R0, #89H  ; VERIF mode
+	BEQ _$j_1107c
+	AND R0, #00001111B
+	CMP R0, #3H  ; STAT mode
+	BEQ _$j_11076
+	CMP R0, #6H  ; any mode with ID 6 or greater: MATRIX, VECTOR, etc.
+	BLT _$j_1107c
+_$j_11076:
+	MOV ER0, #0H
+_$j_11078:
+	POP ER8
+	RT
+_$j_1107c:
+	MOV ER0, ER8
+	BAL _$j_11078
+
+; 11080
+_concat_mathi_l:
+	MOV R2, #BYTE1 _unk_010da
+	MOV R3, #BYTE2 _unk_010da
+_$j_11084:
+	B _smart_strcat
+
+; 11088
+_concat_mathi_r:
+	MOV R2, #BYTE1 _unk_010dc
+	MOV R3, #BYTE2 _unk_010dc
+	BAL _$j_11084
+
+; 1108E
+_concat_mathi_root_l:
+	MOV R2, #BYTE1 _unk_010de
+	MOV R3, #BYTE2 _unk_010de
+	BAL _$j_11084
+
+; 11094
+_concat_mathi_root_r:
+	MOV R2, #BYTE1 _unk_010e1
+	MOV R3, #BYTE2 _unk_010e1
+	BAL _$j_11084
+
+; 1109A
+_f_1109A:
+	MOV R2, #BYTE1 _unk_010e4
+	MOV R3, #BYTE2 _unk_010e4
+	BAL _$j_11084
+
+; 110A0
+_f_110A0:
+	MOV R2, #BYTE1 _unk_010e8
+	MOV R3, #BYTE2 _unk_010e8
+	BAL _$j_11084
+
+; 110A6
+_f_110A6:
+	MOV R2, #BYTE1 _unk_010ea
+	MOV R3, #BYTE2 _unk_010ea
+	BAL _$j_11084
+
+; 110AC
+_f_110AC:
+	MOV R2, #BYTE1 _unk_010ec
+	MOV R3, #BYTE2 _unk_010ec
+	BAL _$j_11084
+
+; 110B2
+_f_110B2:
+	L R2, _setup_decimal_mark
+	BEQ _$j_110be
+	MOV R2, #BYTE1 _unk_010ee
+	MOV R3, #BYTE2 _unk_010ee
+	BAL _$j_11084
+_$j_110be:
+	MOV R2, #BYTE1 _unk_010f0
+	MOV R3, #BYTE2 _unk_010f0
+	BAL _$j_11084
+
+; 110C4
+_f_110C4:
+	PUSH LR
+	PUSH FP
+	MOV FP, SP
+	ADD SP, #-46H
+	PUSH XR8
+	PUSH BP
+	PUSH XR4
+	MOV ER4, ER0
+	MOV BP, FP
+	ADD BP, #-1EH
+	MOV ER10, FP
+	ADD ER10, #-28H
+	MOV ER8, FP
+	ADD ER8, #-32H
+	MOV ER2, ER4
+	MOV ER0, ER8
+	BL _num_cpy
+	MOV ER0, ER8
+	BL _f_1B0F0
+	CMP R0, #20H
+	BEQ _$j_11130
+	CMP R0, #-80H
+	BEQ _$j_11130
+	CMP R0, #0H
+	BNE _$j_1113e
+	MOV ER0, ER8
+	BL _f_10C1E
+	CMP R0, #0H
+	BEQ _$j_1113e
+	MOV ER0, ER10
+	BL _num_invalid__
+	CMP R0, #1H
+	BEQ _$j_11128
+	MOV ER0, ER10
+	MOV ER2, BP
+	BL _f_1ACEA
+	MOV ER0, ER8
+	MOV ER2, ER10
+	BL _num_add_1
+	MOV ER0, ER8
+	BL _f_1B0F0
+	CMP R0, #20H
+	BNE _$j_1113e
+_$j_11128:
+	MOV ER2, ER8
+	MOV ER0, ER4
+	BL _num_cpy
+_$j_11130:
+	MOV R0, #0H
+_$j_11132:
+	POP XR4
+	POP BP
+	POP XR8
+	MOV SP, FP
+	POP FP
+	POP PC
+_$j_1113e:
+	MOV R0, #1H
+	BAL _$j_11132
+
+; 11142
+_f_11142:
+	PUSH LR
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-46H
+	PUSH XR4
+	BL _f_11238
+	MOV ER0, ER10
+	BL _f_15F06
+	MOV R2, R0
+	MOV ER0, ER4
+	CMP R2, #1H
+	BEQ _$j_111ce
+	CMP R2, #2H
+	BEQ _$j_111d4
+	CMP R2, #3H
+	BEQ _$j_111da
+	MOV ER2, ER10
+	MOV ER0, BP
+	BL _f_15EF4
+	MOV ER0, BP
+	BL _f_1B0F0
+	CMP R0, #30H
+	BGE _$j_111c2
+	MOV ER0, ER10
+	BL _f_1B0F0
+	CMP R0, #30H
+	BGE _$j_111c2
+	CMP R0, #20H
+	BEQ _$j_111a6
+	L ER0, 8H[BP]
+	CMP R1, #4H
+	BLT _$j_111a6
+	MOV ER0, ER8
+	MOV ER2, ER10
+	BL _num_cpy
+	BL _f_1126A
+	CMP R0, #0H
+	BNE _$j_111a6
+	MOV ER0, ER10
+	MOV ER2, ER8
+	BL _num_cpy
+_$j_111a6:
+	MOV ER0, BP
+	MOV ER2, ER10
+	BL _f_1A9A4
+_$j_111ae:
+	PUSH R0
+	MOV ER2, BP
+	MOV ER0, ER4
+	BL _num_cpy
+	POP R0
+_$j_111ba:
+	POP XR4
+	MOV SP, FP
+	POP QR8
+	POP PC
+_$j_111c2:
+	MOV R2, #3H
+	MOV ER0, BP
+	BL _f_1B12C
+	MOV R0, #30H
+	BAL _$j_111ae
+_$j_111ce:
+	BL _num_inverse
+	BAL _$j_111ba
+_$j_111d4:
+	BL _num_square
+	BAL _$j_111ba
+_$j_111da:
+	BL _num_cube
+	BAL _$j_111ba
+
+; 111E0
+_num_nthroot:
+	PUSH LR
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-46H
+	PUSH XR4
+	BL _f_11238
+	MOV ER2, ER10
+	MOV ER0, BP
+	BL _f_15EF4
+	MOV ER0, ER10
+	BL _f_1B0F0
+	CMP R0, #30H
+	BGE _$j_111c2
+	MOV ER0, BP
+	BL _f_1B0F0
+	CMP R0, #30H
+	BGE _$j_111c2
+	CMP R0, #20H
+	BEQ _$j_1122e
+	L ER0, 8H[ER10]
+	CMP R1, #4H
+	BLT _$j_1122e
+	MOV ER0, ER8
+	MOV ER2, BP
+	BL _num_cpy
+	BL _f_1126A
+	CMP R0, #0H
+	BNE _$j_1122e
+	MOV ER0, BP
+	MOV ER2, ER8
+	BL _num_cpy
+_$j_1122e:
+	MOV ER0, BP
+	MOV ER2, ER10
+	BL _f_1A9C0
+	BAL _$j_111ae
+
+; 11238
+_f_11238:
+	PUSH LR
+	MOV ER4, ER0
+	MOV ER6, ER2
+	MOV BP, FP
+	ADD BP, #-0AH
+	MOV ER10, FP
+	ADD ER10, #-14H
+	MOV R8, #0BAH
+	MOV R9, #0FFH
+	ADD ER8, FP
+	MOV ER2, ER4
+	MOV ER0, BP
+	BL _num_cpy
+	MOV ER0, BP
+	BL _f_1B208
+	MOV ER2, ER6
+	MOV ER0, ER10
+	BL _num_cpy
+	MOV ER0, ER10
+	BL _f_1B208
+	POP PC
+
+; 1126A
+_f_1126A:
+	PUSH LR
+	MOV ER0, ER8
+	BL _f_10C1E
+	CMP R0, #0H
+	BEQ _$j_112a6
+	MOV ER0, FP
+	ADD ER0, #-3CH
+	BL _num_invalid__
+	CMP R0, #1H
+	BEQ _$j_112a6
+	MOV ER0, FP
+	ADD ER0, #-3CH
+	MOV ER2, FP
+	ADD ER2, #-32H
+	BL _f_1ACEA
+	MOV ER0, ER8
+	MOV ER2, FP
+	ADD ER2, #-3CH
+	BL _num_add_1
+	MOV ER0, ER8
+	BL _f_1B0F0
+	CMP R0, #20H
+	BNE _$j_112a6
+	MOV R0, #0H
+	POP PC
+_$j_112a6:
+	MOV R0, #1H
+	POP PC
+
+; 112AA
+_f_112AA:
+	PUSH XR12
+	MOV BP, #3H
+	BAL _$j_112c0
+	PUSH XR12
+	MOV BP, #2H
+	BAL _$j_112c0
+
+; 112B6
+_f_112B6:
+	PUSH XR12
+	MOV BP, #1H
+	BAL _$j_112c0
+
+; 112BC
+_f_112BC:
+	PUSH XR12
+	MOV BP, #0H
+_$j_112c0:
+	MOV R14, #0E0H
+	MOV R15, #0FFH
+	ADD FP, BP
+	L R0, 1H:[FP]
+	POP XR12
+	RT
+
+; 112CE
+_set_default_settings:
+	MOV R0, #BYTE1 _setup_start
+	MOV R1, #BYTE2 _setup_start
+	LEA [ER0]
+	MOV R2, #0D4H
+	MOV R3, #0FFH
+	MOV R1, #0BH
+_$j_112da:
+	L R0, 1H:[ER2]
+	NOP
+	ST R0, [EA+]
+	ADD ER2, #1H
+	ADD R1, #-1H
+	BNE _$j_112da
+	RT
+
+; 112EA
+_f_112EA:
+	MOV R0, #0H
+	ST R0, _setup_rdec
+	RT
+
+; 112F2
+_f_112F2:
+	RT
+
+; 112F4
+_f_112F4:
+	PUSH LR
+	MOV R0, #4CH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _f_1B238
+	POP PC
+
+; 11302
+_f_11302:
+	PUSH LR
+	PUSH XR4
+	PUSH QR8
+	MOV R11, #82H
+	MOV R10, #9EH
+	MOV R8, #56H
+	MOV R9, #0FFH
+	ADD ER8, FP
+	BAL _$j_1132a
+
+; 11314
+_f_11314:
+	PUSH LR
+	PUSH XR4
+	PUSH QR8
+	MOV R0, #1H
+	ST R0, _d_08126
+	MOV R9, #82H
+	MOV R8, #9EH
+	MOV R10, #56H
+	MOV R11, #0FFH
+	ADD ER10, FP
+_$j_1132a:
+	MOV R12, #0AH
+_$j_1132c:
+	LEA [ER10]
+	L QR0, [EA]
+	LEA [ER8]
+	ST QR0, [EA]
+	ADD ER10, #8H
+	ADD ER8, #8H
+	ADD R12, #-1H
+	BNE _$j_1132c
+	MOV R0, #0H
+	POP QR8
+	POP XR4
+	POP PC
+
+; 11344
+_f_11344:
+	PUSH LR
+	MOV BP, FP
+	ADD BP, #-14H
+	MOV ER10, FP
+	ADD ER10, #-1EH
+	MOV ER6, FP
+	ADD ER6, #-32H
+	MOV ER4, FP
+	ADD ER4, #-3CH
+	L ER2, -2H[FP]
+	MOV ER0, BP
+	BL _num_cpy
+	MOV ER0, BP
+	BL _f_1B208
+	MOV ER0, BP
+	BL _f_1AC56
+	MOV ER0, BP
+	BL _num_invalid__
+	CMP R0, #1H
+	BNE _$j_11384
+	MOV ER2, #5H
+	MOV ER0, ER10
+	BL _num_fromdigit
+	MOV R3, #0H
+	MOV R2, #99H
+	ST ER2, -16H[FP]
+	POP PC
+_$j_11384:
+	MOV ER0, BP
+	BL _num_abs
+	L ER0, -0CH[FP]
+	MOV R2, #3H
+	MOV R3, #1H
+	CMP ER0, ER2
+	BLT _$j_1139e
+	MOV ER2, #0H
+	MOV ER0, ER10
+	BL _num_fromdigit
+	POP PC
+_$j_1139e:
+	MOV R0, #0H
+	BL _f_11462
+	MOV ER2, ER4
+	MOV ER0, BP
+	BL _f_1A438
+	MOV R2, #1H
+	MOV ER0, ER6
+	BL _num_fromdigit
+	MOV ER2, ER6
+	MOV ER0, BP
+	BL _f_1A460
+	MOV ER2, BP
+	MOV ER0, ER6
+	BL _f_1A44C
+	MOV ER2, ER6
+	MOV ER0, BP
+	BL _num_cpy
+	MOV R0, #5H
+	BL _f_11462
+	MOV ER2, ER4
+	MOV ER0, BP
+	BL _f_1A438
+	MOV R0, #4H
+	BL _f_11462
+	MOV ER2, ER4
+	MOV ER0, BP
+	BL _f_1A460
+	MOV R8, #3H
+_$j_113ea:
+	MOV ER2, ER6
+	MOV ER0, BP
+	BL _f_1A438
+	MOV R0, R8
+	BL _f_11462
+	MOV ER2, ER4
+	MOV ER0, BP
+	BL _f_1A460
+	ADD R8, #-1H
+	BNE _$j_113ea
+	MOV ER2, BP
+	MOV ER0, ER6
+	BL _f_1A438
+	L ER2, -2H[FP]
+	MOV ER0, ER10
+	BL _num_cpy
+	MOV ER0, ER10
+	BL _f_1A5E2
+	MOV R2, #2H
+	MOV ER0, ER4
+	BL _num_fromdigit
+	MOV ER2, ER4
+	MOV ER0, ER10
+	BL _f_1A44C
+	MOV ER0, ER10
+	BL _num_negate
+	MOV ER0, ER10
+	BL _num_exp
+	MOV ER2, ER6
+	MOV ER0, ER10
+	BL _f_1A438
+	MOV ER0, BP
+	BL _f_1B4B6
+	MOV ER2, ER4
+	MOV ER0, BP
+	BL _f_1A438
+	MOV ER0, BP
+	BL _f_1A60A
+	MOV ER2, BP
+	MOV ER0, ER10
+	BL _f_1A44C
+	MOV ER0, ER10
+	BL _f_1B288
+	POP PC
+
+; 11462
+_f_11462:
+	PUSH LR
+	MOV ER2, #0AH
+	MUL ER2, R0
+	MOV R0, #76H
+	MOV R1, #1DH
+	ADD ER2, ER0
+	MOV ER0, FP
+	ADD ER0, #-3CH
+	BL _num_cpy
+	POP PC
+
+; 11478
+_f_11478:
+	PUSH LR
+	BL _f_118D0
+	CMP R0, #0H
+	BNE _$j_114c6
+	MOV R0, #0BAH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _num_invalid__
+	CMP R0, #4H
+	BEQ _$j_11494
+	MOV R0, #3H
+	BAL _$j_114c6
+_$j_11494:
+	BL _f_116A4
+	CMP R0, #0H
+	BNE _$j_114c6
+	BL _f_11638
+	CMP R0, #0H
+	BNE _$j_114c6
+	BL _f_11596
+	CMP R0, #0H
+	BNE _$j_114c6
+	BL _f_1151A
+	CMP R0, #0H
+	BNE _$j_114c6
+	BL _f_1184E
+	CMP R0, #0H
+	BNE _$j_114c6
+	BL _f_117F6
+	CMP R0, #0H
+	BNE _$j_114c6
+_$j_114c4:
+	POP PC
+_$j_114c6:
+	CMP R0, #1H
+	BEQ _$j_114f2
+	MOV R0, #38H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	MOV R2, #3H
+	BL _f_1B12C
+	MOV R0, #42H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	MOV R2, #3H
+	BL _f_1B12C
+	MOV R0, #4CH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	MOV R2, #3H
+	BL _f_1B12C
+	MOV R0, #3H
+	BAL _$j_114c4
+_$j_114f2:
+	MOV R0, #38H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	MOV R2, #1H
+	BL _f_1B12C
+	MOV R0, #42H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	MOV R2, #1H
+	BL _f_1B12C
+	MOV R0, #4CH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	MOV R2, #1H
+	BL _f_1B12C
+	MOV R0, #1H
+	BAL _$j_114c4
+
+; 1151A
+_f_1151A:
+	PUSH LR
+	MOV BP, FP
+	ADD BP, #-14H
+	MOV ER10, FP
+	ADD ER10, #-1EH
+	MOV R2, #88H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _num_cpy
+	MOV R2, #42H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, ER10
+	BL _num_cpy
+	MOV R2, #9CH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, ER10
+	BL _f_1A438
+	MOV ER2, ER10
+	MOV ER0, BP
+	BL _f_1A3FC
+	MOV R2, #38H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, ER10
+	BL _num_cpy
+	MOV R2, #92H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, ER10
+	BL _f_1A438
+	MOV ER2, ER10
+	MOV ER0, BP
+	BL _f_1A3FC
+	MOV R2, #0BAH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _f_1A44C
+	MOV ER0, BP
+	BL _f_1B238
+	MOV R0, #4CH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	MOV ER2, BP
+	BL _num_cpy
+	MOV ER0, BP
+	BL _f_1B288
+	POP PC
+
+; 11596
+_f_11596:
+	PUSH LR
+	MOV BP, FP
+	ADD BP, #-14H
+	MOV ER10, FP
+	ADD ER10, #-1EH
+	MOV ER8, FP
+	ADD ER8, #-28H
+	BL _f_11602
+	MOV R2, #56H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _num_cpy
+	MOV R2, #4CH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _f_1A438
+	MOV R2, #74H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, ER10
+	BL _num_cpy
+	MOV R2, #6AH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, ER10
+	BL _f_1A438
+	MOV ER2, ER10
+	MOV ER0, BP
+	BL _f_1A3FC
+	MOV ER2, ER8
+	MOV ER0, BP
+	BL _f_1A44C
+	MOV ER0, BP
+	BL _f_1B238
+	MOV R0, #38H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	MOV ER2, BP
+	BL _num_cpy
+	MOV ER0, BP
+	BL _f_1B288
+	POP PC
+
+; 11602
+_f_11602:
+	PUSH LR
+	MOV R2, #4CH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, ER8
+	BL _num_cpy
+	MOV R2, #60H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, ER8
+	BL _f_1A438
+	MOV R2, #6AH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _num_cpy
+	MOV ER0, BP
+	BL _f_1A5E2
+	MOV ER2, BP
+	MOV ER0, ER8
+	BL _f_1A3FC
+	POP PC
+
+; 11638
+_f_11638:
+	PUSH LR
+	MOV BP, FP
+	ADD BP, #-14H
+	MOV ER10, FP
+	ADD ER10, #-1EH
+	MOV ER8, FP
+	ADD ER8, #-28H
+	BL _f_11602
+	MOV R2, #74H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _num_cpy
+	MOV R2, #60H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _f_1A438
+	MOV R2, #56H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, ER10
+	BL _num_cpy
+	MOV R2, #6AH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, ER10
+	BL _f_1A438
+	MOV ER2, ER10
+	MOV ER0, BP
+	BL _f_1A3FC
+	MOV ER2, ER8
+	MOV ER0, BP
+	BL _f_1A44C
+	MOV ER0, BP
+	BL _f_1B238
+	MOV R0, #42H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	MOV ER2, BP
+	BL _num_cpy
+	MOV ER0, BP
+	BL _f_1B288
+	POP PC
+
+; 116A4
+_f_116A4:
+	PUSH LR
+	MOV BP, FP
+	ADD BP, #-14H
+	MOV ER10, FP
+	ADD ER10, #-1EH
+	MOV R2, #9CH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _num_cpy
+	MOV ER0, BP
+	BL _f_1A5E2
+	MOV R2, #92H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, ER10
+	BL _num_cpy
+	MOV R2, #0BAH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, ER10
+	BL _f_1A438
+	MOV ER2, BP
+	MOV ER0, ER10
+	BL _f_1A3FC
+	MOV R0, #4CH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	MOV ER2, ER10
+	BL _num_cpy
+	MOV ER0, ER10
+	BL _f_1B288
+	CMP R0, #0H
+	BNE _$j_117f4
+	MOV R2, #9CH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _num_cpy
+	MOV R2, #88H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _f_1A438
+	MOV R2, #0BAH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV R0, #74H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _f_1A438
+	MOV ER2, BP
+	MOV R0, #74H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _f_1A3FC
+	MOV R0, #74H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _f_1B288
+	CMP R0, #0H
+	BNE _$j_117f4
+	MOV R2, #9CH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _num_cpy
+	MOV R2, #92H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _f_1A438
+	MOV R2, #0BAH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV R0, #6AH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _f_1A438
+	MOV R0, #6AH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	MOV ER2, BP
+	BL _f_1A3FC
+	MOV R0, #6AH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _f_1B288
+	CMP R0, #0H
+	BNE _$j_117f4
+	MOV R2, #92H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _num_cpy
+	MOV ER0, BP
+	BL _f_1A5E2
+	MOV R2, #0BAH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV R0, #60H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _f_1A438
+	MOV R0, #60H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	MOV ER2, BP
+	BL _f_1A3FC
+	MOV R0, #60H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _f_1B288
+	CMP R0, #0H
+	BNE _$j_117f4
+	MOV R2, #92H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _num_cpy
+	MOV R2, #88H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _f_1A438
+	MOV R2, #0BAH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV R0, #56H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _f_1A438
+	MOV R0, #56H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	MOV ER2, BP
+	BL _f_1A3FC
+	MOV R0, #56H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _f_1B288
+_$j_117f4:
+	POP PC
+
+; 117F6
+_f_117F6:
+	PUSH LR
+	MOV BP, FP
+	ADD BP, #-14H
+	MOV ER10, FP
+	ADD ER10, #-1EH
+	MOV R2, #42H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _num_cpy
+	MOV ER2, #2H
+	MOV ER0, ER10
+	BL _num_fromdigit
+	MOV R2, #38H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, ER10
+	BL _f_1A438
+	MOV R2, #0B0H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, ER10
+	BL _f_1A438
+	MOV ER0, BP
+	MOV ER2, ER10
+	BL _f_1A3FC
+	MOV ER0, BP
+	BL _f_1B238
+	MOV R0, #42H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	MOV ER2, BP
+	BL _num_cpy
+	MOV ER0, BP
+	BL _f_1B288
+	POP PC
+
+; 1184E
+_f_1184E:
+	PUSH LR
+	MOV BP, FP
+	ADD BP, #-14H
+	MOV ER10, FP
+	ADD ER10, #-1EH
+	MOV R2, #4CH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, ER10
+	BL _num_cpy
+	MOV R2, #42H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _num_cpy
+	MOV R2, #0B0H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _f_1A438
+	MOV ER0, ER10
+	MOV ER2, BP
+	BL _f_1A3FC
+	MOV R2, #0B0H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _num_cpy
+	MOV ER0, BP
+	BL _f_1A5E2
+	MOV R2, #38H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _f_1A438
+	MOV ER0, ER10
+	MOV ER2, BP
+	BL _f_1A410
+	MOV R2, #0A6H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, ER10
+	BL _f_1A410
+	MOV ER0, ER10
+	BL _f_1B238
+	MOV R0, #4CH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	MOV ER2, ER10
+	BL _num_cpy
+	MOV ER0, ER10
+	BL _f_1B288
+	POP PC
+
+; 118D0
+_f_118D0:
+	PUSH LR
+	MOV R12, #0H
+	BL _f_12944
+	CMP R0, #0H
+	BNE _$j_11958
+	MOV R12, #1H
+	BL _f_12944
+	CMP R0, #0H
+	BNE _$j_11958
+	BL _check_ac
+	CMP R0, #0H
+	BNE _$j_1195a
+	BL _f_12BA0
+	CMP R0, #0H
+	BNE _$j_11958
+	L R0, _d_08126
+	CMP R0, #1H
+	BNE _$j_11904
+	BL _f_11302
+	POP PC
+_$j_11904:
+	MOV R12, #12H
+	BL _f_12A32
+	CMP R0, #1H
+	BEQ _$j_1195a
+	CMP R0, #0H
+	BNE _$j_11958
+	MOV R12, #13H
+	BL _f_12A32
+	CMP R0, #1H
+	BEQ _$j_1195a
+	CMP R0, #0H
+	BNE _$j_11958
+	MOV R12, #12H
+	BL _f_12836
+	CMP R0, #1H
+	BEQ _$j_1195a
+	CMP R0, #0H
+	BNE _$j_11958
+	MOV R12, #10H
+	BL _f_1254C
+	CMP R0, #0H
+	BNE _$j_11958
+	BL _check_ac
+	CMP R0, #0H
+	BNE _$j_1195a
+	MOV R12, #10H
+	BL _f_12472
+	CMP R0, #0H
+	BNE _$j_11958
+	BL _check_ac
+	CMP R0, #0H
+	BNE _$j_1195a
+	BL _f_11314
+	POP PC
+_$j_11958:
+	MOV R0, #-10H
+_$j_1195a:
+	POP PC
+
+; 1195C
+_f_1195C:
+	PUSH LR
+	BL _f_11478
+	MOV BP, #-14H
+
+; 11964
+_f_11964:
+	ADD BP, FP
+	CMP R0, #0H
+	BNE _$j_119b8
+	MOV ER10, FP
+	ADD ER10, #-1EH
+	L ER2, -2H[FP]
+	MOV ER0, BP
+	BL _num_cpy
+	MOV ER0, BP
+	BL _f_1A5E2
+	MOV R2, #38H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _f_1A438
+	L ER2, -2H[FP]
+	MOV ER0, ER10
+	BL _num_cpy
+	MOV R2, #42H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, ER10
+	BL _f_1A438
+	MOV ER2, ER10
+	MOV ER0, BP
+	BL _f_1A410
+	MOV R2, #4CH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _f_1A410
+	MOV ER0, BP
+	BL _f_1B288
+	POP PC
+_$j_119b8:
+	B _$j_11d6c
+
+; 119BC
+_f_119BC:
+	PUSH LR
+	PUSH R4
+	BL _f_11478
+	POP R4
+	MOV BP, #-14H
+	ADD BP, FP
+	CMP R0, #0H
+	BNE _$j_11a60
+	MOV ER10, FP
+	ADD ER10, #-1EH
+	MOV ER8, FP
+	ADD ER8, #-28H
+	MOV R2, #4CH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _num_cpy
+	L ER2, -2H[FP]
+	MOV ER0, BP
+	BL _f_1A3FC
+	MOV R2, #38H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _f_1A438
+	MOV R2, #4H
+	MOV ER0, ER10
+	BL _num_fromdigit
+	MOV ER2, BP
+	MOV ER0, ER10
+	BL _f_1A438
+	MOV R2, #42H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _num_cpy
+	MOV ER0, BP
+	BL _f_1A5E2
+	MOV ER2, ER10
+	MOV ER0, BP
+	BL _f_1A3FC
+	MOV ER0, BP
+	BL _f_1A60A
+	CMP R4, #0H
+	BEQ _$j_11a30
+	MOV ER0, BP
+	BL _num_negate
+_$j_11a30:
+	MOV R2, #42H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _f_1A3FC
+	MOV R2, #2H
+	MOV ER0, ER10
+	BL _num_fromdigit
+	MOV R2, #38H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, ER10
+	BL _f_1A438
+	MOV ER2, ER10
+	MOV ER0, BP
+	BL _f_1A44C
+	MOV ER0, BP
+	BL _f_1B288
+	POP PC
+_$j_11a60:
+	B _$j_11d6c
+
+; 11A64
+_f_11A64:
+	PUSH LR
+	BL _f_11DE2
+	MOV BP, #-14H
+	ADD BP, FP
+	CMP R0, #0H
+	BNE _$j_11ade
+	MOV R10, #42H
+	MOV R11, #0FFH
+	ADD ER10, FP
+	L ER2, -2H[FP]
+	MOV ER0, ER10
+	BL _f_1A44C
+	MOV R2, #4CH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, ER10
+	BL _f_1A410
+	MOV ER2, ER10
+	MOV ER0, BP
+	BL _num_cpy
+	MOV ER0, BP
+	BL _f_1B288
+	POP PC
+
+; 11A9C
+_f_11A9C:
+	PUSH LR
+	BL _f_11DE2
+	MOV BP, #-14H
+	ADD BP, FP
+	CMP R0, #0H
+	BNE _$j_11ade
+	L ER2, -2H[FP]
+	MOV ER0, BP
+	BL _num_cpy
+	MOV R2, #4CH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _f_1A3FC
+	MOV ER2, BP
+	MOV R0, #42H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _f_1A44C
+	MOV R2, #42H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _num_cpy
+	MOV ER0, BP
+	BL _f_1B288
+	POP PC
+_$j_11ade:
+	B _$j_11d6c
+
+; 11AE2
+_f_11AE2:
+	PUSH LR
+	BL _f_11E0A
+	MOV BP, #-14H
+	ADD BP, FP
+	CMP R0, #0H
+	BNE _$j_11b64
+	L ER2, -2H[FP]
+	MOV ER0, BP
+	BL _num_cpy
+	MOV R2, #42H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _f_1A52A
+	MOV R2, #4CH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _f_1A438
+	MOV ER0, BP
+	BL _f_1B288
+	POP PC
+
+; 11B18
+_f_11B18:
+	PUSH LR
+	BL _f_11E0A
+	MOV BP, #-14H
+	ADD BP, FP
+	CMP R0, #0H
+	BNE _$j_11b64
+	L ER2, -2H[FP]
+	MOV ER0, BP
+	BL _num_cpy
+	MOV ER0, BP
+	BL _num_ln
+	MOV R0, #4CH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _num_ln
+	MOV R2, #4CH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _f_1A3FC
+	MOV R2, #42H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _f_1A44C
+	MOV ER0, BP
+	BL _num_exp
+	MOV ER0, BP
+	BL _f_1B288
+	POP PC
+_$j_11b64:
+	B _$j_11d6c
+
+; 11B68
+_f_11B68:
+	PUSH LR
+	BL _f_11EA4
+	MOV BP, #-14H
+	ADD BP, FP
+	CMP R0, #0H
+	BNE _$j_11bf6
+	MOV R0, #42H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	L ER2, -2H[FP]
+	BL _f_1A52A
+	MOV R2, #42H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV R0, #4CH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _f_1A438
+	MOV R2, #4CH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _num_cpy
+	MOV ER0, BP
+	BL _f_1B288
+	POP PC
+
+; 11BA6
+_f_11BA6:
+	PUSH LR
+	BL _f_11EA4
+	MOV BP, #-14H
+	ADD BP, FP
+	CMP R0, #0H
+	BNE _$j_11bf6
+	L ER2, -2H[FP]
+	MOV ER0, BP
+	BL _num_cpy
+	MOV ER0, BP
+	BL _num_ln
+	MOV R0, #4CH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _num_ln
+	MOV R2, #4CH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _f_1A3FC
+	MOV R0, #42H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _num_ln
+	MOV R2, #42H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _f_1A44C
+	MOV ER0, BP
+	BL _f_1B288
+	POP PC
+_$j_11bf6:
+	B _$j_11d6c
+
+; 11BFA
+_f_11BFA:
+	PUSH LR
+	BL _f_11EEE
+	MOV BP, #-14H
+	ADD BP, FP
+	CMP R0, #0H
+	BNE _$j_11c7c
+	L ER2, -2H[FP]
+	MOV ER0, BP
+	BL _num_cpy
+	MOV R2, #42H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _f_1A438
+	MOV ER0, BP
+	BL _num_exp
+	MOV R2, #4CH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _f_1A438
+	MOV ER0, BP
+	BL _f_1B288
+	POP PC
+
+; 11C36
+_f_11C36:
+	PUSH LR
+	BL _f_11EEE
+	MOV BP, #-14H
+	ADD BP, FP
+	CMP R0, #0H
+	BNE _$j_11c7c
+	L ER2, -2H[FP]
+	MOV ER0, BP
+	BL _num_cpy
+	MOV ER0, BP
+	BL _num_ln
+	MOV R0, #4CH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _num_ln
+	MOV R2, #4CH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _f_1A3FC
+	MOV R2, #42H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _f_1A44C
+	MOV ER0, BP
+	BL _f_1B288
+	POP PC
+_$j_11c7c:
+	BAL _$j_11d6c
+
+; 11C7E
+_f_11C7E:
+	PUSH LR
+	BL _f_11F20
+	MOV BP, #-14H
+	ADD BP, FP
+	CMP R0, #0H
+	BNE _$j_11cf6
+	L ER2, -2H[FP]
+	MOV ER0, BP
+	BL _num_cpy
+	MOV ER0, BP
+	BL _num_ln
+	MOV R2, #42H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _f_1A438
+	MOV R2, #4CH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _f_1A410
+	MOV ER0, BP
+	BL _f_1B288
+	POP PC
+
+; 11CBA
+_f_11CBA:
+	PUSH LR
+	BL _f_11F20
+	MOV BP, #-14H
+	ADD BP, FP
+	CMP R0, #0H
+	BNE _$j_11cf6
+	L ER2, -2H[FP]
+	MOV ER0, BP
+	BL _num_cpy
+	MOV R2, #4CH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _f_1A3FC
+	MOV R2, #42H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _f_1A44C
+	MOV ER0, BP
+	BL _num_exp
+	MOV ER0, BP
+	BL _f_1B288
+	POP PC
+_$j_11cf6:
+	BAL _$j_11d6c
+
+; 11CF8
+_f_11CF8:
+	PUSH LR
+	BL _f_11E3C
+	BL _f_112F2
+	MOV BP, #-14H
+	ADD BP, FP
+	CMP R0, #0H
+	BNE _$j_11d6c
+	L ER2, -2H[FP]
+	MOV ER0, BP
+	BL _num_cpy
+	MOV R2, #42H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _f_1A438
+	MOV R2, #4CH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _f_1A410
+	MOV ER0, BP
+	BL _f_1B288
+	POP PC
+
+; 11D32
+_f_11D32:
+	PUSH LR
+	BL _f_11E3C
+	BL _f_112F2
+	MOV BP, #-14H
+	ADD BP, FP
+	CMP R0, #0H
+	BNE _$j_11d6c
+	L ER2, -2H[FP]
+	MOV ER0, BP
+	BL _num_cpy
+	MOV R2, #4CH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _f_1A3FC
+	MOV R2, #42H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _f_1A44C
+_$j_11d64:
+	MOV ER0, BP
+	BL _f_1B288
+	POP PC
+_$j_11d6c:
+	MOV R2, R0
+	CMP R2, #1H
+	BEQ _$j_11d74
+	MOV R2, #3H
+_$j_11d74:
+	MOV ER0, BP
+	BL _f_1B12C
+	BAL _$j_11d64
+
+; 11D7C
+_f_11D7C:
+	PUSH LR
+	L R0, _submode
+	ADD R0, #-2H
+	MOV R12, #3EH
+	MOV R13, #1DH
+	SLL R0, #1
+	ADD R12, R0
+	ADDC R13, #0H
+	L BP, [BP]
+	BL BP
+	POP PC
+
+; 11D94
+_f_11D94:
+	PUSH LR
+	BL _f_11F48
+	BAL _$j_11dc2
+
+; 11D9C
+_f_11D9C:
+	PUSH LR
+	BL _f_11FB0
+	BAL _$j_11dc2
+
+; 11DA4
+_f_11DA4:
+	PUSH LR
+	BL _f_12018
+	BAL _$j_11dc2
+
+; 11DAC
+_f_11DAC:
+	PUSH LR
+	BL _f_12018
+	BAL _$j_11dc2
+
+; 11DB4
+_f_11DB4:
+	PUSH LR
+	BL _f_12080
+	BAL _$j_11dc2
+
+; 11DBC
+_f_11DBC:
+	PUSH LR
+	BL _f_120E8
+_$j_11dc2:
+	CMP R0, #0H
+	BNE _$j_11dcc
+	BL _f_121A6
+	POP PC
+_$j_11dcc:
+	MOV R2, R0
+	CMP R2, #1H
+	BEQ _$j_11dd4
+	MOV R2, #3H
+_$j_11dd4:
+	MOV R0, #38H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _f_1B12C
+	MOV R0, #-10H
+	POP PC
+
+; 11DE2
+_f_11DE2:
+	PUSH LR
+	BL _f_11F48
+	CMP R0, #0H
+	BNE _$j_11e68
+	BL _f_1232A
+	CMP R0, #0H
+	BNE _$j_11e68
+	BL _f_122CE
+	CMP R0, #0H
+	BNE _$j_11e68
+	BL _f_12150
+	BL _f_112F4
+	CMP R0, #0H
+	BNE _$j_11e68
+	POP PC
+
+; 11E0A
+_f_11E0A:
+	PUSH LR
+	BL _f_11FB0
+	CMP R0, #0H
+	BNE _$j_11e68
+	BL _f_1232A
+	CMP R0, #0H
+	BNE _$j_11e68
+	BL _f_122CE
+	CMP R0, #0H
+	BNE _$j_11e68
+	BL _f_12150
+	MOV R0, #4CH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _num_exp
+	BL _f_112F4
+	CMP R0, #0H
+	BNE _$j_11e68
+	POP PC
+
+; 11E3C
+_f_11E3C:
+	PUSH LR
+	BL _f_120E8
+	CMP R0, #0H
+	BNE _$j_11e68
+	BL _f_1232A
+	CMP R0, #0H
+	BNE _$j_11e68
+	BL _f_122CE
+	CMP R0, #0H
+	BNE _$j_11e68
+	BL _f_12150
+	BL _f_112F4
+	CMP R0, #0H
+	BNE _$j_11e68
+	BL _f_112F2
+_$j_11e66:
+	POP PC
+_$j_11e68:
+	CMP R0, #1H
+	BEQ _$j_11e88
+	MOV R0, #42H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	MOV R2, #3H
+	BL _f_1B12C
+	MOV R0, #4CH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	MOV R2, #3H
+	BL _f_1B12C
+	MOV R0, #3H
+	BAL _$j_11e66
+_$j_11e88:
+	MOV R0, #42H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	MOV R2, #1H
+	BL _f_1B12C
+	MOV R0, #4CH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	MOV R2, #1H
+	BL _f_1B12C
+	MOV R0, #1H
+	BAL _$j_11e66
+
+; 11EA4
+_f_11EA4:
+	PUSH LR
+	BL _f_12018
+	CMP R0, #0H
+	BNE _$j_11e68
+	BL _f_1232A
+	CMP R0, #0H
+	BNE _$j_11e68
+	BL _f_122CE
+	CMP R0, #0H
+	BNE _$j_11e68
+	BL _f_12150
+	MOV R0, #42H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _num_exp
+	MOV R0, #42H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _f_1B238
+	CMP R0, #0H
+	BNE _$j_11e68
+	MOV R0, #4CH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _num_exp
+	BL _f_112F4
+	CMP R0, #0H
+	BNE _$j_11e68
+	POP PC
+
+; 11EEE
+_f_11EEE:
+	PUSH LR
+	BL _f_12018
+	CMP R0, #0H
+	BNE _$j_11e68
+	BL _f_1232A
+	CMP R0, #0H
+	BNE _$j_11e68
+	BL _f_122CE
+	CMP R0, #0H
+	BNE _$j_11e68
+	BL _f_12150
+	MOV R0, #4CH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _num_exp
+	BL _f_112F4
+	CMP R0, #0H
+	BNE _$j_11e68
+	POP PC
+
+; 11F20
+_f_11F20:
+	PUSH LR
+	BL _f_12080
+	CMP R0, #0H
+	BNE _$j_11e68
+	BL _f_1232A
+	CMP R0, #0H
+	BNE _$j_11e68
+	BL _f_122CE
+	CMP R0, #0H
+	BNE _$j_11e68
+	BL _f_12150
+	BL _f_112F4
+	CMP R0, #0H
+	BNE _$j_11e68
+	POP PC
+
+; 11F48
+_f_11F48:
+	PUSH LR
+	MOV R12, #20H
+	BL _f_12944
+	CMP R0, #0H
+	BNE _$j_11fac
+	MOV R12, #1H
+	BL _f_12944
+	CMP R0, #0H
+	BNE _$j_11fac
+	BL _check_ac
+	CMP R0, #0H
+	BNE _$j_11fae
+	BL _f_12BA0
+	CMP R0, #0H
+	BNE _$j_11fac
+	L R0, _d_08126
+	CMP R0, #1H
+	BNE _$j_11f7c
+	BL _f_11302
+	POP PC
+_$j_11f7c:
+	MOV R12, #32H
+	BL _f_12A32
+	CMP R0, #1H
+	BEQ _$j_11fae
+	CMP R0, #0H
+	BNE _$j_11fac
+	MOV R12, #13H
+	BL _f_12A32
+	CMP R0, #1H
+	BEQ _$j_11fae
+	CMP R0, #0H
+	BNE _$j_11fac
+	MOV R12, #32H
+	BL _f_12836
+	CMP R0, #1H
+	BEQ _$j_11fae
+	CMP R0, #0H
+	BNE _$j_11fac
+	BL _f_11314
+	POP PC
+_$j_11fac:
+	MOV R0, #-10H
+_$j_11fae:
+	POP PC
+
+; 11FB0
+_f_11FB0:
+	PUSH LR
+	MOV R12, #40H
+	BL _f_12944
+	CMP R0, #0H
+	BNE _$j_12014
+	MOV R12, #41H
+	BL _f_12944
+	CMP R0, #0H
+	BNE _$j_12014
+	BL _check_ac
+	CMP R0, #0H
+	BNE _$j_12016
+	BL _f_12BA0
+	CMP R0, #0H
+	BNE _$j_12014
+	L R0, _d_08126
+	CMP R0, #1H
+	BNE _$j_11fe4
+	BL _f_11302
+	POP PC
+_$j_11fe4:
+	MOV R12, #52H
+	BL _f_12A32
+	CMP R0, #1H
+	BEQ _$j_12016
+	CMP R0, #0H
+	BNE _$j_12014
+	MOV R12, #53H
+	BL _f_12A32
+	CMP R0, #1H
+	BEQ _$j_12016
+	CMP R0, #0H
+	BNE _$j_12014
+	MOV R12, #-2EH
+	BL _f_12836
+	CMP R0, #1H
+	BEQ _$j_12016
+	CMP R0, #0H
+	BNE _$j_12014
+	BL _f_11314
+	POP PC
+_$j_12014:
+	MOV R0, #-10H
+_$j_12016:
+	POP PC
+
+; 12018
+_f_12018:
+	PUSH LR
+	MOV R12, #0H
+	BL _f_12944
+	CMP R0, #0H
+	BNE _$j_1207c
+	MOV R12, #41H
+	BL _f_12944
+	CMP R0, #0H
+	BNE _$j_1207c
+	BL _check_ac
+	CMP R0, #0H
+	BNE _$j_1207e
+	BL _f_12BA0
+	CMP R0, #0H
+	BNE _$j_1207c
+	L R0, _d_08126
+	CMP R0, #1H
+	BNE _$j_1204c
+	BL _f_11302
+	POP PC
+_$j_1204c:
+	MOV R12, #12H
+	BL _f_12A32
+	CMP R0, #1H
+	BEQ _$j_1207e
+	CMP R0, #0H
+	BNE _$j_1207c
+	MOV R12, #53H
+	BL _f_12A32
+	CMP R0, #1H
+	BEQ _$j_1207e
+	CMP R0, #0H
+	BNE _$j_1207c
+	MOV R12, #-6EH
+	BL _f_12836
+	CMP R0, #1H
+	BEQ _$j_1207e
+	CMP R0, #0H
+	BNE _$j_1207c
+	BL _f_11314
+	POP PC
+_$j_1207c:
+	MOV R0, #-10H
+_$j_1207e:
+	POP PC
+
+; 12080
+_f_12080:
+	PUSH LR
+	MOV R12, #40H
+	BL _f_12944
+	CMP R0, #0H
+	BNE _$j_120e4
+	MOV R12, #1H
+	BL _f_12944
+	CMP R0, #0H
+	BNE _$j_120e4
+	BL _check_ac
+	CMP R0, #0H
+	BNE _$j_120e6
+	BL _f_12BA0
+	CMP R0, #0H
+	BNE _$j_120e4
+	L R0, _d_08126
+	CMP R0, #1H
+	BNE _$j_120b4
+	BL _f_11302
+	POP PC
+_$j_120b4:
+	MOV R12, #52H
+	BL _f_12A32
+	CMP R0, #1H
+	BEQ _$j_120e6
+	CMP R0, #0H
+	BNE _$j_120e4
+	MOV R12, #13H
+	BL _f_12A32
+	CMP R0, #1H
+	BEQ _$j_120e6
+	CMP R0, #0H
+	BNE _$j_120e4
+	MOV R12, #52H
+	BL _f_12836
+	CMP R0, #1H
+	BEQ _$j_120e6
+	CMP R0, #0H
+	BNE _$j_120e4
+	BL _f_11314
+	POP PC
+_$j_120e4:
+	MOV R0, #-10H
+_$j_120e6:
+	POP PC
+
+; 120E8
+_f_120E8:
+	PUSH LR
+	MOV R12, #0H
+	BL _f_12944
+	CMP R0, #0H
+	BNE _$j_1214c
+	MOV R12, #1H
+	BL _f_12944
+	CMP R0, #0H
+	BNE _$j_1214c
+	BL _check_ac
+	CMP R0, #0H
+	BNE _$j_1214e
+	BL _f_12BA0
+	CMP R0, #0H
+	BNE _$j_1214c
+	L R0, _d_08126
+	CMP R0, #1H
+	BNE _$j_1211c
+	BL _f_11302
+	POP PC
+_$j_1211c:
+	MOV R12, #12H
+	BL _f_12A32
+	CMP R0, #1H
+	BEQ _$j_1214e
+	CMP R0, #0H
+	BNE _$j_1214c
+	MOV R12, #13H
+	BL _f_12A32
+	CMP R0, #1H
+	BEQ _$j_1214e
+	CMP R0, #0H
+	BNE _$j_1214c
+	MOV R12, #12H
+	BL _f_12836
+	CMP R0, #1H
+	BEQ _$j_1214e
+	CMP R0, #0H
+	BNE _$j_1214c
+	BL _f_11314
+	POP PC
+_$j_1214c:
+	MOV R0, #-10H
+_$j_1214e:
+	POP PC
+
+; 12150
+_f_12150:
+	PUSH LR
+	MOV ER10, FP
+	ADD ER10, #-1EH
+	MOV BP, FP
+	ADD BP, #-28H
+	MOV R2, #4CH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _num_cpy
+	MOV R2, #42H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, ER10
+	BL _num_cpy
+	MOV R2, #0B0H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, ER10
+	BL _f_1A438
+	MOV ER0, BP
+	MOV ER2, ER10
+	BL _f_1A3FC
+	MOV R2, #0A6H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _f_1A410
+	MOV R0, #4CH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	MOV ER2, BP
+	BL _num_cpy
+	MOV ER0, BP
+	BL _f_1B288
+	POP PC
+
+; 121A6
+_f_121A6:
+	PUSH LR
+	MOV R0, #0BAH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _num_invalid__
+	CMP R0, #4H
+	BEQ _$j_121c6
+	MOV R2, #3H
+	MOV R0, #38H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _f_1B12C
+	MOV R0, #3H
+	POP PC
+_$j_121c6:
+	MOV ER8, FP
+	ADD ER8, #-14H
+	MOV ER10, FP
+	ADD ER10, #-1EH
+	MOV BP, FP
+	ADD BP, #-28H
+	MOV R2, #0BAH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _num_cpy
+	MOV ER2, BP
+	MOV ER0, ER10
+	BL _num_cpy
+	MOV R2, #92H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _f_1A438
+	MOV R2, #9CH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, ER8
+	BL _num_cpy
+	MOV ER0, ER8
+	BL _f_1A5E2
+	MOV ER0, BP
+	MOV ER2, ER8
+	BL _f_1A3FC
+	MOV R2, #7EH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, ER10
+	BL _f_1A438
+	MOV R2, #88H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, ER8
+	BL _num_cpy
+	MOV ER0, ER8
+	BL _f_1A5E2
+	MOV ER0, ER10
+	MOV ER2, ER8
+	BL _f_1A3FC
+	MOV ER0, ER10
+	MOV ER2, BP
+	BL _f_1A438
+	MOV ER0, ER10
+	BL _f_1A60A
+	MOV R2, #0BAH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _num_cpy
+	MOV R2, #74H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _f_1A438
+	MOV R2, #9CH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, ER8
+	BL _num_cpy
+	MOV R2, #88H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, ER8
+	BL _f_1A438
+	MOV ER0, BP
+	MOV ER2, ER8
+	BL _f_1A3FC
+	MOV ER0, BP
+	MOV ER2, ER10
+	BL _f_1A44C
+	MOV ER0, ER10
+	MOV R2, #1H
+	BL _num_fromdigit
+	L ER0, 8H[BP]
+	CMP R1, #4H
+	BGE _$j_122a6
+	MOV ER2, ER10
+	MOV ER0, BP
+	BL _num_cmp
+	CMP R0, #4H
+	BNE _$j_122ba
+_$j_1229c:
+	MOV ER2, ER10
+	MOV ER0, BP
+	BL _num_cpy
+	BAL _$j_122ba
+_$j_122a6:
+	MOV R0, #6H
+	ST R0, 9H[ER10]
+	MOV ER2, ER10
+	MOV ER0, BP
+	BL _num_cmp
+	CMP R0, #2H
+	BNE _$j_122ba
+	BAL _$j_1229c
+_$j_122ba:
+	MOV R0, #38H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	MOV ER2, BP
+	BL _num_cpy
+	MOV ER0, BP
+	BL _f_1B288
+	POP PC
+
+; 122CE
+_f_122CE:
+	PUSH LR
+	MOV ER8, FP
+	ADD ER8, #-14H
+	MOV BP, FP
+	ADD BP, #-28H
+	MOV R2, #88H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _num_cpy
+	MOV R2, #42H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, ER8
+	BL _num_cpy
+	MOV R2, #9CH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, ER8
+	BL _f_1A438
+	MOV ER0, BP
+	MOV ER2, ER8
+	BL _f_1A3FC
+	MOV R2, #0BAH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _f_1A44C
+	MOV ER0, BP
+	BL _f_1B238
+	MOV R0, #4CH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	MOV ER2, BP
+	BL _num_cpy
+	MOV ER0, BP
+	BL _f_1B288
+	POP PC
+
+; 1232A
+_f_1232A:
+	PUSH LR
+	MOV R0, #0BAH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _num_invalid__
+	CMP R0, #4H
+	BEQ _$j_1234a
+	MOV R2, #3H
+	MOV R0, #42H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _f_1B12C
+	MOV R0, #3H
+	POP PC
+_$j_1234a:
+	MOV ER8, FP
+	ADD ER8, #-14H
+	MOV ER10, FP
+	ADD ER10, #-1EH
+	MOV BP, FP
+	ADD BP, #-28H
+	MOV R2, #0BAH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, ER8
+	BL _num_cpy
+	MOV R2, #74H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, ER8
+	BL _f_1A438
+	MOV R2, #9CH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _num_cpy
+	MOV R2, #88H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _f_1A438
+	MOV ER0, ER8
+	MOV ER2, BP
+	BL _f_1A3FC
+	MOV R2, #0BAH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, ER10
+	BL _num_cpy
+	MOV R2, #92H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, ER10
+	BL _f_1A438
+	MOV R2, #9CH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _num_cpy
+	MOV ER0, BP
+	BL _f_1A5E2
+	MOV ER0, ER10
+	MOV ER2, BP
+	BL _f_1A3FC
+	MOV ER0, ER8
+	MOV ER2, ER10
+	BL _f_1A44C
+	MOV ER0, ER8
+	BL _f_1B238
+	MOV R0, #42H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	MOV ER2, ER8
+	BL _num_cpy
+	MOV ER0, ER8
+	BL _f_1B288
+	POP PC
+
+; 123E2
+_f_123E2:
+	PUSH LR
+	MOV ER0, #0H
+	MOV ER2, FP
+	ADD ER2, #-14H
+	BL _f_0441A
+	ST R0, -9H[FP]
+	MOV R0, R12
+	AND R0, #00000001B
+	MOV R1, #1H
+	MOV ER2, FP
+	ADD ER2, #-4H
+	BL _f_043CE
+	L ER4, -4H[FP]
+	L R0, _setup_stat_freq
+	BEQ _$j_12414
+	MOV R0, #2H
+	MOV R1, #1H
+	MOV ER2, FP
+	ADD ER2, #-4H
+	BL _f_043CE
+	L ER8, -4H[FP]
+_$j_12414:
+	BL _f_04448
+	MOV R1, #0AH
+	MUL ER0, R1
+	ST R0, -0AH[FP]
+	L R6, -0AH[FP]
+	L R7, -9H[FP]
+	POP PC
+
+; 12424
+_f_12424:
+	PUSH LR
+	MOV ER0, #0H
+	MOV ER2, FP
+	ADD ER2, #-14H
+	BL _f_0441A
+	ST R0, -9H[FP]
+	MOV R0, #0H
+	MOV R1, #1H
+	MOV ER2, FP
+	ADD ER2, #-4H
+	BL _f_043CE
+	L ER4, -4H[FP]
+	MOV R0, #1H
+	MOV R1, #1H
+	MOV ER2, FP
+	ADD ER2, #-4H
+	BL _f_043CE
+	L ER10, -4H[FP]
+	L R0, _setup_stat_freq
+	BEQ _$j_12462
+	MOV R0, #2H
+	MOV R1, #1H
+	MOV ER2, FP
+	ADD ER2, #-4H
+	BL _f_043CE
+	L ER8, -4H[FP]
+_$j_12462:
+	BL _f_04448
+	MOV R1, #0AH
+	MUL ER0, R1
+	ST R0, -0AH[FP]
+	L R6, -0AH[FP]
+	L R7, -9H[FP]
+	POP PC
+
+; 12472
+_f_12472:
+	PUSH LR
+	BL _f_12424
+	CMP R7, #0H
+	BNE _$j_12488
+	MOV R2, #3H
+	MOV ER0, FP
+	ADD ER0, #-28H
+	BL _f_1B12C
+	BAL _$j_12534
+_$j_12488:
+	MOV R2, #0H
+	MOV ER0, FP
+	ADD ER0, #-28H
+	BL _num_fromdigit
+_$j_12492:
+	MOV ER0, FP
+	ADD ER0, #-14H
+	MOV ER2, ER4
+	BL _num_cpy
+	MOV ER0, FP
+	ADD ER0, #-14H
+	BL _f_1B208
+	MOV ER0, FP
+	ADD ER0, #-1EH
+	MOV ER2, ER10
+	BL _num_cpy
+	MOV ER0, FP
+	ADD ER0, #-1EH
+	BL _f_1B208
+	TB R12.4
+	BEQ _$j_124d6
+	MOV R2, #0B0H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, FP
+	ADD ER0, #-14H
+	BL _f_1A3FC
+	MOV R2, #0A6H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, FP
+	ADD ER0, #-1EH
+	BL _f_1A3FC
+_$j_124d6:
+	MOV ER0, FP
+	ADD ER0, #-14H
+	BL _f_1A5E2
+	L R0, _setup_stat_freq
+	BEQ _$j_12502
+	MOV ER0, FP
+	ADD ER0, #-32H
+	MOV ER2, ER8
+	BL _num_cpy
+	MOV ER0, FP
+	ADD ER0, #-32H
+	BL _f_1B208
+	MOV ER0, FP
+	ADD ER0, #-14H
+	MOV ER2, FP
+	ADD ER2, #-32H
+	BL _f_1A438
+_$j_12502:
+	MOV ER0, FP
+	ADD ER0, #-14H
+	MOV ER2, FP
+	ADD ER2, #-1EH
+	BL _f_1A438
+	MOV ER0, FP
+	ADD ER0, #-28H
+	MOV ER2, FP
+	ADD ER2, #-14H
+	BL _f_1A410
+	MOV ER0, FP
+	ADD ER0, #-28H
+	BL _f_1B288
+	CMP R0, #0H
+	BNE _$j_12534
+	MOV R0, R6
+	MOV R1, #0H
+	ADD ER4, ER0
+	ADD ER8, ER0
+	ADD ER10, ER0
+	ADD R7, #-1H
+	BNE _$j_12492
+_$j_12534:
+	MOV R0, #56H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	MOV ER2, FP
+	ADD ER2, #-28H
+	BL _num_cpy
+	MOV ER0, FP
+	ADD ER0, #-28H
+	BL _f_1B288
+	POP PC
+
+; 1254C
+_f_1254C:
+	PUSH LR
+	BL _f_123E2
+	CMP R7, #0H
+	BNE _$j_1256c
+	MOV R2, #3H
+	MOV ER0, FP
+	ADD ER0, #-32H
+	BL _f_1B12C
+	MOV R2, #3H
+	MOV ER0, FP
+	ADD ER0, #-3CH
+	BL _f_1B12C
+	BAL _$j_1263c
+_$j_1256c:
+	MOV R2, #0H
+	MOV ER0, FP
+	ADD ER0, #-32H
+	BL _num_fromdigit
+	MOV R2, #0H
+	MOV ER0, FP
+	ADD ER0, #-3CH
+	BL _num_fromdigit
+_$j_12580:
+	MOV ER0, FP
+	ADD ER0, #-14H
+	MOV ER2, ER4
+	BL _num_cpy
+	MOV ER0, FP
+	ADD ER0, #-14H
+	BL _f_1B208
+	TB R12.4
+	BEQ _$j_125a4
+	MOV R2, #0B0H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, FP
+	ADD ER0, #-14H
+	BL _f_1A3FC
+_$j_125a4:
+	MOV ER0, FP
+	ADD ER0, #-28H
+	MOV ER2, FP
+	ADD ER2, #-14H
+	BL _num_cpy
+	MOV ER0, FP
+	ADD ER0, #-14H
+	BL _f_1A5E2
+	MOV ER0, FP
+	ADD ER0, #-14H
+	MOV ER2, FP
+	ADD ER2, #-28H
+	BL _f_1A438
+	MOV ER2, FP
+	ADD ER2, #-14H
+	MOV ER0, FP
+	ADD ER0, #-28H
+	BL _f_1A438
+	L R0, _setup_stat_freq
+	BEQ _$j_12600
+	MOV ER0, FP
+	ADD ER0, #-1EH
+	MOV ER2, ER8
+	BL _num_cpy
+	MOV ER0, FP
+	ADD ER0, #-1EH
+	BL _f_1B208
+	MOV ER0, FP
+	ADD ER0, #-14H
+	MOV ER2, FP
+	ADD ER2, #-1EH
+	BL _f_1A438
+	MOV ER0, FP
+	ADD ER0, #-28H
+	MOV ER2, FP
+	ADD ER2, #-1EH
+	BL _f_1A438
+_$j_12600:
+	MOV ER0, FP
+	ADD ER0, #-32H
+	MOV ER2, FP
+	ADD ER2, #-14H
+	BL _f_1A410
+	MOV ER0, FP
+	ADD ER0, #-3CH
+	MOV ER2, FP
+	ADD ER2, #-28H
+	BL _f_1A410
+	MOV ER0, FP
+	ADD ER0, #-32H
+	BL _f_1B288
+	CMP R0, #0H
+	BEQ _$j_12630
+	MOV ER0, FP
+	ADD ER0, #-3CH
+	BL _f_1B288
+	CMP R0, #0H
+	BNE _$j_1263c
+_$j_12630:
+	MOV R0, R6
+	MOV R1, #0H
+	ADD ER4, ER0
+	ADD ER8, ER0
+	ADD R7, #-1H
+	BNE _$j_12580
+_$j_1263c:
+	MOV R0, #6AH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	MOV ER2, FP
+	ADD ER2, #-32H
+	BL _num_cpy
+	MOV R0, #60H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	MOV ER2, FP
+	ADD ER2, #-3CH
+	BL _num_cpy
+	MOV ER0, FP
+	ADD ER0, #-32H
+	BL _f_1B288
+	CMP R0, #0H
+	BEQ _$j_12666
+	MOV R0, #0FH
+_$j_12666:
+	PUSH R0
+	MOV ER0, FP
+	ADD ER0, #-3CH
+	BL _f_1B288
+	POP R1
+	CMP R0, #0H
+	BEQ _$j_12678
+	MOV R0, #-10H
+_$j_12678:
+	OR R0, R1
+	POP PC
+
+; 1267C
+_f_1267C:
+	PUSH LR
+	MOV ER0, #0H
+	MOV ER2, FP
+	ADD ER2, #-14H
+	BL _f_0441A
+	CMP R0, #0H
+	BNE _$j_126a2
+	MOV R2, #3H
+	MOV ER0, FP
+	ADD ER0, #-14H
+	BL _f_1B12C
+	MOV R2, #3H
+	MOV ER0, FP
+	ADD ER0, #-28H
+	BL _f_1B12C
+	BAL _$j_1279e
+_$j_126a2:
+	BL _f_127DE
+	BL _f_123E2
+	MOV R2, #0H
+	MOV ER0, FP
+	ADD ER0, #-28H
+	BL _num_fromdigit
+_$j_126b4:
+	MOV ER0, FP
+	ADD ER0, #-14H
+	MOV ER2, ER4
+	BL _num_cpy
+	MOV ER0, FP
+	ADD ER0, #-14H
+	BL _f_1B208
+	MOV R2, #0B0H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, FP
+	ADD ER0, #-14H
+	BL _f_1A3FC
+	MOV ER0, FP
+	ADD ER0, #-14H
+	BL _f_1A5E2
+	L R0, _setup_stat_freq
+	BEQ _$j_12700
+	MOV ER0, FP
+	ADD ER0, #-1EH
+	MOV ER2, ER8
+	BL _num_cpy
+	MOV ER0, FP
+	ADD ER0, #-1EH
+	BL _f_1B208
+	MOV ER0, FP
+	ADD ER0, #-14H
+	MOV ER2, FP
+	ADD ER2, #-1EH
+	BL _f_1A438
+_$j_12700:
+	MOV ER0, FP
+	ADD ER0, #-28H
+	MOV ER2, FP
+	ADD ER2, #-14H
+	BL _f_1A410
+	MOV ER0, FP
+	ADD ER0, #-28H
+	BL _f_1B288
+	CMP R0, #0H
+	BNE _$j_1279e
+	MOV R0, R6
+	MOV R1, #0H
+	ADD ER4, ER0
+	ADD ER8, ER0
+	ADD R7, #-1H
+	BNE _$j_126b4
+	MOV ER2, FP
+	ADD ER2, #-28H
+	MOV ER0, FP
+	ADD ER0, #-14H
+	BL _num_cpy
+	MOV R2, #0BAH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, FP
+	ADD ER0, #-1EH
+	BL _num_cpy
+	MOV ER0, FP
+	ADD ER0, #-28H
+	BL _num_invalid__
+	CMP R0, #4H
+	BEQ _$j_12760
+	MOV ER0, #-14H
+	ADD ER0, FP
+	MOV R2, #0H
+	BL _num_fromdigit
+	MOV ER0, #-28H
+	ADD ER0, FP
+	MOV R2, #0H
+	BL _num_fromdigit
+	BAL _$j_1279e
+_$j_12760:
+	MOV ER0, FP
+	ADD ER0, #-14H
+	MOV ER2, FP
+	ADD ER2, #-1EH
+	BL _f_1A44C
+	MOV ER0, FP
+	ADD ER0, #-14H
+	BL _f_1A60A
+	MOV ER0, FP
+	ADD ER0, #-32H
+	MOV R2, #1H
+	BL _num_fromdigit
+	MOV ER0, FP
+	ADD ER0, #-1EH
+	MOV ER2, FP
+	ADD ER2, #-32H
+	BL _f_1A3FC
+	MOV ER0, FP
+	ADD ER0, #-28H
+	MOV ER2, FP
+	ADD ER2, #-1EH
+	BL _f_1A44C
+	MOV ER0, FP
+	ADD ER0, #-28H
+	BL _f_1A60A
+_$j_1279e:
+	MOV R0, #9CH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	MOV ER2, FP
+	ADD ER2, #-14H
+	BL _num_cpy
+	MOV R0, #92H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	MOV ER2, FP
+	ADD ER2, #-28H
+	BL _num_cpy
+	MOV ER0, FP
+	ADD ER0, #-14H
+	BL _f_1B288
+	CMP R0, #0H
+	BEQ _$j_127c8
+	MOV R0, #0FH
+_$j_127c8:
+	PUSH R0
+	MOV ER0, FP
+	ADD ER0, #-28H
+	BL _f_1B288
+	POP R1
+	CMP R0, #0H
+	BEQ _$j_127da
+	MOV R0, #-10H
+_$j_127da:
+	OR R0, R1
+	POP PC
+
+; 127DE
+_f_127DE:
+	PUSH LR
+	BL _f_12BA0
+	CMP R0, #0H
+	BEQ _$j_127f6
+	MOV R0, #0B0H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	MOV R2, #3H
+	BL _f_1B12C
+	BAL _$j_1282a
+_$j_127f6:
+	BL _f_12A32
+	TB R12.0
+	BNE _$j_12802
+	MOV R0, #-64H
+	BAL _$j_12804
+_$j_12802:
+	MOV R0, #-78H
+_$j_12804:
+	MOV R1, #-1H
+	ADD ER0, FP
+	MOV R2, #0BAH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	BL _f_1A44C
+	MOV R0, #0B0H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	TB R12.0
+	BNE _$j_12820
+	MOV R2, #-64H
+	BAL _$j_12822
+_$j_12820:
+	MOV R2, #-78H
+_$j_12822:
+	MOV R3, #-1H
+	ADD ER2, FP
+	BL _num_cpy
+_$j_1282a:
+	MOV R0, #0B0H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _f_1B288
+	POP PC
+
+; 12836
+_f_12836:
+	PUSH LR
+	BL _f_12424
+	CMP R7, #0H
+	BNE _$j_1284c
+	MOV R2, #3H
+	MOV ER0, FP
+	ADD ER0, #-28H
+	BL _f_1B12C
+	BAL _$j_12920
+_$j_1284c:
+	MOV R2, #0H
+	MOV ER0, FP
+	ADD ER0, #-28H
+	BL _num_fromdigit
+_$j_12856:
+	MOV ER0, FP
+	ADD ER0, #-14H
+	MOV ER2, ER4
+	BL _num_cpy
+	MOV ER0, FP
+	ADD ER0, #-14H
+	BL _f_1B208
+	TB R12.5
+	BEQ _$j_12874
+	MOV ER0, FP
+	ADD ER0, #-14H
+	BL _f_1A5F6
+_$j_12874:
+	TB R12.6
+	BEQ _$j_12880
+	MOV ER0, FP
+	ADD ER0, #-14H
+	BL _num_ln
+_$j_12880:
+	MOV ER0, FP
+	ADD ER0, #-1EH
+	MOV ER2, ER10
+	BL _num_cpy
+	MOV ER0, FP
+	ADD ER0, #-1EH
+	BL _f_1B208
+	TB R12.7
+	BEQ _$j_1289e
+	MOV ER0, FP
+	ADD ER0, #-1EH
+	BL _num_ln
+_$j_1289e:
+	TB R12.4
+	BEQ _$j_128be
+	MOV R2, #0B0H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, FP
+	ADD ER0, #-14H
+	BL _f_1A3FC
+	MOV R2, #0A6H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, FP
+	ADD ER0, #-1EH
+	BL _f_1A3FC
+_$j_128be:
+	L R0, _setup_stat_freq
+	BEQ _$j_128e2
+	MOV ER0, FP
+	ADD ER0, #-32H
+	MOV ER2, ER8
+	BL _num_cpy
+	MOV ER0, FP
+	ADD ER0, #-32H
+	BL _f_1B208
+	MOV ER0, FP
+	ADD ER0, #-14H
+	MOV ER2, FP
+	ADD ER2, #-32H
+	BL _f_1A438
+_$j_128e2:
+	MOV ER0, FP
+	ADD ER0, #-14H
+	MOV ER2, FP
+	ADD ER2, #-1EH
+	BL _f_1A438
+	MOV ER0, FP
+	ADD ER0, #-28H
+	MOV ER2, FP
+	ADD ER2, #-14H
+	BL _f_1A410
+	MOV ER0, FP
+	ADD ER0, #-28H
+	BL _f_1B288
+	CMP R0, #0H
+	BNE _$j_12920
+	TB R12.1
+	BEQ _$j_12912
+	BL _check_ac
+	CMP R0, #0H
+	BNE _$j_12938
+_$j_12912:
+	MOV R0, R6
+	MOV R1, #0H
+	ADD ER4, ER0
+	ADD ER8, ER0
+	ADD ER10, ER0
+	ADD R7, #-1H
+	BNE _$j_12856
+_$j_12920:
+	MOV R0, #74H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	MOV ER2, FP
+	ADD ER2, #-28H
+	BL _num_cpy
+	MOV ER0, FP
+	ADD ER0, #-28H
+	BL _f_1B288
+	POP PC
+_$j_12938:
+	MOV R2, #1H
+	MOV ER0, FP
+	ADD ER0, #-28H
+	BL _f_1B12C
+	BAL _$j_12920
+
+; 12944
+_f_12944:
+	PUSH LR
+	MOV ER0, #0H
+	MOV ER2, FP
+	ADD ER2, #-14H
+	BL _f_0441A
+	ST R0, -9H[FP]
+	MOV R0, R12
+	AND R0, #00000001B
+	MOV R1, #1H
+	MOV ER2, FP
+	ADD ER2, #-4H
+	BL _f_043CE
+	L ER4, -4H[FP]
+	BL _f_04448
+	MOV R1, #0AH
+	MUL ER0, R1
+	ST R0, -0AH[FP]
+	L R6, -0AH[FP]
+	L R7, -9H[FP]
+	BNE _$j_1297e
+	MOV R2, #3H
+	MOV ER0, FP
+	ADD ER0, #-1EH
+	BL _f_1B12C
+	BAL _$j_12a00
+_$j_1297e:
+	MOV ER0, FP
+	ADD ER0, #-1EH
+	MOV ER2, ER4
+	BL _num_cpy
+	MOV ER0, FP
+	ADD ER0, #-1EH
+	BL _f_1B208
+	MOV ER0, FP
+	ADD ER0, #-1EH
+	BL _f_1AC56
+	TB R12.5
+	BEQ _$j_129a4
+	MOV ER0, FP
+	ADD ER0, #-1EH
+	BL _f_1A5F6
+_$j_129a4:
+	MOV ER0, FP
+	ADD ER0, #-14H
+	MOV ER2, ER4
+	BL _num_cpy
+	MOV ER0, FP
+	ADD ER0, #-14H
+	BL _f_1B208
+	MOV ER0, FP
+	ADD ER0, #-14H
+	BL _f_1AC56
+	TB R12.5
+	BEQ _$j_129ca
+	MOV ER0, FP
+	ADD ER0, #-14H
+	BL _f_1A5F6
+_$j_129ca:
+	MOV ER0, FP
+	ADD ER0, #-1EH
+	MOV ER2, FP
+	ADD ER2, #-14H
+	BL _num_cmp
+	TB R12.7
+	BNE _$j_12a2c
+	CMP R0, #4H
+	BNE _$j_129ea
+_$j_129de:
+	MOV ER0, FP
+	ADD ER0, #-1EH
+	MOV ER2, FP
+	ADD ER2, #-14H
+	BL _num_cpy
+_$j_129ea:
+	MOV R0, R6
+	MOV R1, #0H
+	ADD ER4, ER0
+	ADD R7, #-1H
+	BNE _$j_129a4
+	TB R12.6
+	BEQ _$j_12a00
+	MOV ER0, FP
+	ADD ER0, #-1EH
+	BL _num_ln
+_$j_12a00:
+	TB R12.0
+	BNE _$j_12a14
+	MOV R0, #0B0H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	MOV ER2, FP
+	ADD ER2, #-1EH
+	BL _num_cpy
+	BAL _$j_12a22
+_$j_12a14:
+	MOV R0, #0A6H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	MOV ER2, FP
+	ADD ER2, #-1EH
+	BL _num_cpy
+_$j_12a22:
+	MOV ER0, FP
+	ADD ER0, #-1EH
+	BL _f_1B288
+	POP PC
+_$j_12a2c:
+	CMP R0, #2H
+	BNE _$j_129ea
+	BAL _$j_129de
+
+; 12A32
+_f_12A32:
+	PUSH LR
+	BL _f_123E2
+	CMP R7, #0H
+	BNE _$j_12a52
+	MOV R2, #3H
+	MOV ER0, FP
+	ADD ER0, #-32H
+	BL _f_1B12C
+	MOV R2, #3H
+	MOV ER0, FP
+	ADD ER0, #-3CH
+	BL _f_1B12C
+	BAL _$j_12b36
+_$j_12a52:
+	MOV R2, #0H
+	MOV ER0, FP
+	ADD ER0, #-32H
+	BL _num_fromdigit
+	MOV R2, #0H
+	MOV ER0, FP
+	ADD ER0, #-3CH
+	BL _num_fromdigit
+_$j_12a66:
+	MOV ER0, FP
+	ADD ER0, #-14H
+	MOV ER2, ER4
+	BL _num_cpy
+	MOV ER0, FP
+	ADD ER0, #-14H
+	BL _f_1B208
+	TB R12.5
+	BEQ _$j_12a84
+	MOV ER0, FP
+	ADD ER0, #-14H
+	BL _f_1A5F6
+_$j_12a84:
+	TB R12.6
+	BEQ _$j_12a90
+	MOV ER0, FP
+	ADD ER0, #-14H
+	BL _num_ln
+_$j_12a90:
+	TB R12.4
+	BEQ _$j_12aaa
+	TB R12.0
+	BNE _$j_12a9c
+	MOV R2, #-50H
+	BAL _$j_12a9e
+_$j_12a9c:
+	MOV R2, #-5AH
+_$j_12a9e:
+	MOV R3, #-1H
+	ADD ER2, FP
+	MOV ER0, FP
+	ADD ER0, #-14H
+	BL _f_1A3FC
+_$j_12aaa:
+	MOV ER0, FP
+	ADD ER0, #-28H
+	MOV ER2, FP
+	ADD ER2, #-14H
+	BL _num_cpy
+	MOV ER0, FP
+	ADD ER0, #-28H
+	BL _f_1A5E2
+	L R0, _setup_stat_freq
+	BEQ _$j_12aee
+	MOV ER0, FP
+	ADD ER0, #-1EH
+	MOV ER2, ER8
+	BL _num_cpy
+	MOV ER0, FP
+	ADD ER0, #-1EH
+	BL _f_1B208
+	MOV ER0, FP
+	ADD ER0, #-14H
+	MOV ER2, FP
+	ADD ER2, #-1EH
+	BL _f_1A438
+	MOV ER0, FP
+	ADD ER0, #-28H
+	MOV ER2, FP
+	ADD ER2, #-1EH
+	BL _f_1A438
+_$j_12aee:
+	MOV ER0, FP
+	ADD ER0, #-32H
+	MOV ER2, FP
+	ADD ER2, #-14H
+	BL _f_1A410
+	MOV ER0, FP
+	ADD ER0, #-3CH
+	MOV ER2, FP
+	ADD ER2, #-28H
+	BL _f_1A410
+	MOV ER0, FP
+	ADD ER0, #-32H
+	BL _f_1B288
+	CMP R0, #0H
+	BEQ _$j_12b1e
+	MOV ER0, FP
+	ADD ER0, #-3CH
+	BL _f_1B288
+	CMP R0, #0H
+	BNE _$j_12b36
+_$j_12b1e:
+	TB R12.1
+	BEQ _$j_12b2a
+	BL _check_ac
+	CMP R0, #0H
+	BNE _$j_12b8a
+_$j_12b2a:
+	MOV R0, R6
+	MOV R1, #0H
+	ADD ER4, ER0
+	ADD ER8, ER0
+	ADD R7, #-1H
+	BNE _$j_12a66
+_$j_12b36:
+	TB R12.0
+	BNE _$j_12b3e
+	MOV R0, #-64H
+	BAL _$j_12b40
+_$j_12b3e:
+	MOV R0, #-78H
+_$j_12b40:
+	MOV R1, #-1H
+	ADD ER0, FP
+	MOV ER2, FP
+	ADD ER2, #-32H
+	BL _num_cpy
+	TB R12.0
+	BNE _$j_12b54
+	MOV R0, #-6EH
+	BAL _$j_12b56
+_$j_12b54:
+	MOV R0, #7EH
+_$j_12b56:
+	MOV R1, #-1H
+	ADD ER0, FP
+	MOV ER2, FP
+	ADD ER2, #-3CH
+	BL _num_cpy
+	MOV ER0, FP
+	ADD ER0, #-32H
+	BL _f_1B288
+	CMP R0, #0H
+	BEQ _$j_12b74
+	CMP R0, #1H
+	BEQ _$j_12b88
+	MOV R0, #0FH
+_$j_12b74:
+	PUSH R0
+	MOV ER0, FP
+	ADD ER0, #-3CH
+	BL _f_1B288
+	POP R1
+	CMP R0, #0H
+	BEQ _$j_12b86
+	MOV R0, #-10H
+_$j_12b86:
+	OR R0, R1
+_$j_12b88:
+	POP PC
+_$j_12b8a:
+	MOV R2, #1H
+	MOV ER0, FP
+	ADD ER0, #-32H
+	BL _f_1B12C
+	MOV R2, #1H
+	MOV ER0, FP
+	ADD ER0, #-3CH
+	BL _f_1B12C
+	BAL _$j_12b36
+
+; 12BA0
+_f_12BA0:
+	PUSH LR
+	MOV ER0, #0H
+	MOV ER2, FP
+	ADD ER2, #-14H
+	BL _f_0441A
+	ST R0, -9H[FP]
+	CMP R0, #0H
+	BEQ _$j_12c2a
+	L R2, _setup_stat_freq
+	BNE _$j_12bca
+	MOV R2, R0
+	MOV ER0, FP
+	MOV R4, #0BAH
+	MOV R5, #0FFH
+	ADD ER0, ER4
+	BL _num_frombyte
+	MOV R0, #0H
+	BAL _$j_12c28
+_$j_12bca:
+	MOV R0, #2H
+	MOV R1, #1H
+	MOV ER2, FP
+	ADD ER2, #-4H
+	BL _f_043CE
+	BL _f_04448
+	MOV R1, #0AH
+	MUL ER0, R1
+	ST R0, -0AH[FP]
+	L ER4, -4H[FP]
+	L R6, -0AH[FP]
+	L R7, -9H[FP]
+	MOV R2, #0H
+	MOV ER0, FP
+	ADD ER0, #-1EH
+	BL _num_fromdigit
+_$j_12bf0:
+	MOV ER0, FP
+	ADD ER0, #-14H
+	MOV ER2, ER4
+	BL _num_cpy
+	MOV ER0, FP
+	ADD ER0, #-14H
+	BL _f_1B208
+	MOV ER0, FP
+	ADD ER0, #-1EH
+	MOV ER2, FP
+	ADD ER2, #-14H
+	BL _f_1A410
+	MOV R0, R6
+	MOV R1, #0H
+	ADD ER4, ER0
+	ADD R7, #-1H
+	BNE _$j_12bf0
+	MOV R0, #0BAH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	MOV ER2, FP
+	ADD ER2, #-1EH
+	BL _num_cpy
+	MOV R0, #0H
+_$j_12c28:
+	POP PC
+_$j_12c2a:
+	MOV R0, #0BAH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	MOV R2, #3H
+	BL _f_1B12C
+	MOV R0, #-10H
+	BAL _$j_12c28
+
+; 12C3A
+_f_12C3A:
+	PUSH LR
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-64H
+	ADD SP, #-64H
+	PUSH XR4
+	ST ER0, -2H[FP]
+	MOV R4, #0H
+	BAL _$j_12c5c
+
+; 12C4C
+_f_12C4C:
+	PUSH LR
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-64H
+	ADD SP, #-64H
+	PUSH XR4
+	ST ER0, -2H[FP]
+	MOV R4, #1H
+_$j_12c5c:
+	L R2, [ER0]
+	CMP R2, #-10H
+	BGE _$j_12cae
+	BL _f_119BC
+	BAL _$j_12c90
+
+; 12C68
+_f_12C68:
+	PUSH LR
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-64H
+	ADD SP, #-64H
+	PUSH XR4
+	ST ER0, -2H[FP]
+	L R2, [ER0]
+	CMP R2, #-10H
+	BGE _$j_12cae
+	L R0, _submode
+	ADD R0, #-2H
+	MOV R12, #5AH
+	MOV R13, #1DH
+	SLL R0, #1
+	ADD R12, R0
+	ADDC R13, #0H
+	L BP, [BP]
+	BL BP
+_$j_12c90:
+	MOV ER0, #-14H
+	ADD ER0, FP
+	BL _f_1B238
+	PUSH R0
+	MOV ER2, #-14H
+	ADD ER2, FP
+	L ER0, -2H[FP]
+	BL _num_cpy
+	POP R0
+_$j_12ca6:
+	POP XR4
+	MOV SP, FP
+	POP QR8
+	POP PC
+_$j_12cae:
+	L ER0, -2H[FP]
+	BL _f_1B288
+	BAL _$j_12ca6
+
+; 12CB6
+_f_12CB6:
+	PUSH LR
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-64H
+	ADD SP, #-64H
+	PUSH XR4
+	ST ER0, -2H[FP]
+	L R2, [ER0]
+	CMP R2, #-10H
+	BGE _$j_12cae
+	L R0, _submode
+	ADD R0, #-2H
+	MOV R12, #68H
+	MOV R13, #1DH
+	SLL R0, #1
+	ADD R12, R0
+	ADDC R13, #0H
+	L BP, [BP]
+	BL BP
+	BAL _$j_12c90
+
+; 12CE0
+_f_12CE0:
+	PUSH LR
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-64H
+	ADD SP, #-64H
+	PUSH XR4
+	ST ER0, -2H[FP]
+	L R0, _submode
+	ADD R0, #-2H
+	MOV R12, #4CH
+	MOV R13, #1DH
+	SLL R0, #1
+	ADD R12, R0
+	ADDC R13, #0H
+	L BP, [BP]
+	BL BP
+	MOV R0, #38H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _f_1B238
+	PUSH R0
+	MOV R2, #38H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	L ER0, -2H[FP]
+	BL _num_cpy
+	POP R0
+	BAL _$j_12d98
+
+; 12D1E
+_f_12D1E:
+	PUSH LR
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-64H
+	ADD SP, #-64H
+	PUSH XR4
+	ST ER0, -2H[FP]
+	L R0, _submode
+	CMP R0, #3H
+	BNE _$j_12d3a
+	BL _f_11478
+	BAL _$j_12d3e
+_$j_12d3a:
+	BL _f_11D7C
+_$j_12d3e:
+	MOV R0, #42H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _f_1B238
+	PUSH R0
+	MOV R2, #42H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	L ER0, -2H[FP]
+	BL _num_cpy
+	POP R0
+	BAL _$j_12d98
+
+; 12D5A
+_f_12D5A:
+	PUSH LR
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-64H
+	ADD SP, #-64H
+	PUSH XR4
+	ST ER0, -2H[FP]
+	L R0, _submode
+	CMP R0, #3H
+	BNE _$j_12d7a
+	BL _f_11478
+	BL _f_112F2
+	BAL _$j_12d7e
+_$j_12d7a:
+	BL _f_11D7C
+_$j_12d7e:
+	MOV R0, #4CH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _f_1B238
+	PUSH R0
+	MOV R2, #4CH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	L ER0, -2H[FP]
+	BL _num_cpy
+	POP R0
+_$j_12d98:
+	POP XR4
+	MOV SP, FP
+	POP QR8
+	POP PC
+
+; 12DA0
+_f_12DA0:
+	PUSH LR
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-64H
+	ADD SP, #-64H
+	PUSH XR4
+	ST ER0, -2H[FP]
+	BL _f_11478
+	BL _f_112F2
+	MOV R0, #38H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _f_1B238
+	PUSH R0
+	MOV R2, #38H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	L ER0, -2H[FP]
+	BL _num_cpy
+	POP R0
+	BAL _$j_12d98
+
+; 12DD2
+_f_12DD2:
+	PUSH LR
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-64H
+	ADD SP, #-64H
+	PUSH XR4
+	ST ER0, -2H[FP]
+	MOV R12, #0H
+	BL _f_12472
+	MOV R0, #56H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _f_1B238
+	PUSH R0
+	MOV R2, #56H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	L ER0, -2H[FP]
+	BL _num_cpy
+	POP R0
+	BAL _$j_12e60
+
+; 12E02
+_f_12E02:
+	PUSH LR
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-64H
+	ADD SP, #-64H
+	PUSH XR4
+	ST ER0, -2H[FP]
+	MOV R12, #0H
+	BL _f_1254C
+	MOV R0, #60H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _f_1B238
+	PUSH R0
+	MOV R2, #60H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	L ER0, -2H[FP]
+	BL _num_cpy
+	POP R0
+	BAL _$j_12e60
+
+; 12E32
+_f_12E32:
+	PUSH LR
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-64H
+	ADD SP, #-64H
+	PUSH XR4
+	ST ER0, -2H[FP]
+	MOV R12, #0H
+	BL _f_1254C
+	MOV R0, #6AH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _f_1B238
+	PUSH R0
+	MOV R2, #6AH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	L ER0, -2H[FP]
+	BL _num_cpy
+	POP R0
+_$j_12e60:
+	POP XR4
+	MOV SP, FP
+	POP QR8
+	POP PC
+
+; 12E68
+_f_12E68:
+	PUSH LR
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-64H
+	ADD SP, #-64H
+	PUSH XR4
+	ST ER0, -2H[FP]
+	MOV R12, #0H
+	BL _f_12836
+	MOV R0, #74H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _f_1B238
+	PUSH R0
+	MOV R2, #74H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	L ER0, -2H[FP]
+	BL _num_cpy
+	POP R0
+	BAL _$j_12e60
+
+; 12E98
+_f_12E98:
+	PUSH LR
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-64H
+	ADD SP, #-64H
+	PUSH XR4
+	ST ER0, -2H[FP]
+	MOV R12, #1H
+	BL _f_127DE
+	BAL _$j_12ec2
+
+; 12EAE
+_f_12EAE:
+	PUSH LR
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-64H
+	ADD SP, #-64H
+	PUSH XR4
+	ST ER0, -2H[FP]
+	MOV R12, #0H
+	BL _f_127DE
+_$j_12ec2:
+	MOV R0, #0B0H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _f_1B238
+	PUSH R0
+	MOV R2, #0B0H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	L ER0, -2H[FP]
+	BL _num_cpy
+	POP R0
+	POP XR4
+	MOV SP, FP
+	POP QR8
+	POP PC
+
+; 12EE4
+_f_12EE4:
+	PUSH LR
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-64H
+	ADD SP, #-64H
+	PUSH XR4
+	ST ER0, -2H[FP]
+	BL _f_12BA0
+	MOV R0, #0BAH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _f_1B238
+	PUSH R0
+	MOV R2, #0BAH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	L ER0, -2H[FP]
+	BL _num_cpy
+	POP R0
+	POP XR4
+	MOV SP, FP
+	POP QR8
+	POP PC
+
+; 12F18
+_f_12F18:
+	PUSH LR
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-64H
+	ADD SP, #-64H
+	PUSH XR4
+	ST ER0, -2H[FP]
+	MOV R12, #-7FH
+	BL _f_12944
+	BAL _$j_12f42
+
+; 12F2E
+_f_12F2E:
+	PUSH LR
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-64H
+	ADD SP, #-64H
+	PUSH XR4
+	ST ER0, -2H[FP]
+	MOV R12, #1H
+	BL _f_12944
+_$j_12f42:
+	MOV R2, #0A6H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	L ER0, -2H[FP]
+	BL _num_cpy
+	BAL _$j_12f86
+
+; 12F50
+_f_12F50:
+	PUSH LR
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-64H
+	ADD SP, #-64H
+	PUSH XR4
+	ST ER0, -2H[FP]
+	MOV R12, #-80H
+	BL _f_12944
+	BAL _$j_12f7a
+
+; 12F66
+_f_12F66:
+	PUSH LR
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-64H
+	ADD SP, #-64H
+	PUSH XR4
+	ST ER0, -2H[FP]
+	MOV R12, #0H
+	BL _f_12944
+_$j_12f7a:
+	MOV R2, #0B0H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	L ER0, -2H[FP]
+	BL _num_cpy
+_$j_12f86:
+	L ER0, -2H[FP]
+	BL _f_1B288
+	POP XR4
+	MOV SP, FP
+	POP QR8
+	POP PC
+
+; 12F94
+_f_12F94:
+	PUSH LR
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-64H
+	ADD SP, #-64H
+	PUSH XR4
+	ST ER0, -2H[FP]
+	MOV R12, #1H
+	BL _f_12A32
+	MOV R0, #7EH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _f_1B238
+	PUSH R0
+	MOV R2, #7EH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	L ER0, -2H[FP]
+	BL _num_cpy
+	POP R0
+	BAL _$j_13052
+
+; 12FC4
+_f_12FC4:
+	PUSH LR
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-64H
+	ADD SP, #-64H
+	PUSH XR4
+	ST ER0, -2H[FP]
+	MOV R12, #1H
+	BL _f_12A32
+	MOV R0, #88H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _f_1B238
+	PUSH R0
+	MOV R2, #88H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	L ER0, -2H[FP]
+	BL _num_cpy
+	POP R0
+	BAL _$j_13052
+
+; 12FF4
+_f_12FF4:
+	PUSH LR
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-64H
+	ADD SP, #-64H
+	PUSH XR4
+	ST ER0, -2H[FP]
+	MOV R12, #0H
+	BL _f_12A32
+_$j_13008:
+	MOV R0, #92H
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _f_1B238
+	PUSH R0
+	MOV R2, #92H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	L ER0, -2H[FP]
+	BL _num_cpy
+	POP R0
+	BAL _$j_13052
+
+; 13024
+_f_13024:
+	PUSH LR
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-64H
+	ADD SP, #-64H
+	PUSH XR4
+	ST ER0, -2H[FP]
+	MOV R12, #0H
+	BL _f_12A32
+_$j_13038:
+	MOV R0, #9CH
+	MOV R1, #0FFH
+	ADD ER0, FP
+	BL _f_1B238
+	PUSH R0
+	MOV R2, #9CH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	L ER0, -2H[FP]
+	BL _num_cpy
+	POP R0
+_$j_13052:
+	POP XR4
+	MOV SP, FP
+	POP QR8
+	POP PC
+
+; 1305A
+_f_1305A:
+	PUSH LR
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-64H
+	ADD SP, #-64H
+	PUSH XR4
+	ST ER0, -2H[FP]
+	MOV R12, #1H
+	BL _f_1267C
+	BAL _$j_13008
+
+; 13070
+_f_13070:
+	PUSH LR
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-64H
+	ADD SP, #-64H
+	PUSH XR4
+	ST ER0, -2H[FP]
+	MOV R12, #1H
+	BL _f_1267C
+	BAL _$j_13038
+
+; 13086
+_f_13086:
+	PUSH LR
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-64H
+	ADD SP, #-64H
+	PUSH XR4
+	ST ER0, -2H[FP]
+	MOV R12, #0H
+	BL _f_1267C
+	BAL _$j_13008
+
+; 1309C
+_f_1309C:
+	PUSH LR
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-64H
+	ADD SP, #-64H
+	PUSH XR4
+	ST ER0, -2H[FP]
+	MOV R12, #0H
+	BL _f_1267C
+	BAL _$j_13038
+
+; 130B2
+_num_stat_P:
+	PUSH LR
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-64H
+	ADD SP, #-64H
+	PUSH XR4
+	ST ER0, -2H[FP]
+	L R2, [ER0]
+	CMP R2, #-10H
+	BGE _$j_1313e
+	BL _f_11344
+	L ER0, -2H[FP]
+	BL _num_invalid__
+	CMP R0, #2H
+	BEQ _$j_130ec
+_$j_130d4:
+	MOV ER2, #1H
+	MOV ER0, #-14H
+	ADD ER0, FP
+	BL _num_fromdigit
+	MOV ER2, #-1EH
+	ADD ER2, FP
+	MOV ER0, #-14H
+	ADD ER0, FP
+	BL _f_1A424
+	BAL _$j_13116
+_$j_130ec:
+	MOV ER2, #-1EH
+	ADD ER2, FP
+	MOV ER0, #-14H
+	ADD ER0, FP
+	BL _num_cpy
+	BAL _$j_13116
+_$j_130fa:
+	MOV ER2, #5H
+	MOV ER0, #-14H
+	ADD ER0, FP
+	BL _num_fromdigit
+
+; 13102
+_f_13102:
+	ST ER0, -0AH[FP]
+	MOV R1, #0H
+	MOV R0, #99H
+	ST ER0, -0CH[FP]
+	MOV ER2, #-1EH
+	ADD ER2, FP
+	MOV ER0, #-14H
+	ADD ER0, FP
+	BL _f_1A424
+_$j_13116:
+	MOV R2, #6H
+	MOV ER0, #-14H
+	ADD ER0, FP
+	BL _f_1AFD8
+	L ER0, -0CH[FP]
+	CMP R1, #5H
+	BGE _$j_13146
+_$j_13126:
+	MOV ER2, #-14H
+	ADD ER2, FP
+	L ER0, -2H[FP]
+	BL _num_cpy
+	L ER0, -2H[FP]
+	BL _f_1B288
+_$j_13136:
+	POP XR4
+	MOV SP, FP
+	POP QR8
+	POP PC
+_$j_1313e:
+	L ER0, -2H[FP]
+	BL _f_1B288
+	BAL _$j_13136
+_$j_13146:
+	MOV R2, #0H
+	MOV ER0, #-14H
+	ADD ER0, FP
+	BL _num_fromdigit
+	BAL _$j_13126
+
+; 13152
+_num_stat_Q:
+	PUSH LR
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-64H
+	ADD SP, #-64H
+	PUSH XR4
+	ST ER0, -2H[FP]
+	L R2, [ER0]
+	CMP R2, #-10H
+	BGE _$j_1313e
+	BL _f_11344
+	BAL _$j_130fa
+
+; 1316C
+_num_stat_R:
+	PUSH LR
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-64H
+	ADD SP, #-64H
+	PUSH XR4
+	ST ER0, -2H[FP]
+	L R2, [ER0]
+	CMP R2, #-10H
+	BGE _$j_1313e
+	BL _f_11344
+	L ER0, -2H[FP]
+	BL _num_invalid__
+	CMP R0, #2H
+	BEQ _$j_130d4
+	BAL _$j_130ec
+
+; 13190
+_num_stat_to_t:
+	PUSH LR
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-64H
+	ADD SP, #-64H
+	PUSH XR4
+	ST ER0, -2H[FP]
+	L R2, [ER0]
+	CMP R2, #-10H
+	BGE _$j_1313e
+	MOV R12, #0H
+	BL _f_1267C
+	L ER2, -2H[FP]
+	MOV ER0, #-14H
+	ADD ER0, FP
+	BL _num_cpy
+	MOV R2, #0B0H
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, #-14H
+	ADD ER0, FP
+	BL _f_1A424
+	MOV R2, #9CH
+	MOV R3, #0FFH
+	ADD ER2, FP
+	MOV ER0, #-14H
+	ADD ER0, FP
+	BL _f_1A44C
+	MOV ER0, #-14H
+	ADD ER0, FP
+	BL _f_1B238
+	PUSH R0
+	MOV ER2, #-14H
+	ADD ER2, FP
+	L ER0, -2H[FP]
+	BL _num_cpy
+	POP R0
+	BAL _$j_13136
+	RT
+
+; 131F0
+_f_131F0:
+	PUSH LR
+	PUSH XR8
+	MOV ER8, ER0
+	MOV ER10, ER2
+	MOV R3, R2
+	MOV R2, R1
+	MOV R1, R0
+	SLLC R3, #5
+	SLLC R2, #5
+	SLL R1, #5
+	MOV R0, #0H
+	BL _f_13226
+	MOV ER0, ER2
+	SRLC R0, #1
+	SRL R1, #1
+	MOV ER2, #0H
+	BL _f_13226
+	SLLC R3, #5
+	SLLC R2, #5
+	SLLC R1, #5
+	SLL R0, #5
+	BL _f_13226
+	POP XR8
+	POP PC
+
+; 13226
+_f_13226:
+	XOR R0, R8
+	XOR R1, R9
+	XOR R2, R10
+	XOR R3, R11
+	MOV ER8, ER0
+	MOV ER10, ER2
+	RT
+
+; 13234
+_num_random:
+	PUSH LR
+	PUSH QR8
+	PUSH XR4
+	MOV FP, SP
+	ADD SP, #-14H
+	MOV ER10, ER0
+	MOV R2, #BYTE1 _random_seed
+	MOV R3, #BYTE2 _random_seed
+	MOV ER8, ER2
+	MOV ER4, FP
+	ADD ER4, #-14H
+	MOV ER0, ER4
+	BL _num_cpy
+	MOV ER0, ER4
+	ADD ER0, #8H
+	L R12, [ER0]
+	MOV ER0, ER4
+	BL _num_normalize
+_$j_1325c:
+	MOV ER0, ER4
+	ADD ER0, #0AH
+	MOV ER6, ER0
+	MOV R2, R12
+	BL _num_frombyte
+	MOV ER0, ER6
+	BL _num_normalize
+	MOV ER0, ER4
+	MOV ER2, ER6
+	BL _num_add_1
+	CMP R0, #0H
+	BNE _mv_n4_1d10
+	MOV ER0, ER4
+	BL _num_invalid_zf__
+	BEQ _mv_n4_1d10
+	MOV ER0, ER4
+	BL _num_normalize
+	MOV R2, #0DEH
+	MOV R3, #4CH
+	BL _num_mul_2__
+	MOV ER0, ER4
+	BL _num_unk_1__
+	BL _f_131F0
+	PUSH XR0
+	MOV ER0, ER4
+	BL _num_unk_2__
+	ADD SP, #4H
+	MOV ER0, ER4
+	MOV R2, #0DEH
+	MOV R3, #4CH
+	BL _num_div_1
+	MOV ER0, ER4
+	BL _f_1B378
+	BL _mv_n8_n4
+	MOV ER0, ER4
+	MOV ER2, #3H
+	BL _num_mulxp__
+	MOV ER0, ER4
+	BL _num_trunc__
+	MOV ER0, ER4
+	MOV ER2, #-3H
+	BL _num_mulxp__
+	BL _mv_n10_n4
+	MOV R0, #0H
+	MOV SP, FP
+	POP XR4
+	POP QR8
+	POP PC
+
+; 132DC
+_mv_n4_1d10:
+	MOV ER0, ER4
+	MOV R2, #1H
+	BL _num_fromdigit
+	MOV ER0, ER4
+	BL _num_normalize
+	BAL _$j_1325c
+
+; 132EC
+_num_normalize:
+	ADD ER0, #8H
+	MOV R3, #0H
+	MOV R2, #99H
+	ST ER2, [ER0]
+	RT
+
+; 132F6
+_f_132F6:
+	PUSH LR
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-0AH
+	MOV ER10, ER0
+	BL _num_invalid__
+	MOV R12, R0
+	MOV ER0, FP
+	ADD ER0, #-0AH
+	MOV ER8, ER0
+	MOV ER2, ER10
+	BL _num_cpy
+	MOV ER0, ER10
+	BL _num_trunc__
+	CMP R12, #2H
+	BNE _$j_13332
+	MOV ER0, ER8
+	MOV ER2, ER10
+	BL _num_cmp
+	CMP R0, #1H
+	BEQ _$j_13332
+	MOV ER0, ER10
+	MOV R2, #BYTE1 _unk_017c8
+	MOV R3, #BYTE2 _unk_017c8
+	BL _f_1A424
+_$j_13332:
+	MOV R0, #0H
+	MOV SP, FP
+	POP QR8
+	POP PC
+
+; 1333A
+_num_randint:
+	PUSH LR
+	PUSH ER6
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-14H
+	MOV ER8, ER0
+	MOV ER0, FP
+	ADD ER0, #-0AH
+	MOV BP, ER0
+	BL _num_cpy
+	MOV ER0, ER8
+	BL _f_14800
+	MOV ER0, ER8
+	BL _f_1ADF0
+	BNE _$j_133bc
+	MOV ER0, BP
+	BL _f_14800
+	MOV ER0, BP
+	BL _f_1ADF0
+	BNE _$j_133bc
+	MOV ER0, BP
+	MOV ER2, ER8
+	BL _f_1A424
+	MOV ER0, BP
+	BL _f_1ADF0
+	BNE _$j_133bc
+	MOV ER0, BP
+	BL _num_invalid__
+	CMP R0, #4H
+	BNE _$j_133bc
+	MOV ER0, BP
+	MOV R2, #BYTE1 _unk_017c8
+	MOV R3, #BYTE2 _unk_017c8
+	BL _f_1A460
+	MOV ER0, FP
+	ADD ER0, #-14H
+	MOV ER6, ER0
+	BL _num_random
+	MOV R2, #BYTE1 _random_seed
+	MOV R3, #BYTE2 _random_seed
+	MOV ER0, ER6
+	BL _num_cpy
+	MOV ER0, BP
+	MOV ER2, ER6
+	BL _f_1A438
+	MOV ER0, ER8
+	MOV ER2, BP
+	BL _f_1A460
+	MOV ER0, ER8
+	BL _f_132F6
+	BAL _$j_133c6
+_$j_133bc:
+	MOV R2, #8H
+	MOV ER0, ER8
+	BL _f_1B12C
+	MOV R0, #8H
+_$j_133c6:
+	MOV SP, FP
+	POP QR8
+	POP ER6
+	POP PC
+
+; 133CE
+_f_133CE:
+	PUSH LR
+	MOV ER2, ER6
+_$j_133d2:
+	MOV ER0, ER4
+	BAL _$j_133dc
+
+; 133D6
+_f_133D6:
+	PUSH LR
+	MOV ER2, BP
+_$j_133da:
+	MOV ER0, ER8
+_$j_133dc:
+	BL _num_mul_1
+	POP PC
+
+; 133E2
+_num_mul_2__:
+	PUSH LR
+	BAL _$j_133d2
+
+; 133E6
+_mv_n8_n4:
+	PUSH LR
+	MOV ER0, ER8
+
+; 133EA
+_mv_n0_n4:
+	MOV ER2, ER4
+	BAL _mv_n0_n2
+
+; 133EE
+_mv_n10_n4:
+	PUSH LR
+	MOV ER2, ER4
+
+; 133F2
+_mv_n10_n2:
+	MOV ER0, ER10
+
+; 133F4
+_mv_n0_n2:
+	BL _num_cpy
+	POP PC
+
+; 133FA
+_num_invalid_zf__:
+	PUSH LR
+	BL _num_invalid__
+	CMP R0, #1H
+	POP PC
+
+; 13404
+_mat_add:
+	PUSH LR
+	PUSH QR8
+	MOV R14, #0H
+_$j_1340a:
+	PUSH XR4
+	MOV ER10, ER0
+	L R4, [ER0]
+	L R6, [ER2]
+	BL _f_13B42
+	MOV R7, R6
+	SRL R7, #4
+	CMP R5, R7
+	BNE _$j_1346e
+	CMP R5, #9H
+	BEQ _$j_13426
+	CMP R5, #6H
+	BNE _$j_1346e
+_$j_13426:
+	BL _f_13474
+	BL _f_134B0
+	CMP ER0, ER8
+	BNE _$j_1346e
+	BL _f_13488
+	BEQ _$j_1346e
+	MUL ER6, R2
+	ADD ER6, ER0
+	MOV R12, #0H
+_$j_1343e:
+	MOV R13, #0H
+_$j_13440:
+	BL _f_134A0
+	ADD ER2, ER6
+	CMP R14, #0H
+	BNE _$j_13450
+	BL _num_add_1
+	BAL _$j_13454
+_$j_13450:
+	BL _num_sub_1
+_$j_13454:
+	CMP R0, #0H
+	BNE _$j_1346c
+	ADD R13, #1H
+	CMP R13, R9
+	BLT _$j_13440
+	ADD R12, #1H
+	CMP R12, R8
+	BLT _$j_1343e
+	MOV R0, #0H
+_$j_13466:
+	POP XR4
+	POP QR8
+	POP PC
+_$j_1346c:
+	MOV R2, R0
+_$j_1346e:
+	MOV FP, SP
+	B _$j_136b2
+
+; 13474
+_f_13474:
+	AND R4, #00001111B
+	AND R6, #00001111B
+	MOV R2, #BYTE1 _d_080E0
+	MOV R3, #BYTE2 _d_080E0
+	MOV R0, R4
+	MOV R1, #0H
+	ADD ER0, ER0
+	ADD ER0, ER2
+	L ER8, [ER0]
+	RT
+
+; 13488
+_f_13488:
+	MOV R2, #9H
+	CMP R8, #0H
+	BEQ _$j_1349e
+	CMP R9, #0H
+	BEQ _$j_1349e
+	MOV R0, #BYTE1 _d_0829E
+	MOV R1, #BYTE2 _d_0829E
+	MOV R2, #5AH
+	MUL ER4, R2
+	ADD ER4, ER0
+	MOV R8, R8
+_$j_1349e:
+	RT
+
+; 134A0
+_f_134A0:
+	MOV R0, #3H
+	MUL ER0, R12
+	ADD R0, R13
+	MOV R2, #0AH
+	MUL ER0, R2
+	MOV ER2, ER0
+	ADD ER0, ER4
+	RT
+
+; 134B0
+_f_134B0:
+	MOV R0, R6
+	MOV R1, #0H
+	ADD ER0, ER0
+	ADD ER2, ER0
+	L ER0, [ER2]
+	MOV R2, #9H
+	RT
+
+; 134BE
+_mat_sub:
+	PUSH LR
+	PUSH QR8
+	MOV R14, #1H
+	BAL _$j_1340a
+
+; 134C6
+_mat_mul_num:
+	PUSH LR
+	PUSH QR8
+	MOV R14, #0H
+_$j_134cc:
+	PUSH XR4
+	MOV ER10, ER0
+	MOV BP, ER2
+	L R4, [ER2]
+	MOV R2, #3H
+	SRL R4, #4
+	CMP R4, #6H
+	BGE _$j_1346e
+	L R4, [ER0]
+	MOV R5, R4
+	SRL R5, #4
+	CMP R5, #9H
+	BEQ _$j_134ea
+	CMP R5, #6H
+	BNE _$j_1346e
+_$j_134ea:
+	BL _f_13474
+	BL _f_13488
+	BEQ _$j_1346e
+	MOV ER6, BP
+	MOV R12, #0H
+_$j_134f8:
+	MOV R13, #0H
+_$j_134fa:
+	BL _f_134A0
+	MOV ER2, ER6
+	CMP R14, #1H
+	BEQ _$j_1350e
+	CMP R14, #2H
+	BEQ _$j_13514
+	BL _num_mul_1
+	BAL _$j_13518
+_$j_1350e:
+	BL _num_div_1
+	BAL _$j_13518
+_$j_13514:
+	BL _f_1AD86
+_$j_13518:
+	CMP R0, #0H
+	BNE _$j_1346c
+	BL _check_ac
+	BNE _$j_1346c
+	ADD R13, #1H
+	CMP R13, R9
+	BLT _$j_134fa
+	ADD R12, #1H
+	CMP R12, R8
+	BLT _$j_134f8
+	MOV R0, #0H
+	BAL _$j_13466
+
+; 13532
+_mat_div:
+	PUSH LR
+	PUSH QR8
+	MOV R14, #1H
+	BAL _$j_134cc
+
+; 1353A
+_f_1353A:
+	PUSH LR
+	PUSH QR8
+	MOV R14, #2H
+	BC AL, _$j_134cc
+
+; 13542
+_f_13542:
+	PUSH LR
+	PUSH QR8
+	MOV R14, #0H
+_$j_13548:
+	PUSH XR4
+	MOV ER10, ER0
+	L R4, [ER0]
+	BL _f_13B42
+	CMP R5, #9H
+	BNE _$j_13560
+	CMP R14, #0H
+	BEQ _$j_13564
+	CMP R14, #3H
+	BEQ _$j_13564
+	BAL _$j_1346e
+_$j_13560:
+	CMP R5, #6H
+	BNE _$j_1346e
+_$j_13564:
+	BL _f_13474
+	BL _f_13488
+	BEQ _$j_1346e
+	MOV R12, #0H
+_$j_13570:
+	MOV R13, #0H
+_$j_13572:
+	BL _f_134A0
+	MOV ER6, ER0
+	CMP R14, #1H
+	BEQ _$j_13594
+	CMP R14, #2H
+	BEQ _$j_1359a
+	CMP R14, #3H
+	BEQ _$j_135a8
+	PUSH BP
+	MOV ER0, ER6
+	MOV BP, ER0
+	BL _f_1481C
+	POP BP
+	MOV R0, #0H
+	BAL _$j_135ac
+_$j_13594:
+	BL _num_abs
+	BAL _$j_135ac
+_$j_1359a:
+	BL _f_1B208
+	MOV ER0, ER6
+	BL _f_110C4
+	MOV R0, #0H
+	BAL _$j_135ac
+_$j_135a8:
+	BL _f_1B238
+_$j_135ac:
+	CMP R0, #0H
+	BEQ _$j_135b4
+	B _$j_1346c
+_$j_135b4:
+	ADD R13, #1H
+	CMP R13, R9
+	BLT _$j_13572
+	ADD R12, #1H
+	CMP R12, R8
+	BLT _$j_13570
+	MOV R0, #0H
+	B _$j_13466
+	PUSH LR
+	PUSH QR8
+	MOV R14, #1H
+	BAL _$j_13548
+
+; 135C6
+_f_135C6:
+	PUSH LR
+	PUSH QR8
+	MOV R14, #1H
+	BC AL, _$j_13548
+
+; 135CE
+_f_135CE:
+	PUSH LR
+	PUSH QR8
+	MOV R14, #2H
+	BAL _$j_13548
+
+; 135D6
+_f_135D6:
+	PUSH LR
+	PUSH QR8
+	MOV R14, #3H
+	BAL _$j_13548
+
+; 135DE
+_mat_mul:
+	PUSH LR
+	PUSH QR8
+	PUSH XR4
+	MOV FP, SP
+	ADD SP, #-6EH
+	MOV ER10, ER0
+	L R4, [ER0]
+	L R6, [ER2]
+	BL _f_13B42
+	MOV R7, R6
+	SRL R7, #4
+	CMP R5, R7
+	BNE _$j_136b2
+	CMP R5, #6H
+	BNE _$j_136b2
+	BL _f_13474
+	MOV BP, ER0
+	BL _f_134B0
+	CMP R9, R0
+	BNE _$j_136b2
+	CMP R9, #0H
+	BEQ _$j_136b2
+	ST R8, -1H[FP]
+	ST R9, -2H[FP]
+	ST R1, -3H[FP]
+	MOV R9, R1
+	ST ER8, [BP]
+	BL _f_13488
+	BEQ _$j_136b2
+	ST ER4, -6H[FP]
+	MUL ER6, R2
+	ADD ER6, ER0
+	ST ER6, -8H[FP]
+	MOV ER8, FP
+	ADD ER8, #-32H
+	ADD ER8, #-3CH
+	ST ER8, -0AH[FP]
+	MOV ER0, ER8
+	BL _f_13B36
+	MOV ER6, FP
+	ADD ER6, #-14H
+	MOV R12, #0H
+_$j_1363c:
+	MOV R13, #0H
+_$j_1363e:
+	MOV R9, #0H
+	L ER4, -0AH[FP]
+	BL _f_134A0
+	MOV ER4, ER0
+_$j_13648:
+	MOV R0, #3H
+	MUL ER0, R12
+	ADD R0, R9
+	MOV R2, #0AH
+	MUL ER0, R2
+	L ER2, -6H[FP]
+	ADD ER2, ER0
+	BL _f_13BCC
+	MOV R0, #3H
+	MUL ER0, R9
+	ADD R0, R13
+	MOV R2, #0AH
+	MUL ER0, R2
+	L ER2, -8H[FP]
+	ADD ER2, ER0
+	BL _f_13BA6
+	MOV ER0, ER4
+	MOV ER2, ER6
+	BL _num_add_1
+	CMP R0, #0H
+	BNE _$j_136b0
+	BL _check_ac
+	BNE _$j_136b0
+	ADD R9, #1H
+	L R0, -2H[FP]
+	CMP R9, R0
+	BLT _$j_13648
+	ADD R13, #1H
+	L R0, -3H[FP]
+	CMP R13, R0
+	BLT _$j_1363e
+	ADD R12, #1H
+	L R0, -1H[FP]
+	CMP R12, R0
+	BLT _$j_1363c
+	MOV R1, #0H
+	MOV R0, #5AH
+	PUSH ER0
+	L ER0, -6H[FP]
+	L ER2, -0AH[FP]
+	BL _memcpy_nn
+	POP ER0
+	MOV R0, #0H
+_$j_136a8:
+	MOV SP, FP
+	POP XR4
+	POP QR8
+	POP PC
+_$j_136b0:
+	MOV R2, R0
+_$j_136b2:
+	MOV ER0, ER10
+	PUSH R2
+	BL _f_1B12C
+	POP R0
+	BAL _$j_136a8
+
+; 136BE
+_f_136BE:
+	PUSH LR
+	PUSH QR8
+	PUSH XR4
+	MOV FP, SP
+	ADD SP, #-0AH
+	MOV R4, #0H
+_$j_136ca:
+	ST R4, -1H[FP]
+	MOV ER10, ER0
+	L R4, [ER0]
+	BL _f_13B42
+	CMP R5, #6H
+	BNE _$j_136b2
+	BL _f_13474
+	MOV BP, ER0
+	MOV R2, #9H
+	CMP R8, #0H
+	BEQ _$j_136b2
+	CMP R9, #0H
+	BEQ _$j_136b2
+	MOV R0, #BYTE1 _d_0829E
+	MOV R1, #BYTE2 _d_0829E
+	MOV R2, #5AH
+	MUL ER4, R2
+	ADD ER4, ER0
+	L R0, -1H[FP]
+	BNE _$j_1374a
+	MOV R1, R8
+	MOV R0, R9
+	ST ER0, [BP]
+	MOV ER8, FP
+	ADD ER8, #-0AH
+	MOV R12, #0H
+_$j_13702:
+	MOV R13, #0H
+_$j_13704:
+	BL _f_134A0
+	MOV ER2, ER0
+	MOV ER6, ER2
+	BL _f_13BD4
+	MOV R0, #3H
+	MUL ER0, R13
+	ADD R0, R12
+	MOV R2, #0AH
+	MUL ER2, R0
+	ADD ER2, ER4
+	MOV ER10, ER2
+	BL _f_13BCC
+	MOV ER2, ER8
+	BL _f_13BDC
+	ADD R13, #1H
+	CMP R13, R12
+	BGE _$j_13732
+	CMP R13, #3H
+	BLT _$j_13704
+_$j_13732:
+	ADD R12, #1H
+	CMP R12, #3H
+	BLT _$j_13702
+	MOV R0, #0H
+	BAL _$j_136a8
+
+; 1373C
+_mat_det:
+	PUSH LR
+	PUSH QR8
+	PUSH XR4
+	MOV FP, SP
+	ADD SP, #-78H
+	MOV R4, #1H
+	BAL _$j_136ca
+_$j_1374a:
+	MOV R2, #9H
+	CMP R8, R9
+	BNE _$j_136b2
+	MOV ER6, FP
+	ADD ER6, #-3CH
+	ADD ER6, #-3CH
+	ST ER6, -4H[FP]
+	MOV ER0, ER6
+	BL _f_13B36
+	MOV R12, #0H
+_$j_13760:
+	MOV R13, #0H
+_$j_13762:
+	BL _f_134A0
+	L ER0, -4H[FP]
+	ADD ER0, ER2
+	MOV ER6, ER0
+	ADD ER2, ER4
+	BL _num_cpy
+	MOV ER0, ER6
+	BL _f_1B208
+	MOV ER0, ER6
+	BL _f_110C4
+	BL _check_ac
+	BNE _$j_136b0
+	ADD R13, #1H
+	CMP R13, R8
+	BLT _$j_13762
+	ADD R12, #1H
+	CMP R12, R8
+	BLT _$j_13760
+	ST ER4, -6H[FP]
+	L ER4, -4H[FP]
+	MOV ER6, FP
+	ADD ER6, #-1EH
+	MOV BP, ER6
+	ADD BP, #0AH
+	CMP R8, #2H
+	BEQ _$j_137aa
+	CMP R8, #3H
+	BEQ _$j_137d0
+	BL _f_13BC4
+	BAL _$j_13850
+_$j_137aa:
+	PUSH XR8
+	MOV R8, #0H
+	MOV R9, #28H
+	MOV R10, #0AH
+	MOV R11, #1EH
+	ADD ER6, #-0AH
+	BL _f_139AE
+	POP XR8
+	CMP R0, #0H
+	BEQ _$j_137c4
+	B _$j_136b0
+_$j_137c4:
+	BL _check_ac
+	BEQ _$j_137ce
+	B _$j_136b0
+_$j_137ce:
+	BAL _$j_13850
+_$j_137d0:
+	BL _f_13BC4
+	MOV ER2, ER4
+	ADD ER2, #28H
+	BL _f_13BA6
+	MOV ER2, ER4
+	ADD ER2, #3CH
+	ADD ER2, #14H
+	BL _f_13BA6
+	PUSH XR8
+	MOV R8, #0AH
+	MOV R10, #32H
+	MOV R11, #3CH
+	BL _f_13982
+	BL _num_add_1
+	MOV R8, #14H
+	MOV R10, #1EH
+	MOV R11, #46H
+	BL _f_13982
+	POP XR8
+	BL _num_add_1
+	BL _check_ac
+	BEQ _$j_13810
+	B _$j_136b0
+_$j_13810:
+	PUSH XR8
+	MOV R8, #14H
+	MOV R10, #28H
+	MOV R11, #3CH
+	BL _f_13982
+	BL _num_sub_1
+	MOV R8, #0AH
+	MOV R10, #1EH
+	MOV R11, #50H
+	BL _f_13982
+	BL _num_sub_1
+	MOV R8, #0H
+	MOV R10, #32H
+	MOV R11, #46H
+	BL _f_13982
+	POP XR8
+	BL _num_sub_1
+	CMP R0, #0H
+	BEQ _$j_13846
+	B _$j_136b0
+_$j_13846:
+	BL _check_ac
+	BEQ _$j_13850
+	B _$j_136b0
+_$j_13850:
+	L R0, -1H[FP]
+	CMP R0, #1H
+	BNE _$j_13870
+	BL _f_13BBC
+	MOV R0, #0H
+	B _$j_136a8
+
+; 13860
+_f_13860:
+	PUSH LR
+	PUSH QR8
+	PUSH XR4
+	MOV FP, SP
+	ADD SP, #-78H
+	MOV R4, #2H
+	B _$j_136ca
+_$j_13870:
+	MOV R2, #3H
+	MOV ER0, ER6
+	BL _num_invalid_zf__
+	BNE _$j_1387e
+	B _$j_136b2
+_$j_1387e:
+	ST ER6, -8H[FP]
+	L ER6, -6H[FP]
+	CMP R8, #2H
+	BEQ _$j_13894
+	CMP R8, #3H
+	BEQ _$j_138d4
+	MOV R2, #1H
+	MOV ER0, ER6
+	BL _num_fromdigit
+	BAL _$j_1396c
+_$j_13894:
+	MOV ER2, ER4
+	ADD ER2, #28H
+	BL _f_13BCC
+	MOV ER8, #0AH
+	BL _f_138BC
+	MOV ER8, #1EH
+	BL _f_138BC
+	MOV ER0, ER6
+	ADD ER0, #28H
+	BL _f_13BE2
+	BL _check_ac
+	BEQ _$j_138ba
+	B _$j_136b0
+_$j_138ba:
+	BAL _$j_1396c
+
+; 138BC
+_f_138BC:
+	PUSH LR
+	MOV ER0, ER6
+	ADD ER0, ER8
+	MOV ER2, ER4
+	ADD ER2, ER8
+	MOV ER8, ER0
+	BL _num_cpy
+	MOV ER0, ER8
+	BL _num_negate
+	POP PC
+_$j_138d4:
+	PUSH XR8
+	MOV R8, #28H
+	MOV R9, #50H
+	MOV R10, #32H
+	MOV R11, #46H
+	ADD ER6, #-0AH
+	BL _f_139AE
+	MOV R8, #14H
+	MOV R9, #46H
+	MOV R10, #0AH
+	MOV R11, #50H
+	BL _f_139AE
+	MOV R8, #0AH
+	MOV R9, #32H
+	MOV R10, #14H
+	MOV R11, #28H
+	BL _f_139AE
+	POP XR8
+	BL _check_ac
+	BEQ _$j_13908
+	B _$j_136b0
+_$j_13908:
+	PUSH XR8
+	MOV R8, #32H
+	MOV R9, #3CH
+	MOV R10, #1EH
+	MOV R11, #50H
+	BL _f_139AE
+	MOV R8, #0H
+	MOV R9, #50H
+	MOV R10, #14H
+	MOV R11, #3CH
+	BL _f_139AE
+	MOV R8, #14H
+	MOV R9, #1EH
+	MOV R10, #0H
+	MOV R11, #32H
+	BL _f_139AE
+	POP XR8
+	BL _check_ac
+	BEQ _$j_1393a
+	B _$j_136b0
+_$j_1393a:
+	PUSH XR8
+	MOV R8, #1EH
+	MOV R9, #46H
+	MOV R10, #28H
+	MOV R11, #3CH
+	BL _f_139AE
+	MOV R8, #0AH
+	MOV R9, #3CH
+	MOV R10, #0H
+	MOV R11, #46H
+	BL _f_139AE
+	MOV R8, #0H
+	MOV R9, #28H
+	MOV R10, #0AH
+	MOV R11, #1EH
+	BL _f_139AE
+	POP XR8
+	BL _check_ac
+	BEQ _$j_1396c
+	B _$j_136b0
+_$j_1396c:
+	MOV ER0, ER10
+	L ER2, -8H[FP]
+	BL _f_1353A
+	CMP R0, #0H
+	BEQ _$j_1397c
+	B _$j_136b0
+_$j_1397c:
+	MOV R0, #0H
+	B _$j_136a8
+
+; 13982
+_f_13982:
+	PUSH LR
+	MOV ER0, BP
+	MOV ER2, ER4
+	MOV R9, #0H
+	ADD ER2, ER8
+	BL _num_cpy
+	MOV R8, R10
+	BL _f_139A2
+	MOV R8, R11
+	BL _f_139A2
+	MOV ER0, ER6
+	MOV ER2, BP
+	POP PC
+
+; 139A2
+_f_139A2:
+	PUSH LR
+	MOV ER2, ER4
+	ADD ER2, ER8
+	BL _f_13BB4
+	POP PC
+
+; 139AE
+_f_139AE:
+	PUSH LR
+	ADD ER6, #0AH
+	MOV ER2, ER4
+	PUSH R9
+	MOV R9, #0H
+	ADD ER2, ER8
+	POP R8
+	BL _f_13BCC
+	MOV ER2, ER4
+	ADD ER2, ER8
+	BL _f_13BA6
+	MOV ER0, BP
+	MOV ER2, ER4
+	MOV R8, R10
+	ADD ER2, ER8
+	BL _num_cpy
+	MOV R8, R11
+	BL _f_139A2
+	MOV ER0, ER6
+	MOV ER2, BP
+	BL _num_sub_1
+	POP PC
+
+; 139E4
+_f_139E4:
+	PUSH LR
+	PUSH QR8
+	PUSH XR4
+	MOV ER14, SP
+	ADD SP, #-0AH
+	MOV R4, #0H
+_$j_139f0:
+	ST R4, -1H[ER14]
+	MOV ER10, ER0
+	L R4, [ER0]
+	L R6, [ER2]
+	BL _f_13B42
+	MOV R7, R6
+	SRL R7, #4
+	CMP R5, R7
+	BC EQ, _$j_13a08
+	B _$j_136b2
+_$j_13a08:
+	CMP R5, #9H
+	BC EQ, _$j_13a10
+	B _$j_136b2
+_$j_13a10:
+	BL _f_13474
+	MOV ER12, ER0
+	BL _f_134B0
+	CMP ER0, ER8
+	BC EQ, _$j_13a22
+	B _$j_136b2
+_$j_13a22:
+	BL _f_13488
+	BC NE, _$j_13a2c
+	B _$j_136b2
+_$j_13a2c:
+	MUL ER6, R2
+	ADD ER6, ER0
+	L R0, -1H[ER14]
+	BC NE, _$j_13a80
+	MOV R13, R9
+	MOV ER8, ER14
+	ADD ER8, #-0AH
+	MOV R12, #0H
+	MOV R2, #0H
+	MOV ER0, ER10
+	BL _num_fromdigit
+	MOV ER2, #0H
+_$j_13a46:
+	ADD ER4, ER2
+	ADD ER6, ER2
+	BL _mv_n8_n4
+	MOV ER2, ER6
+	BL _f_13BAE
+	MOV ER0, ER10
+	MOV ER2, ER8
+	BL _num_add_1
+	CMP R0, #0H
+	BC EQ, _$j_13a64
+	B _$j_136b0
+_$j_13a64:
+	MOV ER2, #0AH
+	ADD R12, #1H
+	CMP R12, R13
+	BC LT, _$j_13a46
+	MOV R0, #0H
+	B _$j_136a8
+
+; 13A72
+_f_13A72:
+	PUSH LR
+	PUSH QR8
+	PUSH XR4
+	MOV ER14, SP
+	ADD SP, #-28H
+	MOV R4, #1H
+	BC AL, _$j_139f0
+_$j_13a80:
+	MOV ER0, ER14
+	ADD ER0, #-28H
+	MOV ER2, #14H
+	BL _memzero
+	MOV R0, #1H
+	MOV R1, #3H
+	ST ER0, [ER12]
+	MOV R1, R9
+	MOV ER8, ER14
+	ADD ER8, #-0AH
+	CMP R1, #3H
+	BC NE, _$j_13ac2
+	PUSH ER10
+	MOV ER0, #-28H
+	MOV ER10, #0AH
+	MOV ER12, #14H
+	BL _f_13AFE
+	POP ER10
+	BC EQ, _$j_13aae
+	B _$j_136b0
+_$j_13aae:
+	PUSH ER10
+	MOV ER0, #-1EH
+	MOV ER10, #14H
+	MOV ER12, #0H
+	BL _f_13AFE
+	POP ER10
+	BC EQ, _$j_13ac2
+	B _$j_136b0
+_$j_13ac2:
+	PUSH ER10
+	MOV ER0, #-14H
+	MOV ER10, #0H
+	MOV ER12, #0AH
+	BL _f_13AFE
+	POP ER10
+	BC EQ, _$j_13ad6
+	B _$j_136b0
+_$j_13ad6:
+	MOV ER0, ER4
+	MOV ER2, ER14
+	ADD ER2, #-28H
+	BL _num_cpy
+	MOV ER0, ER4
+	ADD ER0, #0AH
+	MOV ER2, ER14
+	ADD ER2, #-1EH
+	BL _num_cpy
+	MOV ER0, ER4
+	ADD ER0, #14H
+	MOV ER2, ER14
+	ADD ER2, #-14H
+	BL _num_cpy
+	MOV R0, #0H
+	B _$j_136a8
+
+; 13AFE
+_f_13AFE:
+	PUSH LR
+	ADD ER0, ER14
+	PUSH ER0
+	MOV ER2, ER4
+	ADD ER2, ER10
+	BL _num_cpy
+	POP ER0
+	PUSH ER0
+	MOV ER2, ER6
+	ADD ER2, ER12
+	BL _num_mul_1
+	MOV ER2, ER4
+	ADD ER2, ER12
+	BL _f_13BD4
+	MOV ER2, ER6
+	ADD ER2, ER10
+	BL _f_13BAE
+	POP ER0
+	MOV ER2, ER8
+	BL _num_sub_1
+	MOV ER12, ER14
+	CMP R0, #0H
+	POP PC
+
+; 13B36
+_f_13B36:
+	PUSH LR
+	MOV R3, #0H
+	MOV R2, #5AH
+	BL _memzero
+	POP PC
+
+; 13B42
+_f_13B42:
+	MOV R5, R4
+	SRL R5, #4
+	MOV R2, #3H
+	RT
+
+; 13B4A
+_f_13B4A:
+	PUSH LR
+	PUSH QR8
+	PUSH XR4
+	MOV ER14, SP
+	ADD SP, #-14H
+	MOV ER10, ER0
+	L R4, [ER0]
+	BL _f_13B42
+	CMP R5, #9H
+	BC EQ, _$j_13b64
+	B _$j_136b2
+_$j_13b64:
+	BL _f_13474
+	BL _f_13488
+	BC NE, _$j_13b72
+	B _$j_136b2
+_$j_13b72:
+	MOV R13, R9
+	MOV ER6, ER14
+	ADD ER6, #-14H
+	MOV ER8, ER6
+	ADD ER8, #0AH
+	MOV R12, #1H
+	BL _f_13BC4
+_$j_13b82:
+	ADD ER4, #0AH
+	BL _mv_n8_n4
+	MOV ER0, ER6
+	BL _cmplx_abs
+	CMP R0, #0H
+	BC EQ, _$j_13b96
+	B _$j_136b0
+_$j_13b96:
+	ADD R12, #1H
+	CMP R12, R13
+	BC LT, _$j_13b82
+	BL _f_13BBC
+	MOV R0, #0H
+	B _$j_136a8
+
+; 13BA6
+_f_13BA6:
+	PUSH LR
+	MOV ER0, ER6
+	B _$j_133dc
+
+; 13BAE
+_f_13BAE:
+	PUSH LR
+	B _$j_133da
+
+; 13BB4
+_f_13BB4:
+	PUSH LR
+	MOV ER0, BP
+	B _$j_133dc
+
+; 13BBC
+_f_13BBC:
+	PUSH LR
+	MOV ER2, ER6
+	B _mv_n10_n2
+
+; 13BC4
+_f_13BC4:
+	PUSH LR
+	MOV ER0, ER6
+	B _mv_n0_n4
+
+; 13BCC
+_f_13BCC:
+	PUSH LR
+	MOV ER0, ER6
+	B _mv_n0_n2
+
+; 13BD4
+_f_13BD4:
+	PUSH LR
+	MOV ER0, ER8
+	B _mv_n0_n2
+
+; 13BDC
+_f_13BDC:
+	PUSH LR
+	B _mv_n10_n2
+
+; 13BE2
+_f_13BE2:
+	PUSH LR
+	MOV ER2, ER4
+	B _mv_n0_n2
+
+; 13BEA
+_f_13BEA:
+	PUSH LR
+	PUSH QR8
+	PUSH XR4
+	MOV FP, SP
+	ADD SP, #-1EH
+	BL _f_0479C
+	MOV R4, #BYTE1 _d_0829E
+	MOV R5, #BYTE2 _d_0829E
+	MOV R2, #5AH
+	MOV R6, #4H
+	MUL ER6, R2
+	ADD ER6, ER4
+	ST ER6, -4H[FP]
+	MOV R3, #0H
+	ADD ER2, ER6
+	ST ER2, -6H[FP]
+	MOV ER0, ER6
+	MOV R3, #0H
+	MOV R2, #0B4H
+	BL _memzero
+	MOV R2, #BYTE1 _d_080E0
+	MOV R3, #BYTE2 _d_080E0
+	L R8, _submode
+	ST R8, -1H[FP]
+	CMP R8, #3H
+	BGE _$j_13cd0
+	ADD R8, #1H
+	ADD ER2, #8H
+	MOV R0, R8
+	MOV R1, R8
+	ST ER0, [ER2]
+	ADD ER2, #2H
+	MOV R1, #1H
+	ST ER0, [ER2]
+	MOV R12, #0H
+_$j_13c36:
+	MOV R13, #0H
+_$j_13c38:
+	BL _f_134A0
+	PUSH ER2
+	MOV ER2, ER0
+	POP ER0
+	ADD ER0, ER6
+	BL _num_cpy
+	ADD R13, #1H
+	CMP R13, R8
+	BLT _$j_13c38
+	ADD R12, #1H
+	CMP R12, R8
+	BLT _$j_13c36
+	L ER6, -6H[FP]
+	CMP R8, #2H
+	BEQ _$j_13c60
+	MOV R2, #5AH
+	MOV R3, #0H
+	ADD ER4, ER2
+_$j_13c60:
+	MOV R12, #0H
+_$j_13c62:
+	MOV R2, #3H
+	MUL ER2, R12
+	MOV ER0, ER2
+	ADD R2, #2H
+	CMP R8, #2H
+	BEQ _$j_13c70
+	MOV R2, R12
+_$j_13c70:
+	MOV R10, #0AH
+	MUL ER2, R10
+	ADD ER2, ER4
+	MUL ER0, R10
+	ADD ER0, ER6
+	BL _num_cpy
+	ADD R12, #1H
+	CMP R12, R8
+	BLT _$j_13c62
+	MOV ER6, FP
+	ADD ER6, #-1EH
+	MOV ER4, ER6
+	ADD ER4, #0AH
+	MOV R0, #64H
+	ST R0, [ER4]
+	MOV R0, #65H
+	ST R0, [ER6]
+	MOV ER0, ER6
+	BL _f_135CE
+	BL _check_ac
+	BEQ _$j_13ca4
+	B _$j_1438a
+_$j_13ca4:
+	MOV ER0, ER4
+	BL _f_13860
+	CMP R0, #0H
+	BEQ _$j_13cb2
+	B _$j_1438a
+_$j_13cb2:
+	BL _check_ac
+	BEQ _$j_13cbc
+	B _$j_1438a
+_$j_13cbc:
+	MOV ER0, ER4
+	MOV ER2, ER6
+	BL _mat_mul
+	CMP R0, #0H
+	BEQ _$j_13ccc
+	B _$j_1438a
+_$j_13ccc:
+	B _$j_14312
+_$j_13cd0:
+	ADD R8, #-1H
+	ADD ER2, #8H
+	MOV R0, #3H
+	MOV R1, #3H
+	ST ER0, [ER2]
+	ADD ER2, #2H
+	ST ER0, [ER2]
+	MOV R10, #5AH
+	MOV R11, #0H
+	ADD ER10, ER4
+	MOV R13, #0H
+_$j_13ce6:
+	MOV R0, R13
+	MOV R2, #0AH
+	MUL ER0, R2
+	MOV ER2, ER0
+	ADD ER0, ER6
+	ADD ER2, ER4
+	CMP R13, #3H
+	BNE _$j_13cf8
+	MOV ER2, ER10
+_$j_13cf8:
+	BL _num_cpy
+	ADD R13, #1H
+	CMP R13, R8
+	BLE _$j_13ce6
+	MOV ER4, FP
+	ADD ER4, #-0AH
+	MOV R0, #64H
+	ST R0, [ER4]
+	MOV ER0, ER4
+	BL _f_135CE
+	BL _check_ac
+	BEQ _$j_13d1a
+	B _$j_1438a
+_$j_13d1a:
+	ST R8, -8H[FP]
+	BL _f_16CF0
+	MOV R8, R0
+	MOV ER0, ER6
+	ADD ER0, #28H
+	MOV ER4, ER0
+	MOV ER2, ER6
+	BL _num_cpy
+	MOV R12, #0H
+_$j_13d30:
+	BL _f_13E54
+	BL _num_invalid__
+	MOV R9, R0
+	MOV ER0, ER10
+	MOV ER2, ER4
+	BL _f_1724A
+	CMP R0, #0H
+	BEQ _$j_13d4a
+	B _$j_1438a
+_$j_13d4a:
+	MOV ER0, ER10
+	BL _num_invalid__
+	CMP R0, #1H
+	BNE _$j_13d5e
+	MOV R0, #3H
+	CMP R9, #1H
+	BEQ _$j_13d5e
+	B _$j_1438a
+_$j_13d5e:
+	MOV ER0, ER10
+	BL _f_1B238
+	CMP R0, #0H
+	BEQ _$j_13d6c
+	B _$j_1438a
+_$j_13d6c:
+	CMP R8, #1H
+	BEQ _$j_13d76
+	MOV ER0, ER10
+	BL _f_15EE4
+_$j_13d76:
+	ADD R12, #1H
+	CMP R12, #3H
+	BLE _$j_13d30
+	BL _check_ac
+	BEQ _$j_13d86
+	B _$j_1438a
+_$j_13d86:
+	L R8, -8H[FP]
+	CMP R8, #3H
+	BNE _$j_13d90
+	B _$j_13f10
+_$j_13d90:
+	MOV ER0, ER6
+	ADD ER0, #14H
+	BL _num_invalid_zf__
+	BEQ _$j_13e26
+	MOV ER0, ER6
+	ADD ER0, #28H
+	MOV ER4, ER0
+	BL _f_141C6
+	MOV ER0, ER4
+	BL _num_square
+	MOV ER0, ER6
+	ADD ER0, #32H
+	MOV ER10, ER0
+	MOV R2, #4H
+	BL _num_fromdigit
+	MOV ER2, ER6
+	BL _f_141B4
+	MOV ER2, ER6
+	ADD ER2, #14H
+	BL _f_141B4
+	MOV ER2, ER10
+	BL _f_141D0
+	CMP R0, #0H
+	BEQ _$j_13dd2
+	B _$j_1438a
+_$j_13dd2:
+	MOV ER0, ER10
+	MOV R2, #2H
+	BL _num_fromdigit
+	ADD ER10, #0AH
+	MOV ER0, ER10
+	MOV R2, #2H
+	BL _num_fromdigit
+	MOV ER2, ER6
+	BL _f_141B4
+	L ER10, -6H[FP]
+	BL _check_ac
+	BEQ _$j_13df6
+	B _$j_1438a
+_$j_13df6:
+	MOV ER0, ER4
+	BL _num_invalid__
+	CMP R0, #4H
+	BEQ _$j_13e98
+	MOV R9, R0
+	MOV ER0, ER10
+	BL _f_141C6
+	MOV ER0, ER10
+	BL _num_negate
+	MOV ER0, ER10
+	BL _f_141DA
+	BEQ _$j_13e1a
+	B _$j_1438a
+_$j_13e1a:
+	CMP R9, #2H
+	BEQ _$j_13e60
+	MOV R0, #1H
+	SUB R8, R0
+	B _$j_14312
+_$j_13e26:
+	L ER10, -6H[FP]
+	MOV ER0, ER10
+	BL _f_141C6
+	MOV R8, #1H
+	BL _num_invalid_zf__
+	BNE _$j_13e3a
+	B _$j_14312
+_$j_13e3a:
+	MOV R8, #2H
+	MOV ER0, ER10
+	BL _num_negate
+	MOV ER0, ER10
+	MOV ER2, ER6
+	BL _f_1724A
+	BEQ _$j_13e50
+	B _$j_1438a
+_$j_13e50:
+	B _$j_14312
+
+; 13E54
+_f_13E54:
+	MOV R0, R12
+	MOV R2, #0AH
+	MUL ER0, R2
+	ADD ER0, ER6
+	MOV ER10, ER0
+	RT
+_$j_13e60:
+	MOV ER2, ER10
+	BL _f_141BC
+	MOV ER0, ER4
+	BL _num_negate
+	MOV ER0, ER4
+	BL _num_sqrt
+	MOV ER0, ER4
+	BL _f_141DA
+	BEQ _$j_13e7e
+	B _$j_1438a
+_$j_13e7e:
+	MOV ER0, ER10
+	ADD ER0, #0AH
+	BL _f_13BE2
+	MOV ER0, ER4
+	BL _num_negate
+	MOV ER0, ER10
+	ADD ER0, #28H
+	BL _f_13BE2
+	B _$j_14312
+_$j_13e98:
+	MOV ER0, ER4
+	BL _num_sqrt
+	MOV ER0, ER6
+	ADD ER0, #0AH
+	MOV BP, ER0
+	BL _num_invalid__
+	MOV R9, R0
+	MOV ER0, BP
+	BL _num_abs
+	MOV ER0, ER4
+	MOV ER2, BP
+	BL _num_add_1
+	MOV ER0, ER6
+	ADD ER0, #32H
+	MOV BP, ER0
+	MOV ER2, ER6
+	ADD ER2, #14H
+	BL _num_mul_1
+	MOV ER0, BP
+	MOV ER2, ER4
+	BL _f_1724A
+	CMP R0, #0H
+	BEQ _$j_13ed6
+	B _$j_1438a
+_$j_13ed6:
+	MOV ER0, ER4
+	BL _f_141DA
+	BEQ _$j_13ee2
+	B _$j_1438a
+_$j_13ee2:
+	CMP R9, #2H
+	BNE _$j_13ef4
+	BL _mv_n10_n4
+	MOV ER2, BP
+	BL _f_141BC
+	B _$j_14312
+_$j_13ef4:
+	MOV ER0, ER4
+	BL _num_negate
+	MOV ER0, BP
+	BL _num_negate
+	MOV ER2, BP
+	BL _f_13BDC
+	MOV ER2, ER4
+	BL _f_141BC
+	B _$j_14312
+_$j_13f10:
+	MOV ER0, ER6
+	ADD ER0, #1EH
+	BL _num_invalid_zf__
+	BNE _$j_13f1e
+	B _$j_1423e
+_$j_13f1e:
+	MOV ER0, ER6
+	ADD ER0, #28H
+	MOV ER4, ER0
+	MOV R2, #3H
+	BL _num_fromdigit
+	BL _f_133CE
+	MOV ER2, ER6
+	ADD ER2, #14H
+	BL _num_mul_2__
+	MOV ER0, ER4
+	ADD ER0, #28H
+	MOV ER10, ER0
+	BL _f_141C6
+	MOV ER0, ER10
+	BL _num_square
+	MOV ER2, ER10
+	BL _f_141D0
+	CMP R0, #0H
+	BEQ _$j_13f54
+	B _$j_1438a
+_$j_13f54:
+	MOV ER0, ER4
+	ADD ER0, #0AH
+	MOV ER4, ER0
+	MOV R2, #1BH
+	BL _num_frombyte
+	MOV ER0, ER4
+	ADD ER0, #28H
+	MOV ER10, ER0
+	MOV ER2, ER6
+	BL _num_cpy
+	MOV ER0, ER10
+	BL _num_square
+	MOV ER2, ER10
+	BL _num_mul_2__
+	MOV ER2, ER6
+	ADD ER2, #1EH
+	BL _num_mul_2__
+	MOV ER0, ER4
+	ADD ER0, #0AH
+	BL _f_13BE2
+	MOV ER0, ER4
+	ADD ER0, #14H
+	MOV ER8, ER0
+	MOV R2, #9H
+	BL _num_frombyte
+	MOV ER0, ER10
+	ADD ER0, #0AH
+	MOV BP, ER0
+	MOV ER2, ER6
+	BL _num_cpy
+	MOV ER2, ER6
+	ADD ER2, #0AH
+	BL _f_13BB4
+	MOV ER2, ER6
+	ADD ER2, #14H
+	BL _f_13BB4
+	BL _f_133D6
+	MOV ER2, ER8
+	BL _f_141D0
+	MOV ER0, ER8
+	MOV R2, #2H
+	BL _num_frombyte
+	MOV ER0, ER10
+	ADD ER0, #14H
+	MOV BP, ER0
+	BL _f_141C6
+	MOV ER0, BP
+	BL _num_cube
+	BL _f_133D6
+	MOV ER0, ER4
+	MOV ER2, ER8
+	BL _num_add_1
+	CMP R0, #0H
+	BEQ _$j_13fe6
+	B _$j_1438a
+_$j_13fe6:
+	MOV ER0, ER4
+	ADD ER0, #0AH
+	MOV ER4, ER0
+	MOV ER2, ER6
+	ADD ER2, #1EH
+	BL _num_mul_1
+	MOV ER0, ER8
+	MOV R2, #12H
+	BL _num_frombyte
+	BL _f_141AA
+	MOV ER2, ER8
+	ADD ER2, #1EH
+	BL _f_13BAE
+	MOV ER2, ER8
+	BL _f_141D0
+	MOV ER0, ER8
+	MOV R2, #4H
+	BL _num_frombyte
+	BL _f_141AA
+	BL _f_133D6
+	BL _f_14158
+	MOV ER0, ER8
+	BL _num_cube
+	MOV ER0, BP
+	MOV R2, #4H
+	BL _num_frombyte
+	BL _f_133D6
+	MOV ER2, ER6
+	BL _f_13BAE
+	BL _f_14158
+	MOV ER0, ER8
+	BL _num_square
+	MOV ER2, ER8
+	ADD ER2, #0AH
+	BL _f_13BAE
+	MOV ER2, ER8
+	BL _f_141D0
+	CMP R0, #0H
+	BEQ _$j_1405a
+	B _$j_1438a
+_$j_1405a:
+	MOV ER0, ER6
+	ADD ER0, #1EH
+	MOV ER10, ER0
+	MOV R2, #3H
+	BL _num_fromdigit
+	MOV ER2, ER6
+	BL _f_141B4
+	L ER10, -6H[FP]
+	MOV ER0, ER10
+	BL _f_13B36
+	BL _check_ac
+	BEQ _$j_1407e
+	B _$j_1438a
+_$j_1407e:
+	MOV ER0, ER4
+	BL _num_invalid_zf__
+	BNE _$j_1408a
+	B _$j_141e8
+_$j_1408a:
+	CMP R0, #2H
+	BNE _$j_14092
+	B _$j_14250
+_$j_14092:
+	BL _f_1418E
+	MOV ER0, ER4
+	BL _num_sqrt
+	BL _f_133CE
+	MOV ER0, ER6
+	ADD ER0, #28H
+	MOV BP, ER0
+	BL _f_13BE2
+	MOV ER2, BP
+	ADD ER2, #0AH
+	BL _f_141D0
+	MOV ER0, ER4
+	BL _f_14182
+	MOV ER0, ER4
+	BL _num_cbrt
+	MOV ER0, BP
+	MOV ER2, BP
+	ADD ER2, #0AH
+	BL _num_add_1
+	MOV ER0, BP
+	BL _f_14182
+	MOV ER0, BP
+	BL _num_cbrt
+	BL _mv_n10_n4
+	MOV ER0, ER10
+	MOV ER2, BP
+	BL _num_sub_1
+	MOV ER0, ER10
+	ADD ER0, #1EH
+	MOV ER8, ER0
+	MOV ER2, ER10
+	BL _num_cpy
+	BL _f_143D0
+	BEQ _$j_140f6
+	B _$j_1438a
+_$j_140f6:
+	MOV ER0, ER8
+	BL _f_14182
+	MOV ER2, ER6
+	ADD ER2, #0AH
+	BL _f_1416C
+	BL _num_negate
+	CMP R0, #0H
+	BEQ _$j_14110
+	B _$j_1438a
+_$j_14110:
+	MOV ER0, ER8
+	ADD ER0, #1EH
+	MOV ER2, ER8
+	BL _num_cpy
+	ADD ER8, #0AH
+	BL _mv_n8_n4
+	MOV ER2, BP
+	BL _f_1416C
+	BL _f_14182
+	MOV ER0, BP
+	MOV R2, #3H
+	BL _num_frombyte
+	MOV ER0, BP
+	BL _num_sqrt
+	BL _f_133D6
+	CMP R0, #0H
+	BEQ _$j_14144
+	B _$j_1438a
+_$j_14144:
+	MOV ER2, ER8
+	ADD ER8, #1EH
+	BL _f_13BD4
+	MOV ER0, ER8
+	BL _num_negate
+	MOV R8, #3H
+	B _$j_14312
+
+; 14158
+_f_14158:
+	PUSH LR
+	MOV ER0, ER4
+	MOV ER2, ER8
+	BL _num_add_1
+	MOV ER2, ER6
+	ADD ER2, #14H
+	BL _f_13BD4
+	POP PC
+
+; 1416C
+_f_1416C:
+	PUSH LR
+	MOV ER0, ER8
+	BL _num_add_1
+	MOV ER0, ER8
+	MOV ER2, ER6
+	ADD ER2, #1EH
+	BL _f_1724A
+	MOV ER0, ER8
+	POP PC
+
+; 14182
+_f_14182:
+	PUSH LR
+	MOV R2, #BYTE1 _unk_017d2
+	MOV R3, #BYTE2 _unk_017d2
+	BL _f_1724A
+	POP PC
+
+; 1418E
+_f_1418E:
+	PUSH LR
+	MOV ER0, ER8
+	MOV R2, #1BH
+	BL _num_frombyte
+	MOV ER2, ER8
+	B _$j_133d2
+
+; 1419E
+_f_1419E:
+	PUSH LR
+	MOV ER0, BP
+	MOV R2, #BYTE1 _unk_017d2
+	MOV R3, #BYTE2 _unk_017d2
+	B _$j_133dc
+
+; 141AA
+_f_141AA:
+	PUSH LR
+	MOV ER2, ER6
+	ADD ER2, #1EH
+	B _$j_133da
+
+; 141B4
+_f_141B4:
+	PUSH LR
+	MOV ER0, ER10
+	B _$j_133dc
+
+; 141BC
+_f_141BC:
+	PUSH LR
+	MOV ER0, ER10
+	ADD ER0, #1EH
+	B _mv_n0_n2
+
+; 141C6
+_f_141C6:
+	PUSH LR
+	MOV ER2, ER6
+	ADD ER2, #0AH
+	B _mv_n0_n2
+
+; 141D0
+_f_141D0:
+	PUSH LR
+	MOV ER0, ER4
+	BL _num_sub_1
+	POP PC
+
+; 141DA
+_f_141DA:
+	PUSH LR
+	MOV ER2, ER6
+	ADD ER2, #3CH
+	BL _f_1724A
+	CMP R0, #0H
+	POP PC
+_$j_141e8:
+	MOV ER2, ER6
+	ADD ER2, #32H
+	MOV BP, ER2
+	BL _f_13BDC
+	MOV R2, #BYTE1 _unk_017e6
+	MOV R3, #BYTE2 _unk_017e6
+	BL _f_141B4
+	MOV ER0, ER10
+	BL _num_cbrt
+	BL _f_143C2
+	MOV ER0, ER10
+	BL _num_negate
+	CMP R0, #0H
+	BEQ _$j_14212
+	B _$j_1438a
+_$j_14212:
+	ADD ER10, #1EH
+	MOV ER2, BP
+	BL _f_13BDC
+	MOV ER0, ER10
+	BL _f_14182
+	MOV ER0, ER10
+	BL _num_cbrt
+	BL _f_143D0
+	BEQ _$j_14230
+	B _$j_1438a
+_$j_14230:
+	MOV R8, #2H
+	MOV ER0, BP
+	BL _num_invalid_zf__
+	BNE _$j_14312
+	MOV R8, #1H
+	BAL _$j_14312
+_$j_1423e:
+	MOV ER0, ER6
+	ADD ER0, #14H
+	BL _num_invalid_zf__
+	BEQ _$j_1424c
+	B _$j_13d90
+_$j_1424c:
+	B _$j_13e26
+_$j_14250:
+	MOV ER0, ER6
+	ADD ER0, #14H
+	MOV BP, ER0
+	BL _f_1B4B6
+	BL _f_1419E
+	BL _f_1418E
+	MOV ER0, ER4
+	BL _num_negate
+	MOV ER0, ER4
+	BL _num_sqrt
+	BL _f_133CE
+	MOV ER0, ER4
+	MOV ER2, ER6
+	ADD ER2, #32H
+	MOV BP, ER2
+	BL _f_1724A
+	MOV ER0, ER8
+	MOV R2, #1H
+	BL _num_frombyte
+	MOV ER0, BP
+	BL _num_invalid__
+	ST R0, -2H[FP]
+	CMP R0, #2H
+	BNE _$j_14298
+	MOV ER0, ER8
+	BL _num_negate
+_$j_14298:
+	MOV ER0, ER4
+	MOV R2, #5H
+	BL _num_atan
+	CMP R0, #0H
+	BEQ _$j_142c4
+	MOV ER0, ER4
+	BL _f_1B4B6
+	MOV ER0, ER4
+	BL _f_14182
+	MOV ER0, ER4
+	MOV ER2, ER6
+	BL _f_1B152
+	L R0, -2H[FP]
+	CMP R0, #2H
+	BNE _$j_142c4
+	MOV ER0, ER4
+	BL _num_negate
+_$j_142c4:
+	MOV ER0, ER6
+	ADD ER0, #1EH
+	BL _num_negate
+	MOV ER0, ER6
+	ADD ER0, #28H
+	MOV BP, ER0
+	BL _num_negate
+	MOV ER0, BP
+	BL _num_sqrt
+	BL _f_1419E
+	MOV ER2, ER8
+	BL _f_13BB4
+	MOV ER8, ER6
+	ADD ER8, #14H
+	BL _mv_n10_n4
+	BL _f_1438E
+	BNE _$j_1438a
+	BL _f_143B0
+	BL _f_1438E
+	BNE _$j_1438a
+	BL _f_143B0
+	MOV ER0, ER10
+	MOV ER2, ER8
+	BL _num_add_1
+	BL _f_1438E
+	BNE _$j_1438a
+	MOV R8, #3H
+_$j_14312:
+	BL _f_044B6
+	BL _f_085D2
+	MOV R0, #BYTE1 _input_area
+	MOV R1, #BYTE2 _input_area
+	MOV ER10, ER0
+	MOV ER2, #0H
+	BL _smart_strcpy
+	MOV R0, #BYTE1 _input_area_ptr
+	MOV R1, #BYTE2 _input_area_ptr
+	ST ER10, [ER0]
+	MOV R2, #0H
+	ST R2, _d_0810F
+	MOV R10, #40H
+	MOV R11, #81H
+	MOV R0, #3H
+	CMP R8, #0H
+	BEQ _$j_1438a
+	MOV R4, #64H
+	L R0, -1H[FP]
+	CMP R0, #3H
+	BLT _$j_14346
+	MOV R4, #65H
+_$j_14346:
+	MOV R5, #63H
+	BL _f_1548E
+	L ER6, -4H[FP]
+	MOV ER0, ER6
+	MOV R3, #1H
+	MOV R2, #0EH
+	BL _memzero
+	MOV R0, #0A6H
+	MOV R1, #0FFH
+	ADD ER6, ER0
+	MOV R12, #0H
+_$j_14360:
+	MOV R0, #3H
+	MUL ER0, R12
+	MOV R2, #0AH
+	MUL ER2, R0
+	ADD ER2, ER6
+	MOV ER0, ER10
+	BL _f_1B474
+	MOV ER0, ER10
+	BL _f_17202
+	CMP R0, #0H
+	BNE _$j_1438a
+	BL _f_0BC90
+	ADD R12, #1H
+	CMP R12, R8
+	BLT _$j_14360
+	MOV R0, #0H
+	B _$j_136a8
+_$j_1438a:
+	B _$j_136a8
+
+; 1438E
+_f_1438E:
+	PUSH LR
+	MOV ER0, ER10
+	MOV R2, #BYTE1 _unk_017dc
+	MOV R3, #BYTE2 _unk_017dc
+	BL _f_1724A
+	MOV ER0, ER10
+	MOV R2, #5H
+	BL _num_cos
+	MOV ER2, BP
+	BL _f_141B4
+	BL _f_143C2
+	CMP R0, #0H
+	POP PC
+
+; 143B0
+_f_143B0:
+	PUSH LR
+	ADD ER10, #1EH
+	BL _mv_n10_n4
+	MOV ER0, ER10
+	MOV ER2, ER8
+	BL _num_add_1
+	POP PC
+
+; 143C2
+_f_143C2:
+	PUSH LR
+	MOV ER0, ER10
+	MOV ER2, ER6
+	ADD ER2, #0AH
+	BL _num_add_1
+	BAL _$j_143dc
+
+; 143D0
+_f_143D0:
+	PUSH LR
+	MOV ER0, ER10
+	MOV ER2, ER6
+	ADD ER2, #0AH
+	BL _num_sub_1
+_$j_143dc:
+	MOV ER0, ER10
+	MOV ER2, ER6
+	ADD ER2, #1EH
+	BL _f_1724A
+	CMP R0, #0H
+	POP PC
+
+; 143EA
+_f_143EA:
+	PUSH LR
+	L R1, [ER0]
+	MOV R0, #1H
+	CMP R1, #2EH
+	BEQ _$j_14402
+	CMP R1, #74H
+	BEQ _$j_14402
+	CMP R1, #39H
+	BGT _$j_14400
+	CMP R1, #30H
+	BGE _$j_14402
+_$j_14400:
+	MOV R0, #0H
+_$j_14402:
+	POP PC
+
+; 14404
+_f_14404:
+	PUSH LR
+	BL _f_14420
+	BEQ _$j_1441e
+	ADD R0, #2AH
+	CMP R0, #10H
+	BLT _$j_1441e
+	ADD R0, #-10H
+	MOV R2, #0EH
+	MOV R3, #16H
+	ADD R2, R0
+	ADDC R3, #0H
+	L R0, [ER2]
+_$j_1441e:
+	POP PC
+	
+_f_14420:
+	CMP R0, #28H
+	BGT _$j_1442c
+	CMP R0, #0H
+	BEQ _$j_1442e
+	ADD R0, #-2AH
+	RT
+_$j_1442c:
+	MOV R0, #0H
+_$j_1442e:
+	RT
+	
+; 14430
+_f_14430:
+	PUSH LR
+	PUSH ER0
+	MOV R0, #0C8H
+	MOV R1, #17H
+	BL _f_15532
+	MOV R0, #6H
+	ST R0, 1DH[ER12]
+	POP ER0
+	MOV ER2, ER12
+	ADD ER2, #14H
+	BL _mat_mul_num
+	POP PC
+
+; 1444C
+_f_1444C:
+	PUSH LR
+	PUSH XR4
+	PUSH QR8
+	MOV R5, #0H
+	ST R5, [ER2]
+	L R5, [ER0]
+	CMP R5, #10H
+	BGE _$j_144d6
+	MOV BP, ER0
+	MOV FP, ER2
+	BL _f_1459C
+	L R9, _submode
+	CMP R9, #9H
+	BEQ _$j_144dc
+	PUSH R9
+	BL _f_14612
+	POP R9
+	BLT _$j_144d6
+	LEA [FP]
+	MOV R6, #10H
+	MOV R7, #1H
+	MOV R8, R9
+	CMP R9, #1H
+	BNE _$j_14488
+	MOV R4, R1
+	MOV R3, R0
+	BAL _$j_144aa
+_$j_14488:
+	SRL R8, #3
+	ADD R8, #3H
+	MOV R6, #0BH
+	CMP R9, #7H
+	BEQ _$j_1449e
+	MOV R6, #8H
+	MOV R4, R3
+	MOV R3, R2
+	MOV R2, R1
+	MOV R1, R0
+	BAL _$j_144aa
+_$j_1449e:
+	SLLC R4, #7
+	SLLC R3, #7
+	SLLC R2, #7
+	SLLC R1, #7
+	SLL R0, #7
+	RB R4.7
+_$j_144aa:
+	SLLC R5, R8
+	AND R5, R9
+	BNE _$j_144b8
+	CMP R7, #0H
+	BNE _$j_144b8
+	CMP R6, #1H
+	BNE _$j_144c4
+_$j_144b8:
+	MOV R7, #1H
+	ADD R5, #30H
+	CMP R5, #3AH
+	BLT _$j_144c2
+	ADD R5, #7EH
+_$j_144c2:
+	ST R5, [EA+]
+_$j_144c4:
+	ADD R6, #-1H
+	BEQ _$j_144d4
+	SLLC R4, R8
+	SLLC R3, R8
+	SLLC R2, R8
+	SLLC R1, R8
+	SLL R0, R8
+	BAL _$j_144aa
+_$j_144d4:
+	ST R0, [EA+]
+_$j_144d6:
+	POP QR8
+	POP XR4
+	POP PC
+_$j_144dc:
+	LEA [FP]
+	CMP R10, #0H
+	BEQ _$j_144e6
+	MOV R10, #60H
+	ST R10, [EA+]
+_$j_144e6:
+	MOV ER0, ER4
+	MOV ER2, ER6
+	MOV R4, R8
+	MOV ER6, #0AH
+	MOV R8, #4H
+	MOV R9, #0FH
+	BAL _$j_144aa
+
+; 144F4
+_f_144F4:
+	PUSH LR
+	PUSH R4
+	PUSH FP
+	MOV R2, R0
+	BL _f_14562
+	MOV R0, #1H
+	CMP R2, #2H
+	BEQ _$j_14510
+	CMP R2, #3H
+	BEQ _$j_14510
+	CMP R2, #8H
+	BEQ _$j_14510
+_$j_1450e:
+	MOV R0, #0H
+_$j_14510:
+	POP FP
+	POP R4
+	POP PC
+
+; 14516
+_f_14516:
+	PUSH LR
+	PUSH R4
+	PUSH FP
+	MOV R2, R0
+	BL _f_14562
+	CMP R2, #1H
+	BNE _$j_1450e
+	CMP R0, #5FH
+	BEQ _$j_1452e
+	CMP R0, #21H
+	BGE _$j_1450e
+_$j_1452e:
+	MOV R0, #1H
+	BAL _$j_14510
+
+; 14532
+_f_14532:
+	PUSH LR
+	PUSH R4
+	PUSH FP
+	MOV R2, R0
+	BL _f_14562
+	MOV R0, #1H
+	CMP R2, #3H
+	BEQ _$j_1455a
+	CMP R2, #4H
+	BEQ _$j_1455a
+	CMP R2, #5H
+	BEQ _$j_1455a
+	CMP R2, #8H
+	BEQ _$j_1455a
+	CMP R2, #6H
+	BEQ _$j_1455a
+	CMP R2, #7H
+	BEQ _$j_1455a
+	MOV R0, #0H
+_$j_1455a:
+	POP FP
+	POP R4
+	POP PC
+
+; 14560
+_f_14560:
+	L R2, [FP]
+
+; 14562
+_f_14562:
+	MOV R4, #0H
+	MOV R3, #0H
+	MOV ER0, ER2
+	ADD ER2, ER2
+	ADD ER2, ER0
+	MOV R0, #28H
+	MOV R1, #16H
+	SRLC R2, #1
+	ADDC R4, R4
+	SRL R3, #1
+	SLL R4, #2
+	ADD ER2, ER0
+	L R0, [ER2]
+	L R1, 1H[ER2]
+	SRLC R0, R4
+	SRL R1, R4
+	AND R1, #00001111B
+	MOV R2, R1
+	ADD FP, #1H
+	RT
+
+; 1458C
+_f_1458C:
+	XOR R0, #11111111B
+	XOR R1, #11111111B
+	XOR R2, #11111111B
+	XOR R3, #11111111B
+	ADD ER0, #1H
+	ADDC R2, #0H
+	ADDC R3, #0H
+	RT
+
+; 1459C
+_f_1459C:
+	PUSH LR
+	BL _num_invalid__
+	MOV R10, R0
+	MOV ER2, BP
+	ADD SP, #-14H
+	MOV BP, SP
+	MOV ER0, BP
+	BL _num_cpy
+	AND R10, #00000010B
+	BEQ _$j_145bc
+	MOV R10, #1H
+	MOV ER0, BP
+	BL _num_negate
+_$j_145bc:
+	MOV ER0, BP
+	ADD ER0, #0AH
+	MOV R2, #1H
+	BL _num_fromdigit
+	MOV R0, #10H
+	ST R0, 12H[BP]
+	MOV ER0, BP
+	MOV ER2, BP
+	ADD ER2, #0AH
+	BL _f_1A410
+	L R8, 1H[BP]
+	L R7, 2H[BP]
+	L R6, 3H[BP]
+	L R5, 4H[BP]
+	L R4, 5H[BP]
+	ADD SP, #14H
+	POP PC
+
+; 145E2
+_f_145E2:
+	ST R9, 9H[FP]
+	MOV ER0, #0H
+	ST ER0, 6H[FP]
+	CMP R9, #0H
+	BEQ _$j_14600
+	MOV R1, #0AH
+_$j_145ee:
+	ADD R1, #-1H
+	MOV R0, R8
+	SLLC R8, #4
+	SLLC R7, #4
+	SLLC R6, #4
+	SLLC R5, #4
+	SLL R4, #4
+	AND R0, #11110000B
+	BEQ _$j_145ee
+_$j_14600:
+	ST R1, 8H[FP]
+	SRL R0, #4
+	ST R0, [FP]
+	ST R8, 1H[FP]
+	ST R7, 2H[FP]
+	ST R6, 3H[FP]
+	ST R5, 4H[FP]
+	ST R4, 5H[FP]
+	RT
+
+; 14612
+_f_14612:
+	PUSH LR
+	PUSH R10
+	PUSH FP
+	MOV R14, #0C2H
+	MOV R15, #1AH
+	MOV R9, #9H
+	MOV ER0, #0H
+	MOV ER2, #0H
+_$j_14622:
+	L ER10, [FP]
+	L BP, 2H[FP]
+_$j_14626:
+	ADD R8, #-10H
+	BGE _$j_14632
+	ADD ER0, ER10
+	ADDC R2, R12
+	ADDC R3, R13
+	BAL _$j_14626
+_$j_14632:
+	ADD R9, #-1H
+	BEQ _$j_14644
+	ADD FP, #4H
+	SLLC R8, #4
+	SLLC R7, #4
+	SLLC R6, #4
+	SLLC R5, #4
+	SLL R4, #4
+	BAL _$j_14622
+_$j_14644:
+	MOV R10, R8
+	AND R10, #00001111B
+	ADD ER0, ER10
+	ADDC R2, R12
+	ADDC R3, R13
+	POP FP
+	POP R5
+	L R9, _submode
+	CMP R9, #1H
+	BNE _$j_1466e
+	MOV ER2, ER2
+	BNE _$j_1467a
+	CMP R1, #-80H
+	BEQ _$j_14666
+	BGE _$j_1467a
+	BAL _$j_1466e
+_$j_14666:
+	CMP R5, #0H
+	BEQ _$j_1467a
+	CMP R0, #0H
+	BNE _$j_1467a
+_$j_1466e:
+	CMP R5, #0H
+	BEQ _$j_14676
+	BL _f_1458C
+_$j_14676:
+	RC
+	POP PC
+_$j_1467a:
+	SC
+	POP PC
+
+; 1467E
+_f_1467E:
+	PUSH LR
+	MOV ER4, #0H
+	MOV ER6, #0H
+	MOV ER0, ER0
+	BNE _$j_14690
+	MOV ER2, ER2
+	BNE _$j_14690
+	MOV ER8, ER0
+	POP PC
+_$j_14690:
+	TB R3.7
+	MOV R8, PSW
+	PUSH R8
+	BEQ _$j_1469c
+	BL _f_1458C
+_$j_1469c:
+	L R8, _mode
+	CMP R8, #2H
+	BNE _$j_146c6
+	L R8, _submode
+	CMP R8, #1H
+	BNE _$j_146c6
+	MOV ER2, ER2
+	BNE _$j_146c0
+	MOV ER8, ER0
+	POP PSW
+	MOV R10, PSW
+	PUSH R10
+	BEQ _$j_146bc
+	ADD ER8, #-1H
+_$j_146bc:
+	TB R9.7
+	BEQ _$j_146c6
+_$j_146c0:
+	POP PSW
+	MOV R9, #-1H
+	POP PC
+_$j_146c6:
+	MOV R8, #0H
+	MOV R9, #1H
+	MOV ER10, #0H
+	MOV BP, #0H
+_$j_146ce:
+	SRLC R0, #1
+	BGE _$j_146e6
+	ADD R4, R9
+	DAA R4
+	ADDC R5, R10
+	DAA R5
+	ADDC R6, R11
+	DAA R6
+	ADDC R7, R12
+	DAA R7
+	ADDC R8, R13
+	DAA R8
+_$j_146e6:
+	SRLC R1, #1
+	SRLC R2, #1
+	SRL R3, #1
+	ADD R9, R9
+	DAA R9
+	ADDC R10, R10
+	DAA R10
+	ADDC R11, R11
+	DAA R11
+	ADDC R12, R12
+	DAA R12
+	ADDC R13, R13
+	DAA R13
+	TB R13.6
+	BEQ _$j_146ce
+	MOV R9, #6H
+	POP PSW
+	BNE _$j_1470c
+	MOV R9, #1H
+_$j_1470c:
+	POP PC
+
+; 1470E
+_f_1470E:
+	MOV R1, R9
+	BAL _$j_14714
+
+; 14712
+_f_14712:
+	MOV R1, #0FH
+_$j_14714:
+	SUB R1, R10
+	BEQ _$j_14724
+	MOV ER2, BP
+	ADD R2, R10
+	ADDC R3, #0H
+	ST R0, 28H[ER2]
+	ADD R10, #1H
+_$j_14724:
+	RT
+
+; 14726
+_f_14726:
+	MOV R4, #0H
+	CMP R0, #-8H
+	BGE _$j_14736
+	MOV R4, #3H
+	MOV R5, R0
+_$j_14730:
+	ADD R4, #1H
+	ADD R5, R5
+	BLT _$j_14730
+_$j_14736:
+	MOV R4, R4
+	RT
+
+; 1473A
+_f_1473A:
+	PUSH R4
+	MOV R5, #-80H
+	ADD R4, #-4H
+	SRL R5, R4
+	OR R0, R5
+	POP R4
+	RT
+
+; 14748
+_f_14748:
+	PUSH R4
+	MOV R5, #-80H
+	ADD R4, #-4H
+	SRL R5, R4
+	XOR R5, #11111111B
+	AND R0, R5
+	POP R4
+	RT
+
+; 14758
+_f_14758:
+	PUSH LR
+	PUSH XR0
+	MOV ER2, BP
+	ADD ER2, #14H
+	BL _f_151D6
+	MOV ER0, BP
+	ADD ER0, #14H
+	BL _f_154F2
+	MOV ER2, BP
+	BL _f_15204
+	POP XR0
+	POP PC
+
+; 14776
+_f_14776:
+	MOV R4, #1H
+	BC AL, _$j_1477c
+
+; 1477A
+_f_1477A:
+	MOV R4, #2H
+_$j_1477c:
+	PUSH LR
+_$j_1477e:
+	MOV ER0, ER12
+	MOV ER2, ER12
+	ADD ER2, #14H
+	BL _mat_mul
+	CMP R0, #0H
+	BC NE, _$j_14790
+	ADD R4, #-1H
+	BC NE, _$j_1477e
+_$j_14790:
+	POP PC
+
+; 14792
+_f_14792:
+	MOV R0, #2H
+	RT
+
+; 14796
+_f_14796:
+	MOV R0, #0H
+	RT
+
+; 1479A
+_f_1479A:
+	PUSH LR
+	PUSH ER6
+	PUSH QR8
+	PUSH BP
+	BL _f_1459C
+	BL _f_14612
+	XOR R0, #11111111B
+	XOR R1, #11111111B
+	XOR R2, #11111111B
+	XOR R3, #11111111B
+	BL _f_1467E
+	POP FP
+	BL _f_145E2
+	POP QR8
+	POP ER6
+	MOV R0, #0H
+	POP PC
+
+; 147C4
+_f_147C4:
+	PUSH LR
+	PUSH ER6
+	PUSH QR8
+	PUSH BP
+	BL _f_1459C
+	BL _f_14612
+	BL _f_1458C
+	MOV ER0, ER0
+	BNE _$j_147e4
+	CMP R2, #0H
+	BNE _$j_147e4
+	CMP R3, #-80H
+	BEQ _$j_147f6
+_$j_147e4:
+	BL _f_1467E
+	POP FP
+	CMP R9, #-1H
+	BEQ _$j_147f8
+	BL _f_145E2
+	MOV R0, #0H
+	BAL _$j_147fa
+_$j_147f6:
+	ADD SP, #2H
+_$j_147f8:
+	MOV R0, #3H
+_$j_147fa:
+	POP QR8
+	POP ER6
+	POP PC
+
+; 14800
+_f_14800:
+	PUSH LR
+	PUSH XR0
+	BL _f_15EE4
+	L R2, [ER0]
+	CMP R2, #4FH
+	BGT _$j_14818
+	RB R2.6
+	ST R2, [ER0]
+	BL _f_1AC56
+	CMP R0, #0H
+_$j_14818:
+	POP XR0
+	POP PC
+
+; 1481C
+_f_1481C:
+	PUSH LR
+	ADD SP, #-0AH
+	MOV ER2, SP
+	ADD ER0, #14H
+	BL _f_1553C
+	PUSH ER0
+	ADD ER0, #-14H
+	BL _num_rnd
+	POP ER2
+	MOV ER0, SP
+	BL _f_1553C
+	ADD SP, #0AH
+	POP PC
+
+; 1483C
+_num_rnd:
+	PUSH LR
+	BL _f_14800
+	BEQ _$j_14848
+	MOV R0, #3H
+	POP PC
+_$j_14848:
+	L ER2, _setup_num_fmt
+	CMP R2, #8H
+	BEQ _$j_14868
+	CMP R2, #9H
+	BEQ _$j_14856
+	MOV R3, #0AH
+_$j_14856:
+	CMP R3, #0H
+	BNE _$j_1485c
+	MOV R3, #0AH
+_$j_1485c:
+	MOV R2, R3
+	ADD R2, #1H
+	MOV ER0, BP
+	BL _f_1AFD8
+_$j_14866:
+	POP PC
+_$j_14868:
+	MOV ER0, BP
+	ADD ER0, #14H
+	BL _f_154CE
+	BL _f_1B378
+	CMP R0, #0H
+	BNE _$j_14866
+	MOV ER0, BP
+	ADD ER0, #14H
+	BL _num_invalid__
+	ADD R0, #-1H
+	BEQ _$j_14866
+	MOV R0, #BYTE1 _unk_017c8
+	MOV R1, #BYTE2 _unk_017c8
+	MOV ER2, BP
+	ADD ER2, #14H
+	BL _f_154E0
+	L R0, _setup_num_fmt_n
+	ST R0, 8H[ER2]
+	MOV ER0, BP
+	PUSH ER2
+	BL _f_1A438
+	MOV ER0, BP
+	BL _f_1AFB8
+	POP ER2
+	CMP R0, #0H
+	BNE _$j_14866
+	MOV ER0, BP
+	BL _f_1A44C
+	POP PC
+
+; 148B4
+_cmplx_rnd:
+	PUSH LR
+	ADD BP, #0AH
+	MOV ER0, BP
+	BL _num_rnd
+	ADD BP, #-0AH
+	CMP R0, #0H
+	BNE _$j_148ca
+	MOV ER0, BP
+	BL _num_rnd
+_$j_148ca:
+	POP PC
+
+; 148CC
+_cmplx_negate:
+	PUSH LR
+	ADD ER0, #0AH
+	BL _num_negate
+	CMP R0, #0H
+	BNE _$j_148de
+	MOV ER0, BP
+	BL _num_negate
+_$j_148de:
+	POP PC
+
+; 148E0
+_f_148E0:
+	PUSH LR
+	PUSH ER6
+	PUSH QR8
+	PUSH BP
+	PUSH ER2
+	BL _f_1459C
+	BL _f_14612
+	POP BP
+	PUSH XR0
+	MOV ER0, BP
+	BL _f_1459C
+	BL _f_14612
+	POP XR4
+	OR R0, R4
+	OR R1, R5
+	OR R2, R6
+	OR R3, R7
+	BL _f_1467E
+	POP FP
+	BL _f_145E2
+	POP QR8
+	POP ER6
+	MOV R0, #0H
+	POP PC
+
+; 1491C
+_f_1491C:
+	PUSH LR
+	PUSH ER6
+	PUSH QR8
+	PUSH BP
+	PUSH ER2
+	BL _f_1459C
+	BL _f_14612
+	POP BP
+	PUSH XR0
+	MOV ER0, BP
+	BL _f_1459C
+	BL _f_14612
+	POP XR4
+	XOR R0, R4
+	XOR R1, R5
+	XOR R2, R6
+	XOR R3, R7
+	BL _f_1467E
+	POP FP
+	BL _f_145E2
+	POP QR8
+	POP ER6
+	MOV R0, #0H
+	POP PC
+
+; 14958
+_f_14958:
+	PUSH LR
+	PUSH ER6
+	PUSH QR8
+	PUSH BP
+	PUSH ER2
+	BL _f_1459C
+	BL _f_14612
+	POP BP
+	PUSH XR0
+	MOV ER0, BP
+	BL _f_1459C
+	BL _f_14612
+	POP XR4
+	XOR R0, R4
+	XOR R1, R5
+	XOR R2, R6
+	XOR R3, R7
+	XOR R0, #11111111B
+	XOR R1, #11111111B
+	XOR R2, #11111111B
+	XOR R3, #11111111B
+	BL _f_1467E
+	POP FP
+	BL _f_145E2
+	POP QR8
+	POP ER6
+	MOV R0, #0H
+	POP PC
+
+; 1499C
+_f_1499C:
+	PUSH LR
+	PUSH ER6
+	PUSH QR8
+	PUSH BP
+	PUSH ER2
+	BL _f_1459C
+	BL _f_14612
+	POP BP
+	PUSH XR0
+	MOV ER0, BP
+	BL _f_1459C
+	BL _f_14612
+	POP XR4
+	AND R0, R4
+	AND R1, R5
+	AND R2, R6
+	AND R3, R7
+	BL _f_1467E
+	POP FP
+	BL _f_145E2
+	POP QR8
+	POP ER6
+	MOV R0, #0H
+	POP PC
+
+; 149D8
+_f_149D8:
+	PUSH LR
+	PUSH BP
+	PUSH R6
+	ADD SP, #-32H
+	MOV ER2, SP
+	BL _f_1553C
+	MOV BP, ER2
+	MOV R0, #0H
+	MOV R6, #2H
+	BL _f_14A00
+	ADD R0, #1H
+	CMP R0, #1H
+	BEQ _$j_149f8
+	MOV R0, #0H
+_$j_149f8:
+	ADD SP, #32H
+	POP R6
+	POP BP
+	POP PC
+
+; 14A00
+_f_14A00:
+	PUSH LR
+	CMP R0, #0H
+	BNE _$j_14a52
+	CMP R6, #2H
+	BNE _$j_14a52
+	MOV ER0, BP
+	BL _num_invalid__
+	CMP R0, #1H
+	BEQ _$j_14a50
+	L R2, _submode
+	PUSH R0
+	MOV R0, #BYTE1 _unk_01aae
+	MOV R1, #BYTE2 _unk_01aae
+	CMP R2, #1H
+	BNE _$j_14a24
+	ADD ER0, #0AH
+_$j_14a24:
+	MOV ER2, BP
+	ADD ER2, #28H
+	BL _f_1553C
+	POP R0
+	CMP R0, #4H
+	BEQ _$j_14a46
+	MOV R1, #6H
+	ST R1, 9H[ER2]
+	MOV ER0, BP
+	BL _num_cmp
+	CMP R0, #2H
+	BNE _$j_14a50
+_$j_14a42:
+	MOV R0, #3H
+	POP PC
+_$j_14a46:
+	MOV ER0, BP
+	BL _num_cmp
+	CMP R0, #2H
+	BNE _$j_14a42
+_$j_14a50:
+	MOV R0, #0H
+_$j_14a52:
+	POP PC
+
+; 14A54
+_f_14A54:
+	PUSH LR
+	PUSH BP
+	PUSH R6
+	PUSH ER2
+	BL _l_var
+	POP BP
+	MOV R0, #0H
+	L R6, _mode
+	CMP R6, #2H
+	BNE _$j_14a76
+	MOV ER0, BP
+	BL _num_trunc__
+	BL _f_14A00
+_$j_14a76:
+	MOV R2, R0
+	POP R6
+	POP BP
+	POP PC
+
+; 14A7E
+_num_cmplx_pow:
+	PUSH LR
+	CMP R6, #-3CH
+	BNE _$j_14aac
+	PUSH ER2
+	ADD ER0, #0AH
+	BL _num_invalid__
+	CMP R0, #1H
+	BNE _$j_14a9e
+	POP ER0
+	PUSH ER0
+	ADD ER0, #0AH
+	BL _num_invalid__
+	CMP R0, #1H
+	BEQ _$j_14aa8
+_$j_14a9e:
+	MOV ER0, BP
+	POP ER2
+	BL _f_17186
+	POP PC
+_$j_14aa8:
+	MOV ER0, BP
+	POP ER2
+_$j_14aac:
+	BL _f_11142
+	POP PC
+
+; 14AB2
+_num_add:
+	PUSH LR
+	BL _num_add_1
+	BL _f_14A00
+	POP PC
+
+; 14ABE
+_num_sub:
+	PUSH LR
+	BL _num_sub_1
+	BL _f_14A00
+	POP PC
+
+; 14ACA
+_num_mul:
+	PUSH LR
+	BL _num_mul_1
+	BL _f_14A00
+	POP PC
+
+; 14AD6
+_num_div:
+	PUSH LR
+	BL _num_div_1
+	CMP R0, #0H
+	BNE _$j_14aea
+	CMP R6, #2H
+	BNE _$j_14aea
+	MOV ER0, BP
+	BL _num_trunc__
+_$j_14aea:
+	POP PC
+
+; 14AEC
+_f_14AEC:
+	PUSH LR
+	PUSH XR0
+	ADD ER0, #0AH
+	BL _num_invalid__
+	CMP R0, #1H
+	BNE _$j_14b04
+	MOV ER0, BP
+	ADD ER0, #1EH
+	BL _num_invalid__
+	CMP R0, #1H
+_$j_14b04:
+	POP XR0
+	POP PC
+
+; 14B08
+_cmplx_inverse:
+	PUSH LR
+	L R3, 0AH[ER0]
+	BNE _$j_14b16
+	BL _num_inverse
+	POP PC
+_$j_14b16:
+	BL _f_17110
+	POP PC
+
+; 14B1C
+_cmplx_add:
+	PUSH LR
+	BL _f_14AEC
+	BNE _$j_14b2a
+	BL _num_add_1
+	POP PC
+_$j_14b2a:
+	BL _f_16EE2
+	POP PC
+
+; 14B30
+_cmplx_sub:
+	PUSH LR
+	BL _f_14AEC
+	BNE _$j_14b3e
+	BL _num_sub_1
+	POP PC
+_$j_14b3e:
+	BL _f_16F3A
+	POP PC
+
+; 14B44
+_cmplx_mul:
+	PUSH LR
+	BL _f_14AEC
+	BNE _$j_14b52
+	BL _num_mul_1
+	POP PC
+_$j_14b52:
+	PUSH XR0
+	PUSH ER2
+	MOV ER0, ER2
+	BL _num_invalid__
+	POP ER2
+	CMP R0, #1H
+	BNE _$j_14ba0
+	ADD ER2, #0AH
+	L R0, [ER2]
+	CMP R0, #1H
+	BNE _$j_14ba0
+	MOV R0, #BYTE1 _unk_017c8
+	MOV R1, #BYTE2 _unk_017c8
+	BL _num_cmp
+	CMP R0, #1H
+	BNE _$j_14ba0
+	POP XR0
+	PUSH ER2
+	BL _f_154E0
+	MOV ER2, ER0
+	ADD ER0, #0AH
+	BL _f_154E0
+	PUSH ER0
+	ADD ER0, #-0AH
+	BL _num_negate
+	POP ER2
+	POP ER0
+	BL _f_154E0
+	L R0, [ER2]
+	RB R0.6
+	ST R0, [ER2]
+	MOV R0, #0H
+	POP PC
+_$j_14ba0:
+	POP XR0
+	BL _cmplx_square_1
+	POP PC
+
+; 14BA8
+_cmplx_div:
+	PUSH LR
+	BL _f_14AEC
+	BNE _$j_14bb6
+	BL _num_div_1
+	POP PC
+_$j_14bb6:
+	BL _f_16F5E
+	POP PC
+
+; 14BBC
+_f_14BBC:
+	PUSH LR
+	PUSH ER2
+	BL _f_16DCA
+	POP ER2
+	CMP R0, #0H
+	BNE _$j_14bd4
+	MOV ER0, BP
+	ADD ER0, #0AH
+	BL _num_cpy
+	MOV R0, #0H
+_$j_14bd4:
+	POP PC
+
+; 14BD6
+_num_frac:
+	PUSH LR
+	PUSH ER8
+	L R8, [ER0]
+	RB R8.6
+	ST R8, [ER0]
+	L R8, [ER2]
+	RB R8.6
+	ST R8, [ER2]
+	MOV ER8, ER2
+	CMP R6, #-3CH
+	BNE _$j_14c14
+	BL _f_14AEC
+	BEQ _$j_14c14
+	CMP R10, #0H
+	BEQ _$j_14c02
+	PUSH ER4
+	BL _f_15228
+	CMP R4, #64H
+	BEQ _$j_14c0c
+	POP ER4
+_$j_14c02:
+	BL _f_16F5E
+	CMP R0, #0H
+	BNE _$j_14c10
+	BAL _$j_14c6e
+_$j_14c0c:
+	POP ER4
+	MOV R0, #3H
+_$j_14c10:
+	POP ER8
+	POP PC
+_$j_14c14:
+	PUSH ER4
+	MOV ER0, ER2
+	BL _num_invalid__
+	CMP R0, #1H
+	BEQ _$j_14c0c
+	MOV R4, R0
+	MOV ER0, BP
+	BL _num_invalid__
+	CMP R0, #1H
+	BEQ _$j_14c6c
+	MOV R5, R0
+	CMP R4, #4H
+	BEQ _$j_14c40
+	MOV ER0, BP
+	ADD ER0, #14H
+	BL _num_negate
+	MOV ER0, BP
+	BL _num_negate
+_$j_14c40:
+	MOV ER0, BP
+	MOV ER2, ER8
+	BL _f_1AE06
+	CMP R0, #0H
+	BNE _$j_14c60
+	MOV ER0, ER8
+	BL _f_1AE06
+	CMP R0, #0H
+	BNE _$j_14c60
+	MOV ER0, BP
+	MOV ER2, ER8
+	BL _f_1ACFE
+	BAL _$j_14c6c
+_$j_14c60:
+	MOV ER0, BP
+	MOV ER2, ER8
+	BL _num_div_1
+	CMP R0, #0H
+	BNE _$j_14c0c
+_$j_14c6c:
+	POP ER4
+_$j_14c6e:
+	PUSH ER4
+	CMP R10, #0H
+	BEQ _$j_14cd0
+	BL _f_15228
+	CMP R4, #64H
+	BNE _$j_14cd0
+	ADD R10, #-1H
+	MOV ER0, ER8
+	MOV ER2, BP
+	BL _f_154F2
+	BL _f_15204
+	MOV ER0, BP
+	CMP R6, #-3CH
+	BNE _$j_14c96
+	BL _f_14AEC
+	BNE _$j_14c0c
+_$j_14c96:
+	L R4, [ER0]
+	RB R4.6
+	ST R4, [ER0]
+	BL _num_invalid__
+	CMP R0, #1H
+	BEQ _$j_14cc6
+	MOV R4, R0
+	MOV ER0, ER8
+	BL _num_invalid__
+	CMP R0, #1H
+	BEQ _$j_14cc6
+	MOV R5, R0
+	CMP R4, #4H
+	BEQ _$j_14cbc
+	MOV ER0, ER8
+	BL _num_negate
+_$j_14cbc:
+	CMP R5, #4H
+	BEQ _$j_14cc6
+	MOV ER0, BP
+	BL _num_negate
+_$j_14cc6:
+	MOV ER0, BP
+	MOV ER2, ER8
+	BL _num_add_1
+	BAL _$j_14cd2
+_$j_14cd0:
+	MOV R0, #0H
+_$j_14cd2:
+	POP ER4
+	POP ER8
+	POP PC
+
+; 14CD8
+_num_pol:
+	PUSH LR
+	BL _f_16E44
+	BAL _$j_14ce6
+
+; 14CE0
+_num_rec:
+	PUSH LR
+	BL _f_16DCA
+_$j_14ce6:
+	CMP R0, #0H
+	BNE _$j_14cfe
+	MOV R0, #8H
+	MOV ER2, BP
+	BL _st_var
+	MOV R0, #9H
+	MOV ER2, BP
+	ADD ER2, #14H
+	BL _st_var
+	MOV R0, #0H
+_$j_14cfe:
+	POP PC
+
+; 14D00
+_num_percent:
+	PUSH LR
+	L R2, [ER0]
+	RB R2.6
+	ST R2, [ER0]
+	MOV R2, #BYTE1 _unk_017fa
+	MOV R3, #BYTE2 _unk_017fa
+	BL _num_div_1
+	POP PC
+
+; 14D12
+_num_deg:
+	MOV R2, #4H
+	BAL _$j_14d1c
+
+; 14D16
+_num_rad:
+	MOV R2, #5H
+	BAL _$j_14d1c
+
+; 14D1A
+_num_grad:
+	MOV R2, #6H
+_$j_14d1c:
+	PUSH LR
+	BL _f_1A744
+	POP PC
+
+; 14D24
+_f_14D24:
+	PUSH LR
+	CMP R1, #76H
+	BEQ _$j_14d70
+_$j_14d2a:
+	MOV ER4, ER0
+	MOV ER0, BP
+	BL _f_14800
+	CMP R5, #25H
+	BNE _$j_14d3e
+	MOV R2, #BYTE1 _unk_017f0
+	MOV R3, #BYTE2 _unk_017f0
+	BL _f_1A3FC
+_$j_14d3e:
+	MOV R2, R5
+	SRL R2, #1
+	MOV R3, #0AH
+	MUL ER2, R3
+	ADD R2, #-24H
+	ADDC R3, #19H
+	MOV ER0, BP
+	TB R5.0
+	BNE _$j_14d56
+	BL _f_1A438
+	BAL _$j_14d5a
+_$j_14d56:
+	BL _f_1A44C
+_$j_14d5a:
+	CMP R5, #24H
+	BNE _$j_14d68
+	MOV ER0, BP
+	MOV R2, #BYTE1 _unk_017f0
+	MOV R3, #BYTE2 _unk_017f0
+	BL _f_1A410
+_$j_14d68:
+	MOV ER0, BP
+	BL _f_1B238
+	POP PC
+_$j_14d70:
+	PUSH XR4
+	BL _f_14560
+	CMP R2, #4H
+	BNE _$j_14de0
+	CMP R0, #0AH
+	BGE _$j_14de0
+	MOV R7, R0
+	BL _f_14560
+	CMP R2, #4H
+	BNE _$j_14de0
+	CMP R0, #0AH
+	BGE _$j_14de0
+	MOV R6, R0
+	SLL R6, #4
+	BL _f_14560
+	CMP R2, #4H
+	BNE _$j_14de0
+	CMP R0, #0AH
+	BGE _$j_14de0
+	OR R6, R0
+	MOV R1, #2H
+	MOV R0, #1H
+	CMP ER6, ER0
+	BGE _$j_14de0
+	MOV ER0, ER6
+	BL _bcd_to_byte
+	PUSH R0
+	BL _f_112AA
+	MOV R1, R0
+	POP R0
+	ADD R1, #1H
+	CMP R0, R1
+	BGE _$j_14de0
+	CMP R0, #13H
+	BEQ _$j_14dcc
+	CMP R0, #14H
+	BEQ _$j_14dcc
+	CMP R0, #25H
+	BLT _$j_14dd6
+	CMP R0, #29H
+	BGE _$j_14dd6
+_$j_14dcc:
+	MOV R1, #1H
+	TB R0.0
+	BNE _$j_14dd4
+	MOV R1, #-1H
+_$j_14dd4:
+	ADD R0, R1
+_$j_14dd6:
+	ADD R0, #-1H
+	BGE _$j_14de0
+	POP XR4
+	MOV R1, R0
+	BAL _$j_14d2a
+_$j_14de0:
+	POP XR4
+	MOV R0, #2H
+	POP PC
+
+; 14DE6
+_num_sin:
+	PUSH LR
+	PUSH ER0
+	BL _f_1A8FA
+	BAL _$j_14df8
+
+; 14DF0
+_num_cos:
+	PUSH LR
+	PUSH ER0
+	BL _f_1A8E8
+_$j_14df8:
+	CMP R0, #0H
+	BNE _$j_14e92
+	POP ER0
+	PUSH QR8
+	ADD SP, #-0AH
+	MOV BP, SP
+	MOV FP, ER0
+	L R2, 9H[FP]
+	PUSH R2
+	ADD R2, #-5H
+	BGE _$j_14e10
+	ST R2, 9H[FP]
+_$j_14e10:
+	MOV R8, #BYTE1 _unk_01bd8
+	MOV R9, #BYTE2 _unk_01bd8
+	MOV ER10, #5H
+_$j_14e16:
+	MOV ER0, ER8
+	BL _f_154D6
+	MOV ER0, BP
+	MOV ER2, FP
+	BL _f_1A424
+	L ER0, 8H[BP]
+	CMP R1, #1H
+	BEQ _$j_14e4c
+	CMP R1, #6H
+	BEQ _$j_14e4c
+	MOV R2, #-79H
+	CMP R11, #0H
+	BEQ _$j_14e3a
+	CMP R10, #3H
+	BLT _$j_14e3a
+	MOV R2, #-78H
+_$j_14e3a:
+	CMP R0, R2
+	BLT _$j_14e5c
+	BNE _$j_14e4c
+	L ER0, [BP]
+	CMP R0, #4H
+	BGT _$j_14e4c
+	BLT _$j_14e5c
+	CMP R1, #-67H
+	BLE _$j_14e5c
+_$j_14e4c:
+	ADD ER8, #-0AH
+	ADD R10, #-1H
+	BNE _$j_14e16
+	POP R2
+	ST R2, 9H[FP]
+_$j_14e56:
+	ADD SP, #0AH
+	POP QR8
+	BAL _$j_14e82
+_$j_14e5c:
+	BL _f_16CF0
+	CMP R0, #0H
+	BEQ _$j_14e6c
+	ADD ER8, #32H
+	CMP R11, #0H
+	BEQ _$j_14e6c
+	ADD ER8, #-0AH
+_$j_14e6c:
+	MOV ER0, ER8
+	MOV ER2, FP
+	BL _f_154E0
+	POP R2
+	CMP R2, #1H
+	BLE _$j_14e56
+	MOV ER0, FP
+	BL _num_negate
+	BAL _$j_14e56
+_$j_14e82:
+	MOV R0, #0H
+	POP PC
+
+; 14E86
+_num_tan:
+	PUSH LR
+	PUSH ER0
+	BL _f_1A8D6
+	CMP R0, #0H
+	BEQ _$j_14e96
+_$j_14e92:
+	ADD SP, #2H
+	POP PC
+_$j_14e96:
+	POP ER0
+	PUSH QR8
+	ADD SP, #-0AH
+	MOV BP, SP
+	MOV FP, ER0
+	L R2, 9H[FP]
+	PUSH R2
+	ADD R2, #-5H
+	BGE _$j_14eaa
+	ST R2, 9H[FP]
+_$j_14eaa:
+	MOV R8, #32H
+	MOV R9, #1CH
+	MOV R10, #4H
+	MOV R11, #1H
+	BAL _$j_14e16
+
+; 14EB4
+_f_14EB4:
+	PUSH LR
+	CMP R1, #75H
+	BNE _$j_14ebc
+	MOV R1, #2DH
+_$j_14ebc:
+	MOV R5, #1H
+_$j_14ebe:
+	MOV R0, #0H
+	CMP R1, #0DH
+	BEQ _$j_14ecc
+	CMP R1, #0EH
+	BEQ _$j_14ecc
+	CMP R1, #2FH
+	BNE _$j_14ed8
+_$j_14ecc:
+	BL _f_15546
+	BGE _$j_14f26
+_$j_14ed2:
+	BL _f_15596
+	POP PC
+_$j_14ed8:
+	CMP R1, #77H
+	BEQ _$j_14f1a
+	CMP R1, #78H
+	BEQ _$j_14f1a
+	CMP R1, #0FH
+	BLT _$j_14f5a
+	CMP R1, #25H
+	BLE _$j_14f1a
+	CMP R1, #30H
+	BLT _$j_14ef0
+	CMP R1, #5FH
+	BLT _$j_14f1a
+_$j_14ef0:
+	CMP R1, #65H
+	BEQ _$j_14f0a
+	CMP R1, #66H
+	BEQ _$j_14f1a
+	CMP R1, #6EH
+	BGE _$j_14f1a
+	CMP R1, #6BH
+	BGE _$j_14f1e
+	CMP R1, #64H
+	BEQ _$j_14f1c
+	CMP R1, #2AH
+	BEQ _$j_14f1c
+	BAL _$j_14f26
+_$j_14f0a:
+	CMP R5, #1H
+	BEQ _$j_14f1c
+	L R3, [BP]
+	SRL R3, #4
+	CMP R3, #6H
+	BNE _$j_14f1e
+	MOV R2, #2H
+	POP PC
+_$j_14f1a:
+	OR R0, #00000111B
+_$j_14f1c:
+	OR R0, #00000011B
+_$j_14f1e:
+	OR R0, #00000001B
+	BL _f_15546
+	BLT _$j_14ed2
+_$j_14f26:
+	CMP R1, #77H
+	BEQ _$j_14f62
+	CMP R1, #78H
+	BEQ _$j_14f42
+	CMP R1, #74H
+	BEQ _$j_14f42
+	CMP R1, #23H
+	BLT _$j_14f62
+	CMP R1, #32H
+	BLE _$j_14f42
+	CMP R1, #64H
+	BLT _$j_14f62
+	CMP R1, #66H
+	BGT _$j_14f62
+_$j_14f42:
+	ADD R5, #-1H
+	BNE _$j_14f62
+	PUSH R1
+	MOV ER0, BP
+	ADD ER0, #14H
+	BL _f_154F2
+	MOV ER2, BP
+	BL _f_15204
+	POP R1
+	BAL _$j_14ebe
+_$j_14f5a:
+	MOV R0, #-1H
+	BL _f_15546
+	BLT _$j_14ed2
+_$j_14f62:
+	CMP R1, #3H
+	BNE _$j_14f6a
+	B _$j_150f6
+_$j_14f6a:
+	L R0, _d_08121
+	L R2, [BP]
+	L R3, 14H[BP]
+	CMP R2, #-70H
+	BGE _$j_14fe8
+	CMP R2, #-80H
+	BGE _$j_14f7e
+	CMP R2, #60H
+	BGE _$j_14f9a
+_$j_14f7e:
+	CMP R5, #1H
+	BNE _$j_14f86
+	B _$j_150f6
+_$j_14f86:
+	CMP R3, #-70H
+	BGE _$j_1501e
+	CMP R3, #-80H
+	BLT _$j_14f92
+	B _$j_150f6
+_$j_14f92:
+	CMP R3, #60H
+	BGE _$j_1501e
+	B _$j_150f6
+_$j_14f9a:
+	CMP R5, #-1H
+	BEQ _$j_1502c
+	AND R2, #00001111B
+	ADD R1, #-0AH
+	CMP R1, #3H
+	BEQ _$j_14fdc
+	CMP R1, #62H
+	BLT _$j_14ff4
+	BL _f_14726
+	BNE _$j_14fb4
+	B _$j_150ec
+_$j_14fb4:
+	BL _f_1473A
+	L R5, [BP]
+	PUSH R5
+	PUSH ER0
+	MOV ER0, BP
+	ADD ER0, #14H
+	BL _f_154F2
+	POP ER0
+	L R5, [BP]
+	AND R5, #11110000B
+	OR R5, R4
+	ST R5, [BP]
+	POP R4
+	MOV R2, R4
+	AND R2, #00001111B
+	BL _f_1548E
+	ADD R1, #-5BH
+_$j_14fdc:
+	CMP R2, #4H
+	BLT _$j_15092
+	MOV R4, R2
+	BL _f_14748
+	BAL _$j_15092
+_$j_14fe8:
+	CMP R5, #-1H
+	BEQ _$j_1502c
+	AND R2, #00001111B
+	ADD R1, #-0BH
+	BEQ _$j_14fdc
+	ADD R1, #1H
+_$j_14ff4:
+	CMP R2, #4H
+	BGE _$j_15012
+	BL _f_14726
+	BEQ _$j_150ec
+	BL _f_1473A
+	L R5, [BP]
+	MOV R2, R5
+	AND R5, #11110000B
+	OR R5, R4
+	ST R5, [BP]
+	MOV R4, R2
+	BL _f_1548E
+_$j_15012:
+	CMP R1, #55H
+	BLT _$j_15092
+	BNE _$j_1501a
+	ADD R1, #0BH
+_$j_1501a:
+	ADD R1, #-5BH
+	BAL _$j_15092
+_$j_1501e:
+	CMP R1, #2DH
+	BNE _$j_150f0
+	BL _f_14758
+	MOV R4, R2
+	MOV R2, R3
+	MOV R3, R4
+_$j_1502c:
+	CMP R1, #2FH
+	BEQ _$j_1506c
+	CMP R1, #2DH
+	BNE _$j_15046
+	CMP R3, #-70H
+	BLT _$j_1503c
+	ADD R1, #3H
+	BAL _$j_15046
+_$j_1503c:
+	CMP R3, #-80H
+	BGE _$j_15046
+	CMP R3, #60H
+	BLT _$j_15046
+	ADD R1, #4H
+_$j_15046:
+	ADD R1, #-22H
+	MOV R4, R2
+	AND R4, #00001111B
+	CMP R4, #4H
+	BGE _$j_1507a
+	BL _f_14726
+	BEQ _$j_150ec
+	BL _f_1473A
+	L R5, [BP]
+	MOV R2, R5
+	AND R5, #11110000B
+	OR R5, R4
+	ST R5, [BP]
+	MOV R4, R2
+	BL _f_1548E
+	BAL _$j_1507a
+_$j_1506c:
+	MOV R1, #0DH
+	MOV R4, R2
+	AND R4, #00001111B
+	CMP R4, #4H
+	BLT _$j_1507a
+	BL _f_14748
+_$j_1507a:
+	CMP R3, #-70H
+	BGE _$j_15086
+	CMP R3, #-80H
+	BGE _$j_15092
+	CMP R3, #60H
+	BLT _$j_15092
+_$j_15086:
+	MOV R4, R3
+	AND R4, #00001111B
+	CMP R4, #4H
+	BLT _$j_15092
+	BL _f_14748
+_$j_15092:
+	ST R0, _d_08121
+	MOV R4, #BYTE1 _unk_01ae6
+	MOV R5, #BYTE2 _unk_01ae6
+_$j_1509a:
+	PUSH R6
+	L R6, _mode
+	CMP R1, #17H
+	BLT _$j_150ac
+	CMP R1, #1CH
+	BGT _$j_150ac
+	MOV R2, #0H
+	BAL _$j_150b0
+_$j_150ac:
+	MOV ER2, BP
+	ADD ER2, #14H
+_$j_150b0:
+	SLL R1, #1
+	ADD R4, R1
+	ADDC R5, #0H
+	L ER4, [ER4]
+	MOV ER0, BP
+	BL ER4
+	MOV R1, R6
+	POP R6
+_$j_150c0:
+	CMP R0, #0H
+	BNE _$j_150e6
+	L R2, [BP]
+	AND R2, #11110000B
+	CMP R1, #-3CH
+	BNE _$j_150dc
+	CMP R2, #-80H
+	BEQ _$j_150e6
+	CMP R2, #40H
+	BEQ _$j_150e0
+	MOV ER0, BP
+	BL _f_17202
+	BAL _$j_150e6
+_$j_150dc:
+	CMP R2, #60H
+	BGE _$j_150e6
+_$j_150e0:
+	MOV ER0, BP
+	BL _f_1B238
+_$j_150e6:
+	MOV R2, R0
+	B _$j_14ed2
+_$j_150ec:
+	MOV R2, #7H
+	POP PC
+_$j_150f0:
+	MOV R2, #3H
+	B _$j_14ed2
+_$j_150f6:
+	L R0, _mode
+	CMP R1, #77H
+	BEQ _$j_15158
+	CMP R1, #78H
+	BEQ _$j_1515c
+	CMP R1, #76H
+	BEQ _$j_15114
+	CMP R1, #37H
+	BLT _$j_15122
+	CMP R1, #74H
+	BEQ _$j_1511e
+	CMP R1, #5FH
+	BGE _$j_15120
+	ADD R1, #-37H
+_$j_15114:
+	PUSH R0
+	BL _f_14D24
+	POP R1
+	BAL _$j_150c0
+_$j_1511e:
+	ADD R1, #0AH
+_$j_15120:
+	ADD R1, #-28H
+_$j_15122:
+	ADD R1, #-3H
+	CMP R0, #-3CH
+	BNE _$j_15152
+	CMP R1, #43H
+	BGE _$j_15152
+	CMP R1, #40H
+	BGE _$j_15150
+	CMP R1, #34H
+	BEQ _$j_1514e
+	CMP R1, #2BH
+	BGT _$j_15152
+	CMP R1, #28H
+	BGE _$j_1514c
+	CMP R1, #14H
+	BEQ _$j_1514a
+	CMP R1, #9H
+	BEQ _$j_15148
+	CMP R1, #8H
+	BNE _$j_15152
+_$j_15148:
+	ADD R1, #0AH
+_$j_1514a:
+	ADD R1, #13H
+_$j_1514c:
+	ADD R1, #8H
+_$j_1514e:
+	ADD R1, #0BH
+_$j_15150:
+	ADD R1, #10H
+_$j_15152:
+	MOV R4, #6H
+	MOV R5, #1BH
+	BAL _$j_1509a
+_$j_15158:
+	MOV R1, #1EH
+	BAL _$j_15152
+_$j_1515c:
+	MOV R1, #54H
+	BAL _$j_15152
+
+; 15160
+_f_15160:
+	CMP R4, #77H
+	BGE _$j_15170
+	CMP R4, #65H
+	BLT _$j_1516c
+	CMP R4, #67H
+	RT
+_$j_1516c:
+	CMP R4, #26H
+	RT
+_$j_15170:
+	CMP R4, #79H
+	RT
+
+; 15174
+_f_15174:
+	MOV R2, #0H
+	BAL _$j_1517e
+
+; 15178
+_f_15178:
+	MOV R2, #1H
+	BAL _$j_1517e
+
+; 1517C
+_f_1517C:
+	MOV R2, #2H
+_$j_1517e:
+	PUSH LR
+	PUSH R8
+	MOV R8, R2
+	MOV R2, #0H
+_$j_15186:
+	CMP R10, #0H
+	BEQ _$j_151ce
+	BL _f_15228
+	CMP R4, #73H
+	BEQ _$j_151d2
+	CMP R4, #2H
+	BLE _$j_151ce
+	BL _f_15160
+	BGE _$j_151be
+	CMP R8, #1H
+	BLT _$j_151be
+	BEQ _$j_151bc
+	CMP R4, #20H
+	BLT _$j_151be
+	BNE _$j_151b0
+	BL _f_112BC
+	CMP R0, #0H
+	BNE _$j_151be
+_$j_151b0:
+	CMP R4, #25H
+	BLE _$j_151ce
+	CMP R4, #77H
+	BEQ _$j_151ce
+	CMP R4, #78H
+	BEQ _$j_151ce
+_$j_151bc:
+	OR R8, #00000010B
+_$j_151be:
+	ADD R10, #-1H
+	MOV R1, R4
+	BL _f_14EB4
+	CMP R8, #3H
+	BEQ _$j_151ce
+	CMP R2, #0H
+	BEQ _$j_15186
+_$j_151ce:
+	POP R8
+	POP PC
+_$j_151d2:
+	MOV R2, #2H
+	BAL _$j_151ce
+
+; 151D6
+_f_151D6:
+	PUSH LR
+	CMP R11, #0AH
+	BLT _$j_151e0
+	MOV R2, #7H
+	POP PC
+_$j_151e0:
+	PUSH QR0
+	MOV ER0, ER2
+	MOV R2, #BYTE1 _d_08078
+	MOV R3, #BYTE2 _d_08078
+	MOV R4, #0AH
+	MUL ER4, R11
+	ADD ER2, ER4
+	ADD R11, #1H
+	L R4, _mode
+	CMP R4, #-3CH
+	BNE _$j_151fa
+	ADD R11, #1H
+_$j_151fa:
+	BL _f_1553C
+	POP QR0
+	MOV R2, #0H
+	POP PC
+
+; 15204
+_f_15204:
+	PUSH LR
+	CMP R11, #0H
+	BNE _$j_1520e
+	MOV R2, #7H
+	POP PC
+_$j_1520e:
+	PUSH QR0
+	ADD R11, #-1H
+	L R4, _mode
+	CMP R4, #-3CH
+	BNE _$j_1521c
+	ADD R11, #-1H
+_$j_1521c:
+	MOV R4, #0AH
+	MUL ER4, R11
+	MOV R0, #BYTE1 _d_08078
+	MOV R1, #BYTE2 _d_08078
+	ADD ER0, ER4
+	BAL _$j_151fa
+
+; 15228
+_f_15228:
+	PUSH ER8
+	MOV R8, #BYTE1 _d_0805F
+	MOV R9, #BYTE2 _d_0805F
+	ADD R8, R10
+	ADDC R9, #0H
+	L R4, [ER8]
+	POP ER8
+	RT
+
+; 15238
+_f_15238:
+	CMP R10, #18H
+	BLT _$j_15240
+	MOV R2, #7H
+	RT
+_$j_15240:
+	MOV R2, #BYTE1 _d_08060
+	MOV R3, #BYTE2 _d_08060
+	ADD R2, R10
+	ADDC R3, #0H
+	ADD R10, #1H
+	ST R0, [ER2]
+	MOV R2, #0H
+	RT
+
+; 15250
+_f_15250:
+	CMP R4, #75H
+	BEQ _$j_1528a
+	CMP R4, #74H
+	BNE _$j_1525a
+	MOV R4, #2EH
+_$j_1525a:
+	CMP R4, #76H
+	BNE _$j_15260
+	MOV R4, #37H
+_$j_15260:
+	MOV R5, #0H
+	CMP R4, #25H
+	BLE _$j_152a2
+	MOV R5, #0CH
+	CMP R4, #67H
+	BGE _$j_152a2
+	CMP R4, #33H
+	BGE _$j_1528a
+	MOV R5, R4
+	CMP R5, #2FH
+	BGE _$j_15284
+	CMP R5, #2BH
+	BGE _$j_15282
+	CMP R5, #29H
+	BGE _$j_15280
+	ADD R5, #-7H
+_$j_15280:
+	ADD R5, #-0DH
+_$j_15282:
+	ADD R5, #-0DH
+_$j_15284:
+	ADD R5, #8H
+	SRL R5, #3
+	RT
+_$j_1528a:
+	MOV R5, #8H
+	CMP R4, #75H
+	BEQ _$j_152a2
+	CMP R4, #5EH
+	BLE _$j_152a0
+	CMP R4, #64H
+	BLT _$j_1529e
+	BEQ _$j_1529c
+	ADD R5, #1H
+_$j_1529c:
+	ADD R5, #1H
+_$j_1529e:
+	ADD R5, #1H
+_$j_152a0:
+	ADD R5, #1H
+_$j_152a2:
+	RT
+
+; 152A4
+_f_152A4:
+	PUSH LR
+	CMP R0, R4
+	BNE _$j_152b4
+	BL _f_15160
+	BLT _$j_152be
+	MOV R4, #1H
+	POP PC
+_$j_152b4:
+	BL _f_15160
+	BGE _$j_152c2
+	CMP R0, #2AH
+	BEQ _$j_152d4
+_$j_152be:
+	MOV R4, #0H
+	POP PC
+_$j_152c2:
+	BL _f_15250
+	PUSH R5
+	MOV R4, R0
+	BL _f_15250
+	POP R4
+	CMP R4, R5
+	BLT _$j_152be
+_$j_152d4:
+	MOV R4, #2H
+	POP PC
+
+; 152D8
+_f_152D8:
+	PUSH LR
+_$j_152da:
+	PUSH R0
+	CMP R10, #0H
+	BEQ _$j_1530e
+	BL _f_15228
+	CMP R4, #73H
+	BNE _$j_152f0
+	CMP R0, #73H
+	BEQ _$j_152f0
+	MOV R2, #2H
+	BAL _$j_15310
+_$j_152f0:
+	MOV R1, R4
+	BL _f_152A4
+	CMP R4, #1H
+	BLT _$j_1530e
+	BNE _$j_15300
+	CMP R0, #64H
+	BEQ _$j_1530e
+_$j_15300:
+	ADD R10, #-1H
+	BL _f_14EB4
+	CMP R2, #0H
+	BNE _$j_15310
+	POP R0
+	BAL _$j_152da
+_$j_1530e:
+	MOV R2, #0H
+_$j_15310:
+	POP R0
+	POP PC
+
+; 15314
+_f_15314:
+	PUSH LR
+	CMP R1, #0H
+	BNE _$j_1531c
+	POP PC
+_$j_1531c:
+	MOV R2, #BYTE1 _d_0805F
+	MOV R3, #BYTE2 _d_0805F
+	ADD R2, R1
+	ADDC R3, #0H
+_$j_15324:
+	L R4, [ER2]
+	BL _f_152A4
+	CMP R4, #1H
+	BEQ _$j_15338
+	BLT _$j_15336
+	ADD ER2, #-1H
+	ADD R1, #-1H
+	BNE _$j_15324
+_$j_15336:
+	MOV R1, #0H
+_$j_15338:
+	POP PC
+
+; 1533A
+_f_1533A:
+	PUSH BP
+	L R0, [EA+]
+_$j_1533e:
+	ST R0, [BP]
+	ADD BP, #1H
+	ADD R10, #-1H
+	BEQ _$j_15356
+	BGE _$j_15356
+	L R0, [EA+]
+	SLL R0, #4
+	ADD R10, #-1H
+	BEQ _$j_1533e
+	L R1, [EA+]
+	OR R0, R1
+	BAL _$j_1533e
+_$j_15356:
+	POP BP
+	RT
+
+; 1535A
+_f_1535A:
+	PUSH LR
+	PUSH XR8
+	MOV ER10, #0H
+	MOV R8, #1H
+	MOV R9, #10H
+	CMP R0, #61H
+	BLT _$j_1537a
+	BEQ _$j_15376
+	CMP R0, #63H
+	BLT _$j_15372
+	ADD R8, #6H
+	ADD R9, #-2H
+_$j_15372:
+	ADD R8, #2H
+	ADD R9, #-1H
+_$j_15376:
+	ADD R8, #6H
+	ADD R9, #-5H
+_$j_1537a:
+	BL _f_14560
+	CMP R2, #0AH
+	BLE _$j_15388
+_$j_15382:
+	MOV R2, #2H
+	POP XR8
+	POP PC
+_$j_15388:
+	CMP R2, #4H
+	BNE _$j_153ec
+	CMP R0, R8
+	BGT _$j_15382
+	ADD R0, #0H
+	BNE _$j_1539c
+	CMP R11, #2H
+	BEQ _$j_1539e
+	MOV R11, #1H
+	BAL _$j_1537a
+_$j_1539c:
+	MOV R11, #2H
+_$j_1539e:
+	MOV R1, R10
+	ADD R1, #1H
+	CMP R1, R9
+	BNE _$j_153da
+	CMP R8, #9H
+	BEQ _$j_153b8
+	CMP R8, #7H
+	BNE _$j_153da
+	L R2, 28H[BP]
+	CMP R2, #4H
+	BGE _$j_153e6
+	BAL _$j_153da
+_$j_153b8:
+	LEA 1AA4H
+	MOV R1, #9H
+	PUSH BP
+_$j_153c0:
+	L R3, [EA+]
+	L R2, 28H[BP]
+	CMP R2, R3
+	BLT _$j_153d8
+	BGT _$j_153e4
+	ADD BP, #1H
+	ADD R1, #-1H
+	BNE _$j_153c0
+	L R3, [EA+]
+	CMP R0, R3
+	BGT _$j_153e4
+_$j_153d8:
+	POP BP
+_$j_153da:
+	BL _f_1470E
+	CMP R1, #0H
+	BEQ _$j_153e6
+	BAL _$j_1537a
+_$j_153e4:
+	POP BP
+_$j_153e6:
+	MOV R2, #3H
+	POP XR8
+	POP PC
+_$j_153ec:
+	CMP R11, #1H
+	BEQ _$j_1546c
+	BLT _$j_15382
+	PUSH ER6
+	PUSH XR12
+	LEA 28H[BP]
+	MOV ER0, #0H
+	MOV ER2, #0H
+	MOV R5, #4H
+	ST ER0, 6H[BP]
+
+; 15402
+_f_15402:
+	ST ER0, 4H[BP]
+	ST ER0, 2H[BP]
+	ST R0, 1H[BP]
+	CMP R8, #9H
+	BEQ _$j_15448
+	BGE _$j_15414
+	MOV R5, R8
+	OR R5, #00000010B
+	SRL R5, #1
+_$j_15414:
+	SLLC R3, R5
+	SLLC R2, R5
+	SLLC R1, R5
+	SLL R0, R5
+	L R4, [EA+]
+	OR R0, R4
+	ADD R10, #-1H
+	BNE _$j_15414
+	CMP R8, #1H
+	BNE _$j_1542e
+	TB R1.7
+	BEQ _$j_1542e
+	ADD ER2, #-1H
+_$j_1542e:
+	MOV FP, BP
+	BL _f_1467E
+	CMP R9, #-1H
+	BNE _$j_1543e
+_$j_15438:
+	POP XR12
+	POP ER6
+	BAL _$j_153e6
+_$j_1543e:
+	BL _f_145E2
+_$j_15442:
+	POP XR12
+	POP ER6
+	BAL _$j_15474
+_$j_15448:
+	MOV R0, R10
+	ADD R0, #-1H
+	MOV R1, #1H
+	ST ER0, 8H[BP]
+	BL _f_1533A
+	L R0, _submode
+	CMP R0, #1H
+	BNE _$j_15442
+	MOV ER0, BP
+	MOV R2, #BYTE1 _unk_01ab8
+	MOV R3, #BYTE2 _unk_01ab8
+	BL _num_cmp
+	CMP R0, #2H
+	BEQ _$j_15442
+	BAL _$j_15438
+_$j_1546c:
+	MOV R0, #BYTE1 _unk_017be
+	MOV R1, #BYTE2 _unk_017be
+	BL _f_15526
+_$j_15474:
+	POP XR8
+	ADD FP, #-1H
+	MOV R7, #4H
+	MOV R2, #0H
+	POP PC
+
+; 1547E
+_f_1547E:
+	PUSH QR0
+	MOV R4, R1
+	MOV R5, R0
+	BAL _$j_15494
+
+; 15486
+_f_15486:
+	PUSH QR0
+	L R4, [ER0]
+	MOV R5, #3H
+	BAL _$j_15490
+
+; 1548E
+_f_1548E:
+	PUSH QR0
+_$j_15490:
+	AND R4, #00001111B
+	AND R5, #00001111B
+_$j_15494:
+	MOV ER0, ER4
+	MOV R5, #0H
+	ADD ER4, ER4
+	MOV R6, #BYTE1 _d_080E0
+	MOV R7, #BYTE2 _d_080E0
+	ADD ER4, ER6
+	L ER2, [ER4]
+	MOV R4, R1
+	MOV R5, #0H
+	ADD ER4, ER4
+	ADD ER4, ER6
+	ST ER2, [ER4]
+	MOV R2, R1
+	MOV R3, #5AH
+	MUL ER0, R3
+	MUL ER2, R3
+	MOV R6, #BYTE1 _d_0829E
+	MOV R7, #BYTE2 _d_0829E
+	ADD ER0, ER6
+	ADD ER2, ER6
+	MOV R6, #2DH
+_$j_154be:
+	L ER4, [ER0]
+	ST ER4, [ER2]
+	ADD ER0, #2H
+	ADD ER2, #2H
+	ADD R6, #-1H
+	BNE _$j_154be
+	POP QR0
+	RT
+
+; 154CE
+_f_154CE:
+	PUSH LR
+	PUSH XR0
+	MOV ER2, BP
+	BAL _$j_154ea
+
+; 154D6
+_f_154D6:
+	PUSH LR
+	PUSH XR0
+	MOV ER2, ER0
+	MOV ER0, BP
+	BAL _$j_154ea
+
+; 154E0
+_f_154E0:
+	PUSH LR
+	PUSH XR0
+	PUSH ER0
+	MOV ER0, ER2
+	POP ER2
+_$j_154ea:
+	BL _num_cpy
+	POP XR0
+	POP PC
+
+; 154F2
+_f_154F2:
+	PUSH QR0
+	PUSH XR8
+	MOV ER10, ER0
+	PUSH BP
+	LEA [BP]
+_$j_154fc:
+	L QR0, [EA+]
+	L ER8, [EA+]
+	LEA [ER10]
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	POP ER2
+	L R0, _mode
+	CMP R0, #-3CH
+	BNE _$j_15520
+	LEA 0AH[ER2]
+	L QR0, [EA+]
+	L ER8, [EA+]
+	LEA 0AH[ER10]
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+_$j_15520:
+	POP XR8
+	POP QR0
+	RT
+
+; 15526
+_f_15526:
+	PUSH QR0
+	PUSH XR8
+	MOV ER10, BP
+_$j_1552c:
+	PUSH ER0
+	LEA [ER0]
+	BAL _$j_154fc
+
+; 15532
+_f_15532:
+	PUSH QR0
+	PUSH XR8
+	MOV ER10, BP
+	ADD ER10, #14H
+	BAL _$j_1552c
+
+; 1553C
+_f_1553C:
+	PUSH QR0
+	PUSH XR8
+	MOV ER10, ER2
+	BAL _$j_1552c
+
+; 15544
+_f_15544:
+	MOV R0, #7H
+
+; 15546
+_f_15546:
+	MOV R2, #0H
+	L R3, [BP]
+	SRL R3, #4
+	CMP R3, #0FH
+	BEQ _$j_15590
+	CMP R0, #-1H
+	BGE _$j_15562
+	CMP R0, #0H
+	BNE _$j_15564
+	CMP R3, #8H
+	BEQ _$j_15590
+	CMP R3, #6H
+	BLT _$j_15592
+_$j_15560:
+	RC
+_$j_15562:
+	RT
+_$j_15564:
+	SRL R0, #1
+	BGE _$j_1556c
+	CMP R3, #9H
+	BEQ _$j_15590
+_$j_1556c:
+	SRL R0, #1
+	BGE _$j_15574
+	CMP R3, #6H
+	BEQ _$j_15590
+_$j_15574:
+	SRL R0, #1
+	BGE _$j_15562
+	CMP R3, #2H
+	BEQ _$j_15584
+	CMP R3, #8H
+	BEQ _$j_15584
+	CMP R3, #0H
+	BNE _$j_15562
+_$j_15584:
+	L R3, _mode
+	CMP R3, #-3CH
+	BNE _$j_15560
+	L ER2, 12H[BP]
+	BEQ _$j_15560
+_$j_15590:
+	SC
+_$j_15592:
+	MOV R2, #3H
+	RT
+
+; 15596
+_f_15596:
+	PUSH LR
+	CMP R6, #-1H
+	BNE _$j_155aa
+	CMP R2, #3H
+	BNE _$j_155aa
+	MOV R0, #BYTE1 _unk_017be
+	MOV R1, #BYTE2 _unk_017be
+	BL _f_15526
+	MOV R2, #0H
+_$j_155aa:
+	POP PC
+
+; 155AC
+_f_155AC:
+	PUSH LR
+	PUSH ER8
+	PUSH FP
+	MOV ER8, BP
+	ADD ER8, #14H
+	MOV FP, BP
+	ADD FP, #28H
+	MOV R2, #0H
+	MOV ER0, FP
+	BL _num_fromdigit
+	CMP R10, #0H
+	BEQ _$j_15628
+	BL _f_15228
+	CMP R4, #73H
+	BNE _$j_15628
+	ADD R10, #-1H
+	BEQ _$j_15600
+	BL _f_15228
+	CMP R4, #73H
+	BNE _$j_15600
+	ADD R10, #-1H
+	MOV R2, #24H
+	MOV ER0, ER8
+	BL _num_frombyte
+	MOV R4, #3H
+	ST R4, 1CH[BP]
+	MOV ER0, BP
+	MOV ER2, ER8
+	BL _f_14800
+	BL _num_div_1
+	MOV ER0, FP
+	BL _f_154F2
+	MOV ER2, BP
+	BL _f_15204
+_$j_15600:
+	MOV R2, #3CH
+	MOV ER0, ER8
+	BL _num_frombyte
+	MOV ER0, BP
+	MOV ER2, ER8
+	BL _f_14800
+	BL _num_div_1
+	MOV ER0, BP
+	MOV ER2, FP
+	BL _num_add_1
+	MOV ER0, FP
+	BL _f_154F2
+	MOV ER2, BP
+	BL _f_15204
+_$j_15628:
+	MOV ER0, BP
+	MOV ER2, FP
+	BL _f_14800
+	BL _num_add_1
+	CMP R0, #0H
+	BNE _$j_15656
+	MOV ER0, BP
+	BL _f_1B238
+	CMP R0, #0H
+	BNE _$j_15656
+	L R2, 9H[BP]
+	BEQ _$j_15650
+	CMP R2, #5H
+	BEQ _$j_15650
+	L R2, 8H[BP]
+	CMP R2, #7H
+	BGE _$j_15656
+_$j_15650:
+	L R1, [BP]
+	OR R1, #01000000B
+	ST R1, [BP]
+_$j_15656:
+	MOV R2, R0
+	POP FP
+	POP ER8
+	BL _f_15596
+	POP PC
+
+; 15662
+_f_15662:
+	PUSH LR
+	PUSH R0
+	MOV R0, #75H
+	BL _f_15712
+	CMP R2, #0H
+	POP R0
+	POP PC
+
+; 15672
+_num_sum__:
+	PUSH LR
+	TB _table_mode.6
+	BNE _$j_1567e
+	CMP R6, #0H
+	BEQ _$j_1569a
+_$j_1567e:
+	MOV R2, #2H
+	POP PC
+
+; 15682
+_f_15682:
+	PUSH LR
+	TB _table_mode.6
+	BNE _$j_15692
+	CMP R6, #1H
+	BEQ _$j_15692
+	CMP R6, #-1H
+	BNE _$j_1569a
+_$j_15692:
+	CMP R0, #21H
+	BEQ _$j_156a2
+	CMP R0, #22H
+	BEQ _$j_156a2
+_$j_1569a:
+	CMP R7, #3H
+	BLT _$j_156ae
+	CMP R0, #5FH
+	BNE _$j_156a6
+_$j_156a2:
+	MOV R2, #2H
+	POP PC
+_$j_156a6:
+	BL _f_15662
+	BEQ _$j_156ae
+	POP PC
+_$j_156ae:
+	CMP R0, #77H
+	BGE _$j_156c6
+	CMP R0, #60H
+	BGE _$j_1570c
+_$j_156b6:
+	BL _f_15238
+	CMP R2, #0H
+	BNE _$j_156c2
+	CMP R0, #2H
+	BLE _$j_156ce
+_$j_156c2:
+	MOV R7, #1H
+	POP PC
+_$j_156c6:
+	TB _table_mode.6
+	BNE _$j_156a2
+	BAL _$j_156b6
+_$j_156ce:
+	ADD SP, #-14H
+	PUSH XR0
+	MOV ER2, SP
+	ADD ER2, #4H
+	MOV R0, #8H
+	BL _l_var
+	POP XR0
+	CMP R0, #1H
+	BEQ _$j_156ea
+	BGE _$j_156f0
+	BL _num_sum_1__
+	BAL _$j_156f4
+_$j_156ea:
+	BL _f_03A72
+	BAL _$j_156f4
+_$j_156f0:
+	BL _f_03E72
+_$j_156f4:
+	PUSH XR0
+	MOV ER2, SP
+	ADD ER2, #4H
+	MOV R0, #8H
+	BL _st_var
+	POP XR0
+	ADD SP, #14H
+	MOV R6, #0H
+	MOV R7, #4H
+	ADD R10, #-1H
+	POP PC
+_$j_1570c:
+	BL _f_1535A
+	POP PC
+
+; 15712
+_f_15712:
+	PUSH LR
+	L R1, _mode
+	CMP R1, #-77H
+	BNE _$j_15724
+	CMP R0, #2AH
+	BNE _$j_15724
+	B _$j_15cb8
+_$j_15724:
+	CMP R1, #-78H
+	BEQ _$j_1573a
+	TB _table_mode.6
+	BNE _$j_15736
+	CMP R6, #1H
+	BEQ _$j_15736
+	CMP R6, #-1H
+	BNE _$j_1573a
+_$j_15736:
+	CMP R0, #74H
+	BEQ _$j_15746
+_$j_1573a:
+	CMP R7, #3H
+	BGE _$j_15758
+	CMP R0, #2CH
+	BEQ _$j_1574a
+	CMP R0, #2BH
+	BEQ _$j_15752
+_$j_15746:
+	MOV R2, #2H
+	POP PC
+_$j_1574a:
+	MOV R0, #5FH
+	BL _f_15682
+	POP PC
+_$j_15752:
+	MOV R7, #1H
+	MOV R2, #0H
+	POP PC
+_$j_15758:
+	CMP R0, #64H
+	BNE _$j_15770
+	MOV R1, R10
+	BL _f_15314
+	CMP R1, #0H
+	BEQ _$j_15780
+	ADD R1, #-1H
+	BL _f_15314
+	CMP R1, #0H
+	BNE _$j_15746
+_$j_15770:
+	CMP R0, #2AH
+	BNE _$j_15780
+	TB _table_mode.6
+	BEQ _$j_15746
+	SB _d_08121.0
+	BNE _$j_15746
+_$j_15780:
+	BL _f_152D8
+	CMP R2, #0H
+	BNE _$j_157ac
+	CMP R0, #64H
+	BNE _$j_15796
+	MOV R0, #3H
+	BL _f_15546
+	BLT _$j_157ac
+	MOV R0, #64H
+_$j_15796:
+	MOV ER2, BP
+	BL _f_151D6
+	CMP R2, #0H
+	BNE _$j_157ae
+	CMP R10, #0H
+	BEQ _$j_157a8
+	CMP R0, #2AH
+	BEQ _$j_15746
+_$j_157a8:
+	BL _f_15238
+_$j_157ac:
+	MOV R7, #2H
+_$j_157ae:
+	POP PC
+
+; 157B0
+_f_157B0:
+	PUSH LR
+	CMP R7, #3H
+	BGE _$j_157ba
+_$j_157b6:
+	MOV R2, #2H
+	POP PC
+_$j_157ba:
+	CMP R0, #73H
+	BNE _$j_15850
+	CMP R7, #3H
+	BEQ _$j_157b6
+	BL _f_15544
+	BGE _$j_157cc
+	MOV R2, #3H
+	POP PC
+_$j_157cc:
+	BL _f_14560
+	ADD FP, #-1H
+	CMP R2, #4H
+	BEQ _$j_1581c
+	CMP R2, #1H
+	BNE _$j_157e2
+	CMP R0, #5FH
+	BNE _$j_157e2
+	ADD FP, #1H
+	BAL _$j_157b6
+_$j_157e2:
+	PUSH XR0
+	BL _f_155AC
+	CMP R2, #0H
+	BEQ _$j_157f4
+	MOV R4, R2
+	POP XR0
+	MOV R2, R4
+	POP PC
+_$j_157f4:
+	CMP R10, #0H
+	BNE _$j_15800
+	MOV R0, #73H
+	BL _f_15238
+	MOV R10, #0H
+_$j_15800:
+	POP XR0
+
+; 15802
+_f_15802:
+	MOV R7, #3H
+	CMP R2, #2H
+	BEQ _$j_15818
+	CMP R2, #3H
+	BEQ _$j_15818
+	CMP R2, #8H
+	BGE _$j_15818
+	BL _f_15662
+	MOV R7, #2H
+	POP PC
+_$j_15818:
+	MOV R2, #0H
+	POP PC
+_$j_1581c:
+	CMP R10, #2H
+	BLT _$j_1583a
+	MOV R2, #2H
+	PUSH R10
+_$j_15824:
+	BL _f_15228
+	CMP R4, #73H
+	BNE _$j_15838
+	ADD R10, #-1H
+	ADD R2, #-1H
+	BNE _$j_15824
+	POP R10
+	ADD FP, #1H
+	BAL _$j_157b6
+_$j_15838:
+	POP R10
+_$j_1583a:
+	MOV ER2, BP
+	BL _f_151D6
+	CMP R2, #0H
+	BEQ _$j_15846
+	POP PC
+_$j_15846:
+	MOV R0, #73H
+	BL _f_15238
+	MOV R7, #1H
+	POP PC
+_$j_15850:
+	CMP R0, #67H
+	BNE _$j_15882
+	CMP R10, #0H
+	BEQ _$j_157b6
+	PUSH R10
+_$j_1585a:
+	BL _f_15228
+	BL _f_15160
+	BLT _$j_1586c
+	ADD R10, #-1H
+	BNE _$j_1585a
+	POP R10
+	BAL _$j_157b6
+_$j_1586c:
+	POP R10
+	PUSH R4
+	BL _f_15178
+	POP R4
+	CMP R2, #0H
+	BNE _$j_158c2
+	CMP R4, #2H
+	BGT _$j_158c2
+	MOV R2, #-1H
+	POP PC
+_$j_15882:
+	BL _f_152D8
+	CMP R2, #0H
+	BNE _$j_158c2
+	CMP R0, #69H
+	BEQ _$j_15892
+	CMP R0, #6AH
+	BNE _$j_158b2
+_$j_15892:
+	MOV R7, R0
+	BL _f_14560
+	CMP R2, #0AH
+	BNE _$j_157b6
+	PUSH R7
+	ADD FP, #-1H
+	BL _f_15174
+	POP R0
+	CMP R2, #0H
+	BNE _$j_158c2
+	ADD FP, #1H
+	MOV R2, R0
+	ADD R2, #-6CH
+	POP PC
+_$j_158b2:
+	CMP R10, #0H
+	BNE _$j_158bc
+	BL _f_15238
+	MOV R10, #0H
+_$j_158bc:
+	MOV R1, R0
+	BL _f_14EB4
+_$j_158c2:
+	MOV R7, #4H
+	POP PC
+
+; 158C6
+_f_158C6:
+	PUSH LR
+	CMP R7, #3H
+	BLT _$j_158d0
+	MOV R2, #2H
+	POP PC
+_$j_158d0:
+	L R2, _mode
+	CMP R2, #2H
+	BNE _$j_158ea
+	ADD FP, #-1H
+	L R0, _submode
+	AND R0, #00001100B
+	SRL R0, #2
+	ADD R0, #60H
+	BL _f_1535A
+	POP PC
+_$j_158ea:
+	PUSH XR8
+	MOV ER8, #-1H
+	MOV ER10, #0H
+	BAL _$j_15904
+_$j_158f2:
+	BL _f_14560
+	CMP R2, #0AH
+	BLE _$j_15900
+_$j_158fa:
+	MOV R2, #2H
+	POP XR8
+	POP PC
+_$j_15900:
+	CMP R2, #4H
+	BNE _$j_1599c
+_$j_15904:
+	CMP R0, #12H
+	BEQ _$j_158fa
+	ADD R0, #0H
+	BNE _$j_15914
+	CMP R11, #2H
+	BEQ _$j_1591c
+	MOV R11, #1H
+	BAL _$j_158f2
+_$j_15914:
+	CMP R0, #10H
+	BEQ _$j_15924
+	BGT _$j_15956
+	MOV R11, #2H
+_$j_1591c:
+	ADD R9, #1H
+	BL _f_14712
+	BAL _$j_158f2
+_$j_15924:
+	CMP R11, #1H
+	ADDC R11, #0H
+_$j_15928:
+	BL _f_14560
+	CMP R2, #0AH
+	BGT _$j_158fa
+	CMP R2, #4H
+	BNE _$j_1599c
+	CMP R0, #12H
+	BNE _$j_1593c
+	B _$j_15a42
+_$j_1593c:
+	ADD R0, #0H
+	BNE _$j_15948
+	CMP R11, #2H
+	BEQ _$j_15950
+	ADD R9, #-1H
+	BAL _$j_15928
+_$j_15948:
+	CMP R0, #10H
+	BEQ _$j_158fa
+	BGT _$j_15964
+	MOV R11, #2H
+_$j_15950:
+	BL _f_14712
+	BAL _$j_15928
+_$j_15956:
+	CMP R11, #0H
+	BNE _$j_15964
+	MOV R11, #2H
+	ADD R9, #1H
+	MOV R0, #1H
+	BL _f_14712
+_$j_15964:
+	BL _f_14560
+	CMP R2, #0AH
+	BGT _$j_158fa
+	CMP R2, #4H
+	BNE _$j_1597e
+	CMP R0, #10H
+	BGE _$j_1598a
+	CMP R8, #-10H
+	BLT _$j_1598a
+	SLL R8, #4
+	OR R8, R0
+	BAL _$j_15964
+_$j_1597e:
+	CMP R8, #-1H
+	BNE _$j_1599c
+	CMP R2, #1H
+	BNE _$j_15990
+	CMP R0, #5FH
+	BEQ _$j_15998
+_$j_1598a:
+	MOV R2, #2H
+	POP XR8
+	POP PC
+_$j_15990:
+	CMP R0, #2BH
+	BEQ _$j_15964
+	CMP R0, #2CH
+	BNE _$j_1598a
+_$j_15998:
+	XOR R11, #10000000B
+	BAL _$j_15964
+_$j_1599c:
+	CMP R2, #1H
+	BNE _$j_159a4
+	CMP R0, #5FH
+	BEQ _$j_1598a
+_$j_159a4:
+	TB R11.1
+	BEQ _$j_15a10
+	CMP R8, #-10H
+	BLT _$j_159b4
+	AND R8, #00001111B
+	CMP R8, #0FH
+	BLT _$j_159b4
+	MOV R8, #0H
+_$j_159b4:
+	MOV R2, #0H
+_$j_159b6:
+	ADD R8, #-10H
+	BGE _$j_159be
+	ADD R2, #0AH
+	BAL _$j_159b6
+_$j_159be:
+	AND R8, #00001111B
+	ADD R2, R8
+	RB R11.7
+	BEQ _$j_159c8
+	NEG R2
+_$j_159c8:
+	ADD R2, R9
+	BNV _$j_159d4
+	BLT _$j_15a10
+_$j_159ce:
+	MOV R2, #3H
+	POP XR8
+	POP PC
+_$j_159d4:
+	BPS _$j_159e0
+	CMP R2, #-63H
+	BC LTS, _$j_15a10
+	ADD R2, #64H
+	MOV R0, #0H
+	BAL _$j_159e6
+_$j_159e0:
+	CMP R2, #63H
+	BC GTS, _$j_159ce
+	MOV R0, #1H
+_$j_159e6:
+	ST R0, 9H[BP]
+	MOV ER8, #1H
+_$j_159ea:
+	SRL R2, #1
+	BGE _$j_159f2
+	ADD R9, R8
+	DAA R9
+_$j_159f2:
+	ADD R8, R8
+	DAA R8
+	CMP R2, #0H
+	BNE _$j_159ea
+	ST R9, 8H[BP]
+	LEA 28H[BP]
+	MOV ER0, #0H
+	ST ER0, 6H[BP]
+	ST ER0, 4H[BP]
+	ST ER0, 2H[BP]
+	ST R0, 1H[BP]
+	BL _f_1533A
+	BAL _$j_15a18
+_$j_15a10:
+	MOV R0, #BYTE1 _unk_017be
+	MOV R1, #BYTE2 _unk_017be
+	BL _f_15526
+_$j_15a18:
+	TB R11.2
+	BEQ _$j_15a26
+	PUSH XR0
+	MOV ER0, BP
+	BL _f_110C4
+	POP XR0
+_$j_15a26:
+	POP XR8
+	L R2, _mode
+	CMP R2, #-3CH
+	BNE _$j_15a3a
+	MOV ER0, BP
+	ADD ER0, #0AH
+	MOV R2, #0H
+	BL _num_fromdigit
+_$j_15a3a:
+	ADD FP, #-1H
+	MOV R7, #4H
+	MOV R2, #0H
+	POP PC
+_$j_15a42:
+	BL _f_14560
+	CMP R2, #4H
+	BNE _$j_15a9a
+	ADD FP, #-1H
+_$j_15a4c:
+	PUSH FP
+	CMP R10, #0FH
+	BGE _$j_15a82
+_$j_15a52:
+	BL _f_14560
+	CMP R2, #0AH
+	BGT _$j_15a98
+	CMP R2, #4H
+	BEQ _$j_15a66
+	CMP R11, #2H
+	BNE _$j_15a94
+	POP FP
+	BAL _$j_15a4c
+_$j_15a66:
+	CMP R0, #10H
+	BGE _$j_15a98
+	ADD R0, #0H
+	BNE _$j_15a76
+	CMP R11, #2H
+	BEQ _$j_15a78
+	ADD R9, #-1H
+	BAL _$j_15a52
+_$j_15a76:
+	MOV R11, #2H
+_$j_15a78:
+	BL _f_14712
+	CMP R10, #0FH
+	BLT _$j_15a52
+	OR R11, #00000100B
+_$j_15a82:
+	BL _f_14560
+	CMP R2, #0AH
+	BGT _$j_15a98
+	CMP R2, #4H
+	BNE _$j_15a94
+	CMP R0, #10H
+	BGE _$j_15a98
+	BAL _$j_15a82
+_$j_15a94:
+	ADD SP, #2H
+	BAL _$j_1599c
+_$j_15a98:
+	ADD SP, #2H
+_$j_15a9a:
+	MOV R2, #2H
+	POP XR8
+	POP PC
+
+; 15AA0
+_f_15AA0:
+	PUSH LR
+	TB _table_mode.5
+	BEQ _$j_15ad8
+	CMP R7, #0H
+	BNE _$j_15ad8
+	CMP R0, #1H
+	BEQ _$j_15ad8
+	PUSH XR0
+	BL _f_14560
+	CMP R2, #2H
+	BNE _$j_15ad4
+	CMP R0, #2AH
+	BNE _$j_15ad4
+	POP XR0
+	ADD R0, #1H
+	MOV R2, #BYTE1 _d_08121
+	MOV R3, #BYTE2 _d_08121
+	L R1, [ER2]
+	BEQ _$j_15ace
+	MOV R2, #2H
+	POP PC
+_$j_15ace:
+	ST R0, [ER2]
+	MOV R2, #0H
+	POP PC
+_$j_15ad4:
+	POP XR0
+	ADD FP, #-1H
+_$j_15ad8:
+	CMP R7, #3H
+	BLT _$j_15ae4
+	BL _f_15662
+	BEQ _$j_15ae4
+	POP PC
+_$j_15ae4:
+	MOV R7, R2
+	MOV ER2, BP
+	CMP R7, #10H
+	BEQ _$j_15af4
+	BL _f_14A54
+	BEQ _$j_15af8
+	POP PC
+_$j_15af4:
+	BL _st_var
+_$j_15af8:
+	MOV R7, #4H
+	MOV R2, #0H
+	POP PC
+
+; 15AFE
+_f_15AFE:
+	PUSH LR
+	CMP R7, #3H
+	BLT _$j_15b0a
+	BL _f_15662
+	BNE _$j_15b5e
+_$j_15b0a:
+	CMP R0, #42H
+	BNE _$j_15b14
+	TB _table_mode.6
+	BNE _$j_15b60
+_$j_15b14:
+	CMP R0, #28H
+	BLT _$j_15b3c
+	BEQ _$j_15b32
+	ADD R0, #-29H
+	SLL R0, #1
+	MOV R2, #BYTE1 _unk_019a8
+	MOV R3, #BYTE2 _unk_019a8
+	ADD R2, R0
+	ADDC R3, #0H
+	L ER2, [ER2]
+	MOV ER0, BP
+	BL ER2
+	MOV R2, R0
+	BEQ _$j_15b48
+	BAL _$j_15b5c
+_$j_15b32:
+	MOV R0, #BYTE1 _unk_017be
+	MOV R1, #BYTE2 _unk_017be
+	BL _f_15526
+	BAL _$j_15b5a
+_$j_15b3c:
+	MOV R1, #0AH
+	MUL ER0, R1
+	ADD R0, #18H
+	ADDC R1, #18H
+	BL _f_15526
+_$j_15b48:
+	L R2, _mode
+	CMP R2, #-3CH
+	BNE _$j_15b5a
+	MOV ER0, BP
+	ADD ER0, #0AH
+	MOV R2, #0H
+	BL _num_fromdigit
+_$j_15b5a:
+	MOV R2, #0H
+_$j_15b5c:
+	MOV R7, #4H
+_$j_15b5e:
+	POP PC
+_$j_15b60:
+	MOV R2, #2H
+	POP PC
+
+; 15B64
+_f_15B64:
+	PUSH LR
+	CMP R7, #3H
+	BLT _$j_15b70
+	BL _f_15662
+	BNE _$j_15b94
+_$j_15b70:
+	MOV R2, R0
+	AND R0, #00001111B
+	MOV R1, #0H
+	ADD ER0, ER0
+	MOV R4, #BYTE1 _d_080E0
+	MOV R5, #BYTE2 _d_080E0
+	ADD ER4, ER0
+	L ER0, [ER4]
+	BNE _$j_15b86
+	MOV R2, #9H
+	POP PC
+_$j_15b86:
+	MOV R0, #BYTE1 _unk_017be
+	MOV R1, #BYTE2 _unk_017be
+	BL _f_15526
+	ST R2, [BP]
+	MOV R2, #0H
+	MOV R7, #4H
+_$j_15b94:
+	POP PC
+
+; 15B96
+_f_15B96:
+	PUSH LR
+	TB _table_mode.7
+	BNE _$j_15ba2
+	CMP R7, #3H
+	BGE _$j_15ba6
+_$j_15ba2:
+	MOV R2, #2H
+	POP PC
+_$j_15ba6:
+	PUSH R0
+	BL _f_14560
+	CMP R2, #0AH
+	BEQ _$j_15bb6
+_$j_15bb0:
+	MOV R2, #2H
+_$j_15bb2:
+	POP R0
+_$j_15bb4:
+	POP PC
+_$j_15bb6:
+	ADD FP, #-1H
+	BL _f_15174
+	CMP R2, #0H
+	BNE _$j_15bb2
+	CMP R6, #0H
+	BEQ _$j_15bca
+	ADD FP, #-1H
+	MOV R2, #-1H
+	BAL _$j_15bb2
+_$j_15bca:
+	MOV R0, #3H
+	BL _f_15546
+	BLT _$j_15bb0
+	MOV R0, #-1H
+	BL _f_15238
+	MOV R10, #0H
+	POP R0
+	CMP R0, #0AH
+	MOV R3, #0H
+	BLT _$j_15c12
+	PUSH R0
+	MOV R2, #BYTE1 _d_08078
+	MOV R3, #BYTE2 _d_08078
+	MOV R0, #0AH
+	MUL ER0, R11
+	ADD ER2, ER0
+	MOV R0, #0H
+	BL _f_14A54
+	BNE _$j_15bb2
+	ADD R11, #1H
+	L R1, _mode
+	CMP R1, #-3CH
+	BNE _$j_15c02
+	ADD R11, #1H
+_$j_15c02:
+	POP R1
+	ADD R1, #21H
+	BL _f_14EB4
+	CMP R2, #0H
+	BNE _$j_15bb4
+	MOV R0, #0H
+	MOV R3, #1H
+_$j_15c12:
+	ADD FP, #1H
+_$j_15c14:
+	MOV R7, #1H
+	MOV R2, #10H
+	PUSH R3
+	BL _f_15AA0
+	POP R3
+	CMP R3, #0H
+	BEQ _$j_15c2c
+	MOV ER0, BP
+	ADD ER0, #14H
+	BL _f_15526
+_$j_15c2c:
+	MOV R2, #-1H
+	POP PC
+
+; 15C30
+_f_15C30:
+	PUSH LR
+	CMP R7, #2H
+	BGT _$j_15c3a
+_$j_15c36:
+	MOV R2, #2H
+_$j_15c38:
+	POP PC
+_$j_15c3a:
+	TB _table_mode.6
+	BEQ _$j_15c64
+	BL _f_14560
+	CMP R2, #5H
+	BNE _$j_15c62
+	CMP R0, #1H
+	BEQ _$j_15c62
+	BL _f_14560
+	ADD FP, #-2H
+	CMP R2, #0AH
+	BNE _$j_15c64
+	BL _f_15174
+	CMP R2, #0H
+	BNE _$j_15c38
+	MOV R2, #-1H
+	POP PC
+_$j_15c62:
+	ADD FP, #-1H
+_$j_15c64:
+	BL _f_1517C
+	CMP R2, #0H
+	BNE _$j_15c38
+	CMP R10, #0H
+	BEQ _$j_15c36
+	BL _f_15228
+	CMP R4, #2H
+	BLE _$j_15ca8
+	CMP R4, #77H
+	BEQ _$j_15c94
+	CMP R4, #23H
+	BGE _$j_15c9a
+	ADD R10, #-1H
+	MOV R0, R4
+	ADD R0, #3H
+_$j_15c86:
+	BL _f_15238
+	MOV ER2, BP
+	BL _f_151D6
+	MOV R7, #1H
+	POP PC
+_$j_15c94:
+	ADD R10, #-1H
+	MOV R0, #78H
+	BAL _$j_15c86
+_$j_15c9a:
+	MOV R7, #4H
+	MOV R0, #67H
+	BL _f_157B0
+	CMP R2, #0H
+	BNE _$j_15c38
+	BAL _$j_15c64
+_$j_15ca8:
+	MOV R2, #-2H
+	POP PC
+
+; 15CAC
+_f_15CAC:
+	PUSH LR
+	TB _table_mode.6
+	BEQ _$j_15cb8
+	CMP R0, #1H
+	BEQ _$j_15cbc
+_$j_15cb8:
+	CMP R7, #2H
+	BGT _$j_15cc0
+_$j_15cbc:
+	MOV R2, #2H
+	POP PC
+_$j_15cc0:
+	BL _f_15174
+	CMP R2, #0H
+	BNE _$j_15ce2
+	TB _table_mode.5
+	BEQ _$j_15cda
+	L R0, _d_08121
+	BEQ _$j_15cda
+	ADD R0, #-1H
+	MOV R3, #0H
+	BAL _$j_15c14
+_$j_15cda:
+	MOV R2, #-1H
+	CMP R6, #0H
+	BEQ _$j_15ce2
+	ADD FP, #-1H
+_$j_15ce2:
+	POP PC
+
+; 15CE4
+_num_eval__:
+	PUSH LR
+	SB _d_08120.0
+	MOV R7, #0H
+	BAL _$j_15d1c
+
+; 15CEE
+_f_15CEE:
+	PUSH LR
+	PUSH QR8
+	PUSH XR4
+	PUSH ER0
+	MOV R11, #0H
+	L R8, _mode
+	CMP R8, #6H
+	BNE _$j_15d02
+	MOV R11, #18H
+_$j_15d02:
+	ST R11, _d_08121
+	MOV FP, ER0
+	MOV ER6, #0H
+	MOV ER8, ER2
+	L FP, [FP]
+	ADD SP, #-3CH
+	MOV BP, SP
+	MOV R0, #-1H
+	MOV R10, #0H
+	BL _f_15238
+	MOV ER10, #0H
+_$j_15d1c:
+	BL _f_14560
+	CMP R2, #0AH
+	BGT _$j_15dc4
+	SLL R2, #1
+	MOV R4, #BYTE1 _jmp_017a8
+	MOV R5, #BYTE2 _jmp_017a8
+	ADD R4, R2
+	ADDC R5, #0H
+	L ER4, [ER4]
+	BL ER4
+	CMP R2, #0H
+	BEQ _$j_15d1c
+	BNS _$j_15d52
+_$j_15d38:
+	CMP R6, #0H
+	BNE _$j_15d46
+	L R0, -1H[FP]
+	BEQ _$j_15d44
+	CMP R2, #1H
+	BEQ _$j_15d46
+_$j_15d44:
+	ADD FP, #-1H
+_$j_15d46:
+	MOV ER0, ER8
+	PUSH R2
+	BL _f_1B12C
+	POP R0
+	BAL _$j_15dae
+_$j_15d52:
+	L R0, [BP]
+	CMP R0, #-70H
+	BGE _$j_15d60
+	CMP R0, #-80H
+	BGE _$j_15d76
+	CMP R0, #60H
+	BLT _$j_15d76
+_$j_15d60:
+	L R0, _table_mode
+	CMP R0, #1H
+	BEQ _$j_15d6c
+	MOV R2, #2H
+	BAL _$j_15d38
+_$j_15d6c:
+	MOV ER0, BP
+	PUSH R2
+	BL _f_135D6
+	POP R2
+_$j_15d76:
+	MOV R0, R2
+	CMP R6, #0H
+	BNE _$j_15dbc
+	MOV ER0, ER8
+	BL _f_154F2
+	MOV R0, R2
+	CMP R0, #-1H
+	BEQ _$j_15d8e
+	XOR R0, #11111111B
+	ADD R0, #21H
+	BAL _$j_15db2
+_$j_15d8e:
+	MOV R10, #1H
+	BL _f_15228
+	MOV R0, #25H
+	CMP R4, #74H
+	BEQ _$j_15dd6
+	MOV R0, #22H
+	CMP R4, #24H
+	BEQ _$j_15dd6
+	MOV R0, #23H
+	CMP R4, #25H
+	BEQ _$j_15dd6
+	MOV R0, #0H
+	TB _table_mode.6
+	BNE _$j_15dc8
+_$j_15dae:
+	CMP R6, #0H
+	BNE _$j_15dbc
+_$j_15db2:
+	ADD SP, #3CH
+	POP BP
+	ST FP, [BP]
+	POP XR4
+	POP QR8
+_$j_15dbc:
+	RB _d_08120.0
+	CMP R0, #-2H
+	POP PC
+_$j_15dc4:
+	MOV R2, #2H
+	BAL _$j_15d38
+_$j_15dc8:
+	CMP R4, #2AH
+	BEQ _$j_15dd6
+	MOV R0, #BYTE1 _unk_017be
+	MOV R1, #BYTE2 _unk_017be
+	BL _f_15532
+	MOV R0, #0H
+_$j_15dd6:
+	PUSH R0
+	MOV ER2, ER8
+	ADD ER2, #0AH
+	MOV ER0, BP
+	ADD ER0, #14H
+	BL _f_154E0
+	POP R0
+	BAL _$j_15db2
+
+; 15DE8
+_f_15DE8:
+	PUSH LR
+	PUSH R4
+	PUSH ER6
+	PUSH QR8
+	L R8, _table_mode
+	MOV R9, #0H
+	MOV R12, #0FEH
+	MOV R13, #83H
+	MOV ER6, #-1H
+	ST ER6, [BP]
+	ST ER6, 2H[BP]
+	ST ER6, 4H[BP]
+	ST ER6, 6H[BP]
+	ST ER6, 8H[BP]
+	MOV R7, #0H
+	MOV R14, #98H
+	MOV R15, #83H
+_$j_15e0c:
+	BL _f_14560
+	CMP R2, #5H
+	BEQ _$j_15e70
+	MOV R9, #1H
+	CMP R2, #0AH
+	BEQ _$j_15e4a
+	CMP R2, #9H
+	BNE _$j_15e0c
+	TB R8.6
+	BEQ _$j_15e0c
+	BL _f_14560
+	CMP R2, #0AH
+	BEQ _$j_15e4a
+	CMP R2, #5H
+	BNE _$j_15e0c
+	CMP R0, #1H
+	BEQ _$j_15e0c
+	PUSH R0
+	BL _f_14560
+	POP R1
+	CMP R2, #0AH
+	BNE _$j_15e6c
+	CMP R0, #1H
+	BNE _$j_15e46
+	MOV R0, #2H
+	BAL _$j_15edc
+_$j_15e46:
+	MOV R9, R1
+	BAL _$j_15eba
+_$j_15e4a:
+	MOV R9, #0H
+	CMP R0, #1H
+	BEQ _$j_15e58
+	TB R8.6
+	BEQ _$j_15eda
+	MOV R9, #8H
+	BAL _$j_15eba
+_$j_15e58:
+	CMP R6, #-1H
+	BEQ _$j_15e0c
+	CMP R6, #0H
+	BEQ _$j_15e62
+	ADD R6, #-1H
+_$j_15e62:
+	MOV R10, #1H
+	SLL R10, R6
+	OR R7, R10
+	MOV R6, #-1H
+	BAL _$j_15e0c
+_$j_15e6c:
+	MOV R0, R1
+	ADD FP, #-1H
+_$j_15e70:
+	CMP R0, #1H
+	BNE _$j_15e78
+	MOV R9, #1H
+	BAL _$j_15e0c
+_$j_15e78:
+	TB R8.6
+	BNE _$j_15ea6
+	SB R9.0
+	BNE _$j_15e98
+	PUSH R0
+	BL _f_14560
+	MOV R1, R0
+	POP R0
+	CMP R2, #2H
+	BNE _$j_15e96
+	CMP R1, #2AH
+	BNE _$j_15e96
+	MOV R6, R0
+	BAL _$j_15e0c
+_$j_15e96:
+	ADD FP, #-1H
+_$j_15e98:
+	MOV R1, R0
+	BEQ _$j_15e9e
+	ADD R1, #-1H
+_$j_15e9e:
+	MOV R10, #1H
+	SLL R10, R1
+	AND R10, R7
+	BNE _$j_15e0c
+_$j_15ea6:
+	PUSH BP
+_$j_15ea8:
+	L R11, [BP]
+	CMP R11, R0
+	BEQ _$j_15eb6
+	ADD BP, #1H
+	CMP R11, #-1H
+	BNE _$j_15ea8
+	ST R0, -1H[BP]
+_$j_15eb6:
+	POP BP
+	BAL _$j_15e0c
+_$j_15eba:
+	L R11, [BP]
+	ADD BP, #1H
+	CMP R11, R9
+	BEQ _$j_15eca
+	CMP R11, #-1H
+	BNE _$j_15eba
+	MOV R0, #0CH
+	BAL _$j_15edc
+_$j_15eca:
+	L R11, [BP]
+	ST R11, -1H[BP]
+	ADD BP, #1H
+	CMP R11, #-1H
+	BNE _$j_15eca
+	ST R9, -2H[BP]
+	ST R9, _d_083FC
+_$j_15eda:
+	MOV R0, #0H
+_$j_15edc:
+	POP QR8
+	POP ER6
+	POP R4
+	POP PC
+
+; 15EE4
+_f_15EE4:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH QR8
+	BL _f_15F5A
+	BAL _$j_15f02
+
+; 15EF4
+_f_15EF4:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH QR8
+	BL _f_15F2C
+_$j_15f02:
+	POP QR8
+	POP PC
+
+; 15F06
+_f_15F06:
+	PUSH LR
+	PUSH XR4
+	PUSH QR8
+	BL _l_reg0
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BGE _$j_15f1e
+	AND R0, #10111111B
+	ST R0, _reg0_9
+_$j_15f1e:
+	BL _mv_reg1_reg0
+	BL _f_1726A
+	POP QR8
+	POP XR4
+	POP PC
+
+; 15F2C
+_f_15F2C:
+	PUSH LR
+	PUSH QR0
+	L ER0, _arg1_ref
+	L R4, [ER0]
+	AND R4, #11110000B
+	CMP R4, #-80H
+	BNE _$j_15f5e
+	MOV R2, #0H
+	BL _f_16398
+	LEA _arg0_ref
+	L XR4, [EA]
+	MOV R0, #0H
+	L ER2, _arg1_ref
+	BL _f_16060
+	LEA _arg0_ref
+	ST XR4, [EA]
+	BAL _$j_15f5e
+
+; 15F5A
+_f_15F5A:
+	PUSH LR
+	PUSH QR0
+_$j_15f5e:
+	L ER0, _arg0_ref
+	L R4, [ER0]
+	AND R4, #11110000B
+	CMP R4, #-80H
+	BNE _$j_15f86
+	MOV R2, #0H
+	BL _f_16398
+	LEA _arg0_ref
+	L XR4, [EA]
+	MOV R0, #0H
+	L ER2, _arg0_ref
+	BL _f_16060
+	LEA _arg0_ref
+	ST XR4, [EA]
+_$j_15f86:
+	POP QR0
+	POP PC
+
+; 15F8A
+_f_15F8A:
+	PUSH LR
+	PUSH XR4
+	PUSH QR8
+	MOV R4, R1
+	BL _f_16CE4
+	MOV FP, ER0
+	MOV R0, R4
+	BL _f_16CE4
+	MOV BP, ER0
+	LEA _arg0_ref
+	ST XR12, [EA]
+	MOV ER2, FP
+	MOV R1, #3H
+_$j_15faa:
+	L R0, [ER2]
+	BEQ _$j_16036
+	CMP R0, #1H
+	BNE _$j_15fb8
+	L R0, 8H[ER2]
+	BEQ _$j_16036
+_$j_15fb8:
+	ADD R1, #-1H
+	BEQ _$j_15fc0
+	ADD ER2, #14H
+	BAL _$j_15faa
+_$j_15fc0:
+	MOV ER0, FP
+	MOV ER2, FP
+	ADD ER2, #14H
+	BL _l_regs
+	BL _f_1805A
+	L ER0, _arg1_ref
+	ADD ER0, #28H
+	BL _l_reg0
+	BL _f_1805A
+	BL _mv_reg6_reg1
+	L ER0, _arg1_ref
+	BL _l_reg0
+	BL _num_div_r
+	BL _st_reg0
+	L ER0, _arg1_ref
+	ADD ER0, #14H
+	BL _l_reg0
+	BL _mv_reg1_reg6
+	BL _num_div_r
+	L BP, _arg0_ref
+	ADD BP, #14H
+	ST BP, _arg0_ref
+	BL _st_reg0
+	L ER0, _arg1_ref
+	ADD ER0, #28H
+	BL _l_reg0
+	BL _mv_reg1_reg6
+	BL _num_div_r
+	L BP, _arg0_ref
+	ADD BP, #14H
+	ST BP, _arg0_ref
+	BL _st_reg0
+_$j_16030:
+	POP QR8
+	POP XR4
+	POP PC
+_$j_16036:
+	LEA _arg0_ref
+	L XR12, [EA]
+	BL _f_16052
+	ADD FP, #14H
+	ADD BP, #14H
+	BL _f_16052
+	ADD FP, #14H
+	ADD BP, #14H
+	BL _f_16052
+	BAL _$j_16030
+
+; 16052
+_f_16052:
+	LEA [FP]
+	L QR0, [EA+]
+	L ER8, [EA+]
+	LEA [BP]
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	RT
+
+; 16060
+_f_16060:
+	PUSH LR
+	PUSH XR4
+	PUSH QR8
+	MOV BP, ER2
+	BL _f_16CE4
+	MOV FP, ER0
+	LEA _arg0_ref
+	ST XR12, [EA]
+	L R10, [FP]
+	BEQ _$j_160d8
+	MOV ER0, FP
+	MOV ER2, FP
+	ADD ER2, #14H
+	BL _l_regs
+	BL _mv_reg6_reg1
+	BL _mv_reg4_reg0
+	L ER0, _arg1_ref
+	ADD ER0, #0AH
+	BL _l_reg0
+	BL _f_160E8
+	BL _mv_reg5_reg0
+_$j_1609c:
+	L FP, _arg1_ref
+	MOV ER0, FP
+	ADD ER0, #1EH
+	MOV ER2, FP
+	ADD ER2, #32H
+	BL _l_regs
+	BL _mv_reg6_reg1
+	BL _mv_reg4_reg0
+	L ER0, _arg1_ref
+	ADD ER0, #28H
+	BL _l_reg0
+	BL _f_160E8
+	BL _mv_reg1_reg5
+	BL _num_add1_r__
+	BL _st_reg0
+	BL _f_19F94
+	POP QR8
+	POP XR4
+	POP PC
+_$j_160d8:
+	MOV ER0, #0H
+	MOV ER2, #0H
+	LEA _reg5
+	ST XR0, [EA+]
+	ST XR0, [EA+]
+	ST ER0, [EA+]
+	BAL _$j_1609c
+
+; 160E8
+_f_160E8:
+	PUSH LR
+	BL _f_19A12
+	BL _mv_reg1_reg4
+	BL _num_mul_r
+	BL _mv_reg1_reg6
+	BL _num_div_r
+	POP PC
+
+; 16100
+_f_16100:
+	PUSH LR
+	PUSH XR4
+	PUSH QR8
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	MOV BP, ER2
+	BL _f_16CE4
+	MOV FP, ER0
+	L R10, [FP]
+	BEQ _$j_161b0
+_$j_16118:
+	L R10, 8H[FP]
+	CMP R10, #2H
+	BGE _$j_161ea
+	L R10, 12H[FP]
+	CMP R10, #3H
+	BGE _$j_161ea
+	L R10, 1CH[FP]
+	CMP R10, #2H
+	BGE _$j_161ea
+	L R10, 26H[FP]
+	CMP R10, #2H
+	BGE _$j_161ea
+	L R10, 30H[FP]
+	CMP R10, #3H
+	BGE _$j_161ea
+	L R10, 3AH[FP]
+	CMP R10, #2H
+	BGE _$j_161ea
+	MOV BP, FP
+	L R11, [BP]
+	BEQ _$j_161aa
+	BL _f_161F6
+	MOV R7, R11
+	MOV BP, FP
+	ADD BP, #0AH
+	BL _f_16208
+	MOV ER8, ER10
+	MOV BP, FP
+	ADD BP, #14H
+	BL _f_161F6
+	MOV R6, R11
+_$j_16168:
+	MOV BP, FP
+	ADD BP, #1EH
+	BL _f_161F6
+	MOV R3, R11
+	MOV BP, FP
+	ADD BP, #28H
+	BL _f_16208
+	MOV ER4, ER10
+	MOV BP, FP
+	ADD BP, #32H
+	BL _f_161F6
+	MOV R2, R11
+	OR R9, #10000000B
+	L R1, 9H[FP]
+	L R0, 27H[FP]
+	LEA _reg1
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+_$j_16198:
+	BL _st_reg1
+	BL _mv_reg0_reg1
+	BL _f_19F94
+_$j_161a4:
+	POP QR8
+	POP XR4
+	POP PC
+_$j_161aa:
+	MOV ER8, #0H
+	MOV ER6, #1H
+	BAL _$j_16168
+_$j_161b0:
+	L R10, 1EH[FP]
+	BEQ _$j_161da
+	L R10, 30H[FP]
+	BNE _$j_16118
+	L R10, 28H[FP]
+	CMP R10, #1H
+	BNE _$j_16118
+	MOV ER0, FP
+	ADD ER0, #1EH
+	MOV ER2, FP
+	ADD ER2, #32H
+	BL _l_regs
+	BL _f_17DC4
+	BL _mv_reg1_reg0
+	BAL _$j_16198
+_$j_161da:
+	MOV ER0, #0H
+	MOV ER2, #0H
+	LEA _reg1
+	ST XR0, [EA+]
+	ST XR0, [EA+]
+	ST ER0, [EA+]
+	BAL _$j_16198
+_$j_161ea:
+	L R0, _arg0_ref
+	MOV ER2, BP
+	BL _f_16060
+	BAL _$j_161a4
+
+; 161F6
+_f_161F6:
+	PUSH LR
+	L R11, [BP]
+	L R10, 1H[BP]
+	L R0, 8H[BP]
+	BEQ _$j_16206
+	SLLC R11, #4
+_$j_16206:
+	POP PC
+
+; 16208
+_f_16208:
+	PUSH LR
+	L R11, [BP]
+	L R10, 1H[BP]
+	L R0, 8H[BP]
+	BEQ _$j_1621e
+	CMP R0, #2H
+	BEQ _$j_16222
+	SRLC R10, #4
+	BAL _$j_16220
+_$j_1621e:
+	MOV R10, R11
+_$j_16220:
+	MOV R11, #0H
+_$j_16222:
+	POP PC
+
+; 16224
+_f_16224:
+	PUSH LR
+	PUSH XR4
+	PUSH QR8
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	MOV ER6, ER0
+	MOV R0, R7
+	BL _f_16CE4
+	MOV ER4, ER0
+	MOV R0, R6
+	BL _f_16CE4
+	MOV ER2, ER4
+	BL _l_regs
+	L ER0, _reg1
+	CMP R1, #6H
+	BNE _$j_16264
+	MOV R1, #1H
+	ST ER0, _reg1
+	L ER0, _reg0
+	BEQ _$j_16264
+	ADD R1, #5H
+	DAA R1
+	AND R1, #00001111B
+	ST ER0, _reg0
+_$j_16264:
+	L R0, _reg0_9
+	BEQ _$j_162ac
+	CMP R0, #1H
+	BNE _$j_16274
+	L R0, _reg0
+	BEQ _$j_162ac
+_$j_16274:
+	L R0, _reg1_9
+	BEQ _$j_162ac
+	CMP R0, #1H
+	BNE _$j_16284
+	L R0, _reg1
+	BEQ _$j_162ac
+_$j_16284:
+	BL _mv_reg3_reg0
+	BL _mv_reg6_reg1
+	BL _f_1805A
+	BL _mv_reg0_reg6
+	BL _mv_reg6_reg1
+	BL _num_div_r
+	BL _f_18BCA
+	BL _mv_reg1_reg6
+	BL _num_div_r
+	BL _mv_reg1_reg3
+_$j_162ac:
+	LEA _arg0_ref
+	L XR12, [EA]
+	MOV R0, R14
+	BL _f_16CE4
+	MOV BP, ER0
+	MOV R0, R15
+	BL _f_16CE4
+	MOV FP, ER0
+	LEA _arg0_ref
+	ST XR12, [EA]
+	BL _st_reg0
+	BL _st_reg1
+	POP QR8
+	POP XR4
+	POP PC
+
+; 162D6
+_f_162D6:
+	PUSH LR
+	PUSH XR4
+	PUSH QR8
+	MOV R4, R1
+	BL _f_16CE4
+	MOV BP, ER0
+	MOV R0, R4
+	BL _f_16CE4
+	MOV FP, ER0
+	LEA [BP]
+	L QR0, [EA+]
+	L ER8, [EA+]
+	LEA [FP]
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	POP QR8
+	POP XR4
+	POP PC
+
+; 162FE
+_f_162FE:
+	PUSH LR
+	PUSH XR4
+	PUSH QR8
+	MOV BP, ER0
+	MOV R0, R2
+	BL _f_16CE4
+	MOV FP, ER0
+	LEA _arg0_ref
+	ST XR12, [EA+]
+	L R10, [BP]
+	AND R10, #11110000B
+	BEQ _$j_1635a
+	MOV ER0, BP
+	BL _l_reg0
+	MOV R0, #0FH
+	ST R0, _d_0805A
+	BL _f_18390
+	LEA _arg0_ref
+	L XR12, [EA]
+	MOV ER8, FP
+	ADD ER8, #1EH
+	MOV ER10, FP
+	ADD ER10, #32H
+	ST XR8, [EA]
+	BL _st_reg0
+	BL _st_reg1
+	BL _f_16474
+	MOV R0, #1H
+_$j_16348:
+	LEA 28H[FP]
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	BL _f_16382
+	POP QR8
+	POP XR4
+	POP PC
+_$j_1635a:
+	LEA [BP]
+	L QR0, [EA+]
+	L ER8, [EA+]
+	LEA 1EH[FP]
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	BL _f_16474
+	MOV R0, #1H
+	LEA 32H[FP]
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	L R10, [BP]
+	BEQ _$j_1637c
+	BAL _$j_16348
+_$j_1637c:
+	MOV R0, #0H
+	MOV R9, #0H
+	BAL _$j_16348
+
+; 16382
+_f_16382:
+	PUSH LR
+	BL _f_16474
+	LEA [FP]
+	ST QR0, [EA+]
+	ST QR0, [EA+]
+	ST XR0, [EA+]
+	MOV R0, #1H
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	POP PC
+
+; 16398
+_f_16398:
+	PUSH LR
+	PUSH XR4
+	PUSH QR8
+	MOV BP, ER0
+	MOV R0, R2
+	BL _f_16CE4
+	MOV FP, ER0
+	L R10, 2H[BP]
+	BEQ _$j_1641e
+	BL _f_16454
+	L R9, 9H[BP]
+	LEA [FP]
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	L R11, 0H[BP]
+	L R10, 1H[BP]
+	BL _f_16424
+	LEA 0AH[FP]
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	L R10, 3H[BP]
+	BL _f_16454
+	LEA 14H[FP]
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+_$j_163e0:
+	L R10, 6H[BP]
+	BL _f_16454
+	L R9, 8H[BP]
+	LEA 1EH[FP]
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	L R11, 4H[BP]
+	L R10, 5H[BP]
+	BL _f_16424
+	LEA 28H[FP]
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	L R10, 7H[BP]
+	BL _f_16454
+	LEA 32H[FP]
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	POP QR8
+	POP XR4
+	POP PC
+_$j_1641e:
+	BL _f_16382
+	BAL _$j_163e0
+
+; 16424
+_f_16424:
+	PUSH LR
+	AND R11, #00001111B
+	BNE _$j_16448
+	CMP R10, #0AH
+	BGE _$j_16436
+	BL _f_16474
+	MOV R0, R10
+	BAL _$j_16452
+_$j_16436:
+	MOV R11, #0H
+	SLLC R11, #4
+	SLL R10, #4
+	BL _f_16474
+	MOV R0, R11
+	MOV R1, R10
+	MOV R8, #1H
+	BAL _$j_16452
+_$j_16448:
+	BL _f_16474
+	MOV R0, R11
+	MOV R1, R10
+	MOV R8, #2H
+_$j_16452:
+	POP PC
+
+; 16454
+_f_16454:
+	PUSH LR
+	CMP R10, #0AH
+	BGE _$j_16462
+	BL _f_16474
+	MOV R0, R10
+	BAL _$j_16472
+_$j_16462:
+	MOV R11, #0H
+	SLLC R11, #4
+	SLL R10, #4
+	BL _f_16474
+	MOV R0, R11
+	MOV R1, R10
+	MOV R8, #1H
+_$j_16472:
+	POP PC
+
+; 16474
+_f_16474:
+	MOV ER0, #0H
+	MOV ER2, #0H
+	MOV ER4, #0H
+	MOV ER6, #0H
+	MOV R8, #0H
+	MOV R9, #1H
+	RT
+
+; 16482
+_f_16482:
+	PUSH LR
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #2H
+	BAL _$j_1649e
+
+; 1648C
+_f_1648C:
+	PUSH LR
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #1H
+	BAL _$j_1649e
+
+; 16496
+_f_16496:
+	PUSH LR
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #0H
+_$j_1649e:
+	PUSH R4
+	MOV ER6, ER0
+	MOV R0, R2
+	BL _f_16CE4
+	ST ER0, _arg0_ref
+	MOV R0, R7
+	BL _f_16CE4
+	MOV ER4, ER0
+	MOV R0, R6
+	BL _f_16CE4
+	MOV ER2, ER4
+	BL _l_regs
+	POP R4
+	BL _invalid_reg0
+	MOV R1, R0
+	BL _invalid_reg1
+	OR R1, R0
+	CMP R1, #0H
+	BNE _$j_1651e
+	CMP R4, #1H
+	BLT _$j_1650c
+	BEQ _$j_16506
+	L R0, _reg1
+	BNE _$j_16500
+	L R0, _reg1_9
+	CMP R0, #1H
+	BNE _$j_16500
+	L ER0, _reg1
+	CMP R1, #1H
+	BEQ _$j_16510
+	L ER0, _reg0
+	BEQ _$j_16510
+	ADD R1, #5H
+	DAA R1
+	AND R1, #00001111B
+	ST ER0, _reg0
+	BAL _$j_16510
+_$j_16500:
+	BL _num_mul_r
+	BAL _$j_16510
+_$j_16506:
+	BL _num_sub1_r__
+	BAL _$j_16510
+_$j_1650c:
+	BL _num_add1_r__
+_$j_16510:
+	BL _st_reg0
+	BL _f_19F94
+	POP QR8
+	POP XR4
+	POP PC
+_$j_1651e:
+	BL _set_reg0_error
+	BAL _$j_16510
+
+; 16524
+_f_16524:
+	PUSH LR
+	PUSH XR4
+	PUSH QR8
+	ADD SP, #-1EH
+	MOV FP, SP
+	ADD SP, #-14H
+	MOV BP, SP
+	MOV ER4, ER0
+	MOV ER6, ER2
+	MOV R0, #BYTE1 _unk_017c8
+	MOV R1, #BYTE2 _unk_017c8
+	MOV ER2, ER4
+	BL _f_154E0
+	L R8, 8H[ER6]
+	BNE _$j_1656c
+	MOV ER0, ER6
+	ADD ER2, #0AH
+	BL _f_154E0
+	MOV R8, #2H
+	MOV R9, #1H
+	L R10, [ER6]
+	CMP R10, #4H
+	BEQ _$j_16564
+	CMP R10, #8H
+	BEQ _$j_16562
+	MOV R8, #3H
+	BGE _$j_16564
+	BAL _$j_1660a
+_$j_16562:
+	MOV R9, #2H
+_$j_16564:
+	ST R8, [ER4]
+	ST R9, 0AH[ER4]
+	BAL _$j_1660a
+_$j_1656c:
+	ADD ER0, #0AH
+	MOV ER2, BP
+	BL _f_154E0
+	MOV ER2, FP
+	ADD ER2, #14H
+	BL _f_154E0
+	MOV ER0, ER6
+	MOV ER2, BP
+	ADD ER2, #0AH
+	BL _f_154E0
+	MOV R8, #1CH
+	MOV R10, #4H
+	MOV R11, #5H
+_$j_1658c:
+	MOV ER0, BP
+	ADD ER0, #0AH
+	MOV ER2, FP
+	BL _f_154E0
+	MOV ER0, BP
+	ADD ER2, #0AH
+	BL _f_154E0
+	MOV ER0, ER2
+	BL _f_1A438
+	MOV ER0, FP
+	MOV ER2, FP
+	ADD ER2, #0AH
+	BL _num_unk_1_1__
+	L R0, [FP]
+	BNE _$j_165cc
+	MOV ER0, ER4
+	MOV ER2, BP
+	BL _f_1A438
+	MOV ER0, FP
+	ADD ER0, #0AH
+	MOV ER2, BP
+	ADD ER2, #0AH
+	BL _f_154E0
+	L R0, 0AH[FP]
+	BNE _$j_1658c
+	BAL _$j_165fe
+_$j_165cc:
+	L R0, 0AH[FP]
+	BEQ _$j_165fe
+	ADD R8, #-1H
+	BEQ _$j_165fe
+	CMP R8, #1AH
+	BLT _$j_165e4
+	MOV R0, #1BH
+	SUB R0, R8
+	SLL R0, #1
+	ADD R0, #3H
+	ST R0, [BP]
+	BAL _$j_1658c
+_$j_165e4:
+	XOR R10, #00000110B
+	ST R10, 14H[FP]
+	MOV ER0, BP
+	MOV ER2, FP
+	ADD ER2, #14H
+	BL _f_1A460
+	ADD R11, R10
+	DAA R11
+	AND R11, #00001111B
+	CMP R11, #5H
+	BEQ _$j_165e4
+	BAL _$j_1658c
+_$j_165fe:
+	MOV ER0, BP
+	ADD ER0, #0AH
+	MOV ER2, ER4
+	ADD ER2, #0AH
+	BL _f_154E0
+_$j_1660a:
+	ADD SP, #32H
+	POP QR8
+	POP XR4
+	POP PC
+
+; 16612
+_f_16612:
+	PUSH LR
+	BL _f_16CE4
+	L R0, [ER0]
+	POP PC
+
+; 1661C
+_f_1661C:
+	PUSH LR
+	PUSH R1
+	BL _f_16CE4
+	POP R2
+	PUSH ER0
+	MOV R0, R2
+	BL _f_16CE4
+	MOV ER2, ER0
+	POP ER0
+	BL _num_cmp
+	CMP R0, #1H
+	POP PC
+
+; 1663A
+_f_1663A:
+	PUSH LR
+	BL _f_16CE4
+	BL _num_negate
+	POP PC
+
+; 16646
+_f_16646:
+	PUSH LR
+	PUSH ER2
+	PUSH ER0
+	MOV R0, #1EH
+	BL _f_16CE4
+	POP ER2
+	BL _num_cpy
+	MOV R0, #1FH
+	BL _f_16CE4
+	POP ER2
+	BL _num_cpy
+	POP PC
+
+; 16666
+_f_16666:
+	PUSH LR
+	PUSH XR8
+	MOV ER8, ER0
+	BL _f_110C4
+	MOV ER0, ER8
+	MOV R10, #1H
+	BL _f_1B0F0
+	CMP R0, #-80H
+	BEQ _$j_1669c
+	MOV R10, #4H
+	CMP R0, #20H
+	BEQ _$j_1669c
+	MOV R10, #40H
+	CMP R0, #0H
+	BNE _$j_1669c
+	MOV ER0, ER8
+	BL _f_1AE06
+	CMP R0, #0H
+	BNE _$j_1669c
+	L R0, 8H[ER8]
+	CMP R0, #7H
+	BGT _$j_1669c
+	MOV R10, #10H
+_$j_1669c:
+	MOV R0, R10
+	POP XR8
+	POP PC
+
+; 166A2
+_f_166A2:
+	PUSH LR
+	PUSH QR8
+	MOV R9, R0
+	MOV R14, R1
+	MOV R0, #1EH
+	BL _f_16CE4
+	MOV ER10, ER0
+	BL _f_16666
+	MOV R8, R0
+	MOV R0, #1FH
+	BL _f_16CE4
+	MOV BP, ER0
+	BL _f_16666
+	ADD R0, R0
+	ADD R8, R0
+	CMP R8, #40H
+	BGE _$j_166fa
+	MOV ER0, ER10
+	MOV R2, R9
+	TB R8.0
+	BEQ _$j_166da
+	BL _f_16398
+	BAL _$j_166e6
+_$j_166da:
+	CMP R14, #0H
+	BEQ _$j_166e2
+	TB R8.4
+	BNE _$j_166e6
+_$j_166e2:
+	BL _f_162FE
+_$j_166e6:
+	MOV ER0, BP
+	MOV R2, R9
+	ADD R2, #6H
+	TB R8.1
+	BEQ _$j_166f6
+	BL _f_16398
+	BAL _$j_166fa
+_$j_166f6:
+	BL _f_162FE
+_$j_166fa:
+	MOV R0, R8
+	POP QR8
+	POP PC
+
+; 16700
+_f_16700:
+	PUSH LR
+	PUSH ER0
+	MOV R0, #1EH
+	BL _f_16CE4
+	PUSH ER0
+	BL _f_15EE4
+	POP ER2
+	POP ER0
+	BL _num_cpy
+	MOV R0, #1FH
+	BL _f_16CE4
+	PUSH ER0
+	BL _f_15EE4
+	POP ER0
+	POP PC
+
+; 16728
+_f_16728:
+	PUSH LR
+	PUSH XR8
+	MOV ER8, ER0
+	MOV R0, R9
+	BL _f_16CE4
+	MOV ER10, ER0
+	MOV R0, R8
+	BL _f_16CE4
+	MOV ER2, ER0
+	MOV ER0, #1EH
+	PUSH ER0
+	MOV ER0, ER10
+	BL _memcpy_nn
+	POP ER0
+	POP XR8
+	POP PC
+
+; 1674E
+_f_1674E:
+	PUSH LR
+	PUSH ER8
+	MOV ER8, ER0
+	MOV R1, #1BH
+	BL _f_16728
+	MOV R0, R9
+	MOV R1, R8
+	BL _f_16728
+	MOV R0, #1BH
+	MOV R1, R9
+	BL _f_16728
+	POP ER8
+	POP PC
+
+; 1676E
+_f_1676E:
+	PUSH LR
+	PUSH ER4
+	MOV ER4, ER0
+	ADD R0, #1H
+	ADD R1, #1H
+	BL _f_1661C
+	CMP R0, #4H
+	BNE _$j_16786
+	MOV ER0, ER4
+	BL _f_1674E
+_$j_16786:
+	POP ER4
+	POP PC
+
+; 1678A
+_f_1678A:
+	PUSH LR
+	PUSH XR8
+	MOV ER8, #0CH
+_$j_16790:
+	MOV R10, #0H
+_$j_16792:
+	MOV R0, R10
+	ADD R0, R0
+	ADD R0, R10
+	ADD R0, R8
+	MOV R11, R0
+	MOV R0, R10
+	ADD R0, #1H
+	MOV R1, R0
+	ADD R0, R0
+	ADD R1, R0
+	ADD R1, R8
+	MOV R0, R11
+	BL _f_1676E
+	ADD R10, #1H
+	MOV R2, #3H
+	SUB R2, R9
+	CMP R10, R2
+	BLT _$j_16792
+	ADD R9, #1H
+	CMP R9, #3H
+	BLT _$j_16790
+	POP XR8
+	POP PC
+
+; 167C2
+_f_167C2:
+	PUSH LR
+	PUSH R8
+	MOV R8, R0
+	BL _f_16CE4
+	MOV R2, #0H
+	BL _num_fromdigit
+	ADD R8, #1H
+	MOV R0, R8
+	BL _f_16CE4
+	MOV R2, #0H
+	BL _num_fromdigit
+	ADD R8, #1H
+	MOV R0, R8
+	BL _f_16CE4
+	MOV R2, #1H
+	BL _num_fromdigit
+	POP R8
+	POP PC
+
+; 167F2
+_f_167F2:
+	PUSH LR
+	PUSH R8
+	BL _f_16CE4
+	L R8, 8H[ER0]
+	MOV R0, #1H
+	CMP R8, #0EH
+	BGT _$j_16806
+	MOV R0, #0H
+_$j_16806:
+	POP R8
+	POP PC
+
+; 1680A
+_f_1680A:
+	PUSH LR
+	PUSH XR8
+	MOV ER8, ER0
+	MOV R10, R2
+	MOV ER0, ER8
+	ADD R1, #2H
+	MOV R2, #1BH
+	BL _f_16482
+	MOV ER0, ER8
+	ADD R0, #2H
+	MOV R2, #1CH
+	BL _f_16482
+	MOV R0, #1BH
+	MOV R1, #1CH
+	MOV R2, R10
+	BL _f_16496
+	MOV R0, R8
+	ADD R0, #1H
+	MOV R1, R10
+	ADD R1, #1H
+	BL _f_162D6
+	BAL _$j_16880
+
+; 1683E
+_f_1683E:
+	PUSH LR
+	PUSH XR8
+	MOV ER8, ER0
+	MOV R10, R2
+	ADD R0, #1H
+	ADD R1, #1H
+	MOV R2, #1DH
+	BL _f_16482
+	MOV R0, #1DH
+	BL _f_16CE4
+	PUSH ER0
+	MOV R0, #1BH
+	BL _f_16CE4
+	POP ER2
+	BL _f_16524
+	MOV R0, #1CH
+	MOV R1, R10
+	ADD R1, #1H
+	BL _f_162D6
+	MOV ER0, ER8
+	MOV R2, R10
+	BL _f_16482
+	MOV R0, R10
+	MOV R1, #1BH
+	MOV R2, R10
+	BL _f_16482
+_$j_16880:
+	MOV ER0, ER8
+	ADD R0, #2H
+	ADD R1, #2H
+	MOV R2, R10
+	ADD R2, #2H
+	BL _f_16482
+_$j_1688e:
+	MOV R11, R10
+	ADD R11, #2H
+	MOV R8, #0H
+	MOV R0, R10
+	BL _f_167F2
+	ADD R8, R0
+	MOV R0, R11
+	BL _f_167F2
+	ADD R8, R0
+	MOV ER0, ER10
+	MOV ER2, ER0
+	BL _f_16224
+	MOV R0, R8
+_$j_168ae:
+	CMP R0, #0H
+	POP XR8
+	POP PC
+_$j_168b4:
+	MOV R0, #0H
+	BAL _$j_168ae
+
+; 168B8
+_f_168B8:
+	PUSH LR
+	PUSH XR8
+	MOV ER8, ER0
+	MOV R10, R2
+	BL _f_16482
+	MOV R0, R9
+	ADD R0, #1H
+	MOV R1, R10
+	ADD R1, #1H
+	BL _f_162D6
+	MOV R0, R9
+	ADD R0, #2H
+	MOV R1, R10
+	ADD R1, #2H
+	BL _f_162D6
+	BAL _$j_1688e
+
+; 168DE
+_f_168DE:
+	PUSH LR
+	PUSH XR8
+	MOV ER8, ER0
+	MOV R10, R0
+	ADD R0, #1H
+	BL _f_16612
+	BEQ _$j_168b4
+	MOV ER0, ER8
+	MOV R2, R10
+	BL _f_16482
+	BAL _$j_16880
+
+; 168F8
+_f_168F8:
+	PUSH LR
+	MOV ER0, #6H
+	MOV R2, #0CH
+	BL _f_1683E
+	MOV ER0, #9H
+	MOV R2, #0FH
+	BL _f_1683E
+	MOV R0, #3H
+	MOV R1, #6H
+	MOV R2, #12H
+	BL _f_1683E
+	MOV R0, #3H
+	MOV R1, #9H
+	MOV R2, #15H
+	BL _f_1683E
+	POP PC
+
+; 16920
+_f_16920:
+	PUSH LR
+	MOV R0, #1EH
+	MOV R1, #6H
+	MOV R2, #0H
+	BL _f_168B8
+	MOV R0, #1EH
+	MOV R1, #9H
+	MOV R2, #3H
+	BL _f_168B8
+	POP PC
+
+; 16938
+_f_16938:
+	PUSH LR
+	MOV R0, #8H
+	MOV R1, #0BH
+	MOV R2, #18H
+	BL _f_16482
+	MOV R0, #18H
+	MOV R1, #18H
+	MOV R2, #18H
+	BL _f_16482
+	MOV R0, #6H
+	MOV R1, #0BH
+	MOV R2, #1AH
+	BL _f_16482
+	MOV R0, #1AH
+	MOV R1, #1AH
+	MOV R2, #1AH
+	BL _f_16482
+	MOV R0, #1AH
+	MOV R1, #7H
+	MOV R2, #1AH
+	BL _f_16482
+	MOV R0, #9H
+	MOV R1, #8H
+	MOV R2, #19H
+	BL _f_16482
+	MOV R0, #19H
+	MOV R1, #19H
+	MOV R2, #19H
+	BL _f_16482
+	MOV R0, #19H
+	MOV R1, #0AH
+	MOV R2, #19H
+	BL _f_16482
+	MOV R0, #1AH
+	MOV R1, #19H
+	MOV R2, #1AH
+	BL _f_1648C
+	MOV R0, #18H
+	MOV R1, #1AH
+	MOV ER2, ER0
+	BL _f_16224
+	POP PC
+
+; 169A0
+_f_169A0:
+	PUSH LR
+	MOV R0, #0H
+	MOV R1, #18H
+	BL _f_168DE
+	BNE _$j_169bc
+	MOV R0, #3H
+	MOV R1, #18H
+	BL _f_168DE
+	BNE _$j_169bc
+	MOV R0, #0H
+_$j_169b8:
+	CMP R0, #0H
+	POP PC
+_$j_169bc:
+	MOV R0, #1H
+	BAL _$j_169b8
+
+; 169C0
+_f_169C0:
+	PUSH LR
+	MOV R0, #0BH
+	MOV R1, #6H
+	BL _f_162D6
+	MOV R0, #0AH
+	MOV R1, #7H
+	BL _f_162D6
+	MOV R0, #9H
+	MOV R1, #0AH
+	MOV R2, #8H
+	BL _f_16482
+	MOV ER0, #6H
+	MOV R2, #0H
+	BL _f_1683E
+	MOV R0, #3H
+	MOV R1, #6H
+	MOV R2, #3H
+	BL _f_1683E
+	BL _f_169FC
+	MOV R0, #0H
+	MOV R1, #3H
+	BL _f_1676E
+	POP PC
+
+; 169FC
+_f_169FC:
+	PUSH LR
+	MOV R0, #0H
+	BL _f_16612
+	BNE _$j_16a0c
+	MOV R0, #0H
+	BL _f_167C2
+_$j_16a0c:
+	MOV R0, #3H
+	BL _f_16612
+	BNE _$j_16a22
+	MOV R0, #0H
+	MOV R1, #3H
+	BL _f_16728
+	MOV R0, #0H
+	BL _f_167C2
+_$j_16a22:
+	POP PC
+
+; 16A24
+_f_16A24:
+	PUSH LR
+	BL _f_1678A
+	MOV R0, #10H
+	BL _f_16612
+	BNE _$j_16a42
+_$j_16a32:
+	MOV ER0, #12H
+	BL _f_16728
+	MOV R0, #15H
+	MOV R1, #3H
+	BL _f_16728
+	BAL _$j_16b40
+_$j_16a42:
+	MOV R0, #0DH
+	BL _f_16612
+	BNE _$j_16a84
+	MOV R0, #10H
+	MOV R1, #13H
+	BL _f_1661C
+	BNE _$j_16a68
+	MOV R0, #0FH
+	MOV R1, #12H
+	MOV R2, #0H
+	BL _f_1680A
+	MOV R0, #15H
+	MOV R1, #3H
+	BL _f_16728
+	BAL _$j_16b40
+_$j_16a68:
+	MOV R0, #13H
+	MOV R1, #16H
+	BL _f_1661C
+	BNE _$j_16b62
+	MOV ER0, #0FH
+	BL _f_16728
+	MOV R0, #12H
+	MOV R1, #15H
+	MOV R2, #3H
+	BL _f_1680A
+	BAL _$j_16b40
+_$j_16a84:
+	MOV R0, #0DH
+	MOV R1, #10H
+	BL _f_1661C
+	BNE _$j_16ad4
+	MOV R0, #0CH
+	MOV R1, #0FH
+	MOV R2, #0H
+	BL _f_1680A
+	MOV R0, #0DH
+	MOV R1, #13H
+	BL _f_1661C
+	BNE _$j_16ab4
+	MOV ER0, #12H
+	MOV R2, #0H
+	BL _f_1680A
+	MOV R0, #15H
+	MOV R1, #3H
+	BL _f_16728
+	BAL _$j_16b40
+_$j_16ab4:
+	MOV R0, #13H
+	MOV R1, #16H
+	BL _f_1661C
+	BNE _$j_16aca
+	MOV R0, #12H
+	MOV R1, #15H
+	MOV R2, #3H
+	BL _f_1680A
+	BAL _$j_16b40
+_$j_16aca:
+	MOV R0, #0H
+	BL _f_16612
+	BNE _$j_16b62
+	BAL _$j_16a32
+_$j_16ad4:
+	MOV R0, #10H
+	MOV R1, #13H
+	BL _f_1661C
+	BNE _$j_16b16
+	MOV ER0, #0CH
+	BL _f_16728
+	MOV R0, #0FH
+	MOV R1, #12H
+	MOV R2, #3H
+	BL _f_1680A
+	MOV R0, #10H
+	MOV R1, #16H
+	BL _f_1661C
+	BNE _$j_16b04
+	MOV R0, #3H
+	MOV R1, #15H
+	MOV R2, #3H
+	BL _f_1680A
+	BAL _$j_16b40
+_$j_16b04:
+	MOV R0, #3H
+	BL _f_16612
+	BNE _$j_16b62
+	MOV R0, #15H
+	MOV R1, #3H
+	BL _f_16728
+	BAL _$j_16b40
+_$j_16b16:
+	MOV R0, #13H
+	MOV R1, #16H
+	BL _f_1661C
+	BNE _$j_16b62
+	MOV R0, #12H
+	MOV R1, #15H
+	MOV R2, #0H
+	BL _f_1680A
+	MOV R0, #0H
+	BL _f_16612
+	BNE _$j_16b62
+	MOV ER0, #0CH
+	BL _f_16728
+	MOV R0, #0FH
+	MOV R1, #3H
+	BL _f_16728
+_$j_16b40:
+	BL _f_169FC
+	MOV R0, #1H
+	MOV R1, #4H
+	BL _f_1661C
+	BNE _$j_16b5c
+	MOV ER0, #3H
+	MOV R2, #3H
+	BL _f_1680A
+	MOV R0, #0H
+	BL _f_167C2
+_$j_16b5c:
+	MOV R0, #0H
+_$j_16b5e:
+	CMP R0, #0H
+	POP PC
+_$j_16b62:
+	MOV R0, #1H
+	BAL _$j_16b5e
+
+; 16B66
+_f_16B66:
+	PUSH LR
+	PUSH R8
+	MOV R8, #0H
+_$j_16b6c:
+	PUSH ER0
+	BL _f_16646
+	CMP R8, #0H
+	BEQ _$j_16b7c
+	MOV R0, #1FH
+	BL _f_1663A
+_$j_16b7c:
+	MOV ER0, #0CH
+	BL _f_166A2
+	CMP R0, #40H
+	BGE _$j_16b98
+	BL _f_16A24
+	BNE _$j_16b98
+	MOV R0, #0H
+	POP ER2
+	BL _f_16100
+_$j_16b94:
+	POP R8
+	POP PC
+_$j_16b98:
+	POP ER0
+	PUSH ER0
+	BL _f_16700
+	MOV ER2, ER0
+	POP ER0
+	BL _f_1A410
+	BAL _$j_16b94
+
+; 16BAA
+_f_16BAA:
+	PUSH LR
+	PUSH R8
+	MOV R8, #1H
+	BAL _$j_16b6c
+
+; 16BB2
+_f_16BB2:
+	PUSH LR
+	PUSH ER0
+	BL _f_16646
+	MOV R0, #0H
+	MOV R1, #1H
+	BL _f_166A2
+	CMP R0, #40H
+	BGE _$j_16be4
+	TB R0.4
+	BNE _$j_16bde
+	BL _f_168F8
+	BL _f_16A24
+	BNE _$j_16be4
+_$j_16bd4:
+	MOV R0, #0H
+	POP ER2
+	BL _f_16100
+	POP PC
+_$j_16bde:
+	BL _f_16920
+	BAL _$j_16bd4
+_$j_16be4:
+	POP ER0
+	PUSH ER0
+	BL _f_16700
+	MOV ER2, ER0
+	POP ER0
+	BL _f_1A438
+	POP PC
+
+; 16BF6
+_f_16BF6:
+	PUSH LR
+	PUSH ER0
+	BL _f_16646
+	MOV ER0, #0H
+	BL _f_166A2
+	CMP R0, #40H
+	BGE _$j_16c42
+	MOV R0, #7H
+	BL _f_16612
+	BEQ _$j_16c34
+	MOV R0, #9H
+	BL _f_1663A
+	BL _f_168F8
+	BL _f_16938
+	BL _f_16A24
+	BNE _$j_16c42
+	BL _f_169A0
+	BNE _$j_16c42
+_$j_16c2a:
+	MOV R0, #0H
+	POP ER2
+	BL _f_16100
+	POP PC
+_$j_16c34:
+	MOV R0, #0AH
+	BL _f_16612
+	BEQ _$j_16c42
+	BL _f_169C0
+	BAL _$j_16c2a
+_$j_16c42:
+	POP ER0
+	PUSH ER0
+	BL _f_16700
+	MOV ER2, ER0
+	POP ER0
+	BL _f_1A44C
+	POP PC
+
+; 16C54
+_f_16C54:
+	PUSH LR
+	PUSH ER4
+	MOV ER4, ER0
+	MOV R2, #6H
+	BL _f_16398
+	MOV R0, #7H
+	BL _f_16CE4
+	MOV R2, #BYTE1 _unk_017c8
+	MOV R3, #BYTE2 _unk_017c8
+	BL _num_cmp
+	CMP R0, #1H
+	BNE _$j_16c98
+	MOV R0, #6H
+	MOV R1, #0BH
+	MOV R2, #0H
+	BL _f_16482
+	MOV R0, #7H
+	MOV R1, #1H
+	BL _f_162D6
+	MOV R0, #8H
+	MOV R1, #9H
+	MOV R2, #2H
+	BL _f_16482
+	MOV R0, #0AH
+	MOV R1, #3H
+	BL _f_162D6
+	BAL _$j_16cbc
+_$j_16c98:
+	MOV R0, #8H
+	MOV R1, #9H
+	MOV R2, #0H
+	BL _f_16482
+	MOV R0, #0AH
+	MOV R1, #1H
+	BL _f_162D6
+	MOV R0, #6H
+	MOV R1, #0BH
+	MOV R2, #2H
+	BL _f_16482
+	MOV R0, #7H
+	MOV R1, #3H
+	BL _f_162D6
+_$j_16cbc:
+	MOV R0, #8H
+	MOV R1, #0BH
+	MOV R2, #4H
+	BL _f_16482
+	MOV ER0, #0H
+	BL _f_15F8A
+	MOV R0, #0H
+	BL _f_16CE4
+	MOV ER2, ER0
+	MOV ER0, #32H
+	PUSH ER0
+	MOV ER0, ER4
+	BL _memcpy_nn
+	POP ER0
+	POP ER4
+	POP PC
+
+; 16CE4
+_f_16CE4:
+	MOV R2, #0AH
+	MUL ER0, R2
+	MOV R2, #BYTE1 _d_08640
+	MOV R3, #BYTE2 _d_08640
+	ADD ER0, ER2
+	RT
+
+; 16CF0
+_f_16CF0:
+	PUSH LR
+	L R0, _last_key_keycode
+	CMP R0, #-13H
+	BEQ _$j_16d28
+	BL _f_112B6
+	BNE _$j_16d28
+	TB _table_mode.6
+	BNE _$j_16d28
+	L R0, _setup_mathi
+	CMP R0, #0H
+	BEQ _$j_16d28
+	L R0, _setup_decimalo
+	CMP R0, #1H
+	BEQ _$j_16d28
+	L R0, _mode
+	TB R0.6
+	BEQ _$j_16d28
+	TB _d_08120.0
+	BNE _$j_16d28
+	MOV R0, #1H
+	POP PC
+_$j_16d28:
+	MOV R0, #0H
+	POP PC
+
+; 16D30
+_num_cube:
+	PUSH LR
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-14H
+	MOV BP, ER0
+	L R10, [ER0]
+	AND R10, #11110000B
+	CMP R10, #-80H
+	BNE _$j_16d66
+	MOV ER2, BP
+	MOV ER0, FP
+	ADD ER0, #-0AH
+	BL _num_cpy
+	MOV ER2, BP
+	MOV ER0, FP
+	ADD ER0, #-0AH
+	BL _f_16BB2
+	MOV ER2, FP
+	ADD ER2, #-0AH
+	MOV ER0, BP
+	BL _f_16BB2
+_$j_16d60:
+	MOV SP, FP
+	POP QR8
+	POP PC
+_$j_16d66:
+	BL _f_1ABE0
+	BAL _$j_16d60
+
+; 16D6C
+_num_square:
+	PUSH LR
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-14H
+	MOV BP, ER0
+	L R10, [ER0]
+	AND R10, #11110000B
+	CMP R10, #-80H
+	BNE _$j_16d88
+	MOV ER2, BP
+	MOV ER0, BP
+	BL _f_16BB2
+	BAL _$j_16d60
+_$j_16d88:
+	BL _f_1ABF0
+	BAL _$j_16d60
+
+; 16D8E
+_num_inverse:
+	PUSH LR
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-14H
+	MOV BP, ER0
+	L R10, [ER0]
+	AND R10, #11110000B
+	CMP R10, #-80H
+	BNE _$j_16dc4
+	MOV ER2, #1H
+	MOV ER0, FP
+	ADD ER0, #-0AH
+	BL _num_fromdigit
+	MOV ER2, BP
+	MOV ER0, FP
+	ADD ER0, #-0AH
+	BL _f_16BF6
+	PUSH R0
+	MOV ER2, FP
+	ADD ER2, #-0AH
+	MOV ER0, BP
+	BL _num_cpy
+	POP R0
+	BAL _$j_16d60
+_$j_16dc4:
+	BL _f_1AC00
+	BAL _$j_16d60
+
+; 16DCA
+_f_16DCA:
+	PUSH LR
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-14H
+	PUSH XR4
+	MOV ER10, ER0
+	MOV BP, ER2
+	L R4, [ER0]
+	CMP R4, #-10H
+	BGE _$j_16e30
+	AND R4, #10111111B
+	ST R4, [ER0]
+	L R4, [ER2]
+	CMP R4, #-10H
+	BGE _$j_16e30
+	MOV ER6, FP
+	ADD ER6, #-0AH
+	MOV ER8, FP
+	ADD ER8, #-14H
+	BL _num_invalid__
+	CMP R0, #2H
+	BEQ _$j_16e30
+	MOV ER2, BP
+	MOV ER0, ER6
+	BL _num_cpy
+	MOV R2, #0H
+	MOV ER0, BP
+	BL _num_sin
+	MOV ER2, ER10
+	MOV ER0, BP
+	BL _num_mul_1
+	CMP R0, #0H
+	BNE _$j_16e30
+	MOV R2, #0H
+	MOV ER0, ER6
+	BL _num_cos
+	MOV ER2, ER6
+	MOV ER0, ER10
+	BL _num_mul_1
+	CMP R0, #0H
+	BNE _$j_16e30
+_$j_16e28:
+	POP XR4
+	MOV SP, FP
+	POP QR8
+	POP PC
+_$j_16e30:
+	MOV R2, #3H
+	MOV ER0, BP
+	BL _f_1B12C
+	MOV R2, #3H
+	MOV ER0, ER10
+	BL _f_1B12C
+	MOV R0, #3H
+	BAL _$j_16e28
+
+; 16E44
+_f_16E44:
+	PUSH LR
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-14H
+	PUSH XR4
+	MOV ER10, ER0
+	MOV BP, ER2
+	L R4, [ER0]
+	CMP R4, #-10H
+	BGE _$j_16e30
+	L R4, [ER2]
+	CMP R4, #-10H
+	BGE _$j_16e30
+	MOV ER6, FP
+	ADD ER6, #-0AH
+	MOV ER8, FP
+	ADD ER8, #-14H
+	MOV ER2, ER10
+	MOV ER0, ER8
+	BL _num_cpy
+	MOV ER2, BP
+	MOV ER0, ER6
+	BL _num_cpy
+	MOV ER0, ER8
+	BL _cmplx_abs
+	CMP R0, #0H
+	BNE _$j_16e30
+	MOV ER2, BP
+	MOV ER0, ER10
+	BL _f_1A960
+	CMP R0, #0H
+	BNE _$j_16e30
+	PUSH R0
+	MOV ER2, ER10
+	MOV ER0, BP
+	BL _num_cpy
+	MOV ER2, ER8
+	MOV ER0, ER10
+	BL _num_cpy
+	POP R0
+	BAL _$j_16e28
+
+; 16EA2
+_cmplx_square_1:
+	PUSH LR
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-64H
+	PUSH XR4
+	BL _f_17052
+	CMP R0, #0H
+	BNE _$j_16f34
+	BL _f_170D0
+	MOV ER2, BP
+	MOV ER0, ER10
+	BL _num_add_1
+	MOV ER2, ER10
+	MOV ER0, #-32H
+	ADD ER0, FP
+	BL _num_cpy
+	BL _f_170F0
+	MOV ER2, BP
+	MOV ER0, ER10
+	BL _num_sub_1
+	MOV ER2, ER10
+	MOV ER0, #-3CH
+	ADD ER0, FP
+	BL _num_cpy
+	BAL _$j_16f12
+
+; 16EE2
+_f_16EE2:
+	PUSH LR
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-64H
+	PUSH XR4
+	BL _f_17052
+	CMP R0, #0H
+	BNE _$j_16f34
+_$j_16ef4:
+	MOV ER2, #-0AH
+	ADD ER2, FP
+	MOV ER0, ER6
+	BL _num_add_1
+	MOV ER2, #-14H
+	ADD ER2, FP
+	MOV ER0, ER8
+	BL _num_add_1
+	MOV ER2, ER8
+	MOV ER0, #-3CH
+	ADD ER0, FP
+	BL _f_1B474
+_$j_16f12:
+	BL _f_1709E
+	CMP R0, #0H
+	BNE _$j_16f34
+_$j_16f1a:
+	MOV ER2, #-3CH
+	ADD ER2, FP
+	MOV ER0, ER4
+	BL _f_1B474
+	MOV ER0, #-3CH
+	ADD ER0, FP
+	BL _f_1B288
+	POP XR4
+	MOV SP, FP
+	POP QR8
+	POP PC
+_$j_16f34:
+	BL _f_170B8
+	BAL _$j_16f1a
+
+; 16F3A
+_f_16F3A:
+	PUSH LR
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-64H
+	PUSH XR4
+	BL _f_17052
+	CMP R0, #0H
+	BNE _$j_16f34
+	MOV ER0, #-14H
+	ADD ER0, FP
+	BL _num_negate
+	MOV ER0, #-0AH
+	ADD ER0, FP
+	BL _num_negate
+	BAL _$j_16ef4
+
+; 16F5E
+_f_16F5E:
+	PUSH LR
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-64H
+	PUSH XR4
+	BL _f_17052
+	CMP R0, #0H
+	BNE _$j_16f34
+	L R0, [ER8]
+	BNE _$j_16f82
+	MOV ER2, #-14H
+	ADD ER2, FP
+	L R0, [ER2]
+	BEQ _$j_17004
+	L R0, 0AH[ER2]
+	BEQ _$j_1701c
+_$j_16f82:
+	L R0, [ER6]
+	BNE _$j_16f8e
+	MOV ER2, #-14H
+	ADD ER2, FP
+	L R0, [ER2]
+	BEQ _$j_1703e
+_$j_16f8e:
+	MOV ER2, #-14H
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _num_cpy
+	MOV ER2, BP
+	MOV ER0, BP
+	BL _num_mul_1
+	MOV ER2, #-0AH
+	ADD ER2, FP
+	MOV ER0, #-28H
+	ADD ER0, FP
+	BL _num_cpy
+	MOV ER2, #-28H
+	ADD ER2, FP
+	MOV ER0, #-28H
+	ADD ER0, FP
+	BL _num_mul_1
+	MOV ER2, BP
+	MOV ER0, #-28H
+	ADD ER0, FP
+	BL _num_add_1
+	BL _f_170D0
+	MOV ER2, ER10
+	MOV ER0, BP
+	BL _num_sub_1
+	MOV ER2, #-28H
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _f_1724A
+	MOV ER2, BP
+	MOV ER0, #-32H
+	ADD ER0, FP
+	BL _num_cpy
+	BL _f_170F0
+	MOV ER2, BP
+	MOV ER0, ER10
+	BL _num_add_1
+	MOV ER2, #-28H
+	ADD ER2, FP
+	MOV ER0, ER10
+	BL _f_1724A
+	MOV ER2, ER10
+	MOV ER0, #-3CH
+	ADD ER0, FP
+	BL _num_cpy
+	BAL _$j_16f12
+_$j_17004:
+	MOV ER2, #-0AH
+	ADD ER2, FP
+	MOV ER0, ER6
+	BL _f_1724A
+	MOV ER2, ER6
+	MOV ER0, #-3CH
+	ADD ER0, FP
+	BL _num_cpy
+	MOV ER0, #-32H
+	BAL _$j_17032
+_$j_1701c:
+	MOV ER2, #-14H
+	ADD ER2, FP
+	MOV ER0, ER6
+	BL _f_1724A
+	MOV ER2, ER6
+_$j_17028:
+	MOV ER0, #-32H
+	ADD ER0, FP
+	BL _num_cpy
+	MOV ER0, #-3CH
+_$j_17032:
+	ADD ER0, FP
+	MOV R2, #0H
+	BL _num_fromdigit
+	B _$j_16f12
+_$j_1703e:
+	MOV ER2, #-0AH
+	ADD ER2, FP
+	MOV ER0, ER8
+	BL _f_1724A
+	MOV ER0, ER8
+	BL _num_negate
+	MOV ER2, ER8
+	BAL _$j_17028
+
+; 17052
+_f_17052:
+	PUSH LR
+	MOV R12, #0A6H
+	MOV R13, #0FFH
+	ADD BP, FP
+	MOV R10, #9CH
+	MOV R11, #0FFH
+	ADD ER10, FP
+	MOV R8, #0B0H
+	MOV R9, #0FFH
+	ADD ER8, FP
+	MOV R6, #0BAH
+	MOV R7, #0FFH
+	ADD ER6, FP
+	MOV ER4, ER0
+	MOV ER0, #-14H
+	ADD ER0, FP
+	BL _f_1B474
+	MOV ER2, ER4
+	MOV ER0, ER8
+	BL _f_1B474
+	L R2, [ER8]
+	CMP R2, #-10H
+	BGE _$j_1709a
+	AND R2, #10111111B
+	ST R2, [ER8]
+	MOV ER0, #-14H
+	ADD ER0, FP
+	L R2, [ER0]
+	CMP R2, #-10H
+	BGE _$j_1709a
+	AND R2, #10111111B
+	ST R2, [ER0]
+	MOV R0, #0H
+	POP PC
+_$j_1709a:
+	MOV R0, #1H
+	POP PC
+
+; 1709E
+_f_1709E:
+	PUSH LR
+	MOV ER2, #-3CH
+	ADD ER2, FP
+	L R0, [ER2]
+	CMP R0, #-10H
+	BGE _$j_170b6
+	MOV ER2, #-32H
+	ADD ER2, FP
+	L R0, [ER2]
+	CMP R0, #-10H
+	BGE _$j_170b6
+	MOV R0, #0H
+_$j_170b6:
+	POP PC
+
+; 170B8
+_f_170B8:
+	PUSH LR
+	MOV R2, #3H
+	MOV ER0, #-3CH
+	ADD ER0, FP
+	BL _f_1B12C
+	MOV R2, #0H
+	MOV ER0, #-32H
+	ADD ER0, FP
+	BL _num_fromdigit
+	POP PC
+
+; 170D0
+_f_170D0:
+	PUSH LR
+	MOV ER2, ER8
+	MOV ER0, ER10
+	BL _f_1B474
+	MOV ER2, #-14H
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _num_mul_1
+	MOV ER2, #-0AH
+	ADD ER2, FP
+	MOV ER0, ER10
+	BL _num_mul_1
+	POP PC
+
+; 170F0
+_f_170F0:
+	PUSH LR
+	MOV ER2, ER8
+	MOV ER0, ER10
+	BL _f_1B474
+	MOV ER2, #-0AH
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _num_mul_1
+	MOV ER2, #-14H
+	ADD ER2, FP
+	MOV ER0, ER10
+	BL _num_mul_1
+	POP PC
+
+; 17110
+_f_17110:
+	PUSH LR
+	PUSH FP
+	MOV FP, SP
+	ADD SP, #-14H
+	PUSH BP
+	MOV BP, ER0
+	MOV R2, #1H
+	MOV ER0, #-14H
+	ADD ER0, FP
+	BL _num_fromdigit
+	MOV R2, #0H
+	MOV ER0, #-0AH
+	ADD ER0, FP
+	BL _num_fromdigit
+	MOV ER2, BP
+	MOV ER0, #-14H
+	ADD ER0, FP
+	BL _f_16F5E
+	PUSH R0
+	MOV ER2, #-14H
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _f_1B474
+	POP R0
+_$j_17148:
+	POP BP
+	MOV SP, FP
+	POP FP
+	POP PC
+
+; 17150
+_cmplx_cube:
+	PUSH LR
+	PUSH FP
+	MOV FP, SP
+	ADD SP, #-14H
+	PUSH BP
+	MOV BP, ER0
+	MOV ER2, BP
+	MOV ER0, #-14H
+	ADD ER0, FP
+	BL _f_1B474
+	MOV ER2, BP
+	MOV ER0, #-14H
+	ADD ER0, FP
+	BL _cmplx_square_1
+	MOV ER2, #-14H
+	ADD ER2, FP
+	MOV ER0, BP
+	BL _cmplx_square_1
+	BAL _$j_17148
+
+; 1717C
+_cmplx_square:
+	PUSH LR
+	MOV ER2, ER0
+	BL _cmplx_square_1
+	POP PC
+
+; 17186
+_f_17186:
+	PUSH LR
+	PUSH FP
+	MOV FP, ER0
+	L R0, 0AH[ER2]
+	BNE _$j_171a8
+	MOV ER0, ER2
+	BL _f_15F06
+	MOV R2, R0
+	MOV ER0, FP
+	CMP R2, #1H
+	BEQ _$j_171c0
+	CMP R2, #2H
+	BEQ _$j_171c6
+	CMP R2, #3H
+	BEQ _$j_171cc
+_$j_171a8:
+	MOV R2, #3H
+	MOV ER0, FP
+	BL _f_1B12C
+	MOV R2, #0H
+	MOV ER0, FP
+	ADD ER0, #0AH
+	BL _num_fromdigit
+	MOV R0, #3H
+_$j_171bc:
+	POP FP
+	POP PC
+_$j_171c0:
+	BL _f_17110
+	BAL _$j_171bc
+_$j_171c6:
+	BL _cmplx_square
+	BAL _$j_171bc
+_$j_171cc:
+	BL _cmplx_cube
+	BAL _$j_171bc
+
+; 171D2
+_f_171D2:
+	PUSH LR
+	PUSH XR4
+	L R2, [ER0]
+	CMP R2, #-10H
+	BGE _$j_17240
+	ADD ER0, #0AH
+	BL _num_negate
+	MOV R0, #0H
+	BAL _$j_1723c
+
+; 171E6
+_f_171E6:
+	PUSH LR
+	PUSH XR4
+	MOV ER4, ER0
+	BL _f_14800
+	BNE _$j_17240
+	ADD ER0, #0AH
+	BL _f_14800
+	MOV ER2, ER0
+	MOV ER0, ER4
+	BL _f_1A960
+	BAL _$j_1722e
+
+; 17202
+_f_17202:
+	PUSH LR
+	PUSH XR4
+	MOV ER4, ER0
+	L R2, [ER0]
+	CMP R2, #-10H
+	BGE _$j_17228
+	BL _f_1B238
+	CMP R0, #0H
+	BNE _$j_17224
+	MOV ER0, ER4
+	ADD ER0, #0AH
+	BL _f_1B238
+	CMP R0, #0H
+	BNE _$j_17224
+	BAL _$j_1723c
+_$j_17224:
+	MOV ER0, ER4
+	BAL _$j_17240
+_$j_17228:
+	AND R2, #00001111B
+	MOV R0, R2
+	BAL _$j_1723c
+_$j_1722e:
+	PUSH R0
+	MOV R2, #0H
+	MOV ER0, ER4
+	ADD ER0, #0AH
+	BL _num_fromdigit
+	POP R0
+_$j_1723c:
+	POP XR4
+	POP PC
+_$j_17240:
+	MOV R2, #3H
+	BL _f_1B12C
+	MOV R0, #3H
+	BAL _$j_1722e
+
+; 1724A
+_f_1724A:
+	PUSH LR
+	PUSH ER4
+	L R4, [ER0]
+	CMP R4, #0AH
+	BGE _$j_17260
+	L R4, [ER2]
+	CMP R4, #0AH
+	BGE _$j_17260
+	BL _f_1AD86
+	BAL _$j_17264
+_$j_17260:
+	BL _num_div_1
+_$j_17264:
+	POP ER4
+	POP PC
+
+; 1726A
+_f_1726A:
+	PUSH LR
+	BL _f_18BA4
+	L R0, _reg0_9
+	CMP R0, #0AH
+	BGE _$j_1729e
+	BL _f_1798C
+	CMP R0, #0EH
+	BNE _$j_1729e
+	L ER2, _reg0
+	MOV ER4, #0H
+	L R0, _reg0_9
+	CMP R0, #1H
+	BEQ _$j_172a6
+	MOV R5, #1H
+	CMP ER4, ER2
+	BNE _$j_1729e
+	PUSH R0
+	BL _f_18BA4
+	POP R0
+	POP PC
+_$j_1729e:
+	BL _f_18BA4
+	MOV R0, #0H
+	POP PC
+_$j_172a6:
+	MOV R5, #6H
+	CMP ER4, ER2
+	BNE _$j_1729e
+	BL _f_18BA4
+	MOV R0, #1H
+	POP PC
+
+; 172B4
+_f_172B4:
+	PUSH LR
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BGE _$j_172ca
+	L R0, _reg1_9
+	CMP R0, #-10H
+	BLT _$j_172cc
+	BL _mv_reg0_reg1
+_$j_172ca:
+	POP PC
+_$j_172cc:
+	BL _reg0_lt_reg1_abs
+	CMP R0, #0H
+	BEQ _$j_172d8
+	BL _f_18BA4
+_$j_172d8:
+	LEA _reg1
+	L ER10, [EA+]
+	L QR0, [EA]
+	LEA _reg0
+	L ER8, [EA+]
+	SUB R8, R10
+	DAS R8
+	SUBC R9, R11
+	DAS R9
+	AND R9, #00001111B
+	MOV R11, #9H
+	MOV R10, #99H
+	SUB R10, R8
+	DAS R10
+	SUBC R11, R9
+	DAS R11
+	BNE _$j_17302
+	CMP R10, #0H
+	BEQ _$j_1731a
+_$j_17302:
+	MOV ER10, ER8
+	SLLC R11, #4
+	CMP R11, #1H
+	BLT _$j_1730e
+	BNE _$j_17390
+	ADD R8, #-6H
+_$j_1730e:
+	ST R8, _d_0800B
+	LEA _reg1_2
+	ST QR0, [EA]
+	BAL _$j_17322
+_$j_1731a:
+	BL _f_19458
+	MOV ER8, #0H
+	BAL _$j_1730e
+_$j_17322:
+	L ER0, _reg0
+	PUSH ER0
+	MOV ER0, #0H
+	ST ER0, _reg0
+	BL _f_1970A
+	L ER2, _reg1
+	L ER0, _reg0
+	ADD R1, R3
+	DAA R1
+	ST ER0, _reg1
+	LEA _reg1_2
+	L QR8, [EA]
+	LEA _reg0_2
+	L QR0, [EA]
+	ADDC R0, R8
+	DAA R0
+	ADDC R1, R9
+	DAA R1
+	ADDC R2, R10
+	DAA R2
+	ADDC R3, R11
+	DAA R3
+	ADDC R4, R12
+	DAA R4
+	ADDC R5, R13
+	DAA R5
+	ADDC R6, R14
+	DAA R6
+	ADDC R7, R15
+	DAA R7
+	LEA _reg0_2
+	ST QR0, [EA]
+	AND R7, #11110000B
+	BEQ _$j_17384
+	MOV R2, R0
+	L ER0, _reg1
+	SRLC R1, #4
+	ST ER0, _reg1
+_$j_17384:
+	POP ER0
+	ST ER0, _reg0
+_$j_1738a:
+	BL _f_1A23C
+	POP PC
+_$j_17390:
+	MOV ER0, #0H
+	ST ER0, _reg1
+	BAL _$j_1738a
+
+; 17398
+_f_17398:
+	PUSH LR
+	BL _mv_reg6_reg0
+	BL _f_18B90
+	BL _set_reg1_10
+	MOV R0, #7H
+	ST R0, _reg1
+	MOV R0, #0H
+	ST R0, _d_0803A
+	BL _num_cmp_reg01
+	PUSH R0
+	BL _mv_reg0_reg6
+	POP R0
+	POP PC
+
+; 173C0
+_set_reg1_10:
+	MOV R0, #0H
+	MOV R1, #1H
+	MOV ER2, #0H
+	LEA _reg1
+	ST ER0, [EA+]
+	ST ER2, [EA+]
+	ST ER2, [EA+]
+	ST ER2, [EA+]
+	ST ER0, [EA+]
+	RT
+
+; 173D6
+_set_reg1_100d9:
+	MOV R0, #0H
+	MOV R1, #1H
+	MOV R4, #11H
+	MOV R5, #11H
+	MOV ER6, ER4
+	LEA _reg1
+	ST ER0, [EA+]
+	ST XR4, [EA+]
+	ST ER4, [EA+]
+	ST R4, [EA+]
+	ST R1, [EA+]
+	RT
+
+; 173F0
+_set_reg1_1d10:
+	MOV R0, #99H
+	MOV R1, #0H
+	MOV ER2, #0H
+	LEA _reg1
+	ST ER0, [EA+]
+	ST ER2, [EA+]
+	ST ER2, [EA+]
+	ST ER2, [EA+]
+	MOV R0, #0H
+	MOV R1, #9H
+	ST ER0, [EA+]
+	RT
+
+; 1740A
+_set_reg1_200:
+	MOV R0, #2H
+	MOV R1, #1H
+	MOV ER2, #0H
+	LEA _reg1
+	ST ER0, [EA+]
+	ST ER2, [EA+]
+	ST ER2, [EA+]
+	ST ER2, [EA+]
+	MOV R0, #0H
+	MOV R1, #2H
+	ST ER0, [EA+]
+	RT
+
+; 17424
+_set_reg1_180:
+	MOV R0, #2H
+	MOV R1, #1H
+	MOV ER2, #0H
+	LEA _reg1
+	ST ER0, [EA+]
+	ST ER2, [EA+]
+	ST ER2, [EA+]
+	ST ER2, [EA+]
+	MOV R0, #-80H
+	ST ER0, [EA+]
+	RT
+
+; 1743C
+_num_cmp_reg01:
+	PUSH LR
+	L R0, _reg0_9
+	CMP R0, #10H
+	BGE _$num_cmp_reg01_ret_f0
+	L R0, _reg1_9
+	CMP R0, #10H
+	BGE _$num_cmp_reg01_ret_f0
+	L ER0, _reg0
+	L ER2, _reg1
+	CMP R1, #5H
+	BLT _$j_17460
+	CMP R3, #5H
+	BLT _$j_17466
+	BAL _$j_17468
+_$j_17460:
+	CMP R3, #5H
+	BLT _$j_17468
+	BAL _$num_cmp_reg01_ret_04
+_$j_17466:
+	BAL _$num_cmp_reg01_ret_02
+_$j_17468:
+	L R0, _d_0803A
+	BNE _$j_17474
+	BL _num_sub1_r__
+	BAL _$j_17478
+_$j_17474:
+	BL _num_sub_r
+_$j_17478:
+	L R0, _reg0_9
+	CMP R0, #0H
+	BEQ _$num_cmp_reg01_ret_01
+	L ER0, _reg0
+	CMP R1, #5H
+	BGE _$num_cmp_reg01_ret_02
+_$num_cmp_reg01_ret_04:
+	MOV R0, #4H
+_$num_cmp_reg01_ret:
+	POP PC
+_$num_cmp_reg01_ret_01:
+	MOV R0, #1H
+	BAL _$num_cmp_reg01_ret
+_$num_cmp_reg01_ret_02:
+	MOV R0, #2H
+	BAL _$num_cmp_reg01_ret
+_$num_cmp_reg01_ret_f0:
+	MOV R0, #-10H
+	BAL _$num_cmp_reg01_ret
+
+; 17498
+_byte_to_bcd:
+	MOV R1, R0
+	SRL R1, #4
+	MOV ER2, #0H
+_$j_1749e:
+	CMP R1, #0H
+	BEQ _$j_174ae
+	ADD R2, #16H
+	DAA R2
+	ADDC R3, #0H
+	DAA R3
+	ADD R1, #-1H
+	BAL _$j_1749e
+_$j_174ae:
+	MOV R1, #0H
+	AND R0, #00001111B
+	CMP R0, #0AH
+	BLT _$j_174b8
+	ADD R0, #6H
+_$j_174b8:
+	ADD R0, R2
+	DAA R0
+	ADDC R1, R3
+	DAA R1
+	RT
+
+; 174C2
+_bcd_to_byte:
+	MOV ER2, #16H
+	MOV R4, #0H
+_$j_174c6:
+	SUB R0, R2
+	DAS R0
+	SUBC R1, R3
+	DAS R1
+	BLT _$j_174d4
+	ADD R4, #1H
+	BAL _$j_174c6
+_$j_174d4:
+	ADD R0, R2
+	DAA R0
+	CMP R0, #10H
+	BLT _$j_174de
+	ADD R0, #-6H
+_$j_174de:
+	SLL R4, #4
+	ADD R0, R4
+	RT
+
+; 174E4
+_f_174E4:
+	PUSH LR
+	BL _mv_reg3_reg0
+	BL _f_19794
+	BL _mv_reg1_reg3
+	BL _f_18BA4
+	BL _num_sub1_r__
+	POP PC
+
+; 174FC
+_f_174FC:
+	PUSH LR
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BGE _$j_1751e
+	L R0, _reg1_9
+	CMP R0, #-10H
+	BGE _$j_1751e
+	L R0, _reg0_9
+	CMP R0, #0H
+	BNE _$j_17524
+	L R0, _reg1_9
+	CMP R0, #0H
+	BNE _$j_17524
+_$j_1751e:
+	BL _set_reg0_error
+	POP PC
+_$j_17524:
+	BL _mv_reg3_reg0
+	BL _mv_reg6_reg1
+	L R0, _d_0802F
+	CMP R0, #5H
+	BLT _$j_1753c
+	BEQ _$j_17554
+	MOV R9, #2H
+	MOV R8, #0H
+	BAL _$j_17540
+_$j_1753c:
+	MOV R9, #1H
+	MOV R8, #80H
+_$j_17540:
+	MOV ER6, #0H
+	MOV ER4, #0H
+	MOV ER2, #0H
+	MOV R1, #1H
+	MOV R0, #2H
+	LEA _reg0
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	BAL _$j_17558
+_$j_17554:
+	BL _f_17644
+_$j_17558:
+	BL _mv_reg4_reg0
+	BL _mv_reg5_reg0
+	L R0, _reg6_9
+	CMP R0, #0H
+	BNE _$j_17586
+	L ER0, _reg3
+	CMP R1, #5H
+	BLT _$j_17576
+	BL _mv_reg0_reg4
+	BAL _$j_17624
+_$j_17576:
+	MOV ER0, #0H
+	MOV ER2, #0H
+	LEA _reg0
+	ST XR0, [EA+]
+	ST XR0, [EA+]
+	ST ER0, [EA+]
+	BAL _$j_17624
+_$j_17586:
+	MOV R0, #0H
+	MOV R1, #1H
+	MOV ER2, #0H
+	LEA _reg0
+	ST ER0, [EA+]
+	ST ER2, [EA+]
+	ST ER2, [EA+]
+	ST ER2, [EA+]
+	MOV R1, #2H
+	ST ER0, [EA+]
+	BL _mv_reg1_reg4
+	BL _f_19BD6
+	BL _mv_reg4_reg0
+	L R0, _reg3_9
+	CMP R0, #0H
+	BNE _$j_175c8
+_$j_175b0:
+	L ER0, _reg6
+	CMP R1, #5H
+	BLT _$j_175c6
+	L ER0, _reg0
+	ADD R1, #5H
+	DAA R1
+	AND R1, #00001111B
+	ST ER0, _reg0
+_$j_175c6:
+	BAL _$j_17624
+_$j_175c8:
+	BL _mv_reg0_reg6
+	BL _mv_reg1_reg3
+	BL _num_div_r
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BLT _$j_175e2
+	BL _mv_reg0_reg4
+	BAL _$j_175b0
+_$j_175e2:
+	LEA _reg3
+	L QR0, [EA+]
+	L ER8, [EA+]
+	LEA _reg4
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	MOV R0, #3H
+	MOV R1, #9H
+	ST ER0, _arith_op
+	BL _f_18818
+	L ER0, _reg4
+	CMP R1, #5H
+	BLT _$j_17624
+	BL _mv_reg1_reg5
+	L ER0, _reg6
+	CMP R1, #5H
+	BLT _$j_17620
+	L ER0, _reg1
+	ADD R1, #5H
+	DAA R1
+	AND R1, #00001111B
+	ST ER0, _reg1
+_$j_17620:
+	BL _num_add1_r__
+_$j_17624:
+	POP PC
+
+; 17626
+_f_17626:
+	MOV R9, #2H
+	MOV R8, #71H
+	MOV R7, #82H
+	MOV R6, #81H
+	MOV R5, #82H
+	MOV R4, #84H
+	MOV R3, #59H
+	MOV R2, #4H
+	MOV R1, #1H
+	MOV R0, #0H
+	LEA _reg0
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	RT
+
+; 17644
+_f_17644:
+	MOV R9, #3H
+	MOV R8, #14H
+	MOV R7, #15H
+	MOV R6, #92H
+	MOV R5, #65H
+	MOV R4, #35H
+	MOV R3, #89H
+	MOV R2, #80H
+	MOV R1, #1H
+	MOV R0, #0H
+	LEA _reg0
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	RT
+
+; 17662
+_f_17662:
+	PUSH LR
+	BL _mv_reg6_reg1
+	MOV R0, #0H
+	ST R0, _d_0801D
+	BL _f_19026
+	BL _f_18BF0
+	MOV R0, #0H
+	ST R0, _d_0801D
+	BL _f_19026
+	BL _mv_reg1_reg6
+	BL _num_div_r
+	POP PC
+
+; 17698
+_f_17698:
+	PUSH LR
+	BL _mv_reg6_reg0
+	BL _mv_reg0_reg1
+	BL _f_18386
+	BL _f_18BF0
+	BL _f_18386
+	BL _mv_reg1_reg6
+	POP PC
+
+; 176B4
+_f_176B4:
+	PUSH LR
+	MOV R0, #0CH
+	ST R0, _d_0801F
+	BL _mv_reg3_reg0
+	BL _mv_reg6_reg1
+	BL _set_reg1_10
+	MOV R0, #10H
+	ST R0, _reg1
+	MOV R0, #0H
+	ST R0, _d_0803A
+	BL _num_cmp_reg01
+	CMP R0, #2H
+	BNE _$j_17764
+	BL _mv_reg0_reg6
+	BL _set_reg1_10
+	MOV R0, #10H
+	ST R0, _reg1
+	BL _num_cmp_reg01
+	CMP R0, #2H
+	BNE _$j_17764
+	BL _mv_reg0_reg3
+	BL _mv_reg1_reg6
+	L R0, _reg1_9
+	CMP R0, #0H
+	BEQ _$j_1770a
+	L ER0, _reg1
+	CMP R1, #1H
+	BNE _$j_17764
+_$j_1770a:
+	LEA _reg0
+	L QR0, [EA+]
+	L ER8, [EA+]
+	LEA _reg2
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	BL _mv_reg6_reg1
+	BL _num_sub1_r__
+	L R0, _arith_op
+	CMP R0, #8H
+	BEQ _$j_17750
+	BL _mv_reg1_reg6
+	BL _reg0_lt_reg1_abs
+	CMP R0, #0H
+	BEQ _$j_1773a
+	BL _f_18BF0
+_$j_1773a:
+	BL _f_18BCA
+	LEA _reg2
+	L QR0, [EA+]
+	L ER8, [EA+]
+	LEA _reg0
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	BAL _$j_17784
+_$j_17750:
+	MOV ER0, #0H
+	MOV ER2, #0H
+	LEA _reg1
+	ST XR0, [EA+]
+	ST XR0, [EA+]
+	ST ER0, [EA+]
+	BL _mv_reg6_reg1
+	BAL _$j_1773a
+_$j_17764:
+	BL _set_reg0_error
+	POP PC
+
+; 1776A
+_f_1776A:
+	PUSH LR
+	MOV R0, #0AH
+	ST R0, _d_0801F
+_$j_17772:
+	MOV ER0, #0H
+	MOV ER2, #0H
+	LEA _reg1
+	ST XR0, [EA+]
+	ST XR0, [EA+]
+	ST ER0, [EA+]
+	BL _mv_reg3_reg1
+_$j_17784:
+	BL _f_198F4
+	CMP R0, #0H
+	BNE _$j_17826
+	BL _set_reg1_10
+_$j_17790:
+	L ER0, _reg0
+	CMP R1, #5H
+	BGE _$j_17826
+	BL _f_18BA4
+	L ER0, _reg1
+	L ER2, _reg3
+	CMP ER0, ER2
+	BNE _$j_177cc
+	LEA _reg1_2
+	L QR0, [EA]
+	LEA _reg3_2
+	L QR8, [EA]
+	BL _f_19F04
+	BLT _$j_177cc
+	LEA _reg1_2
+	L QR8, [EA]
+	LEA _reg3_2
+	L QR0, [EA]
+	BL _f_19F04
+	BGE _$j_17802
+_$j_177cc:
+	BL _num_mul_r
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BGE _$j_17826
+	BL _f_18BA4
+	LEA _reg1
+	L QR0, [EA+]
+	L ER8, [EA+]
+	LEA _reg2
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	BL _f_19FF8
+	LEA _reg2
+	L QR0, [EA+]
+	L ER8, [EA+]
+	LEA _reg1
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	BAL _$j_17790
+_$j_17802:
+	L R0, _d_0801F
+	MOV R1, #0AH
+	SUB R0, R1
+	BLT _$j_17818
+	BEQ _$j_17824
+	ST R0, _d_0801F
+	BL _f_18BF0
+	BAL _$j_17772
+_$j_17818:
+	ST R0, _d_0801F
+	BL _mv_reg1_reg6
+	BL _f_19BD6
+_$j_17824:
+	POP PC
+_$j_17826:
+	BL _set_reg0_error
+	BAL _$j_17824
+
+; 1782C
+_mv_reg1_reg5:
+	LEA _reg5
+	L QR0, [EA+]
+	L ER8, [EA+]
+	LEA _reg1
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	RT
+
+; 1783E
+_mv_reg5_reg1:
+	LEA _reg1
+	L QR0, [EA+]
+	L ER8, [EA+]
+	LEA _reg5
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	RT
+
+; 17850
+_mv_reg5_reg0:
+	LEA _reg0
+	L QR0, [EA+]
+	L ER8, [EA+]
+	LEA _reg5
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	RT
+
+; 17862
+_mv_reg0_reg4:
+	LEA _reg4
+	L QR0, [EA+]
+	L ER8, [EA+]
+	LEA _reg0
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	RT
+
+; 17874
+_mv_reg1_reg4:
+	LEA _reg4
+	L QR0, [EA+]
+	L ER8, [EA+]
+	LEA _reg1
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	RT
+
+; 17886
+_mv_reg4_reg0:
+	LEA _reg0
+	L QR0, [EA+]
+	L ER8, [EA+]
+	LEA _reg4
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	RT
+
+; 17898
+_mv_reg1_reg6:
+	LEA _reg6
+	L QR0, [EA+]
+	L ER8, [EA+]
+	LEA _reg1
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	RT
+
+; 178AA
+_mv_reg6_reg0:
+	LEA _reg0
+	L QR0, [EA+]
+	L ER8, [EA+]
+	LEA _reg6
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	RT
+
+; 178BC
+_mv_reg1_reg3:
+	LEA _reg3
+	L QR0, [EA+]
+	L ER8, [EA+]
+	LEA _reg1
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	RT
+
+; 178CE
+_mv_reg3_reg0:
+	LEA _reg0
+	L QR0, [EA+]
+	L ER8, [EA+]
+	LEA _reg3
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	RT
+
+; 178E0
+_mv_reg1_reg0:
+	LEA _reg0
+	L QR0, [EA+]
+	L ER8, [EA+]
+	LEA _reg1
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	RT
+
+; 178F2
+_mv_reg0_reg1:
+	LEA _reg1
+	L QR0, [EA+]
+	L ER8, [EA+]
+	LEA _reg0
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	RT
+
+; 17904
+_mv_reg6_reg1:
+	LEA _reg1
+	L QR0, [EA+]
+	L ER8, [EA+]
+	LEA _reg6
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	RT
+
+; 17916
+_mv_reg0_reg6:
+	LEA _reg6
+	L QR0, [EA+]
+	L ER8, [EA+]
+	LEA _reg0
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	RT
+
+; 17928
+_mv_reg0_reg3:
+	LEA _reg3
+	L QR0, [EA+]
+	L ER8, [EA+]
+	LEA _reg0
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	RT
+
+; 1793A
+_mv_reg3_reg1:
+	LEA _reg1
+	L QR0, [EA+]
+	L ER8, [EA+]
+	LEA _reg3
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	RT
+
+; 17956
+_f_17956:
+	PUSH LR
+	MOV R0, #6H
+	ST R0, _arith_op
+	BAL _$j_17986
+	PUSH LR
+	MOV R0, #9H
+	ST R0, _arith_op
+	BAL _$j_17986
+	PUSH LR
+	MOV R0, #8H
+	ST R0, _arith_op
+	BAL _$j_17986
+	PUSH LR
+	MOV R0, #5H
+	ST R0, _arith_op
+	BAL _$j_17986
+	PUSH LR
+	MOV R0, #4H
+	ST R0, _arith_op
+_$j_17986:
+	BL _num_arith_r
+	POP PC
+
+; 1798C
+_f_1798C:
+	PUSH LR
+	MOV R2, #0H
+	MOV R3, #8H
+	MOV R1, #80H
+	MOV R0, #2H
+_$j_17996:
+	L R4, [ER0]
+	MOV R5, R4
+	AND R4, #00001111B
+	BNE _$j_179ac
+	ADD R2, #1H
+	CMP R5, #0H
+	BNE _$j_179ac
+	ADD R2, #1H
+	ADD ER0, #1H
+	ADD R3, #-1H
+	BNE _$j_17996
+_$j_179ac:
+	MOV R0, R2
+	POP PC
+
+; 179B0
+_f_179B0:
+	PUSH LR
+	PUSH XR4
+	MOV R6, #9H
+	BAL _$j_179be
+
+; 179B8
+_f_179B8:
+	PUSH LR
+	PUSH XR4
+	MOV R6, #14H
+_$j_179be:
+	L R0, _reg0_9
+	CMP R0, #0H
+	BEQ _$j_17a10
+	CMP R0, #0AH
+	BGE _$j_17a14
+	MOV R2, #0H
+	MOV R3, #8H
+	MOV R1, #80H
+	MOV R0, #2H
+_$j_179d2:
+	LEA [ER0]
+	L R4, [EA]
+	MOV R5, R4
+	AND R4, #00001111B
+	BNE _$j_179ea
+	ADD R2, #1H
+	CMP R5, #0H
+	BNE _$j_179ea
+	ADD R2, #1H
+	ADD ER0, #1H
+	ADD R3, #-1H
+	BNE _$j_179d2
+_$j_179ea:
+	CMP R2, #0AH
+	BLT _$j_179f0
+	ADD R2, #6H
+_$j_179f0:
+	LEA _reg0
+	L ER0, [EA]
+	CMP R1, #5H
+	BLT _$j_179fc
+	ADD R1, #-5H
+_$j_179fc:
+	CMP R1, #0H
+	BEQ _$j_17a14
+	CMP R6, R0
+	BLT _$j_17a14
+	MOV R3, #14H
+	SUB R3, R0
+	DAS R3
+	CMP R2, R3
+	BLT _$j_17a14
+	MOV R0, #0H
+_$j_17a10:
+	POP XR4
+	POP PC
+_$j_17a14:
+	MOV R0, #1H
+	BAL _$j_17a10
+
+; 17A18
+_f_17A18:
+	PUSH LR
+	LEA _reg0
+	L QR0, [EA+]
+	L ER8, [EA+]
+	PUSH QR0
+	PUSH ER8
+	BL _mv_reg6_reg1
+	L ER0, _reg0
+	CMP R1, #5H
+	BLT _$j_17a9e
+	L R0, _reg1_9
+	AND R0, #11110000B
+	CMP R0, #20H
+	BNE _$j_17a9e
+	BL _mv_reg0_reg1
+	MOV R0, #0FH
+	ST R0, _d_0805A
+	BL _f_18390
+	L R0, _d_0805B
+	CMP R0, #10H
+	BLT _$j_17a56
+	BL _f_18BA4
+_$j_17a56:
+	BL _mv_reg3_reg1
+	BL _f_17AB6
+	CMP R0, #0H
+	BEQ _$j_17aac
+	BL _mv_reg3_reg0
+	BL _f_17AB6
+	CMP R0, #0H
+	BEQ _$j_17a78
+	L R0, _d_0805B
+	ADD R0, #5H
+	ST R0, _d_0805B
+_$j_17a78:
+	L R0, _d_0805B
+	CMP R0, #10H
+	BLT _$j_17a84
+	BL _f_18BA4
+_$j_17a84:
+	BL _num_div_r
+	BL _mv_reg1_reg0
+	POP ER8
+	POP QR0
+	LEA _reg0
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	BL _f_18B90
+	BAL _$j_17aaa
+_$j_17a9e:
+	POP ER8
+	POP QR0
+	LEA _reg0
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+_$j_17aaa:
+	POP PC
+_$j_17aac:
+	POP ER8
+	POP QR0
+	BL _set_reg0_error
+	BAL _$j_17aaa
+
+; 17AB6
+_f_17AB6:
+	PUSH LR
+	L ER0, _reg3
+	CMP R0, #10H
+	BLT _$j_17ac2
+	ADD R0, #-6H
+_$j_17ac2:
+	ST R0, _d_0800B
+	BL _f_19672
+	L R0, _reg3_9
+	AND R0, #00000001B
+	POP PC
+
+; 17AD2
+_f_17AD2:
+	PUSH LR
+	BL _mv_reg1_reg0
+	BL _f_17956
+	POP PC
+
+; 17ADE
+_f_17ADE:
+	PUSH LR
+	MOV R0, #0BH
+	ST R0, _arith_op
+	BAL _$j_17af0
+
+; 17AE8
+_f_17AE8:
+	PUSH LR
+	MOV R0, #0DH
+	ST R0, _arith_op
+_$j_17af0:
+	L R0, _reg0_9
+	AND R0, #11110000B
+	CMP R0, #20H
+	BNE _$j_17b5a
+	MOV R0, #0FH
+	ST R0, _d_0805A
+	BL _f_18390
+	BL _mv_reg6_reg0
+	BL _f_18BA4
+	L R0, _arith_op
+	CMP R0, #0DH
+	BEQ _$j_17b2e
+	L ER0, _reg1
+	CMP R1, #5H
+	BLT _$j_17b2c
+	ADD R1, #-5H
+	ST ER0, _reg1
+	L ER0, _reg0
+	ADD R1, #5H
+	ST ER0, _reg0
+_$j_17b2c:
+	BAL _$j_17b46
+_$j_17b2e:
+	BL _f_19A12
+	BL _f_18B46
+	BL _f_18BF0
+	BL _f_19A12
+	BL _f_18B46
+	BL _mv_reg1_reg6
+_$j_17b46:
+	BL _f_17BBA
+	CMP R0, #0H
+	BNE _$j_17b54
+	BL _f_17DC4
+	BAL _$j_17b58
+_$j_17b54:
+	BL _num_div_r
+_$j_17b58:
+	POP PC
+_$j_17b5a:
+	L R0, _arith_op
+	CMP R0, #0BH
+	BEQ _$j_17b68
+	BL _f_19A12
+	BAL _$j_17b58
+_$j_17b68:
+	BL _f_19BB4
+	BAL _$j_17b58
+
+; 17B6E
+_f_17B6E:
+	PUSH LR
+	MOV R0, #0EH
+	ST R0, _arith_op
+	BAL _$j_17b80
+
+; 17B78
+_f_17B78:
+	PUSH LR
+	MOV R0, #0FH
+	ST R0, _arith_op
+_$j_17b80:
+	L R0, _arith_op
+	CMP R0, #0EH
+	BEQ _$j_17baa
+	LEA _reg0
+	L QR0, [EA+]
+	L ER8, [EA+]
+	PUSH QR0
+	PUSH ER8
+	BL _f_17AD2
+	POP ER8
+	POP QR0
+	LEA _reg1
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	BL _f_17956
+	BAL _$j_17bb8
+_$j_17baa:
+	BL _set_reg1_10
+	MOV R0, #3H
+	ST R0, _reg1_9
+	BL _f_17BF4
+_$j_17bb8:
+	POP PC
+
+; 17BBA
+_f_17BBA:
+	PUSH LR
+	L R0, _reg0_9
+	CMP R0, #0AH
+	BGE _$j_17bf0
+	L R0, _reg1_9
+	CMP R0, #0AH
+	BGE _$j_17bf0
+	BL _f_179B8
+	CMP R0, #0H
+	BNE _$j_17bec
+	BL _f_18BA4
+	BL _f_179B8
+	CMP R0, #0H
+	BNE _$j_17be8
+	BL _f_18BA4
+	MOV R0, #0H
+	BAL _$j_17bee
+_$j_17be8:
+	BL _f_18BA4
+_$j_17bec:
+	MOV R0, #1H
+_$j_17bee:
+	POP PC
+_$j_17bf0:
+	MOV R0, #2H
+	BAL _$j_17bee
+
+; 17BF4
+_f_17BF4:
+	PUSH LR
+	MOV R0, #0EH
+	ST R0, _arith_op
+	MOV R0, #10H
+	ST R0, _d_0805B
+	BAL _$j_17c12
+
+; 17C04
+_f_17C04:
+	PUSH LR
+	MOV R0, #0FH
+	ST R0, _arith_op
+	MOV R0, #0H
+	ST R0, _d_0805B
+_$j_17c12:
+	BL _f_17A18
+	L R0, _reg0_9
+	AND R0, #11110000B
+	CMP R0, #20H
+	BNE _$j_17d1a
+	BL _f_18BA4
+	L R0, _reg0_9
+	AND R0, #11110000B
+	CMP R0, #20H
+	BEQ _$j_17d16
+	BL _f_179B8
+	CMP R0, #0H
+	BNE _$j_17d16
+	BL _f_18BA4
+	BL _mv_reg4_reg0
+	BL _mv_reg5_reg1
+	BL _mv_reg6_reg1
+	MOV R0, #0FH
+	ST R0, _d_0805A
+	BL _f_18390
+	L ER0, _reg6
+	CMP R1, #5H
+	BLT _$j_17c82
+	ADD R1, #-5H
+	ST ER0, _reg6
+	LEA _reg0_2
+	L QR0, [EA]
+	LEA _reg1_2
+	L QR8, [EA]
+	ST QR0, [EA]
+	LEA _reg0_2
+	ST QR8, [EA]
+	L R0, _reg0
+	L R1, _reg1
+	ST R1, _reg0
+	ST R0, _reg1
+_$j_17c82:
+	LEA _reg6
+	L QR0, [EA+]
+	L ER8, [EA+]
+	PUSH QR0
+	PUSH ER8
+	LEA _reg0
+	L QR0, [EA+]
+	L ER8, [EA+]
+	PUSH QR0
+	PUSH ER8
+	BL _mv_reg0_reg6
+	MOV R0, #0H
+	ST R0, _d_0801D
+	BL _f_18C88
+	BL _f_18B46
+	BL _mv_reg6_reg0
+	POP ER8
+	POP QR0
+	LEA _reg1
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	POP ER8
+	POP QR0
+	LEA _reg0
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	LEA _reg6
+	L QR0, [EA+]
+	L ER8, [EA+]
+	PUSH QR0
+	PUSH ER8
+	MOV R0, #0H
+	ST R0, _d_0801D
+	BL _f_18C88
+	BL _f_18B46
+	POP ER8
+	POP QR0
+	LEA _reg1
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BGE _$j_17d4c
+	L R0, _reg1_9
+	CMP R0, #-10H
+	BGE _$j_17d4c
+	BL _f_17BBA
+	CMP R0, #0H
+	BNE _$j_17d4c
+	BL _f_17DC4
+	L R0, _reg0_9
+	AND R0, #11110000B
+	CMP R0, #20H
+	BNE _$j_17d4c
+_$j_17d14:
+	POP PC
+_$j_17d16:
+	BL _f_18BA4
+_$j_17d1a:
+	BL _mv_reg6_reg1
+	BL _f_18386
+	BL _f_18BF0
+	BL _f_18386
+	BL _mv_reg1_reg6
+	MOV R0, #0H
+	ST R0, _d_0801D
+	BL _f_18C88
+	L R2, _d_0805B
+	L ER0, _reg0
+	ADD R1, R2
+	DAA R1
+	AND R1, #00001111B
+	ST ER0, _reg0
+	BAL _$j_17d14
+_$j_17d4c:
+	BL _mv_reg0_reg4
+	BL _mv_reg1_reg5
+	BAL _$j_17d1a
+
+; 17D56
+_num_arith_r:
+	PUSH LR
+	BL _f_182E6
+	L R0, _d_0805A
+	CMP R0, #0CH
+	BLT _$j_17d7c
+	L R0, _arith_op
+	CMP R0, #8H
+	BLT _$j_17d72
+	ADD R0, #-4H
+	ST R0, _arith_op
+_$j_17d72:
+	BL _f_1820E
+	BL _f_17DC4
+	BAL _$j_17dc2
+_$j_17d7c:
+	BL _f_18C3C
+	L R0, _arith_op
+	CMP R0, #5H
+	BLT _$j_17db2
+	BEQ _$j_17db8
+	CMP R0, #7H
+	BLT _$j_17dbe
+	BEQ _$j_17dac
+	CMP R0, #9H
+	BLT _$j_17da0
+	MOV R0, #5H
+	ST R0, _arith_op
+	BL _num_sub_r
+	BAL _$j_17dc2
+_$j_17da0:
+	MOV R0, #4H
+	ST R0, _arith_op
+	BL _num_add_r
+	BAL _$j_17dc2
+_$j_17dac:
+	BL _num_div_r
+	BAL _$j_17dc2
+_$j_17db2:
+	BL _num_add1_r__
+	BAL _$j_17dc2
+_$j_17db8:
+	BL _num_sub1_r__
+	BAL _$j_17dc2
+_$j_17dbe:
+	BL _num_mul_r
+_$j_17dc2:
+	POP PC
+
+; 17DC4
+_f_17DC4:
+	PUSH LR
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BLT _$j_17dd0
+	POP PC
+_$j_17dd0:
+	CMP R0, #0H
+	BEQ _$j_17ddc
+	L R0, _reg1_9
+	CMP R0, #0H
+	BNE _$j_17de6
+_$j_17ddc:
+	BL _num_div_r
+	BL _f_18B46
+	BAL _$j_17e24
+_$j_17de6:
+	BL _mv_reg3_reg0
+	BL _mv_reg6_reg1
+	BL _f_1805A
+	BL _mv_reg0_reg6
+	BL _num_div_r
+	BL _f_18BCA
+	BL _num_div_r
+	BL _f_18C3C
+	L R0, _reg1
+	CMP R0, #1H
+	BGE _$j_17e16
+	L R0, _reg1_9
+	CMP R0, #2H
+	BLT _$j_17e20
+_$j_17e16:
+	BL _num_unk_1_r__
+	BL _f_17E26
+	BAL _$j_17e24
+_$j_17e20:
+	BL _f_18B46
+_$j_17e24:
+	POP PC
+
+; 17E26
+_f_17E26:
+	PUSH LR
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BLT _$j_17e32
+	POP PC
+_$j_17e32:
+	L R0, _reg0
+	L R2, _reg1
+	ADD R0, R2
+	DAA R0
+	ADD R0, #3H
+	DAA R0
+	L R2, _reg2_9
+	CMP R2, #0H
+	BEQ _$j_17e56
+	L R2, _reg2
+	ADD R0, R2
+	DAA R0
+	ADD R0, #2H
+	DAA R0
+_$j_17e56:
+	CMP R0, #11H
+	BGE _$j_17f16
+	L R2, _reg2_9
+	CMP R2, #0H
+	BEQ _$j_17eaa
+	L R0, _reg2
+	ADD R0, #2H
+	DAA R0
+	L R2, _reg0
+	ADD R2, #1H
+	DAA R2
+	ADD R2, R0
+	DAA R2
+	ST R2, _reg2
+	LEA _reg0_2
+	L QR8, [EA]
+	OR R15, #10100000B
+	LEA _reg3_2
+	ST QR8, [EA]
+	CMP R0, #10H
+	BLT _$j_17e8e
+	ADD R0, #-6H
+_$j_17e8e:
+	ST R0, _d_0800B
+	BL _f_195E8
+	LEA _reg3_2
+	L QR8, [EA]
+	LEA _reg2_2
+	L QR0, [EA]
+	BL _f_17F4A
+	ST QR0, [EA]
+	BAL _$j_17ec2
+_$j_17eaa:
+	LEA _reg0_2
+	L QR0, [EA]
+	LEA _reg2_2
+	ST QR0, [EA]
+	L R0, _reg0
+	ADD R0, #1H
+	DAA R0
+	ST R0, _reg2
+_$j_17ec2:
+	L R0, _reg2
+	ADD R0, #1H
+	DAA R0
+	L R2, _reg1
+	ADD R2, #1H
+	DAA R2
+	ADD R2, R0
+	DAA R2
+	L ER4, _reg0
+	MOV R4, R2
+	ST ER4, _reg0
+	LEA _reg1_2
+	L QR8, [EA]
+	OR R15, #10100000B
+	LEA _reg3_2
+	ST QR8, [EA]
+	CMP R0, #10H
+	BLT _$j_17ef4
+	ADD R0, #-6H
+_$j_17ef4:
+	ST R0, _d_0800B
+	BL _f_195E8
+	LEA _reg3_2
+	L QR8, [EA]
+	LEA _reg2_2
+	L QR0, [EA]
+	BL _f_17F4A
+	OR R7, #00100000B
+	LEA _reg0_2
+	ST QR0, [EA]
+_$j_17f14:
+	POP PC
+_$j_17f16:
+	L R2, _reg2_9
+	CMP R2, #0H
+	BEQ _$j_17f44
+	LEA _reg2
+	L QR0, [EA+]
+	L ER8, [EA+]
+	PUSH QR0
+	PUSH ER8
+	BL _num_div_r
+	POP ER8
+	POP QR0
+	LEA _reg1
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	BL _num_add1_r__
+_$j_17f3e:
+	BL _f_18B46
+	BAL _$j_17f14
+_$j_17f44:
+	BL _num_div_r
+	BAL _$j_17f3e
+
+; 17F4A
+_f_17F4A:
+	PUSH LR
+	OR R0, R8
+	OR R1, R9
+	OR R2, R10
+	OR R3, R11
+	OR R4, R12
+	OR R5, R13
+	OR R6, R14
+	OR R7, R15
+	POP PC
+
+; 17F5E
+_num_unk_1_r__:
+	PUSH LR
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BLT _$j_17f6a
+	POP PC
+_$j_17f6a:
+	L ER0, _reg0
+	MOV R2, #5H
+_$j_17f70:
+	ADD R1, #5H
+	DAA R1
+	CMP R1, #10H
+	BGE _$j_17f80
+	ADD R2, #5H
+	DAA R2
+	AND R2, #00001111B
+	BAL _$j_17f70
+_$j_17f80:
+	AND R1, #00001111B
+	ST R2, _d_0801D
+	ST ER0, _reg0
+	MOV R0, #14H
+	MOV R1, #1H
+	MOV ER4, #0H
+	MOV ER6, #0H
+	LEA _reg2
+	ST ER0, [EA+]
+	ST XR4, [EA+]
+	ST XR4, [EA+]
+_$j_17f9c:
+	L ER0, _reg0
+	L ER2, _reg1
+	SUB R0, R2
+	DAS R0
+	SUBC R1, R3
+	DAS R1
+	BLT _$j_1801c
+	LEA _reg2_9
+	L R2, [EA]
+	BEQ _$j_17fcc
+	MOV R2, #15H
+	MOV R3, #1H
+	ADD R2, R0
+	DAA R2
+	ADDC R3, R1
+	DAA R3
+	AND R3, #00001111B
+	LEA _reg2
+	ST ER2, [EA]
+	BAL _$j_1801c
+_$j_17fcc:
+	LEA _reg2_2
+	L QR0, [EA]
+	BL _f_19458
+	ST QR0, [EA]
+	LEA _reg0_2
+	L QR0, [EA]
+	LEA _reg1_2
+	L QR8, [EA]
+_$j_17fe4:
+	BL _f_19F04
+	BLT _$j_17ffa
+	PUSH R0
+	L R0, _reg2_2
+	ADD R0, #1H
+	ST R0, _reg2_2
+	POP R0
+	BAL _$j_17fe4
+_$j_17ffa:
+	BL _f_19ED8
+	BL _f_19458
+	L ER8, _reg0
+	MOV ER10, #1H
+	SUB R8, R10
+	DAS R8
+	SUBC R9, R11
+	DAS R9
+	AND R9, #00001111B
+	LEA _reg0
+	ST ER8, [EA+]
+	ST QR0, [EA+]
+	BAL _$j_17f9c
+_$j_1801c:
+	BL _f_1A23C
+	L ER0, _reg0
+	L R2, _d_0801D
+	ADD R1, R2
+	DAA R1
+	AND R1, #00001111B
+	ST ER0, _reg0
+	BL _f_18C16
+	BL _f_1A23C
+	BL _f_18C16
+	L R0, _reg2_9
+	CMP R0, #0H
+	BEQ _$j_18058
+	L ER0, _reg2
+	L R2, _d_0801D
+	ADD R1, R2
+	DAA R1
+	AND R1, #00001111B
+	ST ER0, _reg2
+_$j_18058:
+	POP PC
+
+; 1805A
+_f_1805A:
+	PUSH LR
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BLT _$j_18066
+	POP PC
+_$j_18066:
+	L R0, _reg1_9
+	CMP R0, #-10H
+	BLT _$j_18074
+	BL _set_reg0_error
+	POP PC
+_$j_18074:
+	L R0, _reg0
+	L R1, _reg1
+	CMP R0, R1
+	BGE _$j_18084
+_$j_18080:
+	BL _f_18BA4
+_$j_18084:
+	LEA _reg0_2
+	L QR0, [EA+]
+_$j_1808a:
+	LEA _reg1_2
+	L QR8, [EA+]
+_$j_18090:
+	BL _f_19F04
+	BGE _$j_18090
+	BL _f_19ED8
+	LEA _reg0_2
+	ST QR0, [EA+]
+	LEA _reg1_2
+	ST QR8, [EA+]
+	L ER8, _reg0
+	L ER10, _reg1
+	CMP R8, R10
+	BEQ _$j_180c6
+	BL _f_19458
+	MOV ER10, #1H
+	SUB R8, R10
+	DAS R8
+	SUBC R9, R11
+	DAS R9
+	ST ER8, _reg0
+	BAL _$j_1808a
+_$j_180c6:
+	BL _f_1A23C
+	L R0, _reg0_9
+	CMP R0, #0H
+	BNE _$j_18080
+	L ER0, _reg1
+	MOV R2, #5H
+	SUB R1, R2
+	DAS R1
+	BGE _$j_180e2
+	ADD R1, #5H
+	DAA R1
+_$j_180e2:
+	AND R1, #00001111B
+	ST ER0, _reg1
+	POP PC
+
+; 180EA
+_f_180EA:
+	PUSH LR
+	LEA _reg0
+	L QR0, [EA+]
+	L ER8, [EA+]
+	MOV R10, R9
+	AND R10, #11110000B
+	CMP R10, #20H
+	BEQ _$j_180fe
+	POP PC
+_$j_180fe:
+	AND R9, #00001111B
+	LEA _reg3
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	L R0, _reg3
+	CMP R0, #10H
+	BLT _$j_18112
+	ADD R0, #-6H
+_$j_18112:
+	MOV R1, #0FH
+	SUB R1, R0
+	ST R1, _d_0800B
+	BL _f_195E8
+	L R0, _d_0805A
+	CMP R0, #2H
+	BNE _$j_1815e
+	BL _f_1850C
+	MOV R1, #10H
+	SUB R1, R0
+	ST R1, _d_0800B
+	BL _f_19672
+	L R2, _d_0800B
+	CMP R2, #0AH
+	BLT _$j_18140
+	ADD R2, #6H
+_$j_18140:
+	MOV R0, #14H
+	MOV R1, #1H
+	SUB R0, R2
+	DAS R0
+	LEA _reg3_2
+	L ER2, [EA+]
+	L XR4, [EA+]
+	L ER8, [EA+]
+	AND R9, #00001111B
+	LEA _reg0
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	BAL _$j_181d8
+_$j_1815e:
+	BL _f_1850C
+	ST R0, _d_0800B
+	BL _f_195E8
+	MOV ER0, #0H
+	ST ER0, _reg3
+	BL _f_1850C
+	CMP R0, #0H
+	BEQ _$j_181da
+	L R1, _d_0805A
+	CMP R1, #1H
+	BNE _$j_181b6
+	MOV R1, #10H
+	SUB R1, R0
+	ST R1, _d_0800B
+	BL _f_19672
+	L R2, _d_0800B
+	CMP R2, #0AH
+	BLT _$j_18196
+	ADD R2, #6H
+_$j_18196:
+	L ER0, _reg0
+	MOV R0, #14H
+	SUB R0, R2
+	DAS R0
+	LEA _reg3_2
+	L ER2, [EA+]
+	L XR4, [EA+]
+	L ER8, [EA+]
+	AND R9, #00001111B
+	LEA _reg0
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	BAL _$j_181d8
+_$j_181b6:
+	ST R0, _d_0800B
+	BL _f_195E8
+	LEA _reg3
+	L QR0, [EA+]
+	L ER8, [EA+]
+	L ER0, _reg0
+	MOV R0, #14H
+	LEA _reg0
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	BL _f_1A23C
+_$j_181d8:
+	POP PC
+_$j_181da:
+	L R0, _d_0805A
+	CMP R0, #0H
+	BEQ _$j_181fe
+	LEA _reg3
+	L QR0, [EA+]
+	L ER8, [EA+]
+	L ER0, _reg0
+	MOV R0, #14H
+	LEA _reg0
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	BL _f_1A23C
+	BAL _$j_181d8
+_$j_181fe:
+	MOV ER0, #0H
+	MOV ER2, #0H
+	LEA _reg0
+	ST XR0, [EA+]
+	ST XR0, [EA+]
+	ST ER0, [EA+]
+	BAL _$j_181d8
+
+; 1820E
+_f_1820E:
+	PUSH LR
+	L R0, _arith_op
+	CMP R0, #6H
+	BLT _$j_1821c
+	BEQ _$j_1825c
+	BAL _$j_18276
+_$j_1821c:
+	BL _f_18C62
+	BL _num_mul_r
+	BL _f_18C62
+	BL _f_18BCA
+	BL _num_mul_r
+	BL _f_18BCA
+	BL _f_18BF0
+	BL _num_mul_r
+	BL _f_18BF0
+	BL _mv_reg1_reg3
+	L R0, _arith_op
+	CMP R0, #5H
+	BEQ _$j_18252
+	BL _num_add1_r__
+	BAL _$j_18256
+_$j_18252:
+	BL _num_sub1_r__
+_$j_18256:
+	BL _mv_reg1_reg6
+	BAL _$j_182b2
+_$j_1825c:
+	BL _f_18C3C
+	BL _num_mul_r
+	BL _f_18C3C
+	BL _f_18BF0
+	BL _num_mul_r
+	BL _f_18BF0
+	BAL _$j_18256
+_$j_18276:
+	BL _f_18C62
+	BL _num_mul_r
+	BL _f_18C62
+	BL _f_18BCA
+	BL _num_mul_r
+	BL _f_18BCA
+	LEA _reg3
+	L QR0, [EA+]
+	L ER8, [EA+]
+	L ER10, _reg0
+	CMP R1, #1H
+	BEQ _$j_182aa
+	MOV R1, #1H
+	ADD R11, #5H
+	DAA R11
+	AND R11, #00001111B
+	ST ER10, _reg0
+_$j_182aa:
+	LEA _reg1
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+_$j_182b2:
+	POP PC
+
+; 182B4
+_f_182B4:
+	PUSH LR
+	MOV R0, #7H
+	ST R0, _arith_op
+	BL _f_182DC
+	L R0, _d_0805A
+	CMP R0, #0BH
+	BLT _$j_182d2
+	BL _f_1820E
+	BL _f_17DC4
+	BAL _$j_182da
+_$j_182d2:
+	BL _f_18C3C
+	BL _num_div_r
+_$j_182da:
+	POP PC
+
+; 182DC
+_f_182DC:
+	PUSH LR
+	MOV R0, #5H
+	ST R0, _d_0805A
+	BAL _$j_182fe
+
+; 182E6
+_f_182E6:
+	PUSH LR
+	MOV R0, #5H
+	ST R0, _d_0805A
+	L R0, _reg0_9
+	CMP R0, #0AH
+	BGE _$j_182fe
+	L R0, _reg1_9
+	CMP R0, #0AH
+	BLT _$j_18380
+_$j_182fe:
+	L R0, _reg0_9
+	AND R0, #11110000B
+	CMP R0, #20H
+	BEQ _$j_1831c
+	BL _f_179B8
+	CMP R0, #0H
+	BNE _$j_18326
+	L R0, _d_0805A
+	ADD R0, #3H
+	ST R0, _d_0805A
+	BAL _$j_18326
+_$j_1831c:
+	L R0, _d_0805A
+	ADD R0, #5H
+	ST R0, _d_0805A
+_$j_18326:
+	BL _f_18BA4
+	L R0, _reg0_9
+	AND R0, #11110000B
+	CMP R0, #20H
+	BEQ _$j_18348
+	BL _f_179B8
+	CMP R0, #0H
+	BNE _$j_18352
+	L R0, _d_0805A
+	ADD R0, #3H
+	ST R0, _d_0805A
+	BAL _$j_18352
+_$j_18348:
+	L R0, _d_0805A
+	ADD R0, #5H
+	ST R0, _d_0805A
+_$j_18352:
+	BL _mv_reg6_reg1
+	BL _f_18390
+	LEA _reg0
+	L QR0, [EA+]
+	L ER8, [EA+]
+	PUSH QR0
+	PUSH ER8
+	BL _mv_reg0_reg6
+	BL _mv_reg6_reg1
+	BL _f_18390
+	POP ER8
+	POP QR0
+	LEA _reg3
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+_$j_1837e:
+	POP PC
+_$j_18380:
+	BL _mv_reg3_reg1
+	BAL _$j_1837e
+
+; 18386
+_f_18386:
+	PUSH LR
+	MOV R0, #0H
+	ST R0, _d_0805A
+	BAL _$j_18392
+
+; 18390
+_f_18390:
+	PUSH LR
+_$j_18392:
+	LEA _reg0
+	L QR0, [EA+]
+	L ER8, [EA+]
+	MOV R10, R9
+	AND R10, #11110000B
+	BEQ _$j_183aa
+	CMP R10, #20H
+	BEQ _$j_183c0
+	BL _set_reg0_error
+_$j_183a8:
+	POP PC
+_$j_183aa:
+	MOV R0, #0H
+	MOV R1, #1H
+	MOV ER2, #0H
+	LEA _reg1
+	ST ER0, [EA+]
+	ST ER2, [EA+]
+	ST ER2, [EA+]
+	ST ER2, [EA+]
+	ST ER0, [EA+]
+	BAL _$j_183a8
+_$j_183c0:
+	AND R9, #00001111B
+	LEA _reg3
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	L R0, _reg3
+	CMP R0, #10H
+	BLT _$j_183d4
+	ADD R0, #-6H
+_$j_183d4:
+	MOV R1, #0FH
+	SUB R1, R0
+	ST R1, _d_0800B
+	BL _f_195E8
+	LEA _reg3_2
+	L QR0, [EA+]
+	LEA _reg0_2
+	ST QR0, [EA+]
+	BL _f_1850C
+	MOV R1, #10H
+	SUB R1, R0
+	ST R1, _d_0800B
+	BL _f_19672
+	L R2, _d_0800B
+	CMP R2, #0AH
+	BLT _$j_18406
+	ADD R2, #6H
+_$j_18406:
+	MOV R0, #14H
+	MOV R1, #1H
+	SUB R0, R2
+	DAS R0
+	LEA _reg3_2
+	L ER2, [EA+]
+	L XR4, [EA+]
+	L ER8, [EA+]
+	AND R9, #00001111B
+	LEA _reg1
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	BL _mv_reg3_reg0
+	BL _f_1850C
+	ST R0, _d_0800B
+	BL _f_195E8
+	MOV ER0, #0H
+	ST ER0, _reg3
+	BL _f_1850C
+	CMP R0, #0H
+	BEQ _$j_184f0
+	LEA _reg3_2
+	L QR8, [EA+]
+	LEA _reg0_2
+	ST QR8, [EA+]
+	MOV R1, #10H
+	SUB R1, R0
+	ST R1, _d_0800B
+	BL _f_19672
+	L R2, _d_0800B
+	CMP R2, #0AH
+	BLT _$j_18462
+	ADD R2, #6H
+_$j_18462:
+	L ER0, _reg0
+	MOV R0, #14H
+	SUB R0, R2
+	DAS R0
+	LEA _reg3_2
+	L ER2, [EA+]
+	L XR4, [EA+]
+	L ER8, [EA+]
+	AND R9, #00001111B
+	LEA _reg2
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	BL _mv_reg3_reg0
+	BL _f_1850C
+	ST R0, _d_0800B
+	BL _f_195E8
+	LEA _reg3
+	L QR0, [EA+]
+	L ER8, [EA+]
+	L ER0, _reg0
+	MOV R0, #14H
+	LEA _reg0
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	BL _f_1A23C
+	LEA _reg2
+	L QR0, [EA+]
+	L ER8, [EA+]
+	LEA _reg3
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	BL _num_mul_r
+	BL _f_18C3C
+	BL _num_add1_r__
+	BL _f_18C3C
+_$j_184ca:
+	L R0, _d_0805A
+	CMP R0, #0BH
+	BGE _$j_184ee
+	BL _num_div_r
+	BL _f_18B46
+	MOV R0, #0H
+	MOV R1, #1H
+	MOV ER2, #0H
+	LEA _reg1
+	ST ER0, [EA+]
+	ST ER2, [EA+]
+	ST ER2, [EA+]
+	ST ER2, [EA+]
+	ST ER0, [EA+]
+_$j_184ee:
+	POP PC
+_$j_184f0:
+	LEA _reg3
+	L QR0, [EA+]
+	L ER8, [EA+]
+	L ER0, _reg0
+	MOV R0, #14H
+	LEA _reg0
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	BL _f_1A23C
+	BAL _$j_184ca
+
+; 1850C
+_f_1850C:
+	PUSH LR
+	MOV R2, #0H
+	MOV R3, #8H
+	MOV R1, #80H
+	MOV R0, #32H
+_$j_18516:
+	LEA [ER0]
+	L R4, [EA]
+	MOV R5, R4
+	AND R4, #00001111B
+	CMP R4, #0AH
+	BEQ _$j_18534
+	ADD R2, #1H
+	CMP R5, #-60H
+	BGE _$j_18534
+	ADD R2, #1H
+	ADD ER0, #1H
+	ADD R3, #-1H
+	BNE _$j_18516
+	MOV R0, #0H
+_$j_18532:
+	POP PC
+_$j_18534:
+	ADD R2, #1H
+	CMP R2, #0FH
+	BLT _$j_1853c
+	MOV R2, #0H
+_$j_1853c:
+	MOV R0, R2
+	BAL _$j_18532
+
+; 18540
+_f_18540:
+	PUSH LR
+	MOV R0, #0EH
+	ST R0, _arith_op
+	BL _set_reg1_10
+	MOV R0, #3H
+	ST R0, _reg1_9
+	BL _f_18BA4
+	MOV R0, #0H
+	ST R0, _d_0801D
+	BL _f_18C88
+	POP PC
+
+; 18562
+_f_18562:
+	PUSH LR
+	BL _mv_reg3_reg0
+	BL _f_19D1E
+	BL _mv_reg1_reg3
+	BL _num_mul_r
+	POP PC
+
+; 18576
+_f_18576:
+	PUSH LR
+	MOV R0, #0H
+	ST R0, _d_0801D
+	BL _mv_reg3_reg0
+	L R0, _arith_op
+	CMP R0, #2H
+	BEQ _$j_1866c
+	MOV R0, #98H
+	MOV R1, #0H
+	MOV ER2, #0H
+	LEA _reg1
+	ST ER0, [EA+]
+	ST ER2, [EA+]
+	ST ER2, [EA+]
+	ST ER2, [EA+]
+	MOV R0, #30H
+	MOV R1, #1H
+	ST ER0, [EA+]
+	BL _reg0_lt_reg1_abs
+	CMP R0, #0H
+	BEQ _$j_1866c
+	BL _f_19D1E
+	BL _mv_reg6_reg0
+	BL _f_19D1E
+	L R0, _arith_op
+	CMP R0, #3H
+	BEQ _$j_1860a
+	L R0, _d_0801F
+	CMP R0, #0BH
+	BEQ _$j_18640
+	BL _set_reg1_180
+	MOV R0, #20H
+	ST R0, _reg1_8
+	BL _num_div_r
+_$j_185d4:
+	BL _f_18BF0
+	BL _set_reg1_10
+	MOV R0, #6H
+	ST R0, _reg1_9
+	L R0, _d_0801F
+	CMP R0, #0BH
+	BNE _$j_185f0
+	MOV R0, #6H
+	ST R0, _reg1_1
+_$j_185f0:
+	BL _num_div_r
+	BL _f_19FD6
+	BL _mv_reg1_reg6
+	BL _num_add1_r__
+	BL _mv_reg1_reg3
+	BL _num_mul_r
+	BAL _$j_1866a
+_$j_1860a:
+	L R0, _d_0801F
+	CMP R0, #0BH
+	BEQ _$j_1865a
+	BL _set_reg1_10
+	MOV R1, #7H
+	MOV R0, #50H
+	ST ER0, _reg1_8
+	BL _num_div_r
+_$j_18622:
+	BL _f_18BF0
+	BL _set_reg1_10
+	MOV R0, #3H
+	ST R0, _reg1_9
+	L R0, _d_0801F
+	CMP R0, #0BH
+	BEQ _$j_1863e
+	MOV R0, #6H
+	ST R0, _reg1_1
+_$j_1863e:
+	BAL _$j_185f0
+_$j_18640:
+	BL _set_reg1_10
+	MOV R1, #7H
+	MOV R0, #50H
+	ST ER0, _reg1_8
+	MOV R0, #98H
+	MOV R1, #0H
+	ST ER0, _reg1
+	BL _num_mul_r
+	BAL _$j_185d4
+_$j_1865a:
+	BL _set_reg1_10
+	MOV R0, #5H
+	ST R0, _reg1_9
+	BL _num_div_r
+	BAL _$j_18622
+_$j_1866a:
+	POP PC
+_$j_1866c:
+	L R0, _d_0801F
+	CMP R0, #0AH
+	BNE _$j_186f2
+	L ER0, _reg0
+	MOV R2, #5H
+_$j_1867a:
+	ADD R1, #5H
+	DAA R1
+	CMP R1, #10H
+	BGE _$j_1868a
+	ADD R2, #5H
+	DAA R2
+	AND R2, #00001111B
+	BAL _$j_1867a
+_$j_1868a:
+	AND R1, #00001111B
+	ST R2, _d_0801D
+	ST ER0, _reg0
+	BL _f_18DD4
+	BL _f_19BB4
+	L R0, _arith_op
+	CMP R0, #2H
+	BLT _$j_186ae
+	BNE _$j_186be
+	MOV R0, #0H
+	ST R0, _d_0801D
+	BAL _$j_186cc
+_$j_186ae:
+	L ER0, _reg0
+	ADD R1, #5H
+	DAA R1
+	AND R1, #00001111B
+	ST ER0, _reg0
+	BAL _$j_186cc
+_$j_186be:
+	BL _mv_reg3_reg1
+	BL _f_18A0E
+	BL _f_18BA4
+	BAL _$j_186da
+_$j_186cc:
+	BL _num_add1_r__
+	BL _set_reg1_10
+	MOV R0, #2H
+	ST R0, _reg1_9
+_$j_186da:
+	BL _num_div_r
+	L ER0, _reg0
+	L R2, _d_0801D
+	ADD R1, R2
+	DAA R1
+	AND R1, #00001111B
+	ST ER0, _reg0
+	BAL _$j_1866a
+_$j_186f2:
+	BL _set_reg1_10
+	L R0, _arith_op
+	CMP R0, #2H
+	BLT _$j_18712
+	BEQ _$j_18736
+	BL _f_18A0E
+	BL _num_div_r
+	BL _f_19A12
+_$j_1870c:
+	BL _f_19012
+	BAL _$j_1866a
+_$j_18712:
+	L ER0, _reg0
+	MOV R2, #5H
+_$j_18718:
+	ADD R1, #5H
+	DAA R1
+	CMP R1, #10H
+	BGE _$j_18728
+	ADD R2, #5H
+	DAA R2
+	AND R2, #00001111B
+	BAL _$j_18718
+_$j_18728:
+	AND R1, #00001111B
+	ST R2, _d_0801D
+	ST ER0, _reg0
+	BL _mv_reg3_reg0
+_$j_18736:
+	BL _f_188FE
+	BL _num_add1_r__
+	BAL _$j_1870c
+
+; 18740
+_f_18740:
+	PUSH LR
+	MOV R2, #0H
+	L ER0, _reg0
+_$j_18748:
+	ADD R2, #5H
+	DAA R2
+	AND R2, #00001111B
+	ADD R1, #5H
+	DAA R1
+	CMP R1, #10H
+	BLT _$j_18748
+	AND R1, #00001111B
+	ST ER0, _reg0
+	ST R2, _d_0802C
+	BL _f_18B00
+	BL _mv_reg6_reg0
+	L ER0, _reg1
+	MOV ER2, #2H
+	SUB R0, R2
+	DAS R0
+	SUBC R1, R3
+	DAS R1
+	ST ER0, _reg1
+	BL _num_mul_r
+	BL _f_18B46
+	L ER0, _reg0
+	CMP R0, #8H
+	BLT _$j_18794
+	CMP R1, #1H
+	BNE _$j_18794
+	BL _set_reg0_error
+	BAL _$j_18808
+_$j_18794:
+	BL _f_1979E
+	L ER0, _reg1_2
+	SRL R0, #4
+	AND R1, #00001111B
+	ST R0, _d_0802A
+	ST R1, _d_0802B
+	BL _f_18AAE
+	BL _num_mul_r
+	BL _f_18B46
+	BL _mv_reg1_reg6
+	BL _f_19FA6
+	BL _f_18B00
+	BL _num_mul_r
+	BL _f_18B46
+	BL _f_18A2A
+	BL _f_19158
+	L R0, _d_0802A
+	AND R0, #00000001B
+	BEQ _$j_187dc
+	BL _f_18BA4
+_$j_187dc:
+	L R0, _arith_op
+	CMP R0, #3H
+	BEQ _$j_187f2
+	L ER0, _reg1
+	AND R0, #11110000B
+	CMP R1, #0H
+	BNE _$j_1880a
+	ADD R0, #70H
+	BLT _$j_1880a
+_$j_187f2:
+	BL _f_19BD6
+_$j_187f6:
+	L ER0, _reg0
+	L R2, _d_0802C
+	ADD R1, R2
+	DAA R1
+	AND R1, #00001111B
+	ST ER0, _reg0
+_$j_18808:
+	POP PC
+_$j_1880a:
+	BL _f_188F0
+	BL _f_19BB4
+	BL _f_19A12
+	BAL _$j_187f6
+
+; 18818
+_f_18818:
+	PUSH LR
+	BL _mv_reg3_reg0
+	MOV R0, #0H
+	MOV R1, #1H
+	MOV ER2, #0H
+	LEA _reg1
+	ST ER0, [EA+]
+	ST ER2, [EA+]
+	ST ER2, [EA+]
+	ST ER2, [EA+]
+	ST ER0, [EA+]
+	L R0, _arith_op
+	CMP R0, #3H
+	BEQ _$j_18842
+	BL _f_18A0E
+	BL _f_18BA4
+_$j_18842:
+	L ER0, _reg0
+	MOV R2, #5H
+_$j_18848:
+	ADD R1, #5H
+	DAA R1
+	CMP R1, #10H
+	BGE _$j_18858
+	ADD R2, #5H
+	DAA R2
+	AND R2, #00001111B
+	BAL _$j_18848
+_$j_18858:
+	AND R1, #00001111B
+	ST ER0, _reg0
+	ST R2, _d_0801D
+	BL _reg0_lt_reg1_abs
+	CMP R0, #0H
+	BNE _$j_18872
+	BL _f_18BA4
+	MOV R0, #5H
+	BAL _$j_18874
+_$j_18872:
+	MOV R0, #0H
+_$j_18874:
+	ST R0, _d_0802E
+	BL _num_div_r
+	MOV ER0, #0H
+	MOV ER2, #0H
+	LEA _reg1
+	ST XR0, [EA+]
+	ST XR0, [EA+]
+	MOV R1, #1H
+	ST ER0, [EA+]
+	BL _f_1910E
+	BL _f_18AAE
+	BL _num_mul_r
+	BL _f_18B46
+	L R0, _d_0802E
+	CMP R0, #0H
+	BEQ _$j_188ca
+	MOV R0, #0H
+	ST R0, _d_0802E
+	L R0, _arith_op
+	CMP R0, #2H
+	BNE _$j_188c2
+_$j_188b2:
+	L R0, _d_0802E
+	CMP R0, #-80H
+	BEQ _$j_188c2
+	L R0, _d_0801D
+	CMP R0, #1H
+	BLT _$j_188ee
+_$j_188c2:
+	BL _f_18AAE
+	BL _f_1A01C
+_$j_188ca:
+	L R0, _d_0802E
+	ADD R0, #-80H
+	ST R0, _d_0802E
+	BLT _$j_188ee
+	L ER0, _reg0
+	L R2, _d_0801D
+	ADD R1, R2
+	DAA R1
+	ST ER0, _reg0
+	L R0, _arith_op
+	CMP R0, #2H
+	BEQ _$j_188b2
+_$j_188ee:
+	POP PC
+
+; 188F0
+_f_188F0:
+	PUSH LR
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BLT _$j_188fc
+	POP PC
+_$j_188fc:
+	BAL _$j_1891a
+
+; 188FE
+_f_188FE:
+	PUSH LR
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BLT _$j_1890a
+	POP PC
+_$j_1890a:
+	BL _reg0_lt_reg1_abs
+	CMP R0, #0H
+	BNE _$j_1891a
+	BL _f_18BA4
+	MOV R0, #5H
+	BAL _$j_1891c
+_$j_1891a:
+	MOV R0, #0H
+_$j_1891c:
+	ST R0, _d_0802D
+	BL _num_div_r
+	L R0, _d_0801F
+	CMP R0, #9H
+	BLT _$j_1894a
+	BEQ _$j_18940
+	L R0, _arith_op
+	CMP R0, #2H
+	BNE _$j_1894a
+	BL _mv_reg6_reg0
+	BL _f_19FF8
+	BAL _$j_189b0
+_$j_18940:
+	BL _mv_reg3_reg1
+	MOV R0, #5H
+	ST R0, _d_0802D
+_$j_1894a:
+	BL _f_19D1E
+	BL _f_19FD6
+	L R0, _d_0801F
+	CMP R0, #8H
+	BEQ _$j_189ae
+_$j_1895a:
+	LEA _reg3
+	L QR0, [EA+]
+	L ER8, [EA+]
+	PUSH QR0
+	PUSH ER8
+	BL _f_19A12
+	POP ER8
+	POP QR0
+	LEA _reg3
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	BL _mv_reg1_reg3
+	L R0, _d_0802D
+	CMP R0, #0H
+	BEQ _$j_189ae
+	BL _num_mul_r
+	MOV R0, #0H
+	ST R0, _d_0802A
+	ST R0, _d_0802B
+	MOV R2, #0H
+	L ER0, _reg0
+_$j_18996:
+	ADD R2, #5H
+	DAA R2
+	AND R2, #00001111B
+	ADD R1, #5H
+	DAA R1
+	CMP R1, #10H
+	BLT _$j_18996
+	AND R1, #00001111B
+	ST R2, _d_0802C
+	ST ER0, _reg0
+_$j_189ae:
+	POP PC
+_$j_189b0:
+	L R2, _d_0802D
+	L ER0, _reg0
+	ADD R1, R2
+	DAA R1
+	AND R1, #00001111B
+	ST ER0, _reg0
+_$j_189c2:
+	LEA _reg0_2
+	L QR0, [EA]
+	LEA _reg6_2
+	L QR8, [EA]
+	ST QR0, [EA]
+	LEA _reg0_2
+	ST QR8, [EA]
+	L ER2, _reg0
+	L ER0, _reg6
+	ST ER0, _reg0
+	ST ER2, _reg6
+	L R0, _d_0801F
+	CMP R0, #0AH
+	BNE _$j_189f8
+	BL _mv_reg1_reg3
+	BL _num_add1_r__
+	BAL _$j_189fc
+_$j_189f8:
+	BL _f_19FD6
+_$j_189fc:
+	BL _mv_reg1_reg6
+	L R0, _arith_op
+	CMP R0, #3H
+	BGE _$j_189ae
+	BL _num_mul_r
+	BAL _$j_1895a
+
+; 18A0E
+_f_18A0E:
+	PUSH LR
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BLT _$j_18a1a
+	POP PC
+_$j_18a1a:
+	MOV R0, #0H
+	ST R0, _d_0802D
+	BL _mv_reg6_reg0
+	BL _f_1A01C
+	BAL _$j_189c2
+
+; 18A2A
+_f_18A2A:
+	PUSH LR
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BLT _$j_18a36
+	POP PC
+_$j_18a36:
+	L R0, _d_0802A
+	L R1, _d_0802B
+	L R2, _d_0802C
+	L ER4, _reg0
+	CMP R5, #5H
+	BLT _$j_18a4e
+	ADD R0, #-1H
+	AND R0, #00001111B
+_$j_18a4e:
+	MOV R3, R1
+	AND R3, #00000001B
+	BEQ _$j_18a58
+	ADD R0, #2H
+	AND R0, #00001111B
+_$j_18a58:
+	L R3, _arith_op
+	CMP R3, #2H
+	BLT _$j_18a68
+	BNE _$j_18aa6
+	MOV R2, #0H
+	ADD R0, #1H
+	AND R0, #00001111B
+_$j_18a68:
+	MOV R3, R0
+	AND R3, #00000010B
+	BEQ _$j_18a74
+_$j_18a6e:
+	ADD R2, #5H
+	DAA R2
+	AND R2, #00001111B
+_$j_18a74:
+	ADD R0, #1H
+	AND R0, #00001111B
+	AND R5, #00001111B
+	MOV R3, #5H
+	SUB R5, R3
+	DAS R5
+	BLT _$j_18a74
+	AND R3, #00001111B
+	MOV ER6, #2H
+	SUB R4, R6
+	DAS R4
+	SUBC R5, R7
+	DAS R5
+	AND R5, #00001111B
+	ST ER4, _reg0
+	ST R0, _d_0802A
+	ST R1, _d_0802B
+	ST R2, _d_0802C
+	BL _f_1A23C
+	POP PC
+_$j_18aa6:
+	MOV R3, R0
+	AND R3, #00000001B
+	BNE _$j_18a6e
+	BAL _$j_18a74
+
+; 18AAE
+_f_18AAE:
+	PUSH LR
+	L R0, _d_0802F
+	CMP R0, #5H
+	BLT _$j_18ad4
+	BEQ _$j_18ae2
+	MOV R0, #2H
+	MOV R1, #1H
+	MOV ER4, #0H
+	MOV ER6, #0H
+	MOV R2, #0H
+	MOV R3, #1H
+_$j_18ac6:
+	LEA _reg1
+	ST ER0, [EA+]
+	ST XR4, [EA+]
+	ST ER4, [EA+]
+	ST ER2, [EA+]
+_$j_18ad2:
+	POP PC
+_$j_18ad4:
+	MOV R0, #1H
+	MOV R1, #1H
+	MOV ER4, #0H
+	MOV ER6, #0H
+	MOV R2, #0H
+	MOV R3, #9H
+	BAL _$j_18ac6
+_$j_18ae2:
+	MOV R9, #1H
+	MOV R8, #57H
+	MOV R7, #7H
+	MOV R6, #96H
+	MOV R5, #32H
+	MOV R4, #67H
+	MOV R3, #94H
+	MOV R2, #90H
+	MOV R1, #1H
+	MOV R0, #0H
+	LEA _reg1
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	BAL _$j_18ad2
+
+; 18B00
+_f_18B00:
+	PUSH LR
+	L R0, _d_0802F
+	CMP R0, #5H
+	BLT _$j_18b22
+	BEQ _$j_18b28
+	MOV R0, #0H
+	MOV R1, #1H
+	MOV ER4, #0H
+	MOV ER6, #0H
+	LEA _reg1
+	ST ER0, [EA+]
+	ST XR4, [EA+]
+	ST ER4, [EA+]
+	ST ER0, [EA+]
+	BAL _$j_18b26
+_$j_18b22:
+	BL _set_reg1_100d9
+_$j_18b26:
+	POP PC
+_$j_18b28:
+	MOV R9, #6H
+	MOV R8, #36H
+	MOV R7, #61H
+	MOV R6, #97H
+	MOV R5, #72H
+	MOV R4, #36H
+	MOV R3, #75H
+	MOV R2, #79H
+	MOV R1, #1H
+	MOV R0, #1H
+	LEA _reg1
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	BAL _$j_18b26
+
+; 18B46
+_f_18B46:
+	PUSH LR
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BLT _$j_18b52
+	POP PC
+_$j_18b52:
+	LEA _reg0_2
+	L ER0, [EA]
+	MOV R2, #91H
+	MOV R3, #99H
+	CMP ER0, ER2
+	BLT _$j_18b76
+	LEA _reg0_2
+	L QR0, [EA]
+	MOV R8, #0H
+	MOV R9, #0H
+	MOV ER10, #1H
+	MOV BP, #0H
+	MOV FP, #0H
+	BL _f_19ED8
+	BAL _$j_18b82
+_$j_18b76:
+	MOV ER2, #10H
+	CMP ER0, ER2
+	BGE _$j_18b8a
+	LEA _reg0_2
+	L QR0, [EA]
+_$j_18b82:
+	MOV ER0, #0H
+	LEA _reg0_2
+	ST QR0, [EA]
+_$j_18b8a:
+	BL _f_1A23C
+	POP PC
+
+; 18B90
+_f_18B90:
+	L ER0, _reg0
+	CMP R1, #5H
+	BLT _$j_18ba2
+	ADD R1, #5H
+	DAA R1
+	AND R1, #00001111B
+	ST ER0, _reg0
+_$j_18ba2:
+	RT
+
+; 18BA4
+_f_18BA4:
+	LEA _reg0_2
+	L QR0, [EA]
+	LEA _reg1_2
+	L QR8, [EA]
+	ST QR0, [EA]
+	LEA _reg0_2
+	ST QR8, [EA]
+	L ER2, _reg0
+	L ER0, _reg1
+	ST ER0, _reg0
+	ST ER2, _reg1
+	RT
+
+; 18BCA
+_f_18BCA:
+	LEA _reg0_2
+	L QR0, [EA]
+	LEA _reg3_2
+	L QR8, [EA]
+	ST QR0, [EA]
+	LEA _reg0_2
+	ST QR8, [EA]
+	L ER2, _reg0
+	L ER0, _reg3
+	ST ER0, _reg0
+	ST ER2, _reg3
+	RT
+
+; 18BF0
+_f_18BF0:
+	LEA _reg0_2
+	L QR0, [EA]
+	LEA _reg6_2
+	L QR8, [EA]
+	ST QR0, [EA]
+	LEA _reg0_2
+	ST QR8, [EA]
+	L ER2, _reg0
+	L ER0, _reg6
+	ST ER0, _reg0
+	ST ER2, _reg6
+	RT
+
+; 18C16
+_f_18C16:
+	LEA _reg0_2
+	L QR0, [EA]
+	LEA _reg2_2
+	L QR8, [EA]
+	ST QR0, [EA]
+	LEA _reg0_2
+	ST QR8, [EA]
+	L ER2, _reg0
+	L ER0, _reg2
+	ST ER0, _reg0
+	ST ER2, _reg2
+	RT
+
+; 18C3C
+_f_18C3C:
+	LEA _reg3_2
+	L QR0, [EA]
+	LEA _reg1_2
+	L QR8, [EA]
+	ST QR0, [EA]
+	LEA _reg3_2
+	ST QR8, [EA]
+	L ER2, _reg3
+	L ER0, _reg1
+	ST ER0, _reg3
+	ST ER2, _reg1
+	RT
+
+; 18C62
+_f_18C62:
+	LEA _reg6_2
+	L QR0, [EA]
+	LEA _reg1_2
+	L QR8, [EA]
+	ST QR0, [EA]
+	LEA _reg6_2
+	ST QR8, [EA]
+	L ER2, _reg6
+	L ER0, _reg1
+	ST ER0, _reg6
+	ST ER2, _reg1
+	RT
+
+; 18C88
+_f_18C88:
+	PUSH LR
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BGE _$j_18c9e
+	L R0, _reg1_9
+	CMP R0, #-10H
+	BLT _$j_18ca0
+	BL _mv_reg0_reg1
+_$j_18c9e:
+	POP PC
+_$j_18ca0:
+	BL _mv_reg6_reg0
+	BL _mv_reg3_reg1
+	MOV R0, #0H
+	ST R0, _d_0801C
+	ST R0, _d_0800E
+_$j_18cb2:
+	BL _f_199AE
+	CMP R0, #0H
+	BNE _$j_18d10
+	MOV R0, #1H
+	ST R0, _d_0801C
+	BL _mv_reg6_reg0
+	LEA _reg0_2
+	L QR0, [EA]
+	LEA _reg3_2
+	L QR8, [EA]
+	ST QR0, [EA]
+	LEA _reg0_2
+	ST QR8, [EA]
+	L ER2, _reg0
+	L ER0, _reg3
+	ST ER0, _reg0
+	ST ER2, _reg3
+	CMP R1, #5H
+	BLT _$j_18d42
+	L R2, _d_0800C
+	AND R2, #00000001B
+	BEQ _$j_18d06
+	MOV R3, #5H
+	ST R3, _d_0801D
+_$j_18cfa:
+	ADD R1, #5H
+	DAA R1
+	AND R1, #00001111B
+	ST ER0, _reg0
+	BAL _$j_18d42
+_$j_18d06:
+	L R2, _arith_op
+	CMP R2, #0FH
+	BEQ _$j_18cfa
+	BAL _$j_18d42
+_$j_18d10:
+	L R2, _arith_op
+	ADD R2, #-1H
+	OR R2, #00000010B
+	ST R2, _arith_op
+	L R0, _d_0800E
+	ADD R0, #-80H
+	ST R0, _d_0800E
+	BLT _$j_18d2e
+	BL _f_19BB4
+	BAL _$j_18cb2
+_$j_18d2e:
+	BL _mv_reg0_reg3
+	LEA _reg6
+	L QR0, [EA+]
+	L ER8, [EA+]
+	LEA _reg3
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+_$j_18d42:
+	L R0, _reg0_9
+	AND R0, #00001111B
+	BNE _$j_18d5c
+	L ER0, _reg3
+	CMP R1, #5H
+	BGE _$j_18d5c
+	L R2, _reg3_9
+	AND R2, #00001111B
+	CMP R2, #1H
+	BGE _$j_18da6
+_$j_18d5c:
+	BL _f_199AE
+	CMP R0, #0H
+	BNE _$j_18d74
+	L R0, _d_0801C
+	CMP R0, #1H
+	BNE _$j_18d7a
+	L R0, _arith_op
+	CMP R0, #0FH
+	BGE _$j_18d7a
+_$j_18d74:
+	MOV R0, #0H
+	ST R0, _d_0801C
+_$j_18d7a:
+	BL _f_19004
+	LEA _reg6
+	L QR0, [EA+]
+	L ER8, [EA+]
+	LEA _reg1
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	BL _f_18DA8
+_$j_18d92:
+	L ER0, _reg0
+	L R2, _d_0801D
+	ADD R1, R2
+	DAA R1
+	AND R1, #00001111B
+	ST ER0, _reg0
+	POP PC
+_$j_18da6:
+	BAL _$j_18d92
+
+; 18DA8
+_f_18DA8:
+	PUSH LR
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BLT _$j_18db4
+	POP PC
+_$j_18db4:
+	BAL _$j_18e00
+
+; 18DB6
+_f_18DB6:
+	PUSH LR
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BLT _$j_18dc2
+	POP PC
+_$j_18dc2:
+	MOV R0, #0H
+	ST R0, _d_0801C
+	L ER0, _reg2
+	MOV R1, #0H
+	ST ER0, _reg2
+	BAL _$j_18e26
+
+; 18DD4
+_f_18DD4:
+	PUSH LR
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BLT _$j_18de0
+	POP PC
+_$j_18de0:
+	MOV R0, #0H
+	ST R0, _d_0801C
+	MOV R2, #1FH
+	BL _f_19586
+	BL _mv_reg3_reg0
+	BL _mv_reg0_reg1
+	MOV R0, #BYTE1 _d_08300
+	MOV R1, #BYTE2 _d_08300
+	ST ER0, _reg2
+	BL _mv_reg1_reg3
+_$j_18e00:
+	L ER0, _reg2
+	MOV R0, #2H
+	ST ER0, _reg2
+	L R0, _arith_op
+	CMP R0, #0EH
+	BEQ _$j_18e18
+	BL _f_19D3C
+	BAL _$j_18e1c
+_$j_18e18:
+	BL _f_19BF4
+_$j_18e1c:
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BLT _$j_18e26
+	POP PC
+_$j_18e26:
+	LEA _reg0_2
+	L QR0, [EA]
+	LEA _reg2_2
+	ST QR0, [EA]
+	MOV ER2, #0H
+	ST ER2, _d_0801A
+	L ER0, _reg0
+	MOV R4, #5H
+_$j_18e3e:
+	AND R1, #00001111B
+	SUB R3, R4
+	DAS R3
+	AND R3, #00001111B
+	SUB R1, R4
+	DAS R1
+	BLT _$j_18e3e
+	AND R1, #00001111B
+	ST ER0, _reg0
+	ST ER2, _d_0801A
+	L R4, _reg0_9
+	AND R4, #00001111B
+	CMP R4, #1H
+	BLT _$j_18ea4
+	MOV R12, #3H
+	LEA _reg2
+	L QR0, [EA+]
+	L ER8, [EA+]
+	L ER10, _reg0
+	L R13, _d_0801A
+	MOV FP, #1H
+_$j_18e74:
+	CMP R11, #0H
+	BEQ _$j_18e92
+	SUB R12, R14
+	BEQ _$j_18e8e
+	MOV R13, R9
+	BL _f_1946A
+	SUB R10, R14
+	DAS R10
+	SUBC R11, R15
+	DAS R11
+	AND R11, #00001111B
+	BAL _$j_18e74
+_$j_18e8e:
+	AND R13, #00001111B
+	OR R13, #11100000B
+_$j_18e92:
+	ST R13, _d_0801A
+	AND R1, #11110000B
+	MOV R0, R10
+	AND R9, #00001111B
+	LEA _reg0
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+_$j_18ea4:
+	BL _f_19144
+	BL _f_19FD6
+	L R0, _reg0
+	L R1, _d_0801A
+	ADD R0, R1
+	DAA R0
+	ST R0, _reg0
+	BGE _$j_18eea
+	L R0, _d_0801F
+	CMP R0, #0AH
+	BNE _$j_18ece
+	L R0, _arith_op
+	CMP R0, #3H
+	BEQ _$j_18eea
+_$j_18ece:
+	MOV ER0, #0H
+	MOV ER2, #0H
+	LEA _reg0
+	ST XR0, [EA+]
+	ST XR0, [EA+]
+	ST ER0, [EA+]
+	L ER0, _d_0801A
+	ADD R1, #5H
+	DAA R1
+	AND R1, #00001111B
+	ST ER0, _d_0801A
+_$j_18eea:
+	L R0, _d_0801C
+	CMP R0, #0H
+	BEQ _$j_18ef6
+	BL _f_1979E
+_$j_18ef6:
+	MOV R2, #5H
+	L ER0, _d_0801A
+	SUB R1, R2
+	DAS R1
+	AND R1, #00001111B
+	ST ER0, _d_0801A
+	CMP R1, #0H
+	BNE _$j_18f20
+	BL _f_19BB4
+	L ER0, _reg0
+	L ER2, _d_0801A
+	ADD R1, R3
+	DAA R1
+	AND R1, #00001111B
+	ST ER0, _reg0
+_$j_18f20:
+	L ER0, _reg0
+	CMP R0, #-60H
+	BLT _$j_18f2c
+	BL _set_reg0_error
+_$j_18f2c:
+	POP PC
+
+; 18F2E
+_f_18F2E:
+	PUSH LR
+	BL _f_19850
+	LEA _reg0_2
+	L QR0, [EA]
+	MOV R8, R0
+	AND R0, #11110000B
+	AND R8, #00001111B
+	CMP R8, #1H
+	BLT _$j_18f68
+	BAL _$j_18f5c
+
+; 18F46
+_f_18F46:
+	PUSH LR
+	BL _f_19850
+	LEA _reg0_2
+	L QR0, [EA]
+	MOV R8, R0
+	AND R0, #11110000B
+	AND R8, #00001111B
+	CMP R8, #5H
+	BLT _$j_18f68
+_$j_18f5c:
+	MOV ER8, #10H
+	MOV ER10, #0H
+	MOV BP, #0H
+	MOV FP, #0H
+	BL _f_19ED8
+_$j_18f68:
+	LEA _reg0_2
+	ST QR0, [EA]
+	BL _f_1A23C
+	POP PC
+
+; 18F74
+_f_18F74:
+	PUSH LR
+	BL _f_19850
+	LEA _reg0_2
+	L QR0, [EA]
+	MOV R0, #0H
+	BAL _$j_18f68
+	PUSH LR
+	L R0, _reg1_9
+	BAL _$j_18f92
+
+; 18F8C
+_f_18F8C:
+	PUSH LR
+	L R0, _reg0_9
+_$j_18f92:
+	AND R0, #11110000B
+	BEQ _$j_18f9e
+	CMP R0, #20H
+	BEQ _$j_18f9e
+	MOV R0, #1H
+	BAL _$j_18fa0
+_$j_18f9e:
+	MOV R0, #0H
+_$j_18fa0:
+	POP PC
+
+; 18FA2
+_invalid_reg1:
+	PUSH LR
+	L R0, _reg1_9
+	BAL _$j_18fb0
+
+; 18FAA
+_invalid_reg0:
+	PUSH LR
+	L R0, _reg0_9
+_$j_18fb0:
+	CMP R0, #0AH
+	BGE _$j_18fb8
+	MOV R0, #0H
+	BAL _$j_18fba
+_$j_18fb8:
+	MOV R0, #1H
+_$j_18fba:
+	POP PC
+
+; 18FBC
+_f_18FBC:
+	PUSH LR
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BGE _$j_19000
+	AND R0, #10111111B
+	ST R0, _reg0_9
+	MOV R0, #0H
+	BAL _$j_18ffe
+
+; 18FD0
+_f_18FD0:
+	PUSH LR
+	MOV R1, #0H
+	L R0, _reg1_9
+	CMP R0, #-10H
+	BGE _$j_19000
+	MOV R2, R0
+	AND R2, #01000000B
+	ADD R1, R2
+	AND R0, #10111111B
+	ST R0, _reg1_9
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BGE _$j_19000
+	MOV R2, R0
+	AND R2, #01000000B
+	ADD R1, R2
+	AND R0, #10111111B
+	ST R0, _reg0_9
+	MOV R0, #0H
+_$j_18ffe:
+	POP PC
+_$j_19000:
+	MOV R0, #1H
+	BAL _$j_18ffe
+
+; 19004
+_f_19004:
+	PUSH LR
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BLT _$j_19010
+	POP PC
+_$j_19010:
+	BAL _$j_19038
+
+; 19012
+_f_19012:
+	PUSH LR
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BLT _$j_1901e
+	POP PC
+_$j_1901e:
+	MOV R0, #2H
+	ST R0, _d_0801C
+	BAL _$j_19038
+
+; 19026
+_f_19026:
+	PUSH LR
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BLT _$j_19032
+	POP PC
+_$j_19032:
+	MOV R0, #3H
+	ST R0, _d_0801C
+_$j_19038:
+	L ER0, _reg0
+	CMP R1, #5H
+	BLT _$j_19046
+_$j_19040:
+	BL _set_reg0_error
+	POP PC
+_$j_19046:
+	MOV R2, #0H
+	MOV R3, #1H
+	MOV ER4, #0H
+	MOV ER6, #0H
+	LEA _reg1
+	ST XR4, [EA+]
+	ST XR4, [EA+]
+	ST ER2, [EA+]
+	SUB R1, R3
+	ST ER0, _reg0
+	BGE _$j_19086
+	L ER8, _reg0
+	LEA _reg0_2
+	L QR0, [EA]
+	ST R8, _reg1
+	LEA _reg1_2
+	ST QR0, [EA]
+	MOV R1, #5H
+	MOV R0, #99H
+	MOV ER4, #0H
+	MOV ER6, #0H
+	LEA _reg0
+	ST ER0, [EA+]
+	ST XR4, [EA+]
+	ST XR4, [EA+]
+_$j_19086:
+	L R0, _reg1_9
+	CMP R0, #0H
+	BEQ _$j_19040
+	LEA _reg0_2
+	L QR0, [EA]
+	LEA _reg1_2
+	L QR8, [EA]
+	BL _f_19F04
+	AND R7, #00001111B
+	LEA _reg0_2
+	ST QR0, [EA]
+	L ER0, _reg0
+	L ER2, _reg1
+	SUB R0, R2
+	DAS R0
+	SUBC R1, R3
+	DAS R1
+	AND R1, #00001111B
+	ST ER0, _d_0801A
+	MOV ER0, #0H
+	ST ER0, _reg0
+	BL _f_19122
+	BL _f_172B4
+	L ER0, _reg1
+	ST ER0, _reg2
+	L ER0, _reg0
+	L ER2, _d_0801A
+	ADD R1, R3
+	DAA R1
+	AND R1, #00001111B
+	ST ER0, _reg0
+	L R0, _d_0801C
+	CMP R0, #2H
+	BLT _$j_1910c
+	BNE _$j_1910a
+	MOV R2, #1FH
+	BL _f_19586
+	L ER0, _reg0
+	L R2, _d_0801D
+	ADD R1, R2
+	DAA R1
+	AND R1, #00001111B
+	ST ER0, _reg0
+	BL _f_19BF4
+_$j_1910a:
+	POP PC
+_$j_1910c:
+	POP PC
+
+; 1910E
+_f_1910E:
+	PUSH LR
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BLT _$j_1911a
+	POP PC
+_$j_1911a:
+	MOV R0, #2H
+	ST R0, _d_0800D
+	BAL _$j_19134
+
+; 19122
+_f_19122:
+	PUSH LR
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BLT _$j_1912e
+	POP PC
+_$j_1912e:
+	MOV R0, #0H
+	ST R0, _d_0800D
+_$j_19134:
+	L R0, _reg0
+	MOV R1, #1H
+	SUB R0, R1
+	DAS R0
+	ST R0, _reg0
+	BAL _$j_1916a
+
+; 19144
+_f_19144:
+	PUSH LR
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BLT _$j_19150
+	POP PC
+_$j_19150:
+	MOV R0, #8H
+	ST R0, _d_0800D
+	BAL _$j_1916a
+
+; 19158
+_f_19158:
+	PUSH LR
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BLT _$j_19164
+	POP PC
+_$j_19164:
+	MOV R0, #0AH
+	ST R0, _d_0800D
+_$j_1916a:
+	MOV ER0, #10H
+	MOV ER2, #0H
+	LEA _reg2
+	ST ER0, [EA+]
+	ST ER2, [EA+]
+	ST ER2, [EA+]
+	ST ER2, [EA+]
+	ST ER2, [EA+]
+	MOV R0, #0H
+	ST R0, _d_0800E
+	LEA _reg0
+	L QR0, [EA+]
+	L ER8, [EA+]
+	MOV ER10, #1H
+	SUB R1, R10
+	DAS R1
+	SUBC R2, R11
+	DAS R2
+	SUBC R3, R11
+	DAS R3
+	SUBC R4, R11
+	DAS R4
+	SUBC R5, R11
+	DAS R5
+	SUBC R6, R11
+	DAS R6
+	SUBC R7, R11
+	DAS R7
+	SUBC R8, R11
+	DAS R8
+	SUBC R9, R11
+	DAS R9
+	BLT _$j_1927c
+_$j_191b2:
+	BL _f_19526
+_$j_191b6:
+	L R0, _d_0800D
+	CMP R0, #2H
+	BLT _$j_1920c
+	BEQ _$j_1921e
+	MOV R0, #0H
+	ST R0, _d_0800F
+_$j_191c6:
+	BL _f_194A8
+	BLT _$j_19230
+	L ER0, _reg2
+	ADD R1, #1H
+	DAA R1
+	ST ER0, _reg2
+	L R0, _d_0800F
+	CMP R0, #2H
+	BLT _$j_191c6
+	L R0, _d_0800F
+	ADD R0, #-2H
+	ST R0, _d_0800B
+	LEA _reg3
+	L QR0, [EA+]
+	L ER8, [EA+]
+	PUSH QR0
+	PUSH ER8
+	BL _f_195E8
+	BL _f_194D2
+	POP ER8
+	POP QR0
+	LEA _reg3
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	BAL _$j_191b6
+_$j_1920c:
+	LEA _reg1
+	L QR0, [EA+]
+	L ER8, [EA+]
+	LEA _reg3
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	BAL _$j_191c6
+_$j_1921e:
+	LEA _reg0
+	L QR0, [EA+]
+	L ER8, [EA+]
+	LEA _reg3
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	BAL _$j_191c6
+_$j_19230:
+	BL _f_194FC
+	L R0, _reg2_9
+	CMP R0, #0H
+	BNE _$j_1927c
+	LEA _reg0
+	L QR0, [EA+]
+	L ER8, [EA+]
+	BL _f_1946A
+	LEA _reg0
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	LEA _reg2
+	L QR0, [EA+]
+	L ER8, [EA+]
+	BL _f_1946A
+	LEA _reg2
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	L R0, _reg0
+	MOV R1, #1H
+	SUB R0, R1
+	DAS R0
+	ST R0, _reg0
+	BGE _$j_1927a
+	MOV R0, #8H
+	ST R0, _d_0800E
+_$j_1927a:
+	BAL _$j_191b2
+_$j_1927c:
+	MOV ER0, #0H
+	MOV ER2, #0H
+	MOV R4, #10H
+	LEA _reg1
+	ST XR0, [EA+]
+	ST XR0, [EA+]
+	ST R0, [EA+]
+	ST R4, [EA+]
+	L R0, _d_0800D
+	ADD R0, #8H
+	AND R0, #00001111B
+	ST R0, _d_0800D
+_$j_1929a:
+	BL _f_19526
+	L R0, _d_0800D
+	CMP R0, #2H
+	BLT _$j_192f0
+	BEQ _$j_19306
+	MOV R0, #0H
+	ST R0, _d_0800F
+_$j_192ae:
+	L ER0, _reg2
+	MOV R4, R1
+	AND R4, #00001111B
+	MOV R3, #1H
+	SUB R4, R3
+	BLT _$j_192c6
+	AND R1, #11110000B
+	OR R1, R4
+	ST ER0, _reg2
+	BAL _$j_192ce
+_$j_192c6:
+	AND R1, #11110000B
+	ST ER0, _reg2
+	BAL _$j_19318
+_$j_192ce:
+	BL _f_194FC
+	L R0, _d_0800F
+	CMP R0, #2H
+	BLT _$j_192ae
+	ADD R0, #-2H
+	ST R0, _d_0800B
+	BL _f_195E8
+	L R0, _d_0800D
+	CMP R0, #2H
+	BEQ _$j_19302
+	BL _f_194D2
+_$j_192f0:
+	LEA _reg1
+	L QR0, [EA+]
+	L ER8, [EA+]
+	LEA _reg3
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	BAL _$j_192ae
+_$j_19302:
+	BL _f_1947E
+_$j_19306:
+	LEA _reg0
+	L QR0, [EA+]
+	L ER8, [EA+]
+	LEA _reg3
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	BAL _$j_192ae
+_$j_19318:
+	L R0, _reg2
+	MOV R1, #1H
+	SUB R0, R1
+	ST R0, _reg2
+	BLT _$j_19354
+	LEA _reg0
+	L QR0, [EA+]
+	L ER8, [EA+]
+	BL _f_19444
+	ADD R0, #1H
+	DAA R0
+	LEA _reg0
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	LEA _reg2
+	L QR0, [EA+]
+	L ER8, [EA+]
+	BL _f_19444
+	LEA _reg2
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	BAL _$j_1929a
+_$j_19354:
+	LEA _reg0_2
+	L QR0, [EA]
+	BNE _$j_19364
+	L ER0, _reg0
+	CMP R1, #0H
+	BEQ _$j_193c8
+_$j_19364:
+	LEA _reg0
+	L QR0, [EA+]
+	L ER8, [EA+]
+	MOV R10, R0
+	MOV R11, #0H
+_$j_19370:
+	MOV R12, R9
+	AND R12, #11110000B
+	BNE _$j_1938c
+	MOV R12, R9
+	AND R12, #00001111B
+	BNE _$j_1939a
+	BL _f_1946A
+	MOV BP, #1H
+	SUB R10, R12
+	DAS R10
+	SUBC R11, R13
+	DAS R11
+	BAL _$j_19370
+_$j_1938c:
+	BL _f_19444
+	ADD R10, #1H
+	DAA R10
+	ADDC R11, #0H
+	DAA R11
+	BAL _$j_19370
+_$j_1939a:
+	ADD R1, #50H
+	DAA R1
+	ADDC R2, #0H
+	DAA R2
+	ADDC R3, #0H
+	DAA R3
+	ADDC R4, #0H
+	DAA R4
+	ADDC R5, #0H
+	DAA R5
+	ADDC R6, #0H
+	DAA R6
+	ADDC R7, #0H
+	DAA R7
+	ADDC R8, #0H
+	DAA R8
+	ADDC R9, #0H
+	DAA R9
+	MOV ER0, ER10
+	LEA _reg0
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+_$j_193c8:
+	BL _f_1A23C
+	L R0, _d_0800D
+	CMP R0, #8H
+	BLT _$j_19408
+	BNE _$j_19406
+	LEA _reg0
+	L QR0, [EA+]
+	L ER8, [EA+]
+	LEA _reg1
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	LEA _d_0801A
+	L R10, [EA]
+	MOV R0, #0H
+	MOV R1, #1H
+	MOV ER2, #0H
+	MOV ER4, #0H
+	MOV ER6, #0H
+	MOV R8, #0H
+	MOV R9, R10
+	LEA _reg0
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+_$j_19402:
+	BL _f_1A23C
+_$j_19406:
+	POP PC
+_$j_19408:
+	CMP R0, #0H
+	BEQ _$j_19406
+	LEA _reg0_2
+	L QR0, [EA]
+	LEA _reg1_2
+	L QR8, [EA]
+	ST QR0, [EA]
+	LEA _reg0_2
+	ST QR8, [EA]
+	L ER0, _reg0
+	ST ER0, _reg1
+	MOV R0, #99H
+	MOV R1, #0H
+	ST ER0, _reg0
+	BAL _$j_19402
+
+; 19432
+_f_19432:
+	SRLC R0, #4
+	SRLC R1, #4
+	SRLC R2, #4
+	SRLC R3, #4
+	SRLC R4, #4
+	SRLC R5, #4
+	SRLC R6, #4
+	SRL R7, #4
+	RT
+
+; 19444
+_f_19444:
+	SRLC R1, #4
+	SRLC R2, #4
+	SRLC R3, #4
+	SRLC R4, #4
+	SRLC R5, #4
+	SRLC R6, #4
+	SRLC R7, #4
+	SRLC R8, #4
+	SRL R9, #4
+	RT
+
+; 19458
+_f_19458:
+	SLLC R7, #4
+	SLLC R6, #4
+	SLLC R5, #4
+	SLLC R4, #4
+	SLLC R3, #4
+	SLLC R2, #4
+	SLLC R1, #4
+	SLL R0, #4
+	RT
+
+; 1946A
+_f_1946A:
+	SLLC R9, #4
+	SLLC R8, #4
+	SLLC R7, #4
+	SLLC R6, #4
+	SLLC R5, #4
+	SLLC R4, #4
+	SLLC R3, #4
+	SLLC R2, #4
+	SLL R1, #4
+	RT
+
+; 1947E
+_f_1947E:
+	PUSH LR
+	L ER0, _reg1
+	L ER2, _reg3
+	SUB R1, R3
+	DAS R1
+	ST ER0, _reg1
+	LEA _reg1_2
+	L QR0, [EA]
+	LEA _reg3_2
+	L QR8, [EA]
+	BL _f_19EFC
+	LEA _reg1_2
+	ST QR0, [EA]
+	POP PC
+
+; 194A8
+_f_194A8:
+	PUSH LR
+	L ER0, _reg0
+	L ER2, _reg1
+	SUB R1, R3
+	DAS R1
+	ST ER0, _reg0
+	LEA _reg0_2
+	L QR0, [EA]
+	LEA _reg1_2
+	L QR8, [EA]
+	BL _f_19EFC
+	LEA _reg0_2
+	ST QR0, [EA]
+	POP PC
+
+; 194D2
+_f_194D2:
+	PUSH LR
+	L ER0, _reg1
+	L ER2, _reg3
+	ADD R1, R3
+	DAA R1
+	ST ER0, _reg1
+	LEA _reg1_2
+	L QR0, [EA]
+	LEA _reg3_2
+	L QR8, [EA]
+	BL _f_19ED0
+	LEA _reg1_2
+	ST QR0, [EA]
+	POP PC
+
+; 194FC
+_f_194FC:
+	PUSH LR
+	L ER0, _reg0
+	L ER2, _reg1
+	ADD R1, R3
+	DAA R1
+	ST ER0, _reg0
+	LEA _reg0_2
+	L QR0, [EA]
+	LEA _reg1_2
+	L QR8, [EA]
+	BL _f_19ED0
+	LEA _reg0_2
+	ST QR0, [EA]
+	POP PC
+
+; 19526
+_f_19526:
+	PUSH LR
+	L R0, _reg0
+	MOV R1, R0
+	AND R0, #00001111B
+	SRL R1, #4
+	MOV R2, #0AH
+	SUB R2, R0
+	L R3, _d_0800D
+	AND R3, #00000010B
+	BNE _$j_1957c
+	CMP R1, #8H
+	BLT _$j_19552
+	BNE _$j_1954a
+	ADD R2, #0AH
+	CMP R0, #2H
+	BLT _$j_19552
+_$j_1954a:
+	L R3, _d_0800E
+	CMP R3, #0H
+	BEQ _$j_19554
+_$j_19552:
+	MOV R2, #0H
+_$j_19554:
+	L R3, _d_0800D
+	CMP R3, #2H
+	BLT _$j_19562
+	BNE _$j_19566
+	ADD R2, R2
+	BAL _$j_19576
+_$j_19562:
+	ADD R2, #1H
+	BAL _$j_19576
+_$j_19566:
+	CMP R3, #0AH
+	BLT _$j_19570
+	BL _f_195BC
+	BAL _$j_19574
+_$j_19570:
+	BL _f_19586
+_$j_19574:
+	MOV R2, #0H
+_$j_19576:
+	ST R2, _d_0800F
+	POP PC
+_$j_1957c:
+	CMP R1, #9H
+	BLT _$j_19552
+	CMP R0, #1H
+	BLT _$j_19552
+	BAL _$j_1954a
+
+; 19586
+_f_19586:
+	CMP R2, #1FH
+	BEQ _$j_195ae
+	CMP R2, #13H
+	BLT _$j_19590
+	MOV R2, #12H
+_$j_19590:
+	MOV ER4, #0AH
+	MUL ER4, R2
+	MOV R0, #80H
+	MOV R1, #0FH
+	ADD ER4, ER0
+	LEA [ER4]
+	L QR0, [EA+]
+	L ER8, [EA+]
+	L R0, _reg1
+_$j_195a4:
+	LEA _reg1
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	RT
+_$j_195ae:
+	MOV R0, #3EH
+	MOV R1, #10H
+	LEA [ER0]
+	L QR0, [EA+]
+	L ER8, [EA+]
+	MOV R0, #-67H
+	BAL _$j_195a4
+
+; 195BC
+_f_195BC:
+	PUSH LR
+	CMP R2, #0H
+	BEQ _$j_195c6
+	CMP R2, #0BH
+	BLT _$j_195c8
+_$j_195c6:
+	MOV R2, #0AH
+_$j_195c8:
+	ADD R2, #-1H
+	MOV ER4, #0AH
+	MUL ER4, R2
+	MOV R0, #48H
+	MOV R1, #10H
+	ADD ER4, ER0
+	LEA [ER4]
+	L QR0, [EA+]
+	L ER8, [EA+]
+	L R0, _reg1
+	LEA _reg1
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	RT
+
+; 195E8
+_f_195E8:
+	PUSH LR
+	LEA _reg4
+	L QR0, [EA+]
+	PUSH QR0
+	L QR0, [EA+]
+	PUSH QR0
+	L XR0, [EA+]
+	PUSH XR0
+	L R0, _d_0800B
+	CMP R0, #0H
+	BEQ _$j_19670
+	CMP R0, #13H
+	BLT _$j_1960c
+	MOV R0, #12H
+	ST R0, _d_0800B
+_$j_1960c:
+	LEA _reg3
+	L QR0, [EA+]
+	L QR8, [EA]
+	MOV R0, #0H
+	LEA _reg4
+	ST R1, [EA+]
+	ST R2, [EA+]
+	ST R3, [EA+]
+	ST R4, [EA+]
+	ST R5, [EA+]
+	ST R6, [EA+]
+	ST R7, [EA+]
+	ST R8, [EA+]
+	ST R9, [EA+]
+	MOV ER0, #0H
+	MOV ER2, #0H
+	ST R0, [EA+]
+	ST XR0, [EA+]
+	ST XR0, [EA+]
+	L R2, _d_0800B
+	SRL R2, #1
+	MOV R1, #80H
+	MOV R0, #3CH
+	ADD R0, R2
+	ADDC R1, #0H
+	LEA [ER0]
+	L R1, [EA+]
+	L R2, [EA+]
+	L R3, [EA+]
+	L R4, [EA+]
+	L R5, [EA+]
+	L R6, [EA+]
+	L R7, [EA+]
+	L R8, [EA+]
+	L R9, [EA+]
+	L R0, _d_0800B
+	AND R0, #00000001B
+	BEQ _$j_19664
+	BL _f_19444
+_$j_19664:
+	L R0, _reg3
+	LEA _reg3
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+_$j_19670:
+	BAL _$j_196f0
+
+; 19672
+_f_19672:
+	PUSH LR
+	LEA _reg4
+	L QR0, [EA+]
+	PUSH QR0
+	L QR0, [EA+]
+	PUSH QR0
+	L XR0, [EA+]
+	PUSH XR0
+	L R0, _d_0800B
+	CMP R0, #0H
+	BEQ _$j_196f0
+	CMP R0, #13H
+	BLT _$j_19696
+	MOV R0, #12H
+	ST R0, _d_0800B
+_$j_19696:
+	LEA _reg3
+	L QR0, [EA+]
+	L QR8, [EA]
+	MOV R0, #0H
+	LEA _reg4_8
+	ST QR0, [EA+]
+	ST ER8, [EA]
+	MOV ER0, #0H
+	LEA _reg4
+	ST ER0, [EA+]
+	ST ER0, [EA+]
+	ST ER0, [EA+]
+	ST ER0, [EA+]
+	L R2, _d_0800B
+	SRL R2, #1
+	MOV R3, #0H
+	MOV R1, #80H
+	MOV R0, #45H
+	SUB R0, R2
+	SUBC R1, R3
+	LEA [ER0]
+	L R1, [EA+]
+	L R2, [EA+]
+	L R3, [EA+]
+	L R4, [EA+]
+	L R5, [EA+]
+	L R6, [EA+]
+	L R7, [EA+]
+	L R8, [EA+]
+	L R9, [EA+]
+	L R0, _d_0800B
+	AND R0, #00000001B
+	BEQ _$j_196e6
+	BL _f_1946A
+_$j_196e6:
+	MOV R0, #0H
+	LEA _reg3
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+_$j_196f0:
+	POP XR0
+	LEA _reg5_6
+	ST XR0, [EA]
+	POP QR0
+	LEA _reg4_8
+	ST QR0, [EA]
+	POP QR0
+	LEA _reg4
+	ST QR0, [EA]
+	POP PC
+
+; 1970A
+_f_1970A:
+	PUSH LR
+	LEA _reg4
+	L QR0, [EA+]
+	PUSH QR0
+	L QR0, [EA+]
+	PUSH QR0
+	L XR0, [EA+]
+	PUSH XR0
+	L R0, _d_0800B
+	CMP R0, #0H
+	BEQ _$j_19792
+	CMP R0, #13H
+	BLT _$j_1972e
+	MOV R0, #12H
+	ST R0, _d_0800B
+_$j_1972e:
+	LEA _reg1
+	L QR0, [EA+]
+	L QR8, [EA]
+	MOV R0, #0H
+	LEA _reg4
+	ST R1, [EA+]
+	ST R2, [EA+]
+	ST R3, [EA+]
+	ST R4, [EA+]
+	ST R5, [EA+]
+	ST R6, [EA+]
+	ST R7, [EA+]
+	ST R8, [EA+]
+	ST R9, [EA+]
+	MOV ER0, #0H
+	MOV ER2, #0H
+	ST R0, [EA+]
+	ST XR0, [EA+]
+	ST XR0, [EA+]
+	L R2, _d_0800B
+	SRL R2, #1
+	MOV R1, #80H
+	MOV R0, #3CH
+	ADD R0, R2
+	ADDC R1, #0H
+	LEA [ER0]
+	L R1, [EA+]
+	L R2, [EA+]
+	L R3, [EA+]
+	L R4, [EA+]
+	L R5, [EA+]
+	L R6, [EA+]
+	L R7, [EA+]
+	L R8, [EA+]
+	L R9, [EA+]
+	L R0, _d_0800B
+	AND R0, #00000001B
+	BEQ _$j_19786
+	BL _f_19444
+_$j_19786:
+	L R0, _reg1
+	LEA _reg1
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+_$j_19792:
+	BAL _$j_196f0
+
+; 19794
+_f_19794:
+	PUSH LR
+	MOV R0, #1H
+	ST R0, _d_0803A
+	BAL _$j_197a6
+
+; 1979E
+_f_1979E:
+	PUSH LR
+	MOV R0, #0H
+	ST R0, _d_0803A
+_$j_197a6:
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BLT _$j_197b0
+	POP PC
+_$j_197b0:
+	LEA _reg0
+	L QR0, [EA+]
+	L ER8, [EA]
+	MOV R10, #13H
+	CMP R1, #4H
+	BLT _$j_197c2
+	MOV R11, #6H
+	BAL _$j_197c4
+_$j_197c2:
+	MOV R11, #1H
+_$j_197c4:
+	MOV FP, ER0
+	SUB R14, R10
+	DAS R14
+	SUBC R15, R11
+	DAS R15
+	BLT _$j_1981a
+	MOV FP, FP
+	BNE _$j_19846
+_$j_197d4:
+	L R14, _d_0803A
+	CMP R14, #0H
+	BNE _$j_19806
+	MOV R14, R2
+	AND R14, #00001111B
+	CMP R14, #5H
+	BLT _$j_19806
+	MOV R14, #10H
+	ADD R2, R14
+	DAA R2
+	ADDC R3, #0H
+	DAA R3
+	ADDC R4, #0H
+	DAA R4
+	ADDC R5, #0H
+	DAA R5
+	ADDC R6, #0H
+	DAA R6
+	ADDC R7, #0H
+	DAA R7
+	ADDC R8, #0H
+	DAA R8
+	ADDC R9, #0H
+	DAA R9
+_$j_19806:
+	AND R2, #11110000B
+	LEA _reg0
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	ST ER2, _reg1_2
+_$j_19814:
+	BL _f_1A23C
+	POP PC
+_$j_1981a:
+	MOV FP, ER10
+	SUB R14, R0
+	DAS R14
+	SUBC R15, R1
+	DAS R15
+	CMP R15, #0H
+	BNE _$j_1982c
+	CMP R14, #17H
+	BLT _$j_1982e
+_$j_1982c:
+	MOV R14, #16H
+_$j_1982e:
+	CMP R14, #0AH
+	BLT _$j_19834
+	ADD R14, #-6H
+_$j_19834:
+	ST R14, _d_0800B
+	BL _f_19850
+	LEA _reg0
+	L QR0, [EA+]
+	L ER8, [EA]
+	BAL _$j_197d4
+_$j_19846:
+	MOV R0, #0C0H
+	MOV R1, #0H
+	ST ER0, _reg1_2
+	BAL _$j_19814
+
+; 19850
+_f_19850:
+	PUSH LR
+	LEA _reg4
+	L QR0, [EA+]
+	PUSH QR0
+	L QR0, [EA+]
+	PUSH QR0
+	L XR0, [EA+]
+	PUSH XR0
+	L R0, _d_0800B
+	CMP R0, #0H
+	BEQ _$j_198da
+	CMP R0, #11H
+	BLT _$j_19874
+	MOV R0, #10H
+	ST R0, _d_0800B
+_$j_19874:
+	LEA _reg0_2
+	L QR0, [EA]
+	LEA _reg4
+	ST QR0, [EA]
+	MOV ER0, #0H
+	LEA _reg4_8
+	ST ER0, [EA+]
+	ST ER0, [EA+]
+	ST ER0, [EA+]
+	ST ER0, [EA+]
+	L R2, _d_0800B
+	SRL R2, #1
+	MOV R1, #80H
+	MOV R0, #3CH
+	ADD R0, R2
+	ADDC R1, #0H
+	LEA [ER0]
+	L R0, [EA+]
+	L R1, [EA+]
+	L R2, [EA+]
+	L R3, [EA+]
+	L R4, [EA+]
+	L R5, [EA+]
+	L R6, [EA+]
+	L R7, [EA+]
+	L R8, _d_0800B
+	AND R8, #00000001B
+	BEQ _$j_198ba
+	BL _f_19432
+_$j_198ba:
+	LEA _reg0_2
+	ST QR0, [EA]
+	L R2, _d_0800B
+	CMP R2, #0AH
+	BLT _$j_198ca
+	ADD R2, #6H
+_$j_198ca:
+	L ER0, _reg0
+	ADD R0, R2
+	DAA R0
+	ADDC R1, #0H
+	DAA R1
+	ST ER0, _reg0
+_$j_198da:
+	POP XR0
+	LEA _reg5_6
+	ST XR0, [EA]
+	POP QR0
+	LEA _reg4_8
+	ST QR0, [EA]
+	POP QR0
+	LEA _reg4
+	ST QR0, [EA]
+	POP PC
+
+; 198F4
+_f_198F4:
+	PUSH LR
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BLT _$j_19900
+	POP PC
+_$j_19900:
+	LEA _reg0
+	L QR0, [EA+]
+	L ER8, [EA]
+	MOV R10, #12H
+	MOV R12, #10H
+	MOV R13, #0H
+	ST R13, _d_0800C
+	CMP R1, #4H
+	BLT _$j_1991a
+	MOV R11, #6H
+	BAL _$j_1991c
+_$j_1991a:
+	MOV R11, #1H
+_$j_1991c:
+	MOV R14, #1H
+	SUB R12, R14
+	BLT _$j_1993c
+	MOV FP, ER0
+	SUB R14, R10
+	DAS R14
+	SUBC R15, R11
+	DAS R15
+	BLT _$j_1997c
+	BNE _$j_1999e
+	CMP R2, #1H
+	BGE _$j_1999e
+	MOV R13, R3
+	AND R13, #00001111B
+	ST R13, _d_0800C
+_$j_1993c:
+	ST ER0, _reg0
+	MOV R14, R2
+	SRL R14, #4
+	CMP R14, #5H
+	BLT _$j_19966
+	MOV FP, #1H
+	ADD R3, R14
+	DAA R3
+	ADDC R4, R15
+	DAA R4
+	ADDC R5, R15
+	DAA R5
+	ADDC R6, R15
+	DAA R6
+	ADDC R7, R15
+	DAA R7
+	ADDC R8, R15
+	DAA R8
+	ADDC R9, R15
+	DAA R9
+_$j_19966:
+	MOV R2, #0H
+	LEA _reg0_2
+	ST ER2, [EA+]
+	ST ER4, [EA+]
+	ST ER6, [EA+]
+	ST ER8, [EA+]
+	BL _f_1A23C
+	MOV R0, #0H
+	BAL _$j_199ac
+_$j_1997c:
+	CMP R2, #1H
+	BGE _$j_1999e
+	SRLC R2, #4
+	SRLC R3, #4
+	SRLC R4, #4
+	SRLC R5, #4
+	SRLC R6, #4
+	SRLC R7, #4
+	SRLC R8, #4
+	SRL R9, #4
+	MOV FP, #1H
+	ADD R0, R14
+	DAA R0
+	ADDC R1, R15
+	DAA R1
+	AND R1, #00001111B
+	BAL _$j_1991c
+_$j_1999e:
+	LEA _reg0
+	ST QR0, [EA+]
+	ST ER8, [EA]
+	BL _f_1A23C
+	MOV R0, #1H
+_$j_199ac:
+	POP PC
+
+; 199AE
+_f_199AE:
+	PUSH LR
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BLT _$j_199ba
+	POP PC
+_$j_199ba:
+	MOV R0, #0H
+	ST R0, _d_0800C
+	LEA _reg0
+	L QR0, [EA+]
+	L ER8, [EA+]
+	CMP R9, #0H
+	BEQ _$j_199f0
+	MOV R10, R1
+	SLL R10, #4
+	ADD R10, R10
+	DAA R10
+	CMP R10, #0H
+	BEQ _$j_19a0e
+	MOV R10, R0
+	SRL R10, #4
+	CMP R10, #1H
+	BLT _$j_19a06
+	BNE _$j_199f0
+	MOV R11, R2
+	AND R11, #00001111B
+	MOV R10, R0
+	AND R10, #00001111B
+	CMP R10, #4H
+	BLT _$j_199f4
+	BEQ _$j_19a00
+_$j_199f0:
+	MOV R0, #0H
+	BAL _$j_19a10
+_$j_199f4:
+	CMP R11, #0H
+	BNE _$j_19a0e
+	SRL R2, #4
+	ST R2, _d_0800C
+	BAL _$j_199f0
+_$j_19a00:
+	ST R11, _d_0800C
+	BAL _$j_199f0
+_$j_19a06:
+	BL _f_198F4
+	CMP R0, #0H
+	BEQ _$j_199f0
+_$j_19a0e:
+	MOV R0, #1H
+_$j_19a10:
+	POP PC
+
+; 19A12
+_f_19A12:
+	PUSH LR
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BLT _$j_19a1e
+	POP PC
+_$j_19a1e:
+	L ER0, _reg0
+	CMP R1, #5H
+	BGE _$j_19acc
+	MOV ER0, #0H
+	MOV ER2, #0H
+	LEA _reg1
+	ST XR0, [EA+]
+	ST XR0, [EA+]
+	ST ER0, [EA+]
+	LEA _reg3
+	ST XR0, [EA+]
+	ST XR0, [EA+]
+	ST ER0, [EA+]
+	L ER0, _reg0
+	ST ER0, _reg2
+	L ER0, _reg0
+	L ER2, _reg0
+	MOV R4, #4H
+_$j_19a50:
+	ADD R0, R2
+	DAA R0
+	ADDC R1, R3
+	DAA R1
+	ADD R4, #-1H
+	BNE _$j_19a50
+	ST ER0, _reg0
+	LEA _reg0_2
+	L QR0, [EA]
+	L QR8, [EA]
+	BL _f_19ED8
+	LEA _reg2_2
+	ST QR0, [EA]
+	L QR8, [EA]
+	BL _f_19ED8
+	LEA _reg0_2
+	L QR8, [EA]
+	BL _f_19ED8
+	BEQ _$j_19a92
+	L ER8, _reg0
+	ADD R9, #5H
+	DAA R9
+	AND R9, #00001111B
+	ST ER8, _reg0
+_$j_19a92:
+	LEA _reg0_2
+	ST QR0, [EA]
+	L R0, _reg0
+	AND R0, #00000001B
+	BNE _$j_19ad2
+	LEA _reg0
+	L QR0, [EA+]
+	L ER8, [EA]
+	SLLC R1, #4
+	SLL R0, #4
+	SRLC R0, #4
+	SRLC R1, #4
+	SRLC R2, #4
+	SRLC R3, #4
+	SRLC R4, #4
+	SRLC R5, #4
+	SRLC R6, #4
+	SRLC R7, #4
+	SRLC R8, #4
+	SRL R9, #4
+	LEA _reg0
+	ST QR0, [EA+]
+	ST ER8, [EA]
+	SRLC R0, #4
+	BAL _$j_19ade
+_$j_19acc:
+	BL _set_reg0_error
+	BAL _$j_19bb2
+_$j_19ad2:
+	L ER0, _reg0
+	SRLC R0, #4
+	SRL R1, #4
+	ST ER0, _reg0
+_$j_19ade:
+	ST R0, _reg2
+	MOV R0, #0EH
+	MOV R1, #5H
+	MOV R7, #80H
+	MOV R6, #32H
+	ADD ER6, #7H
+_$j_19aec:
+	MOV R2, #0H
+_$j_19aee:
+	MOV R3, R0
+	AND R3, #00000001B
+	BNE _$j_19b12
+	MOV R3, R1
+	SLL R3, #4
+	MOV ER8, ER6
+	ADD ER8, #-1H
+	LEA [ER8]
+	L R4, [EA+]
+	L R5, [EA+]
+	AND R4, #00001111B
+	OR R4, R3
+	AND R5, #11110000B
+	OR R5, R2
+	LEA [ER8]
+	ST R4, [EA+]
+	ST R5, [EA+]
+	BAL _$j_19b1c
+_$j_19b12:
+	MOV R3, R2
+	SLL R3, #4
+	OR R3, R1
+	LEA [ER6]
+	ST R3, [EA]
+_$j_19b1c:
+	PUSH QR0
+	L ER0, _reg0
+	L ER2, _reg3
+	SUB R1, R3
+	DAS R1
+	ST ER0, _reg0
+	LEA _reg0_2
+	L QR0, [EA]
+	LEA _reg3_2
+	L QR8, [EA]
+	BL _f_19EFC
+	LEA _reg0_2
+	ST QR0, [EA+]
+	POP QR0
+	BLT _$j_19b4c
+	ADD R2, #1H
+	BAL _$j_19aee
+_$j_19b4c:
+	PUSH QR0
+	L ER0, _reg0
+	L ER2, _reg3
+	ADD R1, R3
+	DAA R1
+	ST ER0, _reg0
+	LEA _reg0_2
+	L QR0, [EA]
+	LEA _reg3_2
+	L QR8, [EA]
+	BL _f_19ED0
+	LEA _reg0_2
+	ST QR0, [EA+]
+	POP QR0
+	CMP R0, #0H
+	BEQ _$j_19b9e
+	ADD R0, #-1H
+	MOV R3, R0
+	AND R3, #00000001B
+	BEQ _$j_19b84
+	ADD ER6, #-1H
+_$j_19b84:
+	PUSH QR0
+	LEA _reg0
+	L QR0, [EA+]
+	L ER8, [EA]
+	BL _f_1946A
+	LEA _reg0
+	ST QR0, [EA+]
+	ST ER8, [EA]
+	POP QR0
+	BAL _$j_19aec
+_$j_19b9e:
+	L ER0, _reg2
+	ST ER0, _reg0
+	LEA _reg3_2
+	L QR0, [EA]
+	LEA _reg0_2
+	ST QR0, [EA]
+_$j_19bb2:
+	POP PC
+
+; 19BB4
+_f_19BB4:
+	PUSH LR
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BLT _$j_19bc0
+	POP PC
+_$j_19bc0:
+	MOV R0, #0H
+	MOV R1, #1H
+	MOV ER2, #0H
+	LEA _reg1
+	ST ER0, [EA+]
+	ST ER2, [EA+]
+	ST ER2, [EA+]
+	ST ER2, [EA+]
+	ST ER0, [EA+]
+	BAL _$j_19bee
+
+; 19BD6
+_f_19BD6:
+	PUSH LR
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BGE _$j_19bec
+	L R0, _reg1_9
+	CMP R0, #-10H
+	BLT _$j_19bee
+	BL _mv_reg0_reg1
+_$j_19bec:
+	POP PC
+_$j_19bee:
+	BL _f_18BA4
+	BAL _$j_19c26
+
+; 19BF4
+_f_19BF4:
+	PUSH LR
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BGE _$j_19c0a
+	L R0, _reg1_9
+	CMP R0, #-10H
+	BLT _$j_19c0c
+	BL _mv_reg0_reg1
+_$j_19c0a:
+	POP PC
+_$j_19c0c:
+	BAL _$j_19c2c
+
+; 19C0E
+_num_div_r:
+	PUSH LR
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BGE _$j_19c24
+	L R0, _reg1_9
+	CMP R0, #-10H
+	BLT _$j_19c26
+	BL _mv_reg0_reg1
+_$j_19c24:
+	POP PC
+_$j_19c26:
+	MOV ER0, #0H
+	ST ER0, _reg2
+_$j_19c2c:
+	LEA _reg3
+	L QR0, [EA+]
+	L ER8, [EA+]
+	PUSH QR0
+	PUSH ER8
+	L R0, _reg1_9
+	CMP R0, #0H
+	BEQ _$j_19d0c
+	L ER2, _reg0
+	L ER4, _reg1
+	SUB R2, R4
+	DAS R2
+	SUBC R3, R5
+	DAS R3
+	ADD R3, #1H
+	DAA R3
+	AND R3, #00001111B
+	MOV ER4, #1H
+	SUB R2, R4
+	DAS R2
+	SUBC R3, R5
+	DAS R3
+	AND R3, #00001111B
+	ST ER2, _reg3
+	LEA _reg1_2
+	L QR0, [EA]
+	L QR8, [EA]
+	BL _f_19ED8
+	BL _f_19ED8
+	LEA _reg3_2
+	ST QR0, [EA]
+	L ER0, _reg2
+	ST ER0, _reg0
+	MOV R0, #12H
+	MOV R1, #0H
+	LEA _reg2
+	ST QR0, [EA+]
+	ST ER8, [EA]
+_$j_19c90:
+	MOV R10, #2H
+	LEA _reg0_2
+	L QR0, [EA]
+_$j_19c98:
+	PUSH R10
+	LEA _reg3_2
+	L QR8, [EA]
+	BL _f_19F04
+	POP R10
+	BLT _$j_19cac
+	ADD R10, #3H
+	BAL _$j_19c98
+_$j_19cac:
+	PUSH R10
+	LEA _reg1_2
+	L QR8, [EA]
+	BL _f_19ED8
+	POP R10
+	BLT _$j_19cc0
+	ADD R10, #-1H
+	BAL _$j_19cac
+_$j_19cc0:
+	LEA _reg0_2
+	ST QR0, [EA+]
+	LEA _reg2
+	L QR0, [EA+]
+	L ER8, [EA]
+	MOV R11, #1H
+	SUB R0, R11
+	BEQ _$j_19cf8
+	OR R1, R10
+	BL _f_1946A
+	LEA _reg2
+	ST QR0, [EA+]
+	ST ER8, [EA]
+	LEA _reg0
+	L QR0, [EA+]
+	L ER8, [EA]
+	BL _f_1946A
+	LEA _reg0
+	ST QR0, [EA+]
+	ST ER8, [EA]
+	BAL _$j_19c90
+_$j_19cf8:
+	LEA _reg0
+	ST QR0, [EA+]
+	ST ER8, [EA]
+	LEA _reg2
+	ST QR0, [EA+]
+	ST ER8, [EA]
+	B _$j_19ea2
+_$j_19d0c:
+	POP ER8
+	POP QR0
+	LEA _reg3
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	BL _set_reg0_error
+	POP PC
+
+; 19D1E
+_f_19D1E:
+	PUSH LR
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BLT _$j_19d2a
+	POP PC
+_$j_19d2a:
+	LEA _reg0
+	L QR0, [EA+]
+	L ER8, [EA+]
+	LEA _reg1
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	BAL _$j_19d70
+
+; 19D3C
+_f_19D3C:
+	PUSH LR
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BGE _$j_19d52
+	L R0, _reg1_9
+	CMP R0, #-10H
+	BLT _$j_19d54
+	BL _mv_reg0_reg1
+_$j_19d52:
+	POP PC
+_$j_19d54:
+	MOV R0, #11H
+	BAL _$j_19d72
+
+; 19D58
+_num_mul_r:
+	PUSH LR
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BGE _$j_19d6e
+	L R0, _reg1_9
+	CMP R0, #-10H
+	BLT _$j_19d70
+	BL _mv_reg0_reg1
+_$j_19d6e:
+	POP PC
+_$j_19d70:
+	MOV R0, #0FH
+_$j_19d72:
+	MOV R15, R0
+	LEA _reg3
+	L QR0, [EA+]
+	L ER8, [EA+]
+	PUSH QR0
+	PUSH ER8
+	MOV R0, R15
+	L ER2, _reg0
+	L ER4, _reg1
+	ADD R2, R4
+	DAA R2
+	ADDC R3, R5
+	DAA R3
+	MOV R4, #1H
+	SUB R3, R4
+	DAS R3
+	AND R3, #00001111B
+	ST ER2, _reg3
+	PUSH R0
+	LEA _reg1_2
+	L QR0, [EA]
+	L QR8, [EA]
+	BL _f_19ED8
+	BL _f_19ED8
+	LEA _reg3_2
+	ST QR0, [EA]
+	LEA _reg0_2
+	L QR0, [EA]
+	LEA _reg2_2
+	ST QR0, [EA]
+	POP R0
+	MOV R5, #80H
+	MOV R4, #22H
+	CMP R0, #0FH
+	BEQ _$j_19dce
+	ADD ER4, #-1H
+_$j_19dce:
+	MOV R1, #0H
+	LEA _reg0_2
+	MOV ER2, #0H
+	ST ER2, [EA+]
+	ST ER2, [EA+]
+	ST ER2, [EA+]
+	ST ER2, [EA+]
+_$j_19dde:
+	CMP R1, #0H
+	BNE _$j_19df4
+	LEA [ER4]
+	ADD ER4, #1H
+	MOV R1, #1H
+	L R2, [EA]
+	MOV R3, R2
+	AND R2, #00001111B
+	AND R3, #11110000B
+	SRL R3, #4
+	BAL _$j_19df8
+_$j_19df4:
+	MOV R1, #0H
+	MOV R2, R3
+_$j_19df8:
+	MOV R6, #3H
+	SUB R2, R6
+	BEQ _$j_19e1c
+	BLT _$j_19e38
+	PUSH QR0
+	LEA _reg0_2
+	L QR0, [EA]
+	LEA _reg3_2
+	L QR8, [EA]
+	BL _f_19ED8
+	LEA _reg0_2
+	ST QR0, [EA]
+	POP QR0
+	BAL _$j_19df8
+_$j_19e1c:
+	PUSH QR0
+	LEA _reg0_2
+	L QR0, [EA]
+	LEA _reg3_2
+	L QR8, [EA]
+	BL _f_19ED8
+	LEA _reg0_2
+	ST QR0, [EA]
+	POP QR0
+	BAL _$j_19e78
+_$j_19e38:
+	CMP R2, #-2H
+	BEQ _$j_19e5e
+	BLT _$j_19e78
+	PUSH QR0
+	LEA _reg0_2
+	L QR0, [EA]
+	LEA _reg1_2
+	L QR8, [EA]
+	BL _f_19ED8
+	BL _f_19ED8
+	LEA _reg0_2
+	ST QR0, [EA]
+	POP QR0
+	BAL _$j_19e78
+_$j_19e5e:
+	PUSH QR0
+	LEA _reg0_2
+	L QR0, [EA]
+	LEA _reg1_2
+	L QR8, [EA]
+	BL _f_19ED8
+	LEA _reg0_2
+	ST QR0, [EA]
+	POP QR0
+_$j_19e78:
+	MOV R6, #1H
+	SUB R0, R6
+	BEQ _$j_19ea2
+	LEA _reg0
+	L ER6, [EA+]
+	L QR8, [EA]
+	SRLC R7, #4
+	SRLC R8, #4
+	SRLC R9, #4
+	SRLC R10, #4
+	SRLC R11, #4
+	SRLC R12, #4
+	SRLC R13, #4
+	SRLC R14, #4
+	SRL R15, #4
+	LEA _reg0
+	ST ER6, [EA+]
+	ST QR8, [EA]
+	BAL _$j_19dde
+_$j_19ea2:
+	LEA _reg0
+	L QR0, [EA+]
+	L ER8, [EA]
+	CMP R9, #10H
+	BLT _$j_19eb2
+	SRLC R1, #4
+	SRL R2, #4
+_$j_19eb2:
+	ST ER0, _reg2
+	L ER0, _reg3
+	ST ER0, _reg0
+	POP ER8
+	POP QR0
+	LEA _reg3
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	BL _f_1A23C
+	POP PC
+
+; 19ED0
+_f_19ED0:
+	PUSH LR
+	ADDC R0, R8
+	DAA R0
+	BAL _$j_19ede
+
+; 19ED8
+_f_19ED8:
+	PUSH LR
+	ADD R0, R8
+	DAA R0
+_$j_19ede:
+	ADDC R1, R9
+	DAA R1
+	ADDC R2, R10
+	DAA R2
+	ADDC R3, R11
+	DAA R3
+	ADDC R4, R12
+	DAA R4
+	ADDC R5, R13
+	DAA R5
+	ADDC R6, R14
+	DAA R6
+	ADDC R7, R15
+	DAA R7
+	POP PC
+
+; 19EFC
+_f_19EFC:
+	PUSH LR
+	SUBC R0, R8
+	DAS R0
+	BAL _$j_19f0a
+
+; 19F04
+_f_19F04:
+	PUSH LR
+	SUB R0, R8
+	DAS R0
+_$j_19f0a:
+	SUBC R1, R9
+	DAS R1
+	SUBC R2, R10
+	DAS R2
+	SUBC R3, R11
+	DAS R3
+	SUBC R4, R12
+	DAS R4
+	SUBC R5, R13
+	DAS R5
+	SUBC R6, R14
+	DAS R6
+	SUBC R7, R15
+	DAS R7
+	POP PC
+
+; 19F28
+_l_regs:
+	PUSH LR
+	BL _l_reg1
+	BAL _$j_19f32
+
+; 19F30
+_l_reg0:
+	PUSH LR
+_$j_19f32:
+	LEA [ER0]
+	L ER6, [EA+]
+	L QR8, [EA+]
+	LEA _reg0
+_$j_19f3c:
+	ST FP, [EA+]
+	ST R13, [EA+]
+	ST R12, [EA+]
+	ST R11, [EA+]
+	ST R10, [EA+]
+	ST R9, [EA+]
+	ST R8, [EA+]
+	ST R7, [EA+]
+	ST R6, [EA+]
+	POP PC
+
+; 19F50
+_l_reg1:
+	PUSH LR
+	LEA [ER2]
+	L ER6, [EA+]
+	L QR8, [EA+]
+	LEA _reg1
+	BAL _$j_19f3c
+
+; 19F5E
+_st_reg0:
+	PUSH LR
+	LEA _reg0
+	L QR0, [EA+]
+	L ER8, [EA+]
+	LEA _arg0_ref
+_$j_19f6c:
+	L ER10, [EA]
+	LEA [ER10]
+	ST R9, [EA+]
+	ST R8, [EA+]
+	ST R7, [EA+]
+	ST R6, [EA+]
+	ST R5, [EA+]
+	ST R4, [EA+]
+	ST R3, [EA+]
+	ST R2, [EA+]
+	ST ER0, [EA+]
+	POP PC
+
+; 19F84
+_st_reg1:
+	PUSH LR
+	LEA _reg1
+	L QR0, [EA+]
+	L ER8, [EA+]
+	LEA _arg1_ref
+	BAL _$j_19f6c
+
+; 19F94
+_f_19F94:
+	PUSH LR
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BLT _$j_19fa2
+	AND R0, #00001111B
+	BAL _$j_19fa4
+_$j_19fa2:
+	MOV R0, #0H
+_$j_19fa4:
+	POP PC
+
+; 19FA6
+_f_19FA6:
+	PUSH LR
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BGE _$j_19fbc
+	L R0, _reg1_9
+	CMP R0, #-10H
+	BLT _$j_19fbe
+	BL _mv_reg0_reg1
+_$j_19fbc:
+	POP PC
+_$j_19fbe:
+	L ER0, _reg0
+	ADD R1, #5H
+	DAA R1
+	AND R1, #00001111B
+	ST ER0, _reg0
+	MOV R0, #1H
+	ST R0, _d_0803B
+	B _$j_1a0d8
+
+; 19FD6
+_f_19FD6:
+	PUSH LR
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BLT _$j_19fe2
+	POP PC
+_$j_19fe2:
+	MOV R0, #0H
+	MOV R1, #1H
+	MOV ER2, #0H
+	LEA _reg1
+	ST ER0, [EA+]
+	ST ER2, [EA+]
+	ST ER2, [EA+]
+	ST ER2, [EA+]
+	ST ER0, [EA+]
+	BAL _$j_1a0d2
+
+; 19FF8
+_f_19FF8:
+	PUSH LR
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BLT _$j_1a004
+	POP PC
+_$j_1a004:
+	MOV R0, #0H
+	MOV R1, #6H
+	MOV ER2, #0H
+	LEA _reg1
+	ST ER0, [EA+]
+	ST ER2, [EA+]
+	ST ER2, [EA+]
+	ST ER2, [EA+]
+	MOV R1, #1H
+	ST ER0, [EA+]
+	BAL _$j_1a0d2
+
+; 1A01C
+_f_1A01C:
+	PUSH LR
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BGE _$j_1a032
+	L R0, _reg1_9
+	CMP R0, #-10H
+	BLT _$j_1a034
+	BL _mv_reg0_reg1
+_$j_1a032:
+	POP PC
+_$j_1a034:
+	L ER0, _reg0
+	ADD R1, #5H
+	DAA R1
+	AND R1, #00001111B
+	ST ER0, _reg0
+	BAL _$j_1a0d2
+
+; 1A044
+_num_sub_r:
+	PUSH LR
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BGE _$j_1a05a
+	L R0, _reg1_9
+	CMP R0, #-10H
+	BLT _$j_1a05c
+	BL _mv_reg0_reg1
+_$j_1a05a:
+	POP PC
+_$j_1a05c:
+	L ER0, _reg1
+	ADD R1, #5H
+	DAA R1
+	AND R1, #00001111B
+	ST ER0, _reg1
+	MOV R0, #1H
+	ST R0, _d_0803B
+	BAL _$j_1a0d8
+
+; 1A072
+_num_add_r:
+	PUSH LR
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BGE _$j_1a088
+	L R0, _reg1_9
+	CMP R0, #-10H
+	BLT _$j_1a08a
+	BL _mv_reg0_reg1
+_$j_1a088:
+	POP PC
+_$j_1a08a:
+	MOV R0, #1H
+	ST R0, _d_0803B
+	BAL _$j_1a0d8
+
+; 1A092
+_num_sub1_r__:
+	PUSH LR
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BGE _$j_1a0a8
+	L R0, _reg1_9
+	CMP R0, #-10H
+	BLT _$j_1a0aa
+	BL _mv_reg0_reg1
+_$j_1a0a8:
+	POP PC
+_$j_1a0aa:
+	L ER0, _reg1
+	ADD R1, #5H
+	DAA R1
+	AND R1, #00001111B
+	ST ER0, _reg1
+	BAL _$j_1a0d2
+
+; 1A0BA
+_num_add1_r__:
+	PUSH LR
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BGE _$j_1a0d0
+	L R0, _reg1_9
+	CMP R0, #-10H
+	BLT _$j_1a0d2
+	BL _mv_reg0_reg1
+_$j_1a0d0:
+	POP PC
+_$j_1a0d2:
+	MOV R0, #0H
+	ST R0, _d_0803B
+_$j_1a0d8:
+	BL _reg0_lt_reg1_abs
+	CMP R0, #0H
+	BEQ _$j_1a120
+	L ER0, _reg0
+	L ER2, _reg1
+	ST ER2, _reg0
+	ST ER0, _reg1
+	LEA _reg0_2
+	L QR0, [EA]
+	LEA _reg1_2
+	L QR8, [EA]
+	LEA _reg0_2
+	ST QR8, [EA]
+	LEA _reg1_2
+	ST QR0, [EA]
+	L R0, _d_0800A
+	CMP R0, #0H
+	BEQ _$j_1a0d8
+	L ER0, _reg0
+	ADD R1, #5H
+	DAA R1
+	AND R1, #00001111B
+	ST ER0, _reg0
+	BAL _$j_1a0d8
+_$j_1a120:
+	L R0, _d_0800A
+	CMP R0, #0H
+	BEQ _$j_1a148
+	LEA _reg0
+	L ER8, [EA+]
+	L QR0, [EA]
+	MOV ER10, #1H
+	SUB R8, R10
+	DAS R8
+	SUBC R9, R11
+	DAS R9
+	AND R9, #00001111B
+	BL _f_19458
+	LEA _reg0
+	ST ER8, [EA+]
+	ST QR0, [EA]
+_$j_1a148:
+	LEA _reg1
+	L ER10, [EA+]
+	L QR0, [EA]
+	LEA _reg0
+	L ER8, [EA+]
+	SUB R8, R10
+	DAS R8
+	SUBC R9, R11
+	DAS R9
+	AND R9, #00001111B
+	MOV R11, #9H
+	MOV R10, #99H
+	SUB R10, R8
+	DAS R10
+	SUBC R11, R9
+	DAS R11
+	BNE _$j_1a172
+	CMP R10, #0H
+	BEQ _$j_1a18a
+_$j_1a172:
+	MOV ER10, ER8
+	SLLC R11, #4
+	CMP R11, #1H
+	BLT _$j_1a17e
+	BNE _$j_1a1d0
+	ADD R8, #-6H
+_$j_1a17e:
+	ST R8, _d_0800B
+	LEA _reg1_2
+	ST QR0, [EA]
+	BAL _$j_1a192
+_$j_1a18a:
+	BL _f_19458
+	MOV ER8, #0H
+	BAL _$j_1a17e
+_$j_1a192:
+	BL _f_1970A
+	LEA _reg1_2
+	L QR8, [EA]
+	L R0, _d_0800A
+	CMP R0, #0H
+	BNE _$j_1a1d6
+	LEA _reg0_2
+	L QR0, [EA]
+	ADD R0, R8
+	DAA R0
+	ADDC R1, R9
+	DAA R1
+	ADDC R2, R10
+	DAA R2
+	ADDC R3, R11
+	DAA R3
+	ADDC R4, R12
+	DAA R4
+	ADDC R5, R13
+	DAA R5
+	ADDC R6, R14
+	DAA R6
+	ADDC R7, R15
+	DAA R7
+	LEA _reg0_2
+	ST QR0, [EA]
+_$j_1a1d0:
+	BL _f_1A23C
+_$j_1a1d4:
+	POP PC
+_$j_1a1d6:
+	LEA _reg0_2
+	L QR0, [EA]
+	SUB R0, R8
+	DAS R0
+	SUBC R1, R9
+	DAS R1
+	SUBC R2, R10
+	DAS R2
+	SUBC R3, R11
+	DAS R3
+	SUBC R4, R12
+	DAS R4
+	SUBC R5, R13
+	DAS R5
+	SUBC R6, R14
+	DAS R6
+	SUBC R7, R15
+	DAS R7
+	LEA _reg0_2
+	ST QR0, [EA]
+	L R8, _d_0803B
+	CMP R8, #1H
+	BEQ _$j_1a20c
+	BAL _$j_1a1d0
+_$j_1a20c:
+	MOV R10, #0H
+	MOV R11, #8H
+	MOV R9, #80H
+	MOV R8, #9H
+	BAL _$j_1a218
+_$j_1a216:
+	ADD ER8, #-1H
+_$j_1a218:
+	LEA [ER8]
+	L R14, [EA]
+	CMP R14, #0FH
+	BGE _$j_1a22c
+	ADD R10, #1H
+	CMP R14, #0H
+	BNE _$j_1a22c
+	ADD R10, #1H
+	ADD R11, #-1H
+	BNE _$j_1a216
+_$j_1a22c:
+	CMP R10, #0DH
+	BLT _$j_1a1d0
+	MOV ER0, #0H
+	ST ER0, _reg0_2
+	BL _f_1A23C
+	BAL _$j_1a1d4
+
+; 1A23C
+_f_1A23C:
+	PUSH LR
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BLT _$j_1a248
+	POP PC
+_$j_1a248:
+	LEA _reg4
+	L QR0, [EA+]
+	PUSH QR0
+	L QR0, [EA+]
+	PUSH QR0
+	L XR0, [EA+]
+	PUSH XR0
+	LEA _reg0_2
+	L QR0, [EA]
+	CMP R7, #10H
+	BLT _$j_1a27c
+	BL _f_19432
+	LEA _reg0
+	L ER8, [EA]
+	MOV ER10, #1H
+	ADD R8, R10
+	DAA R8
+	ADDC R9, R11
+	DAA R9
+	ST ER8, [EA+]
+	ST QR0, [EA]
+	BAL _$j_1a314
+_$j_1a27c:
+	MOV R10, #0H
+	MOV R11, #7H
+	MOV R9, #80H
+	MOV R8, #9H
+	MOV BP, #1H
+	LEA [ER8]
+	L R14, [EA]
+	CMP R14, #0H
+	BNE _$j_1a2aa
+	ADD R10, #1H
+_$j_1a290:
+	SUB R8, R12
+	SUBC R9, R13
+	LEA [ER8]
+	L R14, [EA]
+	CMP R14, #0FH
+	BGE _$j_1a2aa
+	ADD R10, #1H
+	CMP R14, #0H
+	BNE _$j_1a2aa
+	ADD R10, #1H
+	ADD R11, #-1H
+	BNE _$j_1a290
+	BAL _$j_1a32a
+_$j_1a2aa:
+	ST R10, _d_0800B
+	CMP R10, #0H
+	BEQ _$j_1a314
+	LEA _reg4_8
+	ST QR0, [EA]
+	MOV ER0, #0H
+	LEA _reg4
+	ST ER0, [EA+]
+	ST ER0, [EA+]
+	ST ER0, [EA+]
+	ST ER0, [EA+]
+	L R10, _d_0800B
+	MOV R12, R10
+	MOV R11, #0H
+	SRL R10, #1
+	MOV R9, #80H
+	MOV R8, #44H
+	SUB R8, R10
+	SUBC R9, R11
+	LEA [ER8]
+	L R0, [EA+]
+	L R1, [EA+]
+	L R2, [EA+]
+	L R3, [EA+]
+	L R4, [EA+]
+	L R5, [EA+]
+	L R6, [EA+]
+	L R7, [EA+]
+	AND R12, #00000001B
+	BEQ _$j_1a2f2
+	BL _f_19458
+_$j_1a2f2:
+	LEA _reg0_2
+	ST QR0, [EA]
+	L R2, _d_0800B
+	CMP R2, #0AH
+	BLT _$j_1a302
+	ADD R2, #6H
+_$j_1a302:
+	MOV R3, #0H
+	L ER0, _reg0
+	SUB R0, R2
+	DAS R0
+	SUBC R1, R3
+	DAS R1
+	ST ER0, _reg0
+_$j_1a314:
+	L ER0, _reg0
+	MOV R2, #5H
+_$j_1a31a:
+	AND R1, #00001111B
+	SUB R1, R2
+	DAS R1
+	BLT _$j_1a31a
+	BEQ _$j_1a354
+	CMP R1, #2H
+	BEQ _$j_1a35c
+	BLT _$j_1a33a
+_$j_1a32a:
+	MOV ER0, #0H
+	LEA _reg0
+	ST ER0, [EA+]
+	ST ER0, [EA+]
+	ST ER0, [EA+]
+	ST ER0, [EA+]
+	ST ER0, [EA+]
+_$j_1a33a:
+	POP XR0
+	LEA _reg5_6
+	ST XR0, [EA]
+	POP QR0
+	LEA _reg4_8
+	ST QR0, [EA]
+	POP QR0
+	LEA _reg4
+	ST QR0, [EA]
+	POP PC
+_$j_1a354:
+	MOV R2, #1H
+	SUB R0, R2
+	BLT _$j_1a32a
+	BAL _$j_1a33a
+_$j_1a35c:
+	BL _set_reg0_error
+	BAL _$j_1a33a
+
+; 1A362
+_reg0_lt_reg1_abs:
+	PUSH LR
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BGE _$reg0_lt_reg1_abs_ret_0
+	L R0, _reg1_9
+	CMP R0, #-10H
+	BLT _$j_1a378
+_$reg0_lt_reg1_abs_ret_0:
+	MOV R0, #0H
+	POP PC
+_$j_1a378:
+	L ER0, _reg0
+	L ER2, _reg1
+	CMP R1, #5H
+	BGE _$reg0_lt_reg1_abs_reg0_neg
+	CMP R3, #5H
+	BLT _$reg0_lt_reg1_abs_reg01_samesign
+_$reg0_lt_reg1_abs_reg01_diffsign:
+	ADD R3, #5H
+	DAA R3
+	AND R3, #00001111B
+	MOV R4, #6H
+	ST ER2, _reg1
+_$j_1a394:
+	ST R4, _d_0800A
+	SUB R0, R2
+	DAS R0
+	SUBC R1, R3
+	DAS R1
+	BLT _$reg0_lt_reg1_abs_ret_1
+	BNE _$reg0_lt_reg1_abs_ret_0_
+	CMP R0, #0H
+	BNE _$reg0_lt_reg1_abs_ret_0_
+	LEA _reg0_2
+	L QR0, [EA]
+	LEA _reg1_2
+	L QR8, [EA]
+	SUB R0, R8
+	DAS R0
+	SUBC R1, R9
+	DAS R1
+	SUBC R2, R10
+	DAS R2
+	SUBC R3, R11
+	DAS R3
+	SUBC R4, R12
+	DAS R4
+	SUBC R5, R13
+	DAS R5
+	SUBC R6, R14
+	DAS R6
+	SUBC R7, R15
+	DAS R7
+	BLT _$reg0_lt_reg1_abs_ret_1
+_$reg0_lt_reg1_abs_ret_0_:
+	MOV R0, #0H
+	BAL _$j_1a3dc
+_$reg0_lt_reg1_abs_ret_1:
+	MOV R0, #1H
+_$j_1a3dc:
+	POP PC
+_$reg0_lt_reg1_abs_reg0_neg:
+	CMP R3, #5H
+	BLT _$reg0_lt_reg1_abs_reg01_diffsign
+_$reg0_lt_reg1_abs_reg01_samesign:
+	MOV R4, #0H
+	BAL _$j_1a394
+
+; 1A3E6
+_set_reg0_error:
+	MOV ER0, #0H
+	MOV R2, #-0DH
+	LEA _reg0
+	ST ER0, [EA+]
+	ST ER0, [EA+]
+	ST ER0, [EA+]
+	ST ER0, [EA+]
+	ST R0, [EA+]
+	ST R2, [EA+]
+	RT
+
+; 1A3FC
+_f_1A3FC:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #9H
+	ST R4, _arith_op
+	BAL _$j_1a472
+
+; 1A410
+_f_1A410:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #8H
+	ST R4, _arith_op
+	BAL _$j_1a472
+
+; 1A424
+_f_1A424:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #5H
+	ST R4, _arith_op
+	BAL _$j_1a472
+
+; 1A438
+_f_1A438:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #6H
+	ST R4, _arith_op
+	BAL _$j_1a472
+
+; 1A44C
+_f_1A44C:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #7H
+	ST R4, _arith_op
+	BAL _$j_1a472
+
+; 1A460
+_f_1A460:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #4H
+	ST R4, _arith_op
+_$j_1a472:
+	BL _l_regs
+	BL _f_18FD0
+	CMP R0, #0H
+	BNE _$j_1a4e8
+	PUSH R1
+	BL _f_17698
+	L R4, _arith_op
+	CMP R4, #5H
+	BLT _$j_1a4be
+	BEQ _$j_1a4b8
+	CMP R4, #7H
+	BLT _$j_1a4a0
+	BEQ _$j_1a49a
+	CMP R4, #9H
+	BLT _$j_1a4b2
+	BEQ _$j_1a4ac
+_$j_1a49a:
+	BL _num_div_r
+	BAL _$j_1a4a4
+_$j_1a4a0:
+	BL _num_mul_r
+_$j_1a4a4:
+	POP R0
+	CMP R0, #40H
+	BNE _$j_1a4da
+	BAL _$j_1a4c8
+_$j_1a4ac:
+	BL _num_sub_r
+	BAL _$j_1a4c2
+_$j_1a4b2:
+	BL _num_add_r
+	BAL _$j_1a4c2
+_$j_1a4b8:
+	BL _num_sub1_r__
+	BAL _$j_1a4c2
+_$j_1a4be:
+	BL _num_add1_r__
+_$j_1a4c2:
+	POP R0
+	CMP R0, #-80H
+	BNE _$j_1a4da
+_$j_1a4c8:
+	BL _f_17398
+	CMP R0, #2H
+	BNE _$j_1a4da
+	L R0, _reg0_9
+	OR R0, #01000000B
+	ST R0, _reg0_9
+_$j_1a4da:
+	BL _st_reg0
+	BL _f_19F94
+	POP QR8
+	POP XR4
+	POP PC
+_$j_1a4e8:
+	BL _set_reg0_error
+	BAL _$j_1a4da
+
+; 1A4EE
+_num_log:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #0AH
+	ST R4, _arith_op
+	BAL _$j_1a552
+
+; 1A502
+_num_combi:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #9H
+	ST R4, _arith_op
+	BAL _$j_1a552
+
+; 1A516
+_num_permu:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #8H
+	ST R4, _arith_op
+	BAL _$j_1a552
+
+; 1A52A
+_f_1A52A:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #0FH
+	ST R4, _arith_op
+	BAL _$j_1a556
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #0EH
+	ST R4, _arith_op
+	BAL _$j_1a556
+_$j_1a552:
+	BL _f_15F2C
+_$j_1a556:
+	BL _l_regs
+	BL _f_18FD0
+	CMP R0, #0H
+	BNE _$j_1a59e
+	BL _f_17698
+	L R4, _arith_op
+	CMP R4, #0EH
+	BGE _$j_1a57e
+	CMP R4, #0AH
+	BEQ _$j_1a578
+	BL _f_176B4
+	BAL _$j_1a590
+_$j_1a578:
+	BL _f_17662
+	BAL _$j_1a590
+_$j_1a57e:
+	MOV R0, #0H
+	ST R0, _d_0801D
+	CMP R4, #0EH
+	BEQ _$j_1a58c
+	BL _f_18BA4
+_$j_1a58c:
+	BL _f_18C88
+_$j_1a590:
+	BL _st_reg0
+	BL _f_19F94
+	POP QR8
+	POP XR4
+	POP PC
+_$j_1a59e:
+	BL _set_reg0_error
+	BAL _$j_1a590
+
+; 1A5A4
+_f_1A5A4:
+	RT
+
+; 1A5A6
+_num_factorial:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #4H
+	ST R4, _arith_op
+	BAL _$j_1a66c
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #15H
+	ST R4, _arith_op
+	BAL _$j_1a670
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #14H
+	ST R4, _arith_op
+	BAL _$j_1a670
+
+; 1A5E2
+_f_1A5E2:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #13H
+	ST R4, _arith_op
+	BAL _$j_1a670
+
+; 1A5F6
+_f_1A5F6:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #12H
+	ST R4, _arith_op
+	BAL _$j_1a670
+
+; 1A60A
+_f_1A60A:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #11H
+	ST R4, _arith_op
+	BAL _$j_1a670
+
+; 1A61E
+_num_10xp:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #3H
+	ST R4, _arith_op
+	BAL _$j_1a66c
+
+; 1A632
+_num_exp:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #2H
+	ST R4, _arith_op
+	BAL _$j_1a66c
+
+; 1A646
+_num_ln:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #1H
+	ST R4, _arith_op
+	BAL _$j_1a66c
+
+; 1A65A
+_num_log10:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #0H
+	ST R4, _arith_op
+_$j_1a66c:
+	BL _f_15F5A
+_$j_1a670:
+	BL _l_reg0
+	BL _f_18FBC
+	CMP R0, #0H
+	BNE _$j_1a710
+	BL _f_18386
+	MOV R0, #0H
+	ST R0, _d_0801D
+	L R4, _arith_op
+	CMP R4, #1H
+	BLT _$j_1a6b0
+	BEQ _$j_1a6b6
+	CMP R4, #3H
+	BLT _$j_1a6bc
+	BEQ _$j_1a6ce
+	CMP R4, #4H
+	BEQ _$j_1a6aa
+	CMP R4, #11H
+	BEQ _$j_1a6e0
+	CMP R4, #13H
+	BLT _$j_1a6e6
+	BEQ _$j_1a6ec
+	CMP R4, #15H
+	BLT _$j_1a6f2
+	BEQ _$j_1a6f8
+_$j_1a6aa:
+	BL _f_1776A
+	BAL _$j_1a6fe
+_$j_1a6b0:
+	BL _f_19026
+	BAL _$j_1a6fe
+_$j_1a6b6:
+	BL _f_19012
+	BAL _$j_1a6fe
+_$j_1a6bc:
+	MOV R0, #6H
+	ST R0, _arith_op
+	MOV R0, #0AH
+	ST R0, _d_0801F
+	BL _f_18DD4
+	BAL _$j_1a6fe
+_$j_1a6ce:
+	MOV R0, #6H
+	ST R0, _arith_op
+	MOV R0, #9H
+	ST R0, _d_0801F
+	BL _f_18DB6
+	BAL _$j_1a6fe
+_$j_1a6e0:
+	BL _f_19A12
+	BAL _$j_1a702
+_$j_1a6e6:
+	BL _f_19BB4
+	BAL _$j_1a702
+_$j_1a6ec:
+	BL _f_19D1E
+	BAL _$j_1a702
+_$j_1a6f2:
+	BL _f_18562
+	BAL _$j_1a702
+_$j_1a6f8:
+	BL _f_18540
+	BAL _$j_1a702
+_$j_1a6fe:
+	BL _f_1A23C
+_$j_1a702:
+	BL _st_reg0
+	BL _f_19F94
+	POP QR8
+	POP XR4
+	POP PC
+_$j_1a710:
+	BL _set_reg0_error
+	BAL _$j_1a702
+
+; 1A716
+_num_abs:
+	PUSH LR
+	PUSH ER0
+	BL _num_invalid__
+	CMP R0, #-10H
+	BEQ _$j_1a738
+	MOV R2, R0
+	POP ER0
+	L R3, [ER0]
+	RB R3.6
+	ST R3, [ER0]
+	CMP R2, #2H
+	BNE _$j_1a734
+	BL _num_negate
+_$j_1a734:
+	MOV R0, #0H
+	POP PC
+_$j_1a738:
+	POP ER0
+	MOV R2, #3H
+	BL _f_1B12C
+	MOV R0, #3H
+	POP PC
+
+; 1A744
+_f_1A744:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	ST R2, _arith_op
+	BL _f_15F5A
+	BL _l_reg0
+	BL _f_18FBC
+	CMP R0, #0H
+	BNE _$j_1a7f4
+	BL _f_18386
+	L R1, _arith_op
+	L R0, _setup_angle_unit
+	CMP R0, #5H
+	BLT _$j_1a77e
+	BEQ _$j_1a786
+	CMP R1, #5H
+	BLT _$j_1a7b8
+	BEQ _$j_1a7c2
+	BAL _$j_1a7fa
+_$j_1a77e:
+	CMP R1, #5H
+	BLT _$j_1a7fa
+	BEQ _$j_1a7c8
+	BAL _$j_1a7de
+_$j_1a786:
+	CMP R1, #5H
+	BLT _$j_1a7a2
+	BEQ _$j_1a7fa
+	BL _set_reg1_200
+	BL _num_div_r
+	BL _mv_reg1_reg0
+	BL _f_17644
+	BL _num_mul_r
+	BAL _$j_1a7e6
+_$j_1a7a2:
+	BL _set_reg1_180
+	BL _num_div_r
+	BL _mv_reg1_reg0
+	BL _f_17644
+	BL _num_mul_r
+	BAL _$j_1a7e6
+_$j_1a7b8:
+	BL _set_reg1_100d9
+	BL _num_mul_r
+	BAL _$j_1a7e6
+_$j_1a7c2:
+	BL _set_reg1_200
+	BAL _$j_1a7cc
+_$j_1a7c8:
+	BL _set_reg1_180
+_$j_1a7cc:
+	BL _num_mul_r
+	BL _mv_reg1_reg0
+	BL _f_17644
+	BL _f_19BD6
+	BAL _$j_1a7e6
+_$j_1a7de:
+	BL _set_reg1_1d10
+	BL _num_mul_r
+_$j_1a7e6:
+	BL _st_reg0
+	BL _f_19F94
+_$j_1a7ee:
+	POP QR8
+	POP XR4
+	POP PC
+_$j_1a7f4:
+	BL _set_reg0_error
+	BAL _$j_1a7e6
+_$j_1a7fa:
+	MOV R0, #0H
+	BAL _$j_1a7ee
+
+; 1A7FE
+_num_unk_1_1__:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	BL _l_regs
+	BL _num_unk_1_r__
+	LEA _reg2
+	L QR0, [EA+]
+	L ER8, [EA+]
+	LEA _reg1
+	ST QR0, [EA+]
+	ST ER8, [EA+]
+	BL _st_reg0
+	BL _st_reg1
+	BL _f_19F94
+	POP QR8
+	POP XR4
+	POP PC
+
+; 1A834
+_num_atanh:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #3H
+	MOV R5, #0BH
+	BAL _$j_1a90a
+
+; 1A846
+_num_acosh:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #2H
+	MOV R5, #0BH
+	BAL _$j_1a90a
+
+; 1A858
+_num_asinh:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #1H
+	MOV R5, #0BH
+	BAL _$j_1a90a
+
+; 1A86A
+_num_tanh:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #3H
+	MOV R5, #0AH
+	BAL _$j_1a90a
+
+; 1A87C
+_num_cosh:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #2H
+	MOV R5, #0AH
+	BAL _$j_1a90a
+
+; 1A88E
+_num_sinh:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #1H
+	MOV R5, #0AH
+	BAL _$j_1a90a
+
+; 1A8A0
+_num_atan:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #3H
+	MOV R5, #9H
+	BAL _$j_1a90a
+
+; 1A8B2
+_num_acos:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #2H
+	MOV R5, #9H
+	BAL _$j_1a90a
+
+; 1A8C4
+_num_asin:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #1H
+	MOV R5, #9H
+	BAL _$j_1a90a
+
+; 1A8D6
+_f_1A8D6:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #3H
+	MOV R5, #8H
+	BAL _$j_1a90a
+
+; 1A8E8
+_f_1A8E8:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #2H
+	MOV R5, #8H
+	BAL _$j_1a90a
+
+; 1A8FA
+_f_1A8FA:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #1H
+	MOV R5, #8H
+_$j_1a90a:
+	BL _f_15F5A
+	ST ER4, _arith_op
+	CMP R2, #0H
+	BNE _$j_1a91a
+	L R2, _setup_angle_unit
+_$j_1a91a:
+	ST R2, _d_0802F
+	BL _l_reg0
+	BL _f_18FBC
+	CMP R0, #0H
+	BNE _$j_1a95a
+	BL _f_18386
+	L R5, _d_0801F
+	CMP R5, #9H
+	BLT _$j_1a93e
+	BEQ _$j_1a944
+	BL _f_18576
+	BAL _$j_1a948
+_$j_1a93e:
+	BL _f_18740
+	BAL _$j_1a948
+_$j_1a944:
+	BL _f_18818
+_$j_1a948:
+	BL _f_1A23C
+_$j_1a94c:
+	BL _st_reg0
+	BL _f_19F94
+	POP QR8
+	POP XR4
+	POP PC
+_$j_1a95a:
+	BL _set_reg0_error
+	BAL _$j_1a94c
+
+; 1A960
+_f_1A960:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	BL _f_15F2C
+	BL _l_regs
+	BL _f_18FD0
+	CMP R0, #0H
+	BNE _$j_1a99e
+	BL _f_17698
+	L R0, _setup_angle_unit
+	ST R0, _d_0802F
+	BL _f_174FC
+	BL _f_1A23C
+_$j_1a990:
+	BL _st_reg0
+	BL _f_19F94
+	POP QR8
+	POP XR4
+	POP PC
+_$j_1a99e:
+	BL _set_reg0_error
+	BAL _$j_1a990
+
+; 1A9A4
+_f_1A9A4:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #0FH
+	ST R4, _arith_op
+	BL _l_regs
+	BL _f_17C04
+	BAL _$j_1a9de
+
+; 1A9C0
+_f_1A9C0:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #0EH
+	ST R4, _arith_op
+	BL _l_regs
+	BL _f_18BA4
+	BL _f_17BF4
+_$j_1a9de:
+	BL _st_reg0
+	BL _f_19F94
+	POP QR8
+	POP XR4
+	POP PC
+
+; 1A9EC
+_num_sub_1:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #9H
+	ST R4, _arith_op
+	BAL _$j_1aa3c
+
+; 1AA00
+_num_add_1:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #8H
+	ST R4, _arith_op
+	BAL _$j_1aa3c
+
+; 1AA14
+_num_div_1:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #7H
+	ST R4, _arith_op
+	BAL _$j_1aa3c
+
+; 1AA28
+_num_mul_1:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #6H
+	ST R4, _arith_op
+	BAL _$j_1aa3c
+_$j_1aa3c:
+	L R5, [ER0]
+	AND R5, #11110000B
+	CMP R5, #-80H
+	BEQ _$j_1aaa4
+	L R5, [ER2]
+	AND R5, #11110000B
+	CMP R5, #-80H
+	BEQ _$j_1aaa4
+	BL _l_regs
+	BL _f_18FD0
+	CMP R0, #0H
+	BNE _$j_1aa9e
+	PUSH R1
+	BL _num_arith_r
+	POP R0
+	CMP R0, #0H
+	BEQ _$j_1aa90
+	PUSH R0
+	BL _f_18386
+	POP R0
+	L R4, _arith_op
+	CMP R4, #6H
+	BLT _$j_1aa7a
+	CMP R0, #40H
+	BNE _$j_1aa90
+	BAL _$j_1aa7e
+_$j_1aa7a:
+	CMP R0, #-80H
+	BNE _$j_1aa90
+_$j_1aa7e:
+	BL _f_17398
+	CMP R0, #2H
+	BNE _$j_1aa90
+	L R0, _reg0_9
+	OR R0, #01000000B
+	ST R0, _reg0_9
+_$j_1aa90:
+	BL _st_reg0
+	BL _f_19F94
+_$j_1aa98:
+	POP QR8
+	POP XR4
+	POP PC
+_$j_1aa9e:
+	BL _set_reg0_error
+	BAL _$j_1aa90
+_$j_1aaa4:
+	CMP R4, #7H
+	BLT _$j_1aaba
+	BEQ _$j_1aac0
+	CMP R4, #8H
+	BEQ _$j_1aab4
+	BL _f_16BAA
+	BAL _$j_1aa98
+_$j_1aab4:
+	BL _f_16B66
+	BAL _$j_1aa98
+_$j_1aaba:
+	BL _f_16BB2
+	BAL _$j_1aa98
+_$j_1aac0:
+	BL _f_16BF6
+	BAL _$j_1aa98
+
+; 1AAC6
+_f_1AAC6:
+	PUSH LR
+_$j_1aac8:
+	BL _f_15EE4
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #2H
+	B _$j_1ac0e
+
+; 1AADC
+_num_sqrt:
+	PUSH LR
+	PUSH ER0
+	BL _f_16CF0
+	MOV R2, R0
+	POP ER0
+	CMP R2, #0H
+	BEQ _$j_1aac8
+	L R2, [ER0]
+	AND R2, #11110000B
+	BEQ _$j_1abae
+	CMP R2, #20H
+	BNE _$j_1aac8
+	L R2, 9H[ER0]
+	CMP R2, #1H
+	BNE _$j_1aac8
+_$j_1aafe:
+	PUSH ER0
+	MOV R2, #0H
+	BL _f_162FE
+	MOV R0, #3H
+	BL _f_16CE4
+	L R2, 8H[ER0]
+	CMP R2, #7H
+	BGE _$j_1ab1c
+	L R2, 1CH[ER0]
+	CMP R2, #4H
+	BLT _$j_1ab20
+_$j_1ab1c:
+	POP ER0
+	BAL _$j_1aac8
+_$j_1ab20:
+	MOV ER0, #3H
+	BL _f_162D6
+	MOV R0, #3H
+	BL _f_16CE4
+	MOV ER2, ER0
+	ADD ER2, #-1EH
+	PUSH ER2
+	PUSH XR0
+	BL _f_16524
+	MOV ER0, #5H
+	BL _f_162D6
+	POP XR0
+	ADD ER0, #14H
+	BL _f_16524
+	MOV R0, #4H
+	MOV R1, #6H
+	MOV R2, #4H
+	BL _f_16482
+	MOV R0, #5H
+	MOV R1, #6H
+	MOV R2, #5H
+	BL _f_16482
+	POP ER2
+	MOV ER0, #1H
+	BL _f_162D6
+	MOV R0, #6H
+	BL _f_16CE4
+	POP ER2
+	PUSH XR0
+	PUSH ER2
+	BL _num_cpy
+	POP ER2
+	MOV R0, #0H
+	BL _f_16100
+	CMP R0, #0H
+	BEQ _$j_1ab82
+	ADD SP, #4H
+	POP PC
+_$j_1ab82:
+	POP XR0
+	PUSH ER0
+	L R0, [ER0]
+	AND R0, #11110000B
+	CMP R0, #20H
+	BNE _$j_1aba8
+	MOV ER0, ER2
+	L R2, [ER0]
+	AND R2, #11110000B
+	CMP R2, #20H
+	BEQ _$j_1aba8
+	CMP R2, #-80H
+	BEQ _$j_1aba8
+	POP ER2
+	PUSH ER0
+	BL _num_cpy
+	POP ER0
+	BAL _$j_1aac8
+_$j_1aba8:
+	ADD SP, #2H
+	MOV R0, #0H
+	POP PC
+_$j_1abae:
+	L ER2, 8H[ER0]
+	CMP R3, #1H
+	BGT _$j_1aac8
+	BLT _$j_1abbc
+	CMP R2, #7H
+	BGE _$j_1aac8
+_$j_1abbc:
+	PUSH ER0
+	BL _f_110C4
+	MOV R2, R0
+	POP ER0
+	BEQ _$j_1aafe
+	B _$j_1aac8
+
+; 1ABCC
+_num_cbrt:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #3H
+	BL _f_15F5A
+	BAL _$j_1ac0e
+
+; 1ABE0
+_f_1ABE0:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #4H
+	BAL _$j_1ac0e
+
+; 1ABF0
+_f_1ABF0:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #1H
+	BAL _$j_1ac0e
+
+; 1AC00
+_f_1AC00:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #0H
+_$j_1ac0e:
+	BL _l_reg0
+	BL _f_18FBC
+	CMP R0, #0H
+	BNE _$j_1ac50
+	CMP R4, #1H
+	BLT _$j_1ac2c
+	BEQ _$j_1ac32
+	CMP R4, #3H
+	BLT _$j_1ac38
+	BEQ _$j_1ac3e
+	BL _f_17B78
+	BAL _$j_1ac42
+_$j_1ac2c:
+	BL _f_17ADE
+	BAL _$j_1ac42
+_$j_1ac32:
+	BL _f_17AD2
+	BAL _$j_1ac42
+_$j_1ac38:
+	BL _f_17AE8
+	BAL _$j_1ac42
+_$j_1ac3e:
+	BL _f_17B6E
+_$j_1ac42:
+	BL _st_reg0
+	BL _f_19F94
+	POP QR8
+	POP XR4
+	POP PC
+_$j_1ac50:
+	BL _set_reg0_error
+	BAL _$j_1ac42
+
+; 1AC56
+_f_1AC56:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #3H
+	ST R4, _d_0805A
+	BAL _$j_1aca4
+
+; 1AC6A
+_f_1AC6A:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #2H
+	ST R4, _d_0805A
+	BAL _$j_1aca4
+
+; 1AC7E
+_f_1AC7E:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #1H
+	ST R4, _d_0805A
+	BAL _$j_1aca4
+
+; 1AC92
+_f_1AC92:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #0H
+	ST R4, _d_0805A
+_$j_1aca4:
+	BL _l_reg0
+	BL _f_18F8C
+	CMP R0, #0H
+	BNE _$j_1acd0
+	CMP R4, #3H
+	BLT _$j_1acb6
+	BEQ _$j_1acbc
+_$j_1acb6:
+	BL _f_180EA
+	BAL _$j_1acc2
+_$j_1acbc:
+	BL _f_18386
+	BAL _$j_1acc2
+_$j_1acc2:
+	BL _st_reg0
+	BL _f_19F94
+	POP QR8
+	POP XR4
+	POP PC
+_$j_1acd0:
+	BL _set_reg0_error
+	BAL _$j_1acc2
+
+; 1ACD6
+_f_1ACD6:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #2H
+	ST R4, _arith_op
+	BAL _$j_1ad10
+
+; 1ACEA
+_f_1ACEA:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #1H
+	ST R4, _arith_op
+	BAL _$j_1ad10
+
+; 1ACFE
+_f_1ACFE:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #0H
+	ST R4, _arith_op
+_$j_1ad10:
+	BL _l_regs
+	BL _invalid_reg0
+	MOV R1, R0
+	BL _invalid_reg1
+	OR R1, R0
+	CMP R1, #0H
+	BNE _$j_1ad80
+	L R0, _reg0_9
+	CMP R0, #0H
+	BEQ _$j_1ad80
+	L R0, _reg1_9
+	CMP R0, #0H
+	BEQ _$j_1ad80
+	BL _f_179B8
+	CMP R0, #0H
+	BNE _$j_1ad80
+	BL _f_18BA4
+	BL _f_179B8
+	CMP R0, #0H
+	BNE _$j_1ad80
+	BL _f_18BA4
+	L R4, _arith_op
+	CMP R4, #1H
+	BLT _$j_1ad5a
+	BEQ _$j_1ad60
+	CMP R4, #3H
+	BLT _$j_1ad6a
+_$j_1ad5a:
+	BL _f_17DC4
+	BAL _$j_1ad72
+_$j_1ad60:
+	BL _num_unk_1_r__
+	BL _f_17E26
+	BAL _$j_1ad72
+_$j_1ad6a:
+	BL _f_1805A
+	BL _f_18BA4
+_$j_1ad72:
+	BL _st_reg0
+	BL _f_19F94
+	POP QR8
+	POP XR4
+	POP PC
+_$j_1ad80:
+	BL _set_reg0_error
+	BAL _$j_1ad72
+
+; 1AD86
+_f_1AD86:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	BL _l_regs
+	BL _f_18FD0
+	CMP R0, #0H
+	BNE _$j_1adb0
+	BL _f_182B4
+_$j_1ada2:
+	BL _st_reg0
+	BL _f_19F94
+	POP QR8
+	POP XR4
+	POP PC
+_$j_1adb0:
+	BL _set_reg0_error
+	BAL _$j_1ada2
+	PUSH LR
+	PUSH QR8
+	ADD SP, #-0AH
+	MOV FP, SP
+	MOV ER2, ER0
+	MOV ER0, FP
+	BL _num_cpy
+	MOV ER0, FP
+	BL _f_1B208
+	MOV ER0, FP
+	BL _f_179B0
+	CMP R0, #0H
+	BNE _$j_1adec
+	MOV R2, #BYTE1 _unk_017d2
+	MOV R3, #BYTE2 _unk_017d2
+	MOV ER0, FP
+	BL _num_cmp
+	CMP R0, #2H
+	BEQ _$j_1adec
+	MOV R0, #0H
+_$j_1ade6:
+	ADD SP, #0AH
+	POP QR8
+	POP PC
+_$j_1adec:
+	MOV R0, #1H
+	BAL _$j_1ade6
+
+; 1ADF0
+_f_1ADF0:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	BL _l_reg0
+	BL _f_179B0
+	BAL _$j_1ae1a
+
+; 1AE06
+_f_1AE06:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	BL _l_reg0
+	BL _f_179B8
+_$j_1ae1a:
+	CMP R0, #0H
+	BEQ _$j_1ae20
+	MOV R0, #-10H
+_$j_1ae20:
+	POP QR8
+	POP XR4
+	POP PC
+
+; 1AE26
+_cmplx_abs:
+	PUSH LR
+	L R2, [ER0]
+	CMP R2, #-10H
+	BGE _$j_1ae36
+	L R3, 0AH[ER0]
+	CMP R3, #-10H
+	BLT _$j_1ae40
+_$j_1ae36:
+	MOV R2, #3H
+	BL _f_1B12C
+	MOV R0, #0H
+	POP PC
+_$j_1ae40:
+	PUSH XR12
+	ADD SP, #-14H
+	MOV BP, SP
+	MOV FP, ER0
+	BL _num_abs
+	MOV ER0, FP
+	ADD ER0, #0AH
+	BL _num_abs
+	MOV R0, #0H
+	L R1, 0AH[FP]
+	BEQ _$j_1aece
+	L R1, [FP]
+	BNE _$j_1ae6c
+	MOV ER0, FP
+	ADD ER0, #0AH
+	MOV ER2, FP
+	BL _f_154E0
+	MOV R0, #0H
+	BAL _$j_1aece
+_$j_1ae6c:
+	MOV ER0, FP
+	MOV ER2, BP
+	BL _f_154E0
+	ADD ER0, #0AH
+	ADD ER2, #0AH
+	BL _f_154E0
+	MOV ER0, BP
+	BL _f_14800
+	ADD ER0, #0AH
+	BL _f_14800
+	L ER2, 8H[BP]
+	CMP R3, #1H
+	BNE _$j_1ae94
+	CMP R2, #49H
+	BGE _$j_1aed4
+	BAL _$j_1ae98
+_$j_1ae94:
+	CMP R2, #51H
+	BLT _$j_1aed4
+_$j_1ae98:
+	L ER2, 12H[BP]
+	CMP R3, #1H
+	BNE _$j_1aea4
+	CMP R2, #49H
+	BGE _$j_1aed4
+	BAL _$j_1aea8
+_$j_1aea4:
+	CMP R2, #51H
+	BLT _$j_1aed4
+_$j_1aea8:
+	MOV ER0, BP
+	BL _num_square
+	MOV ER0, BP
+	ADD ER0, #0AH
+	BL _num_square
+	MOV ER0, BP
+	MOV ER2, BP
+	ADD ER2, #0AH
+	BL _f_1A460
+	MOV ER0, BP
+	MOV ER2, FP
+	BL _f_154E0
+	MOV ER0, FP
+	BL _num_sqrt
+_$j_1aece:
+	MOV ER2, FP
+	ADD ER2, #0AH
+	BAL _$j_1af32
+_$j_1aed4:
+	MOV ER0, BP
+	MOV ER2, ER0
+	ADD ER2, #0AH
+	BL _num_cmp
+	CMP R0, #4H
+	BNE _$j_1aefc
+	MOV ER0, FP
+	MOV ER2, FP
+	ADD ER2, #0AH
+	BL _f_154E0
+	MOV ER0, BP
+	ADD ER0, #0AH
+	MOV ER2, FP
+	BL _f_154E0
+	MOV ER0, FP
+	MOV ER2, BP
+	BAL _$j_1af0a
+_$j_1aefc:
+	MOV ER0, BP
+	MOV ER2, FP
+	BL _f_154E0
+	MOV ER0, FP
+	MOV ER2, BP
+	ADD ER2, #0AH
+_$j_1af0a:
+	BL _f_1A44C
+	MOV BP, FP
+	ADD BP, #0AH
+	MOV ER0, FP
+	BL _num_square
+	MOV ER0, FP
+	MOV R2, #BYTE1 _unk_017c8
+	MOV R3, #BYTE2 _unk_017c8
+	BL _f_1A460
+	MOV ER0, FP
+	BL _f_1AAC6
+	MOV ER0, FP
+	MOV ER2, BP
+	BL _num_mul_1
+	MOV ER2, BP
+_$j_1af32:
+	PUSH R0
+	MOV R0, #BYTE1 _unk_017be
+	MOV R1, #BYTE2 _unk_017be
+	BL _f_154E0
+	POP R0
+	ADD SP, #14H
+	POP XR12
+	POP PC
+
+; 1AF44
+_f_1AF44:
+	PUSH LR
+	PUSH XR12
+	MOV BP, ER0
+	MOV R14, #1H
+	BL _f_16CF0
+	CMP R0, #0H
+	BNE _$j_1af56
+	MOV R14, #0H
+_$j_1af56:
+	MOV ER0, BP
+	ADD ER0, #0AH
+	BL _num_invalid__
+	CMP R0, #1H
+	BEQ _$j_1af70
+_$j_1af62:
+	MOV ER0, BP
+	MOV R2, #3H
+	BL _f_1B12C
+	MOV R0, #3H
+	POP XR12
+	POP PC
+_$j_1af70:
+	MOV ER0, BP
+	BL _f_15EE4
+	BL _num_invalid__
+	MOV R15, R0
+	CMP R0, #-10H
+	BEQ _$j_1af62
+	CMP R0, #2H
+	BNE _$j_1af8a
+	MOV ER0, BP
+	BL _num_negate
+_$j_1af8a:
+	MOV ER0, BP
+	CMP R14, #1H
+	BNE _$j_1af96
+	BL _num_sqrt
+	BAL _$j_1af9a
+_$j_1af96:
+	BL _f_1AAC6
+_$j_1af9a:
+	CMP R15, #2H
+	BNE _$j_1afb2
+	MOV ER0, BP
+	MOV ER2, BP
+	ADD ER2, #0AH
+	BL _f_154E0
+	MOV R0, #BYTE1 _unk_017be
+	MOV R1, #BYTE2 _unk_017be
+	ADD ER2, #-0AH
+	BL _f_154E0
+_$j_1afb2:
+	MOV R0, #0H
+	POP XR12
+	POP PC
+
+; 1AFB8
+_f_1AFB8:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R3, #2H
+	BAL _$j_1afe6
+
+; 1AFC8
+_f_1AFC8:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R3, #1H
+	BAL _$j_1afe6
+
+; 1AFD8
+_f_1AFD8:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R3, #0H
+_$j_1afe6:
+	BL _l_reg0
+	BL _invalid_reg0
+	CMP R0, #0H
+	BNE _$j_1b038
+	CMP R3, #2H
+	BNE _$j_1affc
+	BL _f_1979E
+	BAL _$j_1b02a
+_$j_1affc:
+	MOV R0, #0FH
+	SUB R0, R2
+	BGE _$j_1b004
+	MOV R0, #0H
+_$j_1b004:
+	ST R0, _d_0800B
+	CMP R3, #1H
+	BLT _$j_1b012
+	BL _f_18F2E
+	BAL _$j_1b016
+_$j_1b012:
+	BL _f_18F46
+_$j_1b016:
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BLT _$j_1b02a
+	L ER0, _arg0_ref
+	BL _l_reg0
+	BL _f_18F74
+_$j_1b02a:
+	BL _st_reg0
+	BL _f_19F94
+	POP QR8
+	POP XR4
+	POP PC
+_$j_1b038:
+	BL _set_reg0_error
+	BAL _$j_1b02a
+
+; 1B03E
+_num_invalid__:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	BL _l_reg0
+	L R0, _reg0_9
+	BEQ _$j_1b06c
+	AND R0, #11110000B
+	CMP R0, #-80H
+	BEQ _$j_1b078
+	CMP R0, #50H
+	BGE _$j_1b070
+	L ER0, _reg0
+	BEQ _$j_1b06c
+_$j_1b064:
+	CMP R1, #4H
+	BGE _$j_1b074
+	MOV R0, #4H
+	BAL _$j_1b0d2
+_$j_1b06c:
+	MOV R0, #1H
+	BAL _$j_1b0d2
+_$j_1b070:
+	MOV R0, #-10H
+	BAL _$j_1b0d2
+_$j_1b074:
+	MOV R0, #2H
+	BAL _$j_1b0d2
+_$j_1b078:
+	L ER0, _reg0
+	CMP R1, #0H
+	BNE _$j_1b084
+	MOV R1, R0
+	BAL _$j_1b064
+_$j_1b084:
+	ADD R1, R0
+	CMP R1, #7H
+	BNE _$j_1b064
+	L ER0, _arg0_ref
+	MOV R2, #0H
+	BL _f_16398
+	MOV R0, #0H
+	BL _f_16CE4
+	MOV ER2, ER0
+	MOV R0, #0H
+	BL _f_16060
+	L ER0, _reg0
+	BAL _$j_1b064
+
+; 1B0A8
+_num_cmp:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #0H
+	ST R4, _d_0803A
+_$j_1b0ba:
+	BL _l_regs
+	BL _invalid_reg0
+	MOV R1, R0
+	BL _invalid_reg1
+	OR R1, R0
+	CMP R1, #0H
+	BNE _$j_1b0d8
+	BL _num_cmp_reg01
+_$j_1b0d2:
+	POP QR8
+	POP XR4
+	POP PC
+_$j_1b0d8:
+	MOV R0, #-10H
+	BAL _$j_1b0d2
+
+; 1B0DC
+_f_1B0DC:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R4, #1H
+	ST R4, _d_0803A
+	BAL _$j_1b0ba
+
+; 1B0F0
+_f_1B0F0:
+	L R0, [ER0]
+	AND R0, #11110000B
+	RT
+
+; 1B0F6
+_num_fromdigit:
+	PUSH XR4
+	CMP R2, #0AH
+	BGE _$j_1b11c
+	MOV R3, #0H
+	MOV ER4, #0H
+	MOV R7, #1H
+	MOV R6, #0H
+	CMP R2, #0H
+	BNE _$j_1b10a
+	MOV R7, #0H
+_$j_1b10a:
+	LEA [ER0]
+	ST ER2, [EA+]
+	ST ER4, [EA+]
+	ST ER4, [EA+]
+	ST ER4, [EA+]
+	ST ER6, [EA+]
+	MOV R0, #0H
+_$j_1b118:
+	POP XR4
+	RT
+_$j_1b11c:
+	MOV ER4, #0H
+	MOV ER6, #0H
+	LEA [ER0]
+	ST XR4, [EA+]
+	ST XR4, [EA+]
+	ST ER4, [EA+]
+	MOV R0, #-10H
+	BAL _$j_1b118
+
+; 1B12C
+_f_1B12C:
+	PUSH XR4
+	MOV R3, #0H
+	MOV ER4, #0H
+	CMP R2, #10H
+	BGE _$j_1b14e
+	CMP R2, #0H
+	BEQ _$j_1b14e
+	OR R2, #11110000B
+_$j_1b13c:
+	LEA [ER0]
+	ST ER2, [EA+]
+	ST ER4, [EA+]
+	ST ER4, [EA+]
+	ST ER4, [EA+]
+	ST ER4, [EA+]
+	MOV R0, #0H
+	POP XR4
+	RT
+_$j_1b14e:
+	MOV R2, #-0DH
+	BAL _$j_1b13c
+
+; 1B152
+_f_1B152:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	BL _l_regs
+	L R0, _reg0_9
+	CMP R0, #-10H
+	BGE _$j_1b1a8
+	L R0, _reg1_9
+	CMP R0, #-10H
+	BGE _$j_1b1b2
+	CMP R0, #0H
+	BEQ _$j_1b196
+	L ER0, _reg1
+	CMP R1, #5H
+	BLT _$j_1b1a8
+	L R0, _reg0_9
+	CMP R0, #0H
+	BEQ _$j_1b1a8
+	L ER0, _reg0
+	ADD R1, #5H
+	DAA R1
+	AND R1, #00001111B
+	ST ER0, _reg0
+	BAL _$j_1b1a4
+_$j_1b196:
+	MOV ER0, #0H
+	MOV ER2, #0H
+	LEA _reg0
+	ST XR0, [EA+]
+	ST XR0, [EA+]
+	ST ER0, [EA+]
+_$j_1b1a4:
+	BL _st_reg0
+_$j_1b1a8:
+	BL _f_19F94
+	POP QR8
+	POP XR4
+	POP PC
+_$j_1b1b2:
+	BL _set_reg0_error
+	BAL _$j_1b1a4
+
+; 1B1B8
+_num_negate:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	BL _l_reg0
+	L R0, _reg0_9
+	BEQ _$j_1b1ee
+	CMP R0, #-10H
+	BGE _$j_1b1ee
+	CMP R0, #40H
+	BEQ _$j_1b1ee
+	AND R0, #11110000B
+	CMP R0, #-80H
+	BEQ _$j_1b1f8
+	L ER0, _reg0
+_$j_1b1e0:
+	ADD R1, #5H
+	DAA R1
+	AND R1, #00001111B
+_$j_1b1e6:
+	ST ER0, _reg0
+	BL _st_reg0
+_$j_1b1ee:
+	BL _f_19F94
+	POP QR8
+	POP XR4
+	POP PC
+_$j_1b1f8:
+	L ER0, _reg0
+	ADD R0, #5H
+	DAA R0
+	AND R0, #00001111B
+	CMP R1, #0H
+	BEQ _$j_1b1e6
+	BAL _$j_1b1e0
+
+; 1B208
+_f_1B208:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	BL _l_reg0
+	L R0, _reg0_9
+	MOV R1, R0
+	AND R1, #11110000B
+	CMP R1, #40H
+	BNE _$j_1b22e
+	AND R0, #10111111B
+	ST R0, _reg0_9
+	BL _st_reg0
+_$j_1b22e:
+	BL _f_19F94
+	POP QR8
+	POP XR4
+	POP PC
+
+; 1B238
+_f_1B238:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	BL _l_reg0
+	L R0, _reg0_9
+	AND R0, #11110000B
+	BEQ _$j_1b276
+	CMP R0, #40H
+	BNE _$j_1b27e
+	L R0, _reg0_9
+	AND R0, #00001111B
+	ST R0, _reg0_9
+	BL _f_18B46
+	BL _f_17398
+	CMP R0, #2H
+	BNE _$j_1b27a
+	L R0, _reg0_9
+	OR R0, #01000000B
+	ST R0, _reg0_9
+	BAL _$j_1b27a
+_$j_1b276:
+	BL _f_18B46
+_$j_1b27a:
+	BL _st_reg0
+_$j_1b27e:
+	BL _f_19F94
+	POP QR8
+	POP XR4
+	POP PC
+
+; 1B288
+_f_1B288:
+	L R0, [ER0]
+	CMP R0, #-10H
+	BLT _$j_1b292
+	AND R0, #00001111B
+_$j_1b290:
+	RT
+_$j_1b292:
+	MOV R0, #0H
+	BAL _$j_1b290
+
+; 1B296
+_num_mulxp__:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	BL _l_reg0
+	L R0, _reg0_9
+	BEQ _$j_1b302
+	CMP R0, #0AH
+	BGE _$j_1b310
+	MOV ER0, ER2
+	AND R3, #10000000B
+	BNE _$j_1b2d6
+	BL _byte_to_bcd
+	L ER2, _reg0
+	ADD R0, R2
+	DAA R0
+	ADDC R1, R3
+	DAA R1
+	AND R1, #00001111B
+	CMP R1, #2H
+	BLT _$j_1b2fe
+	CMP R1, #5H
+	BEQ _$j_1b2fe
+	CMP R1, #6H
+	BEQ _$j_1b2fe
+	BAL _$j_1b310
+_$j_1b2d6:
+	MOV ER2, #0H
+	SUB R2, R0
+	SUBC R3, R1
+	MOV ER0, ER2
+	BL _byte_to_bcd
+	L ER2, _reg0
+	SUB R2, R0
+	DAS R2
+	SUBC R3, R1
+	DAS R3
+	AND R3, #00001111B
+	MOV ER0, ER2
+	CMP R1, #2H
+	BLT _$j_1b2fe
+	CMP R1, #5H
+	BEQ _$j_1b2fe
+	CMP R1, #6H
+	BNE _$j_1b316
+_$j_1b2fe:
+	ST ER0, _reg0
+_$j_1b302:
+	BL _st_reg0
+	BL _f_19F94
+	POP QR8
+	POP XR4
+	POP PC
+_$j_1b310:
+	BL _set_reg0_error
+	BAL _$j_1b302
+_$j_1b316:
+	MOV ER0, #0H
+	MOV ER2, #0H
+	LEA _reg0
+	ST XR0, [EA+]
+	ST XR0, [EA+]
+	ST ER0, [EA+]
+	BAL _$j_1b302
+
+; 1B326
+_num_get_exp:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	BL _l_reg0
+	L R0, _reg0_9
+	CMP R0, #0AH
+	BGE _$num_get_exp_ret_5000
+	L ER0, _reg0
+	CMP R1, #1H
+	BEQ _$num_get_exp_nonneg_exp
+	CMP R1, #6H
+	BEQ _$num_get_exp_nonneg_exp
+	MOV R1, #0H
+	SUB R1, R0
+	DAS R1
+	MOV R0, R1
+	MOV R1, #0H
+	BL _bcd_to_byte
+	MOV R1, #0H
+	MOV ER2, #0H
+	SUB R2, R0
+	SUBC R3, R1
+	MOV ER0, ER2
+	BAL _$num_get_exp_ret
+_$num_get_exp_nonneg_exp:
+	MOV R1, #0H
+	BL _bcd_to_byte
+	MOV R1, #0H
+_$num_get_exp_ret:
+	POP QR8
+	POP XR4
+	POP PC
+_$num_get_exp_ret_5000:
+	MOV R0, #0H
+	MOV R1, #50H
+	BAL _$num_get_exp_ret
+
+; 1B378
+_f_1B378:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R3, #1H
+	BAL _$j_1b396
+
+; 1B388
+_num_trunc__:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	MOV R3, #0H
+_$j_1b396:
+	BL _f_15F5A
+	ST R3, _arith_op
+	BL _l_reg0
+	BL _f_18FBC
+	CMP R0, #0H
+	BNE _$j_1b3ce
+	BL _f_18386
+	L R3, _arith_op
+	CMP R3, #0H
+	BEQ _$j_1b3bc
+	BL _f_174E4
+	BAL _$j_1b3c0
+_$j_1b3bc:
+	BL _f_19794
+_$j_1b3c0:
+	BL _st_reg0
+	BL _f_19F94
+	POP QR8
+	POP XR4
+	POP PC
+_$j_1b3ce:
+	BL _set_reg0_error
+	BAL _$j_1b3c0
+
+; 1B3D4
+_num_frombyte:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	CMP R2, #0H
+	BEQ _$j_1b420
+	MOV R0, R2
+	BL _byte_to_bcd
+	CMP R1, #0H
+	BNE _$j_1b402
+	CMP R0, #10H
+	BLT _$j_1b3fa
+	SLLC R1, #4
+	SLL R0, #4
+	MOV R2, #1H
+	BAL _$j_1b404
+_$j_1b3fa:
+	MOV R1, R0
+	MOV R0, #0H
+	MOV R2, #0H
+	BAL _$j_1b404
+_$j_1b402:
+	MOV R2, #2H
+_$j_1b404:
+	MOV R3, #1H
+	MOV ER4, #0H
+	MOV ER6, #0H
+	LEA _reg0
+	ST ER2, [EA+]
+	ST XR4, [EA+]
+	ST ER4, [EA+]
+	ST ER0, [EA+]
+_$j_1b416:
+	BL _st_reg0
+	POP QR8
+	POP XR4
+	POP PC
+_$j_1b420:
+	MOV ER0, #0H
+	MOV ER2, #0H
+	LEA _reg0
+	ST XR0, [EA+]
+	ST XR0, [EA+]
+	ST ER0, [EA+]
+	BAL _$j_1b416
+
+; 1B430
+_num_to_byte:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	BL _l_reg0
+	LEA _reg0
+	L QR0, [EA+]
+	L ER8, [EA+]
+	CMP R9, #0AH
+	BGE _$num_to_byte_invalid
+	CMP R1, #1H
+	BNE _$num_to_byte_invalid
+	CMP R0, #3H
+	BGE _$num_to_byte_invalid
+	CMP R0, #1H
+	BEQ _$num_to_byte_exp_1
+	BGE _$num_to_byte_exp_2
+	MOV R8, R9
+	MOV R9, #0H
+	BAL _$num_to_byte_exp_2
+_$num_to_byte_exp_1:
+	SRLC R8, #4
+	SRL R9, #4
+_$num_to_byte_exp_2:
+	MOV ER0, ER8
+	BL _bcd_to_byte
+_$j_1b46a:
+	POP QR8
+	POP XR4
+	POP PC
+_$num_to_byte_invalid:
+	MOV R0, #0H
+	BAL _$j_1b46a
+
+; 1B474
+_f_1B474:
+	PUSH ER6
+	PUSH QR8
+	LEA 0AH[ER2]
+	L ER6, [EA+]
+	L QR8, [EA+]
+	LEA 0AH[ER0]
+	ST ER6, [EA+]
+	ST QR8, [EA+]
+	BAL _$j_1b48e
+
+; 1B48A
+_num_cpy:
+	PUSH ER6
+	PUSH QR8
+_$j_1b48e:
+	LEA [ER2]
+	L ER6, [EA+]
+	L QR8, [EA+]
+	LEA [ER0]
+	ST ER6, [EA+]
+	ST QR8, [EA+]
+	POP QR8
+	POP ER6
+	RT
+
+; 1B4A0
+_f_1B4A0:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	BL _f_17626
+	BL _st_reg0
+	BAL _$j_1b4ca
+
+; 1B4B6
+_f_1B4B6:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	BL _f_17644
+	BL _st_reg0
+_$j_1b4ca:
+	POP QR8
+	POP XR4
+	POP PC
+
+; 1B4D0
+_f_1B4D0:
+	PUSH LR
+	LEA _arg0_ref
+	ST XR0, [EA+]
+	PUSH XR4
+	PUSH QR8
+	BL _l_reg0
+	BL _mv_reg3_reg0
+	BL _f_17AB6
+	BAL _$j_1b4ca
+
+; 1B4EA
+_invalid_var:
+	L R2, [ER0]
+	AND R2, #00001111B
+	CMP R2, #0AH
+	BGE _$j_1b4fe
+	L R2, 9H[ER0]
+	AND R2, #11110000B
+	BNE _$j_1b4fe
+	MOV R0, #0H
+	RT
+_$j_1b4fe:
+	MOV R0, #1H
+	RT
+
+PUBLIC _f_10000  ; 10000
+PUBLIC _f_105FE  ; 105FE
+PUBLIC _f_10668  ; 10668
+PUBLIC _f_1067A  ; 1067A
+PUBLIC _f_106EC  ; 106EC
+PUBLIC _f_1071A  ; 1071A
+PUBLIC _f_1074C  ; 1074C
+PUBLIC _f_107AA  ; 107AA
+PUBLIC _f_10962  ; 10962
+PUBLIC _f_10B60  ; 10B60
+PUBLIC _f_10B7E  ; 10B7E
+PUBLIC _f_10C1E  ; 10C1E
+PUBLIC _f_10C2C  ; 10C2C
+PUBLIC _f_10CC2  ; 10CC2
+PUBLIC _f_10DA6  ; 10DA6
+PUBLIC _f_10DCA  ; 10DCA
+PUBLIC _f_10E14  ; 10E14
+PUBLIC _f_10E34  ; 10E34
+PUBLIC _f_10E5C  ; 10E5C
+PUBLIC _f_10E7A  ; 10E7A
+PUBLIC _f_10EF8  ; 10EF8
+PUBLIC _f_10F52  ; 10F52
+PUBLIC _f_10F76  ; 10F76
+PUBLIC _f_10F92  ; 10F92
+PUBLIC _f_10FA2  ; 10FA2
+PUBLIC _table_prompt_print  ; 10FB4
+PUBLIC _f_10FC0  ; 10FC0
+PUBLIC _f_10FD2  ; 10FD2
+PUBLIC _f_11030  ; 11030
+PUBLIC _f_11050  ; 11050
+PUBLIC _concat_mathi_l  ; 11080
+PUBLIC _concat_mathi_r  ; 11088
+PUBLIC _concat_mathi_root_l  ; 1108E
+PUBLIC _concat_mathi_root_r  ; 11094
+PUBLIC _f_1109A  ; 1109A
+PUBLIC _f_110A0  ; 110A0
+PUBLIC _f_110A6  ; 110A6
+PUBLIC _f_110AC  ; 110AC
+PUBLIC _f_110B2  ; 110B2
+PUBLIC _f_110C4  ; 110C4
+PUBLIC _f_11142  ; 11142
+PUBLIC _num_nthroot  ; 111E0
+PUBLIC _f_11238  ; 11238
+PUBLIC _f_1126A  ; 1126A
+PUBLIC _f_112AA  ; 112AA
+PUBLIC _f_112B6  ; 112B6
+PUBLIC _f_112BC  ; 112BC
+PUBLIC _set_default_settings  ; 112CE
+PUBLIC _f_112EA  ; 112EA
+PUBLIC _f_112F2  ; 112F2
+PUBLIC _f_112F4  ; 112F4
+PUBLIC _f_11302  ; 11302
+PUBLIC _f_11314  ; 11314
+PUBLIC _f_11344  ; 11344
+PUBLIC _f_11462  ; 11462
+PUBLIC _f_11478  ; 11478
+PUBLIC _f_1151A  ; 1151A
+PUBLIC _f_11596  ; 11596
+PUBLIC _f_11602  ; 11602
+PUBLIC _f_11638  ; 11638
+PUBLIC _f_116A4  ; 116A4
+PUBLIC _f_117F6  ; 117F6
+PUBLIC _f_1184E  ; 1184E
+PUBLIC _f_118D0  ; 118D0
+PUBLIC _f_1195C  ; 1195C
+PUBLIC _f_11964  ; 11964
+PUBLIC _f_119BC  ; 119BC
+PUBLIC _f_11A64  ; 11A64
+PUBLIC _f_11A9C  ; 11A9C
+PUBLIC _f_11AE2  ; 11AE2
+PUBLIC _f_11B18  ; 11B18
+PUBLIC _f_11B68  ; 11B68
+PUBLIC _f_11BA6  ; 11BA6
+PUBLIC _f_11BFA  ; 11BFA
+PUBLIC _f_11C36  ; 11C36
+PUBLIC _f_11C7E  ; 11C7E
+PUBLIC _f_11CBA  ; 11CBA
+PUBLIC _f_11CF8  ; 11CF8
+PUBLIC _f_11D32  ; 11D32
+PUBLIC _f_11D7C  ; 11D7C
+PUBLIC _f_11D94  ; 11D94
+PUBLIC _f_11D9C  ; 11D9C
+PUBLIC _f_11DA4  ; 11DA4
+PUBLIC _f_11DAC  ; 11DAC
+PUBLIC _f_11DB4  ; 11DB4
+PUBLIC _f_11DBC  ; 11DBC
+PUBLIC _f_11DE2  ; 11DE2
+PUBLIC _f_11E0A  ; 11E0A
+PUBLIC _f_11E3C  ; 11E3C
+PUBLIC _f_11EA4  ; 11EA4
+PUBLIC _f_11EEE  ; 11EEE
+PUBLIC _f_11F20  ; 11F20
+PUBLIC _f_11F48  ; 11F48
+PUBLIC _f_11FB0  ; 11FB0
+PUBLIC _f_12018  ; 12018
+PUBLIC _f_12080  ; 12080
+PUBLIC _f_120E8  ; 120E8
+PUBLIC _f_12150  ; 12150
+PUBLIC _f_121A6  ; 121A6
+PUBLIC _f_122CE  ; 122CE
+PUBLIC _f_1232A  ; 1232A
+PUBLIC _f_123E2  ; 123E2
+PUBLIC _f_12424  ; 12424
+PUBLIC _f_12472  ; 12472
+PUBLIC _f_1254C  ; 1254C
+PUBLIC _f_1267C  ; 1267C
+PUBLIC _f_127DE  ; 127DE
+PUBLIC _f_12836  ; 12836
+PUBLIC _f_12944  ; 12944
+PUBLIC _f_12A32  ; 12A32
+PUBLIC _f_12BA0  ; 12BA0
+PUBLIC _f_12C3A  ; 12C3A
+PUBLIC _f_12C4C  ; 12C4C
+PUBLIC _f_12C68  ; 12C68
+PUBLIC _f_12CB6  ; 12CB6
+PUBLIC _f_12CE0  ; 12CE0
+PUBLIC _f_12D1E  ; 12D1E
+PUBLIC _f_12D5A  ; 12D5A
+PUBLIC _f_12DA0  ; 12DA0
+PUBLIC _f_12DD2  ; 12DD2
+PUBLIC _f_12E02  ; 12E02
+PUBLIC _f_12E32  ; 12E32
+PUBLIC _f_12E68  ; 12E68
+PUBLIC _f_12E98  ; 12E98
+PUBLIC _f_12EAE  ; 12EAE
+PUBLIC _f_12EE4  ; 12EE4
+PUBLIC _f_12F18  ; 12F18
+PUBLIC _f_12F2E  ; 12F2E
+PUBLIC _f_12F50  ; 12F50
+PUBLIC _f_12F66  ; 12F66
+PUBLIC _f_12F94  ; 12F94
+PUBLIC _f_12FC4  ; 12FC4
+PUBLIC _f_12FF4  ; 12FF4
+PUBLIC _f_13024  ; 13024
+PUBLIC _f_1305A  ; 1305A
+PUBLIC _f_13070  ; 13070
+PUBLIC _f_13086  ; 13086
+PUBLIC _f_1309C  ; 1309C
+PUBLIC _num_stat_P  ; 130B2
+PUBLIC _f_13102  ; 13102
+PUBLIC _num_stat_Q  ; 13152
+PUBLIC _num_stat_R  ; 1316C
+PUBLIC _num_stat_to_t  ; 13190
+PUBLIC _f_131F0  ; 131F0
+PUBLIC _f_13226  ; 13226
+PUBLIC _num_random  ; 13234
+PUBLIC _mv_n4_1d10  ; 132DC
+PUBLIC _num_normalize  ; 132EC
+PUBLIC _f_132F6  ; 132F6
+PUBLIC _num_randint  ; 1333A
+PUBLIC _f_133CE  ; 133CE
+PUBLIC _f_133D6  ; 133D6
+PUBLIC _num_mul_2__  ; 133E2
+PUBLIC _mv_n8_n4  ; 133E6
+PUBLIC _mv_n0_n4  ; 133EA
+PUBLIC _mv_n10_n4  ; 133EE
+PUBLIC _mv_n10_n2  ; 133F2
+PUBLIC _mv_n0_n2  ; 133F4
+PUBLIC _num_invalid_zf__  ; 133FA
+PUBLIC _mat_add  ; 13404
+PUBLIC _f_13474  ; 13474
+PUBLIC _f_13488  ; 13488
+PUBLIC _f_134A0  ; 134A0
+PUBLIC _f_134B0  ; 134B0
+PUBLIC _mat_sub  ; 134BE
+PUBLIC _mat_mul_num  ; 134C6
+PUBLIC _mat_div  ; 13532
+PUBLIC _f_1353A  ; 1353A
+PUBLIC _f_135CE  ; 135CE
+PUBLIC _f_135D6  ; 135D6
+PUBLIC _mat_mul  ; 135DE
+PUBLIC _mat_det  ; 1373C
+PUBLIC _f_13860  ; 13860
+PUBLIC _f_138BC  ; 138BC
+PUBLIC _f_13982  ; 13982
+PUBLIC _f_139A2  ; 139A2
+PUBLIC _f_139AE  ; 139AE
+PUBLIC _f_13B36  ; 13B36
+PUBLIC _f_13B42  ; 13B42
+PUBLIC _f_13BA6  ; 13BA6
+PUBLIC _f_13BAE  ; 13BAE
+PUBLIC _f_13BB4  ; 13BB4
+PUBLIC _f_13BBC  ; 13BBC
+PUBLIC _f_13BC4  ; 13BC4
+PUBLIC _f_13BCC  ; 13BCC
+PUBLIC _f_13BD4  ; 13BD4
+PUBLIC _f_13BDC  ; 13BDC
+PUBLIC _f_13BE2  ; 13BE2
+PUBLIC _f_13BEA  ; 13BEA
+PUBLIC _f_13E54  ; 13E54
+PUBLIC _f_14158  ; 14158
+PUBLIC _f_1416C  ; 1416C
+PUBLIC _f_14182  ; 14182
+PUBLIC _f_1418E  ; 1418E
+PUBLIC _f_1419E  ; 1419E
+PUBLIC _f_141AA  ; 141AA
+PUBLIC _f_141B4  ; 141B4
+PUBLIC _f_141BC  ; 141BC
+PUBLIC _f_141C6  ; 141C6
+PUBLIC _f_141D0  ; 141D0
+PUBLIC _f_141DA  ; 141DA
+PUBLIC _f_1438E  ; 1438E
+PUBLIC _f_143B0  ; 143B0
+PUBLIC _f_143C2  ; 143C2
+PUBLIC _f_143D0  ; 143D0
+PUBLIC _f_143EA  ; 143EA
+PUBLIC _f_14404  ; 14404
+PUBLIC _f_1444C  ; 1444C
+PUBLIC _f_144F4  ; 144F4
+PUBLIC _f_14516  ; 14516
+PUBLIC _f_14532  ; 14532
+PUBLIC _f_14560  ; 14560
+PUBLIC _f_14562  ; 14562
+PUBLIC _f_1458C  ; 1458C
+PUBLIC _f_1459C  ; 1459C
+PUBLIC _f_145E2  ; 145E2
+PUBLIC _f_14612  ; 14612
+PUBLIC _f_1467E  ; 1467E
+PUBLIC _f_1470E  ; 1470E
+PUBLIC _f_14712  ; 14712
+PUBLIC _f_14726  ; 14726
+PUBLIC _f_1473A  ; 1473A
+PUBLIC _f_14748  ; 14748
+PUBLIC _f_14758  ; 14758
+PUBLIC _f_14792  ; 14792
+PUBLIC _f_14796  ; 14796
+PUBLIC _f_1479A  ; 1479A
+PUBLIC _f_147C4  ; 147C4
+PUBLIC _f_14800  ; 14800
+PUBLIC _f_1481C  ; 1481C
+PUBLIC _num_rnd  ; 1483C
+PUBLIC _cmplx_rnd  ; 148B4
+PUBLIC _cmplx_negate  ; 148CC
+PUBLIC _f_148E0  ; 148E0
+PUBLIC _f_1491C  ; 1491C
+PUBLIC _f_14958  ; 14958
+PUBLIC _f_1499C  ; 1499C
+PUBLIC _f_149D8  ; 149D8
+PUBLIC _f_14A00  ; 14A00
+PUBLIC _f_14A54  ; 14A54
+PUBLIC _num_cmplx_pow  ; 14A7E
+PUBLIC _num_add  ; 14AB2
+PUBLIC _num_sub  ; 14ABE
+PUBLIC _num_mul  ; 14ACA
+PUBLIC _num_div  ; 14AD6
+PUBLIC _f_14AEC  ; 14AEC
+PUBLIC _cmplx_inverse  ; 14B08
+PUBLIC _cmplx_add  ; 14B1C
+PUBLIC _cmplx_sub  ; 14B30
+PUBLIC _cmplx_mul  ; 14B44
+PUBLIC _cmplx_div  ; 14BA8
+PUBLIC _f_14BBC  ; 14BBC
+PUBLIC _num_frac  ; 14BD6
+PUBLIC _num_pol  ; 14CD8
+PUBLIC _num_rec  ; 14CE0
+PUBLIC _num_percent  ; 14D00
+PUBLIC _num_deg  ; 14D12
+PUBLIC _num_rad  ; 14D16
+PUBLIC _num_grad  ; 14D1A
+PUBLIC _f_14D24  ; 14D24
+PUBLIC _num_sin  ; 14DE6
+PUBLIC _num_cos  ; 14DF0
+PUBLIC _num_tan  ; 14E86
+PUBLIC _f_14EB4  ; 14EB4
+PUBLIC _f_15160  ; 15160
+PUBLIC _f_15174  ; 15174
+PUBLIC _f_15178  ; 15178
+PUBLIC _f_1517C  ; 1517C
+PUBLIC _f_151D6  ; 151D6
+PUBLIC _f_15204  ; 15204
+PUBLIC _f_15228  ; 15228
+PUBLIC _f_15238  ; 15238
+PUBLIC _f_15250  ; 15250
+PUBLIC _f_152A4  ; 152A4
+PUBLIC _f_152D8  ; 152D8
+PUBLIC _f_15314  ; 15314
+PUBLIC _f_1533A  ; 1533A
+PUBLIC _f_1535A  ; 1535A
+PUBLIC _f_15402  ; 15402
+PUBLIC _f_1547E  ; 1547E
+PUBLIC _f_15486  ; 15486
+PUBLIC _f_1548E  ; 1548E
+PUBLIC _f_154CE  ; 154CE
+PUBLIC _f_154D6  ; 154D6
+PUBLIC _f_154E0  ; 154E0
+PUBLIC _f_154F2  ; 154F2
+PUBLIC _f_15526  ; 15526
+PUBLIC _f_15532  ; 15532
+PUBLIC _f_1553C  ; 1553C
+PUBLIC _f_15544  ; 15544
+PUBLIC _f_15546  ; 15546
+PUBLIC _f_15596  ; 15596
+PUBLIC _f_155AC  ; 155AC
+PUBLIC _f_15662  ; 15662
+PUBLIC _num_sum__  ; 15672
+PUBLIC _f_15682  ; 15682
+PUBLIC _f_15712  ; 15712
+PUBLIC _f_157B0  ; 157B0
+PUBLIC _f_15802  ; 15802
+PUBLIC _f_158C6  ; 158C6
+PUBLIC _f_15AA0  ; 15AA0
+PUBLIC _f_15AFE  ; 15AFE
+PUBLIC _f_15B64  ; 15B64
+PUBLIC _f_15B96  ; 15B96
+PUBLIC _f_15C30  ; 15C30
+PUBLIC _f_15CAC  ; 15CAC
+PUBLIC _num_eval__  ; 15CE4
+PUBLIC _f_15CEE  ; 15CEE
+PUBLIC _f_15DE8  ; 15DE8
+PUBLIC _f_15EE4  ; 15EE4
+PUBLIC _f_15EF4  ; 15EF4
+PUBLIC _f_15F06  ; 15F06
+PUBLIC _f_15F2C  ; 15F2C
+PUBLIC _f_15F5A  ; 15F5A
+PUBLIC _f_15F8A  ; 15F8A
+PUBLIC _f_16052  ; 16052
+PUBLIC _f_16060  ; 16060
+PUBLIC _f_160E8  ; 160E8
+PUBLIC _f_16100  ; 16100
+PUBLIC _f_161F6  ; 161F6
+PUBLIC _f_16208  ; 16208
+PUBLIC _f_16224  ; 16224
+PUBLIC _f_162D6  ; 162D6
+PUBLIC _f_162FE  ; 162FE
+PUBLIC _f_16382  ; 16382
+PUBLIC _f_16398  ; 16398
+PUBLIC _f_16424  ; 16424
+PUBLIC _f_16454  ; 16454
+PUBLIC _f_16474  ; 16474
+PUBLIC _f_16482  ; 16482
+PUBLIC _f_1648C  ; 1648C
+PUBLIC _f_16496  ; 16496
+PUBLIC _f_16524  ; 16524
+PUBLIC _f_16612  ; 16612
+PUBLIC _f_1661C  ; 1661C
+PUBLIC _f_1663A  ; 1663A
+PUBLIC _f_16646  ; 16646
+PUBLIC _f_16666  ; 16666
+PUBLIC _f_166A2  ; 166A2
+PUBLIC _f_16700  ; 16700
+PUBLIC _f_16728  ; 16728
+PUBLIC _f_1674E  ; 1674E
+PUBLIC _f_1676E  ; 1676E
+PUBLIC _f_1678A  ; 1678A
+PUBLIC _f_167C2  ; 167C2
+PUBLIC _f_167F2  ; 167F2
+PUBLIC _f_1680A  ; 1680A
+PUBLIC _f_1683E  ; 1683E
+PUBLIC _f_168B8  ; 168B8
+PUBLIC _f_168DE  ; 168DE
+PUBLIC _f_168F8  ; 168F8
+PUBLIC _f_16920  ; 16920
+PUBLIC _f_16938  ; 16938
+PUBLIC _f_169A0  ; 169A0
+PUBLIC _f_169C0  ; 169C0
+PUBLIC _f_169FC  ; 169FC
+PUBLIC _f_16A24  ; 16A24
+PUBLIC _f_16B66  ; 16B66
+PUBLIC _f_16BAA  ; 16BAA
+PUBLIC _f_16BB2  ; 16BB2
+PUBLIC _f_16BF6  ; 16BF6
+PUBLIC _f_16C54  ; 16C54
+PUBLIC _f_16CE4  ; 16CE4
+PUBLIC _f_16CF0  ; 16CF0
+PUBLIC _num_cube  ; 16D30
+PUBLIC _num_square  ; 16D6C
+PUBLIC _num_inverse  ; 16D8E
+PUBLIC _f_16DCA  ; 16DCA
+PUBLIC _f_16E44  ; 16E44
+PUBLIC _cmplx_square_1  ; 16EA2
+PUBLIC _f_16EE2  ; 16EE2
+PUBLIC _f_16F3A  ; 16F3A
+PUBLIC _f_16F5E  ; 16F5E
+PUBLIC _f_17052  ; 17052
+PUBLIC _f_1709E  ; 1709E
+PUBLIC _f_170B8  ; 170B8
+PUBLIC _f_170D0  ; 170D0
+PUBLIC _f_170F0  ; 170F0
+PUBLIC _f_17110  ; 17110
+PUBLIC _cmplx_cube  ; 17150
+PUBLIC _cmplx_square  ; 1717C
+PUBLIC _f_17186  ; 17186
+PUBLIC _f_171D2  ; 171D2
+PUBLIC _f_171E6  ; 171E6
+PUBLIC _f_17202  ; 17202
+PUBLIC _f_1724A  ; 1724A
+PUBLIC _f_1726A  ; 1726A
+PUBLIC _f_172B4  ; 172B4
+PUBLIC _f_17398  ; 17398
+PUBLIC _set_reg1_10  ; 173C0
+PUBLIC _set_reg1_100d9  ; 173D6
+PUBLIC _set_reg1_1d10  ; 173F0
+PUBLIC _set_reg1_200  ; 1740A
+PUBLIC _set_reg1_180  ; 17424
+PUBLIC _num_cmp_reg01  ; 1743C
+PUBLIC _byte_to_bcd  ; 17498
+PUBLIC _bcd_to_byte  ; 174C2
+PUBLIC _f_174E4  ; 174E4
+PUBLIC _f_174FC  ; 174FC
+PUBLIC _f_17626  ; 17626
+PUBLIC _f_17644  ; 17644
+PUBLIC _f_17662  ; 17662
+PUBLIC _f_17698  ; 17698
+PUBLIC _f_176B4  ; 176B4
+PUBLIC _f_1776A  ; 1776A
+PUBLIC _mv_reg1_reg5  ; 1782C
+PUBLIC _mv_reg5_reg1  ; 1783E
+PUBLIC _mv_reg5_reg0  ; 17850
+PUBLIC _mv_reg0_reg4  ; 17862
+PUBLIC _mv_reg1_reg4  ; 17874
+PUBLIC _mv_reg4_reg0  ; 17886
+PUBLIC _mv_reg1_reg6  ; 17898
+PUBLIC _mv_reg6_reg0  ; 178AA
+PUBLIC _mv_reg1_reg3  ; 178BC
+PUBLIC _mv_reg3_reg0  ; 178CE
+PUBLIC _mv_reg1_reg0  ; 178E0
+PUBLIC _mv_reg0_reg1  ; 178F2
+PUBLIC _mv_reg6_reg1  ; 17904
+PUBLIC _mv_reg0_reg6  ; 17916
+PUBLIC _mv_reg0_reg3  ; 17928
+PUBLIC _mv_reg3_reg1  ; 1793A
+PUBLIC _f_17956  ; 17956
+PUBLIC _f_1798C  ; 1798C
+PUBLIC _f_179B0  ; 179B0
+PUBLIC _f_179B8  ; 179B8
+PUBLIC _f_17A18  ; 17A18
+PUBLIC _f_17AB6  ; 17AB6
+PUBLIC _f_17AD2  ; 17AD2
+PUBLIC _f_17ADE  ; 17ADE
+PUBLIC _f_17AE8  ; 17AE8
+PUBLIC _f_17B6E  ; 17B6E
+PUBLIC _f_17B78  ; 17B78
+PUBLIC _f_17BBA  ; 17BBA
+PUBLIC _f_17BF4  ; 17BF4
+PUBLIC _f_17C04  ; 17C04
+PUBLIC _num_arith_r  ; 17D56
+PUBLIC _f_17DC4  ; 17DC4
+PUBLIC _f_17E26  ; 17E26
+PUBLIC _f_17F4A  ; 17F4A
+PUBLIC _num_unk_1_r__  ; 17F5E
+PUBLIC _f_1805A  ; 1805A
+PUBLIC _f_180EA  ; 180EA
+PUBLIC _f_1820E  ; 1820E
+PUBLIC _f_182B4  ; 182B4
+PUBLIC _f_182DC  ; 182DC
+PUBLIC _f_182E6  ; 182E6
+PUBLIC _f_18386  ; 18386
+PUBLIC _f_18390  ; 18390
+PUBLIC _f_1850C  ; 1850C
+PUBLIC _f_18540  ; 18540
+PUBLIC _f_18562  ; 18562
+PUBLIC _f_18576  ; 18576
+PUBLIC _f_18740  ; 18740
+PUBLIC _f_18818  ; 18818
+PUBLIC _f_188F0  ; 188F0
+PUBLIC _f_188FE  ; 188FE
+PUBLIC _f_18A0E  ; 18A0E
+PUBLIC _f_18A2A  ; 18A2A
+PUBLIC _f_18AAE  ; 18AAE
+PUBLIC _f_18B00  ; 18B00
+PUBLIC _f_18B46  ; 18B46
+PUBLIC _f_18B90  ; 18B90
+PUBLIC _f_18BA4  ; 18BA4
+PUBLIC _f_18BCA  ; 18BCA
+PUBLIC _f_18BF0  ; 18BF0
+PUBLIC _f_18C16  ; 18C16
+PUBLIC _f_18C3C  ; 18C3C
+PUBLIC _f_18C62  ; 18C62
+PUBLIC _f_18C88  ; 18C88
+PUBLIC _f_18DA8  ; 18DA8
+PUBLIC _f_18DB6  ; 18DB6
+PUBLIC _f_18DD4  ; 18DD4
+PUBLIC _f_18F2E  ; 18F2E
+PUBLIC _f_18F46  ; 18F46
+PUBLIC _f_18F74  ; 18F74
+PUBLIC _f_18F8C  ; 18F8C
+PUBLIC _invalid_reg1  ; 18FA2
+PUBLIC _invalid_reg0  ; 18FAA
+PUBLIC _f_18FBC  ; 18FBC
+PUBLIC _f_18FD0  ; 18FD0
+PUBLIC _f_19004  ; 19004
+PUBLIC _f_19012  ; 19012
+PUBLIC _f_19026  ; 19026
+PUBLIC _f_1910E  ; 1910E
+PUBLIC _f_19122  ; 19122
+PUBLIC _f_19144  ; 19144
+PUBLIC _f_19158  ; 19158
+PUBLIC _f_19432  ; 19432
+PUBLIC _f_19444  ; 19444
+PUBLIC _f_19458  ; 19458
+PUBLIC _f_1946A  ; 1946A
+PUBLIC _f_1947E  ; 1947E
+PUBLIC _f_194A8  ; 194A8
+PUBLIC _f_194D2  ; 194D2
+PUBLIC _f_194FC  ; 194FC
+PUBLIC _f_19526  ; 19526
+PUBLIC _f_19586  ; 19586
+PUBLIC _f_195BC  ; 195BC
+PUBLIC _f_195E8  ; 195E8
+PUBLIC _f_19672  ; 19672
+PUBLIC _f_1970A  ; 1970A
+PUBLIC _f_19794  ; 19794
+PUBLIC _f_1979E  ; 1979E
+PUBLIC _f_19850  ; 19850
+PUBLIC _f_198F4  ; 198F4
+PUBLIC _f_199AE  ; 199AE
+PUBLIC _f_19A12  ; 19A12
+PUBLIC _f_19BB4  ; 19BB4
+PUBLIC _f_19BD6  ; 19BD6
+PUBLIC _f_19BF4  ; 19BF4
+PUBLIC _num_div_r  ; 19C0E
+PUBLIC _f_19D1E  ; 19D1E
+PUBLIC _f_19D3C  ; 19D3C
+PUBLIC _num_mul_r  ; 19D58
+PUBLIC _f_19ED0  ; 19ED0
+PUBLIC _f_19ED8  ; 19ED8
+PUBLIC _f_19EFC  ; 19EFC
+PUBLIC _f_19F04  ; 19F04
+PUBLIC _l_regs  ; 19F28
+PUBLIC _l_reg0  ; 19F30
+PUBLIC _l_reg1  ; 19F50
+PUBLIC _st_reg0  ; 19F5E
+PUBLIC _st_reg1  ; 19F84
+PUBLIC _f_19F94  ; 19F94
+PUBLIC _f_19FA6  ; 19FA6
+PUBLIC _f_19FD6  ; 19FD6
+PUBLIC _f_19FF8  ; 19FF8
+PUBLIC _f_1A01C  ; 1A01C
+PUBLIC _num_sub_r  ; 1A044
+PUBLIC _num_add_r  ; 1A072
+PUBLIC _num_sub1_r__  ; 1A092
+PUBLIC _num_add1_r__  ; 1A0BA
+PUBLIC _f_1A23C  ; 1A23C
+PUBLIC _reg0_lt_reg1_abs  ; 1A362
+PUBLIC _set_reg0_error  ; 1A3E6
+PUBLIC _f_1A3FC  ; 1A3FC
+PUBLIC _f_1A410  ; 1A410
+PUBLIC _f_1A424  ; 1A424
+PUBLIC _f_1A438  ; 1A438
+PUBLIC _f_1A44C  ; 1A44C
+PUBLIC _f_1A460  ; 1A460
+PUBLIC _num_log  ; 1A4EE
+PUBLIC _num_combi  ; 1A502
+PUBLIC _num_permu  ; 1A516
+PUBLIC _f_1A52A  ; 1A52A
+PUBLIC _f_1A5A4  ; 1A5A4
+PUBLIC _num_factorial  ; 1A5A6
+PUBLIC _f_1A5E2  ; 1A5E2
+PUBLIC _f_1A5F6  ; 1A5F6
+PUBLIC _f_1A60A  ; 1A60A
+PUBLIC _num_10xp  ; 1A61E
+PUBLIC _num_exp  ; 1A632
+PUBLIC _num_ln  ; 1A646
+PUBLIC _num_log10  ; 1A65A
+PUBLIC _num_abs  ; 1A716
+PUBLIC _f_1A744  ; 1A744
+PUBLIC _num_unk_1_1__  ; 1A7FE
+PUBLIC _num_atanh  ; 1A834
+PUBLIC _num_acosh  ; 1A846
+PUBLIC _num_asinh  ; 1A858
+PUBLIC _num_tanh  ; 1A86A
+PUBLIC _num_cosh  ; 1A87C
+PUBLIC _num_sinh  ; 1A88E
+PUBLIC _num_atan  ; 1A8A0
+PUBLIC _num_acos  ; 1A8B2
+PUBLIC _num_asin  ; 1A8C4
+PUBLIC _f_1A8D6  ; 1A8D6
+PUBLIC _f_1A8E8  ; 1A8E8
+PUBLIC _f_1A8FA  ; 1A8FA
+PUBLIC _f_1A960  ; 1A960
+PUBLIC _f_1A9A4  ; 1A9A4
+PUBLIC _f_1A9C0  ; 1A9C0
+PUBLIC _num_sub_1  ; 1A9EC
+PUBLIC _num_add_1  ; 1AA00
+PUBLIC _num_div_1  ; 1AA14
+PUBLIC _num_mul_1  ; 1AA28
+PUBLIC _f_1AAC6  ; 1AAC6
+PUBLIC _num_sqrt  ; 1AADC
+PUBLIC _num_cbrt  ; 1ABCC
+PUBLIC _f_1ABE0  ; 1ABE0
+PUBLIC _f_1ABF0  ; 1ABF0
+PUBLIC _f_1AC00  ; 1AC00
+PUBLIC _f_1AC56  ; 1AC56
+PUBLIC _f_1AC6A  ; 1AC6A
+PUBLIC _f_1AC7E  ; 1AC7E
+PUBLIC _f_1AC92  ; 1AC92
+PUBLIC _f_1ACD6  ; 1ACD6
+PUBLIC _f_1ACEA  ; 1ACEA
+PUBLIC _f_1ACFE  ; 1ACFE
+PUBLIC _f_1AD86  ; 1AD86
+PUBLIC _f_1ADF0  ; 1ADF0
+PUBLIC _f_1AE06  ; 1AE06
+PUBLIC _cmplx_abs  ; 1AE26
+PUBLIC _f_1AF44  ; 1AF44
+PUBLIC _f_1AFB8  ; 1AFB8
+PUBLIC _f_1AFC8  ; 1AFC8
+PUBLIC _f_1AFD8  ; 1AFD8
+PUBLIC _num_invalid__  ; 1B03E
+PUBLIC _num_cmp  ; 1B0A8
+PUBLIC _f_1B0DC  ; 1B0DC
+PUBLIC _f_1B0F0  ; 1B0F0
+PUBLIC _num_fromdigit  ; 1B0F6
+PUBLIC _f_1B12C  ; 1B12C
+PUBLIC _f_1B152  ; 1B152
+PUBLIC _num_negate  ; 1B1B8
+PUBLIC _f_1B208  ; 1B208
+PUBLIC _f_1B238  ; 1B238
+PUBLIC _f_1B288  ; 1B288
+PUBLIC _num_mulxp__  ; 1B296
+PUBLIC _num_get_exp  ; 1B326
+PUBLIC _f_1B378  ; 1B378
+PUBLIC _num_trunc__  ; 1B388
+PUBLIC _num_frombyte  ; 1B3D4
+PUBLIC _num_to_byte  ; 1B430
+PUBLIC _f_1B474  ; 1B474
+PUBLIC _num_cpy  ; 1B48A
+PUBLIC _f_1B4A0  ; 1B4A0
+PUBLIC _f_1B4B6  ; 1B4B6
+PUBLIC _f_1B4D0  ; 1B4D0
+PUBLIC _invalid_var  ; 1B4EA
+
+EXTRN CODE	: _smart_strlen		; 02750
+EXTRN CODE	: _smart_strcpy		; 0275A
+EXTRN CODE	: _smart_strcat		; 0276E
+EXTRN CODE	: _f_02AAA			; 02AAA
+EXTRN CODE	: _f_02AB2			; 02AB2
+EXTRN CODE	: _f_02ACA			; 02ACA
+EXTRN CODE	: _buffer_clear		; 02D38
+EXTRN CODE	: _f_02D52			; 02D52
+EXTRN CODE	: _line_print		; 02E7A
+EXTRN CODE	: _num_sum_1__		; 03726
+EXTRN CODE	: _f_03A72			; 03A72
+EXTRN CODE	: _f_03E72			; 03E72
+EXTRN CODE	: _f_043CE			; 043CE
+EXTRN CODE	: _f_0441A			; 0441A
+EXTRN CODE	: _f_04448			; 04448
+EXTRN CODE	: _memzero			; 044A8
+EXTRN CODE	: _f_044B6			; 044B6
+EXTRN CODE	: _l_var			; 044EE
+EXTRN CODE	: _st_var			; 0454E
+EXTRN CODE	: _f_0479C			; 0479C
+EXTRN CODE	: _check_ac			; 04806
+EXTRN CODE	: __imodu8lw		; 04D54
+EXTRN CODE	: _num_unk_1__		; 04D64
+EXTRN CODE	: _num_unk_2__		; 04DE0
+EXTRN CODE	: _f_05658			; 05658
+EXTRN CODE	: _memcpy_nn		; 07EF6
+EXTRN CODE	: _f_085D2			; 085D2
+EXTRN CODE	: _f_087BA			; 087BA
+EXTRN CODE	: _f_08A0A			; 08A0A
+EXTRN CODE	: _f_0BC34			; 0BC34
+EXTRN CODE	: _f_0BC90			; 0BC90

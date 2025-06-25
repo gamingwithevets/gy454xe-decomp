@@ -23,9 +23,6 @@
         cseg    at 0:4h
         dw      $$brk_reset
 
-        cseg    at 0:6h
-        dw      0ffffh
-
 
 $$NCODml610casesplw segment code #0
         rseg    $$NCODml610casesplw
@@ -217,7 +214,7 @@ $$init_info_end segment table any
         rseg    $$init_info_end
         dw      0ffffh
 
-$$NINITVAR segment data 2 #0
+$$NINITVAR segment data 2 #0	
 $$NINITTAB segment table 2 any
 
 ;---------------------------------------------------------------
