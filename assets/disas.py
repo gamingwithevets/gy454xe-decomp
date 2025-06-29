@@ -2,7 +2,7 @@
 
 import math
 import pyu8disasx.disas as disas
-import labeltool.labeltool as labeltool
+import pyu8disasx.labeltool.labeltool as labeltool
 
 def process_ins_param(param):
 	if type(param) == list: return ', '.join(param)

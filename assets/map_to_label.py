@@ -1,6 +1,6 @@
 import sys
 import re
-import labeltool.labeltool as labeltool
+import pyu8disasx.labeltool.labeltool as labeltool
 
 
 def map_to_label(mapfile, outfile):

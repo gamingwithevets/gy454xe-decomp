@@ -254,7 +254,7 @@ enum error {
 	ERROR_TIMEOUT		= 9,
 	ERROR_VARIABLE		= 10,
 	ERROR_NULL			= 11
-}
+};
 
 // RAM addresses
 
