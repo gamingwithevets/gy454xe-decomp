@@ -1,7 +1,7 @@
 #include <string.h>
 #include "consts.h"
 #include "generals.h"
-#include "unk1.h"
+#include "input.h"
 #include "unk2.h"
 #include "unk3.h"
 #include "unk4.h"
@@ -48,7 +48,7 @@ typedef struct {
 
 // Static declarations (placed first so we can define jump table)
 // 0995E
-static char f_0995E(f_09962_struct *a);
+static char keyfunc_nop(f_09962_struct *a);
 // 0B226
 static void f_0B226(getscancode_struct *a);
 // 0B370
@@ -57,14 +57,28 @@ static void copy_cursor_from_scr(char *cursor, char *scr);
 static void copy_cursor_to_scr(char *scr, char *cursor);
 // 0B67E
 static void f_0B67E(void);
+// 0B782
+static char is_rcl_keycode(char keycode);
+// 0B79C
+static char is_sto_keycode(char keycode);
 // 0B7E6
 static char show_error(char idx);
+// 0B984
+static char conv_func_token(char keycode);
 // 0B9C8
 static char f_0B9C8(f_09962_struct *a);
 // 0BA28
 static void f_0BA28(f_09962_struct *a);
+// 0BB42
+static char f_0BB42(char *a);
 // 0BEEE
 static char f_0BEEE(f_09962_struct *a);
+// 0BF8A
+static char f_0BF8A(void);
+// 0BFDC
+static char f_0BFDC(f_09962_struct *a);
+// 0C08C
+static void f_0C08C(f_09962_struct *a);
 // 0C148
 static char f_0C148(f_09962_struct *a);
 // 0C1A0
@@ -72,76 +86,99 @@ static char f_0C1A0(f_09962_struct *a);
 // 0C1D4
 static char f_0C1D4(f_09962_struct *a);
 // 0C22E
-static char f_0C22E(f_09962_struct *a);
+static char keyfunc_ac(f_09962_struct *a);
 // 0C25A
-static char f_0C25A(f_09962_struct *a);
+static char keyfunc_sto_rcl(f_09962_struct *a);
 // 0C316
-static char f_0C316(f_09962_struct *a);
+static char keyfunc_rcl(f_09962_struct *a);
 // 0C31A
-static char f_0C31A(f_09962_struct *a);
+static char keyfunc_sto(f_09962_struct *a);
 // 0C31E
-static char f_0C31E(f_09962_struct *a);
+static char keyfunc_exe(f_09962_struct *a);
 // 0C64A
-static char f_0C64A(f_09962_struct *a);
+static char keyfunc_abc(f_09962_struct *a);
 // 0C692
-static char f_0C692(f_09962_struct *a);
+static char keyfunc_dc(f_09962_struct *a);
 // 0C6DE
-static char f_0C6DE(f_09962_struct *a);
+static char keyfunc_dms(f_09962_struct *a);
 // 0C728
-static char f_0C728(f_09962_struct *a);
+static char keyfunc_fact(f_09962_struct *a);
 // 0C72C
 static void f_0C72C(f_09962_struct *a);
 // 0C74C
-static char f_0C74C(f_09962_struct *a);
+static char keyfunc_eng(f_09962_struct *a);
 // 0C77A
-static char f_0C77A(f_09962_struct *a);
+static char keyfunc_eng_r(f_09962_struct *a);
 // 0C7A8
-static char f_0C7A8(f_09962_struct *a);
+static char keyfunc_del(f_09962_struct *a);
 // 0C7C2
-static char f_0C7C2(f_09962_struct *a);
+static char keyfunc_mov_x(f_09962_struct *a);
 // 0C806
-static char f_0C806(f_09962_struct *a);
+static char keyfunc_mov_y(f_09962_struct *a);
 // 0C836
-static char f_0C836(f_09962_struct *a);
+static char keyfunc_base(f_09962_struct *a);
 // 0C86A
-static char f_0C86A(f_09962_struct *a);
+static char keyfunc_mode(f_09962_struct *a);
 // 0C874
-static char f_0C874(f_09962_struct *a);
+static char keyfunc_setup(f_09962_struct *a);
 
 // 01FB6
-static char (* const jmp_01fb6[])(f_09962_struct *) = {
-	f_0C806,
-	f_0C806,
-	f_0C7C2,
-	f_0C7C2,
-	f_0C86A,
-	f_0C874,
-	f_0C22E,
-	f_0995E,
-	f_0995E,
-	f_0995E,
-	f_0C316,
-	f_0C31A,
-	f_0995E,
-	f_0C31E,
-	f_0C31A,
-	f_0C31A,
-	f_0C31E,
-	f_0C728,
-	f_0C836,
-	f_0C836,
-	f_0C836,
-	f_0C836,
-	f_0C6DE,
-	f_0C6DE,
-	f_0C74C,
-	f_0C77A,
-	f_0C64A,
-	f_0C692,
-	f_0995E,
-	f_0995E,
-	f_0C7A8
+static char (* const keyfuncs[])(f_09962_struct *) = {
+	keyfunc_mov_y,	// K_UP
+	keyfunc_mov_y,	// K_DOWN
+	keyfunc_mov_x,	// K_RIGHT
+	keyfunc_mov_x,	// K_LEFT
+	keyfunc_mode,	// K_MODE
+	keyfunc_setup,	// K_SETUP
+	keyfunc_ac,		// K_AC
+	keyfunc_nop,	// K_OFF
+	keyfunc_nop,	// K_ALPHA
+	keyfunc_nop,	// K_SHIFT
+	keyfunc_rcl,	// K_RCL
+	keyfunc_sto,	// K_STO
+	keyfunc_nop,	// K_INS
+	keyfunc_exe,	// K_APPROX
+	keyfunc_sto,	// K_M_PLUS
+	keyfunc_sto,	// K_M_MINUS
+	keyfunc_exe,	// K_EXECUTE
+	keyfunc_fact,	// K_FACT
+	keyfunc_base,	// K_BASE_BIN
+	keyfunc_base,	// K_BASE_OCT
+	keyfunc_base,	// K_BASE_DEC
+	keyfunc_base,	// K_BASE_HEX
+	keyfunc_dms,	// K_DMS
+	keyfunc_dms,	// K_DMS_R
+	keyfunc_eng,	// K_ENG
+	keyfunc_eng_r,	// K_ENG_R
+	keyfunc_abc,	// K_FMT_DEC
+	keyfunc_dc,		// K_FMT_FRAC
+	keyfunc_nop,	// K_CALC
+	keyfunc_nop,	// K_SOLVE
+	keyfunc_del		// K_DEL
 };
+
+// 02044
+const char tokens_map[16] = {
+	0xAE,	// K_FRAC
+	0x7C,	// K_FRAC_ABC
+	0x5E,	// K_POW
+	0x98,	// K_SQRT
+	0x77,	// K_POW_M1
+	0x75,	// K_POW_2
+	0x76,	// K_POW_3
+	0xA8,	// K_CBRT
+	0x9F,	// K_NTH_RT
+	0x73,	// K_E_POW
+	0x93,	// K_10_POW
+	0x68,	// K_LOGAB
+	0x63,	// K_ABS
+	0x6A,	// K_INTEGRAL
+	0x6B,	// K_DDX
+	0x69	// K_SUM
+};
+
+// 02054
+const char s_colon[] = ":";
 
 // For keycode lists, every row is KI(1-8), every column is KO(1-8)
 
@@ -373,7 +410,7 @@ const menu menus[] = {
 };
 
 // 0995E
-static char f_0995E(f_09962_struct *a) {
+static char keyfunc_nop(f_09962_struct *a) {
 	return 0;
 }
 
@@ -390,31 +427,27 @@ char f_09962(char a) {
 	memzero(&v0, 12);
 	v0.unk_0x04 = 1;
 	v0.input_area_ptr = &input_area;
-	v0.result_ptr = &result_0;
+	v0.result_ptr = &result;
 	v0.mode = mode;
 	v0.unk_0x07 = f_0A564();
-	v0.unk_0x08 = f_087BA();
-	v0.unk_0x09 = f_087D8();
+	v0.unk_0x08 = is_mathi();
+	v0.unk_0x09 = is_matho();
 	v0.unk_0x0a = f_02CB6();
 	if (!(d_080FE & 0x60)) d_08125 = 0;
 	if (!a) {
 		if (!is_char_keycode(last_key_keycode)) {
 			v1 = last_key_keycode + 0x20;
-			if (is_rcl_keycode(last_key_keycode)) v1 = K_DRG;
-			else if (f_0B79C(last_key_keycode)) v1 = K_VERIFY; 
-			else if (last_key_keycode >= 0xe0) goto j_09b9c;
-			switch (jmp_01fb6[v1](&v0)) {
-				case 0:
-					goto j_09b9c;
-				case 1:
-					goto j_09b6c;
-				case 2:
-					goto j_09b72;
-				case 3:
-					goto j_09b76;
+			if (is_rcl_keycode(last_key_keycode)) v1 = K_RCL + 0x20;
+			else if (is_sto_keycode(last_key_keycode)) v1 = K_STO + 0x20; 
+			else if (last_key_keycode < 0xe0) goto j_09b9c;
+			switch (keyfuncs[v1](&v0)) {
+				case 0: goto j_09b9c;
+				case 1: goto j_09b6c;
+				case 2: goto j_09b72;
+				case 3: goto j_09b76;
 			}
 		} else if (d_080F7 && 0xcf <= last_key_keycode) {
-			f_044E2(f_0B984(last_key_keycode));
+			f_044E2(conv_func_token(last_key_keycode));
 			if (v0.unk_0x08) v0.unk_0x05 = 1;
 		} else if (last_key_keycode == 0x7c) last_key_keycode = 0;
 		if (!(d_080FE & (1 << 6))) {
@@ -429,18 +462,21 @@ char f_09962(char a) {
 			if (last_key_keycode == 0xa4 && !setup_mathi) last_key_keycode = 0;
 			if (last_key_keycode) {
 				if (is_char_keycode(last_key_keycode)) f_0B736();
-				if (d_080FE == 1) f_07470(last_key_keycode, v0.unk_0x05);
-				else goto j_09b9c;
-			} else goto j_09b9c;
-		} else goto j_09b9c;
-	}
+				if (d_080FE == 1) {
+					f_07470(last_key_keycode, v0.unk_0x05);
+					goto j_09b6c;
+				}
+			}
+		}
+		goto j_09b9c;
+	} else goto j_09b72;
 j_09b6c:
 	d_080FE = 1;
 j_09b72:
 	f_0C0D0();
 j_09b76:
 	if (d_080FE != 1) {
-		if (f_0C1A0(&v0) != 1 && f_0C1D4(&v0) != 1) f_07B60(v0.result_ptr);
+		if (f_0C1A0(&v0) != 1 && f_0C1D4(&v0) != 1) f_07B60(*v0.result_ptr);
 		else goto j_09b6c;
 	}
 j_09b9c:
@@ -564,9 +600,18 @@ char display_menu(char *val, char *head) {
 	}
 }
 
-// 0A010 - STUB
+// 0A010
 char f_0A010(char m, char b) {
-	return 0;
+	char loc_m1;
+
+	if (m != NULL && mode != m) return 0;
+	else {
+		loc_m1 = b;
+		if (display_menu(&loc_m1, NULL) == 2) {
+			last_key_keycode = loc_m1;
+			return 1;
+		} else return 0;
+	}
 }
 
 // 0A050 - STUB
@@ -666,8 +711,14 @@ void f_0AB6A(void) {
 }
 
 // 0ABA8 - STUB
-void f_0ABA8(void) {
-	return;
+char *f_0ABA8(char a, char b, char c) {
+	char *v0;
+
+	d_080E0[a][0] = b;
+	d_080E0[a][1] = c;
+	v0 = f_043AC(a, 1, 1);
+	memzero(v0, 0x5a);
+	return v0;
 }
 
 // 0ABDE - STUB
@@ -773,7 +824,7 @@ void clear_setup(void) {
 void clear_mem(void) {
 	memzero(&vars_start, 100);
 	if (mode == MODE_CMPLX) memzero(&mode_ram[362], 100);
-	if (f_1B288(result_0) != 0xd) clear_result();
+	if (f_1B288(result) != 13) clear_result();
 	return;
 }
 
@@ -847,7 +898,7 @@ j_0b19c:
 	return;
 j_0b1bc:
 	f_0B226(&v3);
-	delay(0x129a);
+	delay(4762);
 j_0b1cc:
 	if (get_IRQ0() & (1 << 1)) {
 		if (!is_key_pressed()) {
@@ -1129,15 +1180,11 @@ void wait_shift(void) {
 static void f_0B67E(void) {
 	if (d_080FE == 1 && d_080F7 == 1) {
 		if (last_key_keycode == K_DMS) {
-#asm
-;	It is unknown how Casio managed to make this work, as a function jump like this
-;	usually implies a `return func();` statement, which is invalid in a void function
-	mov	r0,	#05ch
-	b	_f_044E2
-#endasm
-	}
-		if (0xf7 <= last_key_keycode && last_key_keycode > 0xfb) last_key_keycode = 0;
-		else if (last_key_keycode == K_FACT) last_key_keycode = 0;
+			// Original version jumps to `f_044E2` with B. Currently there is no known way to replicate this in CCU8
+			f_044E2(0x5c); // Degs-Mins-Secs
+			return;
+		}
+		if ((K_DMS_R <= last_key_keycode && last_key_keycode <= K_FMT_FRAC) || last_key_keycode == K_FACT) last_key_keycode = 0;
 	}
 	return;
 }
@@ -1161,13 +1208,14 @@ void f_0B736(void) {
 }
 
 // 0B782
-char is_rcl_keycode(char keycode) {
-	if (d_080F7 && 0xe <= keycode && keycode <= 0x16) return 1;
+static char is_rcl_keycode(char keycode) {
+	if (d_080F7 && K_RCL_A <= keycode && keycode <= K_RCL_M) return 1;
 	return 0;
 }
 
-// 0B79C - STUB
-char f_0B79C(char keycode) {
+// 0B79C
+static char is_sto_keycode(char keycode) {
+	if (d_080F7 && K_STO_A <= keycode && keycode <= K_STO_M) return 1;
 	return 0;
 }
 
@@ -1277,29 +1325,51 @@ void f_0B968(void) {
 	return;
 }
 
-// 0B984 - STUB
-char f_0B984(char keycode) {
-	return;
+// 0B984
+static char conv_func_token(char keycode) {
+	if (keycode < K_FRAC || keycode > K_SUM) return 0;
+	else return tokens_map[keycode - 0xd0];
 }
 
 // 0B998
 void f_0B998(void) {
 	char num[10];
 
-	if (!f_08ADC() && !f_087BA()) {
+	if (!f_08ADC() && !is_mathi()) {
 		num_fromdigit(&num, 0);
 		num_output_print(&num);
 	}
 	return;
 }
 
-// 0B9C8 - STUB
+// 0B9C8
 static char f_0B9C8(f_09962_struct *a) {
-	return 0;
+	f_0B8B8(2);
+	if (a->unk_0x07) {
+		f_044B6();
+		num_output_print(*a->result_ptr);
+		a->unk_0x04 = 1;
+		return 0;
+	} else {
+		clear_result();
+		if (a->mode == MODE_TABLE) {
+			if (d_080FD) smart_strcpy(*a->input_area_ptr, cache_area);
+			else memzero(cache_area, 100);
+			buffer_clear();
+		}
+		f_0AF16();
+		return 1;
+	}
 }
 
-// 0BA28 - STUB
+// 0BA28
 static void f_0BA28(f_09962_struct *a) {
+	f_0B8B8(1);
+	f_0AF0A();
+	table_mode = TABLE_EQN;
+	last_key_keycode = NULL;
+	d_08125 = 0;
+	a->unk_0x04 = 0;
 	return;
 }
 
@@ -1324,8 +1394,8 @@ void f_0BAF2(void) {
 }
 
 // 0BB42 - STUB
-void f_0BB42(void) {
-	return;
+static char f_0BB42(char *a) {
+	return 0;
 }
 
 // 0BBDA - STUB
@@ -1353,28 +1423,64 @@ void f_0BDFA(void) {
 	return;
 }
 
-// 0BEEE - STUB
+// 0BEEE
 static char f_0BEEE(f_09962_struct *a) {
+	char v0;
+
+	if (!f_03698(last_key_keycode))
+j_0bf04:
+		return 4;
+	v0 = table_mode;
+	if (d_080FE & (1 << 7)) {
+		if (!f_02CB6()) {
+			if (!(v0 & (1 << 7)) && v0 == 6) f_0AF16();
+		}
+		f_0B8B8(0x82);
+	} else if (a->mode != MODE_TABLE && a->mode != MODE_EQN) {
+		if (f_03660()) {
+			f_0AF16();
+			f_0B8B8(0x80);
+		} else if (!(char)*a->input_area_ptr && v0 == 1) smart_strcpy(a->input_area_ptr, cache_area);
+		else goto j_0bf04;
+		cursor_pos_byte = last_key_keycode == K_RIGHT ? 0 : smart_strlen(a->input_area_ptr);
+	} else goto j_0bf04;
+	f_046AE();
 	return 1;
 }
 
-// 0BF8A - STUB
-void f_0BF8A(void) {
-	return;
+// 0BF8A
+static char f_0BF8A(void) {
+	if (f_03698(last_key_keycode) && is_matho() && d_0812C) {
+		f_046AE();
+		if (last_key_keycode == K_RIGHT) ++cursor_pos_byte;
+		else if (cursor_pos_byte) --cursor_pos_byte;
+		else f_046C4();
+		return 3;
+	}
+	return 4;
 }
 
 // 0BFDC - STUB
-void f_0BFDC(void) {
-	return;
+static char f_0BFDC(f_09962_struct *a) {
+	return 0;
 }
 
-// 0C084 - STUB
-void f_0C084(void) {
-	return;
+// 0C084
+void print_result(void) {
+	num_output_print(result);
 }
 
-// 0C08C - STUB
-void f_0C08C(void) {
+// 0C08C
+static void f_0C08C(f_09962_struct *a) {
+	char v0;
+
+	if (f_08ADC() && !a->unk_0x07) {
+		if (a->mode != MODE_CMPLX) num_fromdigit(&(*a->result_ptr)[10], 0);
+		v0 = cursor_pos_byte;
+		f_07B60(*a->result_ptr);
+		cursor_pos_byte = v0;
+	}
+
 	return;
 }
 
@@ -1388,7 +1494,7 @@ void f_0C0D0(void) {
 		v0 = f_02CB6();
 		if (d_080FE == 1) {
 			d_08122 = 1;
-			if (!f_087BA()) f_04F6E();
+			if (!is_mathi()) f_04F6E();
 			else {
 				f_10FC0();
 				f_058DC();
@@ -1408,7 +1514,7 @@ static char f_0C148(f_09962_struct *a) {
 
 	v0 = d_080FE;
 	d_080FE = 0x80;
-	f_044D6(show_error(3));  // Insufficient MEM
+	f_044D6(show_error(ERROR_MATH));
 	clear_result();
 	if (f_0BEEE(a) == 1) {
 		if (v0 == 4) {
@@ -1426,13 +1532,18 @@ static char f_0C1A0(f_09962_struct *a) {
 	} else return 4;
 }
 
-// 0C1D4 - STUB
+// 0C1D4
 static char f_0C1D4(f_09962_struct *a) {
-	return 0;
+	char loc_m20[20];
+
+	if (f_02C76() || f_02AAA() || d_0812C) return 4;
+	num_cpy_im(loc_m20, *a->result_ptr);
+	if (num_invalid__(&loc_m20[10]) == 1 || !cmplx_abs(loc_m20)) return 4;
+	return f_0C148(a);
 }
 
 // 0C22E
-static char f_0C22E(f_09962_struct *a) {
+static char keyfunc_ac(f_09962_struct *a) {
 	if (f_0B7B6()) {
 		f_0BA28(a);
 		return 0;
@@ -1441,42 +1552,43 @@ static char f_0C22E(f_09962_struct *a) {
 }
 
 // 0C25A - STUB
-static char f_0C25A(f_09962_struct *a) {
+static char keyfunc_sto_rcl(f_09962_struct *a) {
 	return 0;
 }
 
 // 0C316
-static char f_0C316(f_09962_struct *a) {
-	return f_0C25A(a);
+static char keyfunc_rcl(f_09962_struct *a) {
+	return keyfunc_sto_rcl(a);
 }
 
-// 0C31A - STUB
-static char f_0C31A(f_09962_struct *a) {
-	return f_0C25A(a);
+// 0C31A
+static char keyfunc_sto(f_09962_struct *a) {
+	return keyfunc_sto_rcl(a);
 }
 
 // 0C31E - STUB
-static char f_0C31E(f_09962_struct *a) {
+static char keyfunc_exe(f_09962_struct *a) {
 	return 0;
 }
 
 // 0C64A - STUB
-static char f_0C64A(f_09962_struct *a) {
+static char keyfunc_abc(f_09962_struct *a) {
 	return 0;
 }
 
 // 0C692 - STUB
-static char f_0C692(f_09962_struct *a) {
+static char keyfunc_dc(f_09962_struct *a) {
 	return 0;
 }
 
 // 0C6DE - STUB
-static char f_0C6DE(f_09962_struct *a) {
+static char keyfunc_dms(f_09962_struct *a) {
 	return 0;
 }
 
 // 0C728
-static char f_0C728(f_09962_struct *a) {
+static char keyfunc_fact(f_09962_struct *a) {
+	// fx-570/991ES PLUS does not have prime factor
 	return 0;
 }
 
@@ -1486,41 +1598,69 @@ static void f_0C72C(f_09962_struct *a) {
 }
 
 // 0C74C - STUB
-static char f_0C74C(f_09962_struct *a) {
+static char keyfunc_eng(f_09962_struct *a) {
 	return 0;
 }
 
 // 0C77A - STUB
-static char f_0C77A(f_09962_struct *a) {
+static char keyfunc_eng_r(f_09962_struct *a) {
 	return 0;
 }
 
-// 0C7A8 - STUB
-static char f_0C7A8(f_09962_struct *a) {
-	return 0;
+// 0C7A8
+static char keyfunc_del(f_09962_struct *a) {
+	if (!f_03664()) return 0;
+	else {
+		f_07488(last_key_keycode);
+		return 1;
+	}
 }
 
-// 0C7C2 - STUB
-static char f_0C7C2(f_09962_struct *a) {
-	return 0;
+// 0C7C2
+static char keyfunc_mov_x(f_09962_struct *a) {
+	if (f_0BF8A() == 3) return 3;
+	else if (d_080FE & (1 << 6)) return 0;
+	else if (f_0BEEE(a) == 1) return 1;
+	else if (!f_03664()) return 0;
+	else {
+		f_07488(last_key_keycode);
+		return 1;
+	}
 }
 
-// 0C806 - STUB
-static char f_0C806(f_09962_struct *a) {
-	return 0;
+// 0C806
+static char keyfunc_mov_y(f_09962_struct *a) {
+	if (d_080FE & (1 << 6)) return 0;
+	else if (f_0BFDC(a) == 2) return 2;
+	else if (!f_03664()) return 0;
+	else {
+		f_07488(last_key_keycode);
+		return 1;
+	}
 }
 
 // 0C836 - STUB
-static char f_0C836(f_09962_struct *a) {
-	return 0;
+static char keyfunc_base(f_09962_struct *a) {
+	submode = base_n_submodes[last_key_keycode - K_BASE_BIN];
+	if (f_03664()) {
+		if (f_0C1A0(a) == 1) return 1;
+		else print_result();
+	}
+	return 2;
 }
 
 // 0C86A - STUB
-static char f_0C86A(f_09962_struct *a) {
-	return 0;
+static char keyfunc_mode(f_09962_struct *a) {
+	f_0B998();
+	return 2;
 }
 
-// 0C874 - STUB
-static char f_0C874(f_09962_struct *a) {
-	return 0;
+// 0C874
+static char keyfunc_setup(f_09962_struct *a) {
+	if (is_matho()) f_085D2();
+	if (f_03664()) {
+		if (a->unk_0x08 && f_0C1D4(a) != 1) f_0C08C(a);
+		else return 1;
+	}
+	return 2;
 }

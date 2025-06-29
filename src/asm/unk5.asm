@@ -100,19 +100,19 @@ $$NCODunk5 SEGMENT CODE 2H ANY
 
 RSEG $$NTABunk5_0
 
-; 010AC
+; 010AC - STUB
 _unk_010ac:
 
 
-; 010B2
+; 010B2 - STUB
 _unk_010b2:
 
 
-; 010BB
+; 010BB - STUB
 _unk_010bb:
 
 
-; 010D4
+; 010D4 - STUB
 _unk_010d4:
 
 
@@ -158,6 +158,34 @@ _unk_010f0:
 
 RSEG $$NTABunk5_1
 
+; 0160E
+_const_tokens:
+	DB 1DH
+	DB 1EH
+	DB 1FH
+	DB 22H
+	DB 23H
+	DB 24H
+	DB 26H
+	DB 27H
+	DB 2AH
+	DB 3BH
+	DB 40H
+	DB 78H
+	DB 79H
+	DB 7AH
+	DB 0B4H
+	DB 0B5H
+	DB 0B6H
+	DB 0B7H
+	DB 0C4H
+	DB 0C5H
+	DB 0C6H
+	DB 0C7H
+	DB 0D4H
+	DB 0D5H
+	DB 0D6H
+
 ; 017A8
 _jmp_017a8:
 	DW _num_sum__
@@ -173,33 +201,36 @@ _jmp_017a8:
 	DW _f_15CAC
 
 ; 017BE
-_unk_017be:
-
+_num_0:
+	DB 00H, 00H, 00H, 00H, 00H, 00H, 00H, 00H, 00H, 00H
 
 ; 017C8
-_unk_017c8:
-
+_num_1:
+	DB 01H, 00H, 00H, 00H, 00H, 00H, 00H, 00H, 00H, 01H
 
 ; 017D2
-_unk_017d2:
-
+_num_2:
+	DB 02H, 00H, 00H, 00H, 00H, 00H, 00H, 00H, 00H, 01H
 
 ; 017DC
-_unk_017dc:
-
+_num_3:
+	DB 03H, 00H, 00H, 00H, 00H, 00H, 00H, 00H, 00H, 01H
 
 ; 017E6
-_unk_017e6:
-
+_num_4:
+	DB 04H, 00H, 00H, 00H, 00H, 00H, 00H, 00H, 00H, 01H
 
 ; 017F0
-_unk_017f0:
-
+_num_32:
+	DB 03H, 20H, 00H, 00H, 00H, 00H, 00H, 00H, 01H, 01H
 
 ; 017FA
-_unk_017fa:
+_num_100:
+	DB 01H, 00H, 00H, 00H, 00H, 00H, 00H, 00H, 02H, 01H
 
-
+; 01804
+_num_256:
+	DB 02H, 56H, 00H, 00H, 00H, 00H, 00H, 00H, 02H, 01H
 
 RSEG $$NTABunk5_2
 
@@ -700,7 +731,7 @@ _$j_10360:
 	MOV R0, #38H
 	MOV R1, #0FFH
 	ADD ER0, FP
-	BL _f_1B474
+	BL _num_cpy_im
 	MOV ER2, #-3CH
 	ADD ER2, FP
 	MOV R0, #0BAH
@@ -730,7 +761,7 @@ _$j_103a8:
 	MOV R0, #60H
 	MOV R1, #0FFH
 	ADD ER0, FP
-	BL _f_1B474
+	BL _num_cpy_im
 	B _$j_1008e
 _$j_103bc:
 	BL _f_107AA
@@ -849,7 +880,7 @@ _$j_104b6:
 	MOV R0, #38H
 	MOV R1, #0FFH
 	ADD ER0, FP
-	BL _f_1B474
+	BL _num_cpy_im
 	BL _f_10668
 	CMP R0, #0H
 	BEQ _$j_104e4
@@ -859,7 +890,7 @@ _$j_104b6:
 	MOV R0, #60H
 	MOV R1, #0FFH
 	ADD ER0, FP
-	BL _f_1B474
+	BL _num_cpy_im
 	B _$j_1008e
 _$j_104e4:
 	MOV ER2, #-32H
@@ -989,7 +1020,7 @@ _$j_105e0:
 	MOV ER2, #-28H
 	ADD ER2, FP
 	L ER0, -6H[FP]
-	BL _f_1B474
+	BL _num_cpy_im
 	L R0, -9H[FP]
 	POP XR4
 	POP BP
@@ -1431,8 +1462,8 @@ _f_10962:
 	DAS R4
 	SUBC R5, R1
 	DAS R5
-	MOV R0, #BYTE1 _unk_017e6
-	MOV R1, #BYTE2 _unk_017e6
+	MOV R0, #BYTE1 _num_4
+	MOV R1, #BYTE2 _num_4
 	MOV ER2, BP
 	ADD ER2, #1EH
 	BL _f_154E0
@@ -1473,8 +1504,8 @@ _$j_109d8:
 	BEQ _$j_109d0
 	MOV ER6, #0H
 	MOV FP, ER10
-	MOV R0, #BYTE1 _unk_017c8
-	MOV R1, #BYTE2 _unk_017c8
+	MOV R0, #BYTE1 _num_1
+	MOV R1, #BYTE2 _num_1
 	MOV ER2, BP
 	ADD ER2, #0AH
 	BL _f_154E0
@@ -1507,8 +1538,8 @@ _$j_10a34:
 	POP R9
 	ADD BP, #-0AH
 	MOV FP, ER10
-	MOV R0, #BYTE1 _unk_017c8
-	MOV R1, #BYTE2 _unk_017c8
+	MOV R0, #BYTE1 _num_1
+	MOV R1, #BYTE2 _num_1
 	MOV ER2, BP
 	ADD ER2, #14H
 	BL _f_154E0
@@ -1556,8 +1587,8 @@ _$j_10a90:
 	L R0, 14H[BP]
 	BEQ _$j_10acc
 	MOV ER0, FP
-	MOV R2, #BYTE1 _unk_017c8
-	MOV R3, #BYTE2 _unk_017c8
+	MOV R2, #BYTE1 _num_1
+	MOV R3, #BYTE2 _num_1
 	BL _f_1A460
 	BAL _$j_10acc
 _$j_10ab4:
@@ -1568,8 +1599,8 @@ _$j_10ab4:
 	CMP R6, #1H
 	BEQ _$j_10acc
 	MOV ER0, FP
-	MOV R2, #BYTE1 _unk_017c8
-	MOV R3, #BYTE2 _unk_017c8
+	MOV R2, #BYTE1 _num_1
+	MOV R3, #BYTE2 _num_1
 	BL _f_1A460
 _$j_10acc:
 	ADD R7, #1H
@@ -1581,8 +1612,8 @@ _$j_10ace:
 	CMP R7, #15H
 	BGE _$j_10b56
 	PUSH FP
-	MOV R0, #BYTE1 _unk_017c8
-	MOV R1, #BYTE2 _unk_017c8
+	MOV R0, #BYTE1 _num_1
+	MOV R1, #BYTE2 _num_1
 	MOV ER2, BP
 	BL _f_154E0
 	MOV ER0, FP
@@ -1699,8 +1730,8 @@ _$j_10baa:
 	MOV ER0, BP
 	ADD ER0, #28H
 	BL _f_154D6
-	MOV R0, #BYTE1 _unk_017be
-	MOV R1, #BYTE2 _unk_017be
+	MOV R0, #BYTE1 _num_0
+	MOV R1, #BYTE2 _num_0
 	MOV ER2, BP
 	ADD ER2, #0AH
 	BL _f_154E0
@@ -2264,7 +2295,7 @@ _$j_10fd0:
 _f_10FD2:
 	PUSH LR
 	PUSH ER8
-	BL _f_087BA
+	BL _is_mathi
 	MOV R8, R0
 	CMP R0, #0H
 	BEQ _$j_10ffa
@@ -6571,8 +6602,8 @@ _f_132F6:
 	CMP R0, #1H
 	BEQ _$j_13332
 	MOV ER0, ER10
-	MOV R2, #BYTE1 _unk_017c8
-	MOV R3, #BYTE2 _unk_017c8
+	MOV R2, #BYTE1 _num_1
+	MOV R3, #BYTE2 _num_1
 	BL _f_1A424
 _$j_13332:
 	MOV R0, #0H
@@ -6613,8 +6644,8 @@ _num_randint:
 	CMP R0, #4H
 	BNE _$j_133bc
 	MOV ER0, BP
-	MOV R2, #BYTE1 _unk_017c8
-	MOV R3, #BYTE2 _unk_017c8
+	MOV R2, #BYTE1 _num_1
+	MOV R3, #BYTE2 _num_1
 	BL _f_1A460
 	MOV ER0, FP
 	ADD ER0, #-14H
@@ -8328,8 +8359,8 @@ _f_1416C:
 ; 14182
 _f_14182:
 	PUSH LR
-	MOV R2, #BYTE1 _unk_017d2
-	MOV R3, #BYTE2 _unk_017d2
+	MOV R2, #BYTE1 _num_2
+	MOV R3, #BYTE2 _num_2
 	BL _f_1724A
 	POP PC
 
@@ -8346,8 +8377,8 @@ _f_1418E:
 _f_1419E:
 	PUSH LR
 	MOV ER0, BP
-	MOV R2, #BYTE1 _unk_017d2
-	MOV R3, #BYTE2 _unk_017d2
+	MOV R2, #BYTE1 _num_2
+	MOV R3, #BYTE2 _num_2
 	B _$j_133dc
 
 ; 141AA
@@ -8397,8 +8428,8 @@ _$j_141e8:
 	ADD ER2, #32H
 	MOV BP, ER2
 	BL _f_13BDC
-	MOV R2, #BYTE1 _unk_017e6
-	MOV R3, #BYTE2 _unk_017e6
+	MOV R2, #BYTE1 _num_4
+	MOV R3, #BYTE2 _num_4
 	BL _f_141B4
 	MOV ER0, ER10
 	BL _num_cbrt
@@ -8549,7 +8580,7 @@ _$j_14360:
 	MUL ER2, R0
 	ADD ER2, ER6
 	MOV ER0, ER10
-	BL _f_1B474
+	BL _num_cpy_im
 	MOV ER0, ER10
 	BL _f_17202
 	CMP R0, #0H
@@ -8567,8 +8598,8 @@ _$j_1438a:
 _f_1438E:
 	PUSH LR
 	MOV ER0, ER10
-	MOV R2, #BYTE1 _unk_017dc
-	MOV R3, #BYTE2 _unk_017dc
+	MOV R2, #BYTE1 _num_3
+	MOV R3, #BYTE2 _num_3
 	BL _f_1724A
 	MOV ER0, ER10
 	MOV R2, #5H
@@ -8632,34 +8663,35 @@ _$j_14402:
 	POP PC
 
 ; 14404
-_f_14404:
+_get_const_token:
 	PUSH LR
-	BL _f_14420
-	BEQ _$j_1441e
-	ADD R0, #2AH
-	CMP R0, #10H
-	BLT _$j_1441e
-	ADD R0, #-10H
-	MOV R2, #0EH
-	MOV R3, #16H
+	BL _get_conv_token	; Call get_conv_token to check if number is valid
+	BEQ _$j_1441e		; If not, return 0
+	ADD R0, #-0D6H		; Since 0xD6 was added to our number we need to reverse that
+	CMP R0, #16			; Is the number 16 or greater?
+	BLT _$j_1441e		; If not, return the CONST number
+	ADD R0, #-10H		; Otherwise, we grab the token ID from a table
+	MOV R2, #BYTE1 _const_tokens
+	MOV R3, #BYTE2 _const_tokens
 	ADD R2, R0
 	ADDC R3, #0H
 	L R0, [ER2]
 _$j_1441e:
 	POP PC
-	
-_f_14420:
-	CMP R0, #28H
+
+; 14420
+_get_conv_token:
+	CMP R0, #40		; Return 0 if number is higher than 40...
 	BGT _$j_1442c
-	CMP R0, #0H
+	CMP R0, #0H		; ...or literally equal to 0
 	BEQ _$j_1442e
-	ADD R0, #-2AH
+	ADD R0, #0D6H	; CONV tokens start at index 0xD7
 	RT
 _$j_1442c:
 	MOV R0, #0H
 _$j_1442e:
 	RT
-	
+
 ; 14430
 _f_14430:
 	PUSH LR
@@ -9300,8 +9332,8 @@ _$j_14868:
 	BL _num_invalid__
 	ADD R0, #-1H
 	BEQ _$j_14866
-	MOV R0, #BYTE1 _unk_017c8
-	MOV R1, #BYTE2 _unk_017c8
+	MOV R0, #BYTE1 _num_1
+	MOV R1, #BYTE2 _num_1
 	MOV ER2, BP
 	ADD ER2, #14H
 	BL _f_154E0
@@ -9674,8 +9706,8 @@ _$j_14b52:
 	L R0, [ER2]
 	CMP R0, #1H
 	BNE _$j_14ba0
-	MOV R0, #BYTE1 _unk_017c8
-	MOV R1, #BYTE2 _unk_017c8
+	MOV R0, #BYTE1 _num_1
+	MOV R1, #BYTE2 _num_1
 	BL _num_cmp
 	CMP R0, #1H
 	BNE _$j_14ba0
@@ -9882,8 +9914,8 @@ _num_percent:
 	L R2, [ER0]
 	RB R2.6
 	ST R2, [ER0]
-	MOV R2, #BYTE1 _unk_017fa
-	MOV R3, #BYTE2 _unk_017fa
+	MOV R2, #BYTE1 _num_100
+	MOV R3, #BYTE2 _num_100
 	BL _num_div_1
 	POP PC
 
@@ -9916,8 +9948,8 @@ _$j_14d2a:
 	BL _f_14800
 	CMP R5, #25H
 	BNE _$j_14d3e
-	MOV R2, #BYTE1 _unk_017f0
-	MOV R3, #BYTE2 _unk_017f0
+	MOV R2, #BYTE1 _num_32
+	MOV R3, #BYTE2 _num_32
 	BL _f_1A3FC
 _$j_14d3e:
 	MOV R2, R5
@@ -9937,8 +9969,8 @@ _$j_14d5a:
 	CMP R5, #24H
 	BNE _$j_14d68
 	MOV ER0, BP
-	MOV R2, #BYTE1 _unk_017f0
-	MOV R3, #BYTE2 _unk_017f0
+	MOV R2, #BYTE1 _num_32
+	MOV R3, #BYTE2 _num_32
 	BL _f_1A410
 _$j_14d68:
 	MOV ER0, BP
@@ -10954,8 +10986,8 @@ _$j_15448:
 	BEQ _$j_15442
 	BAL _$j_15438
 _$j_1546c:
-	MOV R0, #BYTE1 _unk_017be
-	MOV R1, #BYTE2 _unk_017be
+	MOV R0, #BYTE1 _num_0
+	MOV R1, #BYTE2 _num_0
 	BL _f_15526
 _$j_15474:
 	POP XR8
@@ -11157,8 +11189,8 @@ _f_15596:
 	BNE _$j_155aa
 	CMP R2, #3H
 	BNE _$j_155aa
-	MOV R0, #BYTE1 _unk_017be
-	MOV R1, #BYTE2 _unk_017be
+	MOV R0, #BYTE1 _num_0
+	MOV R1, #BYTE2 _num_0
 	BL _f_15526
 	MOV R2, #0H
 _$j_155aa:
@@ -11762,8 +11794,8 @@ _$j_159f2:
 	BL _f_1533A
 	BAL _$j_15a18
 _$j_15a10:
-	MOV R0, #BYTE1 _unk_017be
-	MOV R1, #BYTE2 _unk_017be
+	MOV R0, #BYTE1 _num_0
+	MOV R1, #BYTE2 _num_0
 	BL _f_15526
 _$j_15a18:
 	TB R11.2
@@ -11920,8 +11952,8 @@ _$j_15b14:
 	BEQ _$j_15b48
 	BAL _$j_15b5c
 _$j_15b32:
-	MOV R0, #BYTE1 _unk_017be
-	MOV R1, #BYTE2 _unk_017be
+	MOV R0, #BYTE1 _num_0
+	MOV R1, #BYTE2 _num_0
 	BL _f_15526
 	BAL _$j_15b5a
 _$j_15b3c:
@@ -11968,8 +12000,8 @@ _$j_15b70:
 	MOV R2, #9H
 	POP PC
 _$j_15b86:
-	MOV R0, #BYTE1 _unk_017be
-	MOV R1, #BYTE2 _unk_017be
+	MOV R0, #BYTE1 _num_0
+	MOV R1, #BYTE2 _num_0
 	BL _f_15526
 	ST R2, [BP]
 	MOV R2, #0H
@@ -12279,8 +12311,8 @@ _$j_15dc4:
 _$j_15dc8:
 	CMP R4, #2AH
 	BEQ _$j_15dd6
-	MOV R0, #BYTE1 _unk_017be
-	MOV R1, #BYTE2 _unk_017be
+	MOV R0, #BYTE1 _num_0
+	MOV R1, #BYTE2 _num_0
 	BL _f_15532
 	MOV R0, #0H
 _$j_15dd6:
@@ -13154,8 +13186,8 @@ _f_16524:
 	MOV BP, SP
 	MOV ER4, ER0
 	MOV ER6, ER2
-	MOV R0, #BYTE1 _unk_017c8
-	MOV R1, #BYTE2 _unk_017c8
+	MOV R0, #BYTE1 _num_1
+	MOV R1, #BYTE2 _num_1
 	MOV ER2, ER4
 	BL _f_154E0
 	L R8, 8H[ER6]
@@ -14036,8 +14068,8 @@ _f_16C54:
 	BL _f_16398
 	MOV R0, #7H
 	BL _f_16CE4
-	MOV R2, #BYTE1 _unk_017c8
-	MOV R3, #BYTE2 _unk_017c8
+	MOV R2, #BYTE1 _num_1
+	MOV R3, #BYTE2 _num_1
 	BL _num_cmp
 	CMP R0, #1H
 	BNE _$j_16c98
@@ -14357,7 +14389,7 @@ _$j_16ef4:
 	MOV ER2, ER8
 	MOV ER0, #-3CH
 	ADD ER0, FP
-	BL _f_1B474
+	BL _num_cpy_im
 _$j_16f12:
 	BL _f_1709E
 	CMP R0, #0H
@@ -14366,7 +14398,7 @@ _$j_16f1a:
 	MOV ER2, #-3CH
 	ADD ER2, FP
 	MOV ER0, ER4
-	BL _f_1B474
+	BL _num_cpy_im
 	MOV ER0, #-3CH
 	ADD ER0, FP
 	BL _f_1B288
@@ -14523,10 +14555,10 @@ _f_17052:
 	MOV ER4, ER0
 	MOV ER0, #-14H
 	ADD ER0, FP
-	BL _f_1B474
+	BL _num_cpy_im
 	MOV ER2, ER4
 	MOV ER0, ER8
-	BL _f_1B474
+	BL _num_cpy_im
 	L R2, [ER8]
 	CMP R2, #-10H
 	BGE _$j_1709a
@@ -14580,7 +14612,7 @@ _f_170D0:
 	PUSH LR
 	MOV ER2, ER8
 	MOV ER0, ER10
-	BL _f_1B474
+	BL _num_cpy_im
 	MOV ER2, #-14H
 	ADD ER2, FP
 	MOV ER0, BP
@@ -14596,7 +14628,7 @@ _f_170F0:
 	PUSH LR
 	MOV ER2, ER8
 	MOV ER0, ER10
-	BL _f_1B474
+	BL _num_cpy_im
 	MOV ER2, #-0AH
 	ADD ER2, FP
 	MOV ER0, BP
@@ -14631,7 +14663,7 @@ _f_17110:
 	MOV ER2, #-14H
 	ADD ER2, FP
 	MOV ER0, BP
-	BL _f_1B474
+	BL _num_cpy_im
 	POP R0
 _$j_17148:
 	POP BP
@@ -14650,7 +14682,7 @@ _cmplx_cube:
 	MOV ER2, BP
 	MOV ER0, #-14H
 	ADD ER0, FP
-	BL _f_1B474
+	BL _num_cpy_im
 	MOV ER2, BP
 	MOV ER0, #-14H
 	ADD ER0, FP
@@ -21805,8 +21837,8 @@ _$j_1adb0:
 	BL _f_179B0
 	CMP R0, #0H
 	BNE _$j_1adec
-	MOV R2, #BYTE1 _unk_017d2
-	MOV R3, #BYTE2 _unk_017d2
+	MOV R2, #BYTE1 _num_2
+	MOV R3, #BYTE2 _num_2
 	MOV ER0, FP
 	BL _num_cmp
 	CMP R0, #2H
@@ -21964,8 +21996,8 @@ _$j_1af0a:
 	MOV ER0, FP
 	BL _num_square
 	MOV ER0, FP
-	MOV R2, #BYTE1 _unk_017c8
-	MOV R3, #BYTE2 _unk_017c8
+	MOV R2, #BYTE1 _num_1
+	MOV R3, #BYTE2 _num_1
 	BL _f_1A460
 	MOV ER0, FP
 	BL _f_1AAC6
@@ -21975,8 +22007,8 @@ _$j_1af0a:
 	MOV ER2, BP
 _$j_1af32:
 	PUSH R0
-	MOV R0, #BYTE1 _unk_017be
-	MOV R1, #BYTE2 _unk_017be
+	MOV R0, #BYTE1 _num_0
+	MOV R1, #BYTE2 _num_0
 	BL _f_154E0
 	POP R0
 	ADD SP, #14H
@@ -22032,8 +22064,8 @@ _$j_1af9a:
 	MOV ER2, BP
 	ADD ER2, #0AH
 	BL _f_154E0
-	MOV R0, #BYTE1 _unk_017be
-	MOV R1, #BYTE2 _unk_017be
+	MOV R0, #BYTE1 _num_0
+	MOV R1, #BYTE2 _num_0
 	ADD ER2, #-0AH
 	BL _f_154E0
 _$j_1afb2:
@@ -22652,7 +22684,7 @@ _$num_to_byte_invalid:
 	BAL _$j_1b46a
 
 ; 1B474
-_f_1B474:
+_num_cpy_im:
 	PUSH ER6
 	PUSH QR8
 	LEA 0AH[ER2]
@@ -22729,6 +22761,13 @@ _invalid_var:
 _$j_1b4fe:
 	MOV R0, #1H
 	RT
+
+PUBLIC _num_0  ; 017BE
+PUBLIC _num_1  ; 017C8
+PUBLIC _num_2  ; 017D2
+PUBLIC _num_3  ; 017DC
+PUBLIC _num_4  ; 017E6
+PUBLIC _num_256  ; 01804
 
 PUBLIC _f_10000  ; 10000
 PUBLIC _f_105FE  ; 105FE
@@ -22936,7 +22975,8 @@ PUBLIC _f_143B0  ; 143B0
 PUBLIC _f_143C2  ; 143C2
 PUBLIC _f_143D0  ; 143D0
 PUBLIC _f_143EA  ; 143EA
-PUBLIC _f_14404  ; 14404
+PUBLIC _get_const_token  ; 14404
+PUBLIC _get_conv_token  ; 14420
 PUBLIC _f_1444C  ; 1444C
 PUBLIC _f_144F4  ; 144F4
 PUBLIC _f_14516  ; 14516
@@ -23344,7 +23384,7 @@ PUBLIC _f_1B378  ; 1B378
 PUBLIC _num_trunc__  ; 1B388
 PUBLIC _num_frombyte  ; 1B3D4
 PUBLIC _num_to_byte  ; 1B430
-PUBLIC _f_1B474  ; 1B474
+PUBLIC _num_cpy_im  ; 1B474
 PUBLIC _num_cpy  ; 1B48A
 PUBLIC _f_1B4A0  ; 1B4A0
 PUBLIC _f_1B4B6  ; 1B4B6
@@ -23378,7 +23418,7 @@ EXTRN CODE	: _num_unk_2__		; 04DE0
 EXTRN CODE	: _f_05658			; 05658
 EXTRN CODE	: _memcpy_nn		; 07EF6
 EXTRN CODE	: _f_085D2			; 085D2
-EXTRN CODE	: _f_087BA			; 087BA
+EXTRN CODE	: _is_mathi			; 087BA
 EXTRN CODE	: _f_08A0A			; 08A0A
 EXTRN CODE	: _f_0BC34			; 0BC34
 EXTRN CODE	: _f_0BC90			; 0BC90

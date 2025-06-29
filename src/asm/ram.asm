@@ -758,11 +758,8 @@ _d_0813E:
 _d_0813F:
 	DS 1
 ; 08140
-_result_0:
-	DS 10
-; 0814A
-_result_1:
-	DS 10
+_result:
+	DS 20
 ; 08154
 _input_area:
 	DS 100
@@ -2732,6 +2729,7 @@ PUBLIC _d_080DC
 PUBLIC _cursor_noflash
 PUBLIC _d_080DE
 PUBLIC _d_080DF
+PUBLIC _d_080E0
 PUBLIC _last_key_scancode
 PUBLIC _last_key_keycode
 PUBLIC _d_080F7
@@ -2778,11 +2776,12 @@ PUBLIC _d_08125
 PUBLIC _d_08126
 PUBLIC _input_area_ptr
 PUBLIC _d_0812C
-PUBLIC _result_0
+PUBLIC _result
 PUBLIC _input_area
 PUBLIC _cache_area
 PUBLIC _timer
 PUBLIC _vars_start
 PUBLIC _mode_ram
 PUBLIC _magic_string
+PUBLIC _d_08640
 PUBLIC _stack_start

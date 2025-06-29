@@ -55,7 +55,7 @@ void f_0AB44(void);
 // 0AB6A
 void f_0AB6A(void);
 // 0ABA8
-void f_0ABA8(void);
+char *f_0ABA8(char a, char b, char c);
 // 0ABDE
 void f_0ABDE(void);
 // 0ABFC
@@ -124,10 +124,6 @@ char f_0B6B6(void);
 void f_0B6F0(void);
 // 0B736
 void f_0B736(void);
-// 0B782
-char is_rcl_keycode(char keycode);
-// 0B79C
-char f_0B79C(char keycode);
 // 0B7B6
 char f_0B7B6(void);
 // 0B804
@@ -148,8 +144,6 @@ void f_0BAA8(void);
 void f_0BADA(void);
 // 0BAF2
 void f_0BAF2(void);
-// 0BB42
-void f_0BB42(void);
 // 0BBDA
 void f_0BBDA(void);
 // 0BC34
@@ -160,13 +154,7 @@ void f_0BC6C(void);
 void f_0BC90(void);
 // 0BDFA
 void f_0BDFA(void);
-// 0BF8A
-void f_0BF8A(void);
-// 0BFDC
-void f_0BFDC(void);
 // 0C084
 void f_0C084(void);
-// 0C08C
-void f_0C08C(void);
 // 0C0D0
 void f_0C0D0(void);

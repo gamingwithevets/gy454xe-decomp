@@ -1,6 +1,6 @@
 #include "consts.h"
 #include "generals.h"
-#include "unk1.h"
+#include "input.h"
 #include "unk2.h"
 
 // 07F30 - STUB
@@ -28,19 +28,28 @@ void f_08304(void) {
 	return;
 }
 
-// 085C0 - STUB
-void f_085C0(void) {
-	return;
+// 085C0
+char f_085C0(void) {
+	char v0;
+
+	if (last_key_keycode == K_EXECUTE) v0 = 13;
+	return f_02ADE(v0);
 }
 
-// 085D2 - STUB
-void f_085D2(void) {
-	return;
+// 085D2
+char f_085D2(void) {
+	char v0;
+
+	v0 = 0;
+	if (f_0B588()) v0 = 13;
+	f_02ADE(v0);
+	return v0;
 }
 
 // 085EC - STUB
-void num_to_str(void) {
-	return;
+char num_to_str(char *num, char *out, char c) {
+	out[0] = '\0';
+	return 0;
 }
 
 // 08764 - STUB
@@ -56,7 +65,7 @@ char f_087A2(void) {
 }
 
 // 087BA
-char f_087BA(void) {
+char is_mathi(void) {
 	if (f_087A2()) {
 		if (!setup_mathi) return 0;
 		if (mode & (1 << 7)) return 1;
@@ -64,7 +73,7 @@ char f_087BA(void) {
 }
 
 // 087D8
-char f_087D8(void) {
+char is_matho(void) {
 	if (f_087A2()) {
 		if (!setup_mathi) return 0;
 		if (mode & (1 << 6)) return 1;
@@ -88,9 +97,9 @@ char f_0885C(char a, char b, char c, char d, char e) {
 	return a;
 }
 
-// 088AA - STUB
+// 088AA
 int f_088AA(void) {
-	return 0;
+	return formula_x + *(int *)&reg0[0];
 }
 
 // 088B8 - STUB
@@ -111,9 +120,11 @@ char is_pow_char(char *a) {
 	return v0;
 }
 
-// 088FE - STUB
-void f_088FE(void) {
-	return;
+// 088FE
+char f_088FE(char *a) {
+	// Box, Hex B, Hex C
+	if (*a++ == '!' && (*a == 0xb9 || *a == 0xba)) return 1;
+	return 0;
 }
 
 // 0891A
@@ -178,9 +189,16 @@ char f_08A48(char *a) {
 	}
 }
 
-// 08A66 - STUB
-void f_08A66(void) {
-	return;
+// 08A66
+char f_08A66(char *a, char *b) {
+	if (f_08A48(a) && *b == '^') {
+		// Hex A
+		if (*a == 0xb8 || *a == 0xba) {
+			// Hex B, Hex C
+			if (*b != 0xb9 && *b != 0xba) return 0;
+		}
+	}
+	return 1;
 }
 
 // 08A9C

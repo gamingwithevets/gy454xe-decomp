@@ -419,7 +419,9 @@ void f_143D0(void);
 // 143EA
 void f_143EA(void);
 // 14404
-char f_14404(void);
+char get_const_token(char num);
+// 14420
+char get_conv_token(char num);
 // 1444C
 void f_1444C(void);
 // 144F4
@@ -1193,7 +1195,7 @@ void f_1ADF0(void);
 // 1AE06
 void f_1AE06(void);
 // 1AE26
-void cmplx_abs(void);
+char cmplx_abs(char *num);
 // 1AF44
 void f_1AF44(void);
 // 1AFB8
@@ -1203,15 +1205,15 @@ void f_1AFC8(void);
 // 1AFD8
 void f_1AFD8(void);
 // 1B03E
-void num_invalid__(void);
+char num_invalid__(char *num);
 // 1B0A8
-void num_cmp(void);
+char num_cmp(char *num1, char *num2);
 // 1B0DC
 void f_1B0DC(void);
 // 1B0F0
 void f_1B0F0(void);
 // 1B0F6
-char num_fromdigit(char *a, char b);
+char num_fromdigit(char *dest, char digit);
 // 1B12C
 void f_1B12C(void);
 // 1B152
@@ -1233,13 +1235,13 @@ void f_1B378(void);
 // 1B388
 void num_trunc__(void);
 // 1B3D4
-void num_frombyte(int *a, char b);
+void num_frombyte(int *dest, char num);
 // 1B430
-char num_to_byte(char *a);
+char num_to_byte(char *num);
 // 1B474
-void f_1B474(void);
+void num_cpy_im(char *dest, char *src);
 // 1B48A
-void num_cpy(char *a, char *b);
+void num_cpy(char *dest, char *src);
 // 1B4A0
 void f_1B4A0(void);
 // 1B4B6

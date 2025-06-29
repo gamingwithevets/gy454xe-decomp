@@ -2,7 +2,7 @@
 #include "unk5.h"
 
 // 01804
-const char num_256[10] = {0x02, 0x56, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x01};
+extern const char num_256[];
 
 // 04D64
 long num_unk_1__(char *a) {
@@ -16,8 +16,8 @@ long num_unk_1__(char *a) {
 	
 	do {
 		if (i < 24) {
-			num_cpy(&v1, &num_256);
-			num_unk_1_1__(a, &v1);
+			num_cpy(v1, num_256);
+			num_unk_1_1__(a, v1);
 		}
 		k = num_to_byte(a);
 		v2 = k;
@@ -30,7 +30,7 @@ long num_unk_1__(char *a) {
 		
 		v0 |= v2;
 		i += 8;
-		num_cpy(a, &v1);
+		num_cpy(a, v1);
 	} while (i <= 24);
 	
 	return v2;
@@ -54,7 +54,7 @@ void num_unk_2__(char *a, long b) {
 		num_frombyte(&v2, v1[i]);
 		f_1A460(a, &v2);
 		if (!i) return;
-		f_1A438(a, &num_256);
+		f_1A438(a, num_256);
 		--i;
 	} while (1);
 }

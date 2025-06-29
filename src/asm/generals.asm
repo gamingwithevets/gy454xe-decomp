@@ -2,7 +2,9 @@ TYPE(ML610CASESplus)
 MODEL LARGE
 ROMWINDOW 0, 7FFFH
 
-; NOTE: generals may be made up of multiple ASM files. For now, these are combined into a single ASM file.
+; NOTE:
+; generals may be partially written in C (at least 1 C source and 1 ASM source), however full assembly will be used for now.
+; generals may be made up of multiple ASM files. For now, these are combined into a single ASM file.
 
 _d_080DC			EQU 80DCH
 _cursor_noflash		EQU 80DDH
@@ -37,7 +39,7 @@ _use_output_charset	EQU 8123H
 _d_08125			EQU 8125H
 _d_08126			EQU 8126H
 _d_0812C			EQU 812CH
-_result_0			EQU 8140H
+_result				EQU 8140H
 _input_area			EQU 8154H
 _vars_start			EQU 8226H
 _var_m				EQU 8226H
@@ -406,7 +408,27 @@ _font_small_1:
 
 RSEG $$NTABgenerals1
 
-; Character blacklists maybe?
+; 00840
+_base_n_submodes:
+	DB 1
+	DB 7
+	DB 9
+	DB 15
+
+; 00844
+_vars_list:
+	DB 'M'
+	DB 'A'
+	DB 'A'
+	DB 'B'
+	DB 'C'
+	DB 'D'
+	DB 'E'
+	DB 'F'
+	DB 'X'
+	DB 'Y'
+
+; Character blacklists
 
 ; 0084E
 _blacklist:
@@ -554,7 +576,7 @@ _contrast_screen:
 	DB " [\x9f]        [\x9e]", 0
 
 ; 0099F
-_unk_0099f:
+_const_input_template:
 	DB "[__]", 0
 	
 ; 009A4
@@ -567,7 +589,7 @@ _const_screen:
 
 ; 009BE
 _conv_screen:
-	DB "CONSTANT", 0
+	DB "CONVERSION", 0
 	DB "Number 01~40?", 0
 	DB "", 0
 	DB "", 0
@@ -915,1417 +937,1371 @@ _s_continue_prompt:
 
 ; 010F2
 _tokens:
-DW _char_placeholder	; 00
-DW _char_cs01			; 01
-DW _char_cs02			; 02
-DW _char_cs03			; 03
-DW _char_cs04			; 04
-DW _char_cs05			; 05
-DW _char_cs06			; 06
-DW _char_cs07			; 07
-DW _char_cs08			; 08
-DW _char_cs09			; 09
-DW _char_cs10			; 0A
-DW _char_cs11			; 0B
-DW _char_cs12			; 0C
-DW _char_cs13			; 0D
-DW _char_cs14			; 0E
-DW _char_cs15			; 0F
-DW _char_sum_x2			; 10
-DW _char_sum_x			; 11
-DW _char_n				; 12
-DW _char_sum_y2			; 13
-DW _char_sum_y			; 14
-DW _char_sum_xy			; 15
-DW _char_sum_x3			; 16
-DW _char_sum_x2y		; 17
-DW _char_sum_x4			; 18
-DW _char_min_x			; 19
-DW _char_max_x			; 1A
-DW _char_min_y			; 1B
-DW _char_max_y			; 1C
-DW _char_cs16			; 1D
-DW _char_cs17			; 1E
-DW _char_cs18			; 1F
-DW _char_0x20			; 20
-DW _char_box			; 21
-DW _char_cs19			; 22
-DW _char_cs20			; 23
-DW _char_cs21			; 24
-DW _char_percent		; 25
-DW _char_cs22			; 26
-DW _char_cs23			; 27
-DW _char_paren_l		; 28
-DW _char_paren_r		; 29
-DW _char_cs24			; 2A
-DW _char_plus			; 2B
-DW _char_sep			; 2C
-DW _char_minus			; 2D
-DW _char_decimal		; 2E
-DW _char_placeholder	; 2F
-DW _char_0				; 30
-DW _char_1				; 31
-DW _char_2				; 32
-DW _char_3				; 33
-DW _char_4				; 34
-DW _char_5				; 35
-DW _char_6				; 36
-DW _char_7				; 37
-DW _char_8				; 38
-DW _char_9				; 39
-DW _char_colon			; 3A
-DW _char_cs25			; 3B
-DW _char_lt				; 3C
-DW _char_equals			; 3D
-DW _char_gt				; 3E
-DW _char_placeholder	; 3F
-DW _char_cs26			; 40
-DW _char_var_a			; 41
-DW _char_var_b			; 42
-DW _char_var_c			; 43
-DW _char_var_d			; 44
-DW _char_var_e			; 45
-DW _char_var_f			; 46
-DW _char_sto_a			; 47
-DW _char_sto_b			; 48
-DW _char_sto_c			; 49
-DW _char_sto_d			; 4A
-DW _char_sto_m			; 4B
-DW _char_sto_x			; 4C
-DW _char_sto_y			; 4D
-DW _char_mul			; 4E
-DW _char_div			; 4F
-DW _char_base_hex		; 50
-DW _char_base_dec		; 51
-DW _char_base_oct		; 52
-DW _char_base_bin		; 53
-DW _char_var_m			; 54
-DW _char_cmplx_rec		; 55
-DW _char_cmplx_pol		; 56
-DW _char_factorial		; 57
-DW _char_var_x			; 58
-DW _char_var_y			; 59
-DW _char_placeholder	; 5A
-DW _char_0x5b			; 5B
-DW _char_dms			; 5C
-DW _char_0x5d			; 5D
-DW _char_pow			; 5E
-DW _char_remainder		; 5F
-DW _char_negative		; 60
-DW _char_not			; 61
-DW _char_neg			; 62
-DW _char_abs			; 63
-DW _char_xhat1			; 64
-DW _char_xhat			; 65
-DW _char_yhat			; 66
-DW _char_xhat2			; 67
-DW _char_log			; 68
-DW _char_sum			; 69
-DW _char_integral		; 6A
-DW _char_ddx			; 6B
-DW _char_pol			; 6C
-DW _char_rec			; 6D
-DW _char_and			; 6E
-DW _char_or				; 6F
-DW _char_sinh			; 70
-DW _char_cosh			; 71
-DW _char_tanh			; 72
-DW _char_epow			; 73
-DW _char_exp			; 74
-DW _char_pow_2			; 75
-DW _char_pow_3			; 76
-DW _char_pow_m1			; 77
-DW _char_cs27			; 78
-DW _char_cs28			; 79
-DW _char_cs29			; 7A
-DW _char_0x7b			; 7B
-DW _char_placeholder	; 7C
-DW _char_0x7d			; 7D
-DW _char_xor			; 7E
-DW _char_xnor			; 7F
-DW _char_cmplx_i		; 80
-DW _char_euler			; 81
-DW _char_pi				; 82
-DW _char_sto_e			; 83
-DW _char_sto_f			; 84
-DW _char_d				; 85
-DW _char_r				; 86
-DW _char_g				; 87
-DW _char_conjg			; 88
-DW _char_xbar			; 89
-DW _char_ybar			; 8A
-DW _char_ans			; 8B
-DW _char_ran			; 8C
-DW _char_placeholder	; 8D
-DW _char_placeholder	; 8E
-DW _char_placeholder	; 8F
-DW _char_asinh			; 90
-DW _char_acosh			; 91
-DW _char_atanh			; 92
-DW _char_10pow			; 93
-DW _char_le				; 94
-DW _char_ne				; 95
-DW _char_ge				; 96
-DW _char_placeholder	; 97
-DW _char_sqrt			; 98
-DW _char_m_plus			; 99
-DW _char_stat_a			; 9A
-DW _char_stat_b			; 9B
-DW _char_stat_c			; 9C
-DW _char_stat_reg_r		; 9D
-DW _char_dot			; 9E
-DW _char_nth_rt			; 9F
-DW _char_sin			; A0
-DW _char_cos			; A1
-DW _char_tan			; A2
-DW _char_ln				; A3
-DW _char_placeholder	; A4
-DW _char_conv			; A5
-DW _char_placeholder	; A6
-DW _char_placeholder	; A7
-DW _char_cbrt			; A8
-DW _char_m_minus		; A9
-DW _char_stat_ox		; AA
-DW _char_stat_sx		; AB
-DW _char_stat_oy		; AC
-DW _char_stat_sy		; AD
-DW _char_frac			; AE
-DW _char_angle			; AF
-DW _char_asin			; B0
-DW _char_acos			; B1
-DW _char_atan			; B2
-DW _char_rnd			; B3
-DW _char_cs30			; B4
-DW _char_cs31			; B5
-DW _char_cs32			; B6
-DW _char_cs33			; B7
-DW _char_hex_a			; B8
-DW _char_hex_b			; B9
-DW _char_hex_c			; BA
-DW _char_hex_d			; BB
-DW _char_hex_e			; BC
-DW _char_hex_f			; BD
-DW _char_permu			; BE
-DW _char_combi			; BF
-DW _char_det			; C0
-DW _char_trn			; C1
-DW _char_ranint			; C2
-DW _char_arg			; C3
-DW _char_cs34			; C4
-DW _char_cs35			; C5
-DW _char_cs36			; C6
-DW _char_cs37			; C7
-DW _char_mata			; C8
-DW _char_matb			; C9
-DW _char_matc			; CA
-DW _char_matans			; CB
-DW _char_vcta			; CC
-DW _char_vctb			; CD
-DW _char_vctc			; CE
-DW _char_vctans			; CF
-DW _char_stat_p			; D0
-DW _char_stat_q			; D1
-DW _char_stat_r			; D2
-DW _char_stat_tot		; D3
-DW _char_cs38			; D4
-DW _char_cs39			; D5
-DW _char_cs40			; D6
-DW _char_cv01			; D7
-DW _char_cv02			; D8
-DW _char_cv03			; D9
-DW _char_cv04			; DA
-DW _char_cv05			; DB
-DW _char_cv06			; DC
-DW _char_cv07			; DD
-DW _char_cv08			; DE
-DW _char_cv09			; DF
-DW _char_cv10			; E0
-DW _char_cv11			; E1
-DW _char_cv12			; E2
-DW _char_cv13			; E3
-DW _char_cv14			; E4
-DW _char_cv15			; E5
-DW _char_cv16			; E6
-DW _char_cv17			; E7
-DW _char_cv18			; E8
-DW _char_cv19			; E9
-DW _char_cv20			; EA
-DW _char_cv21			; EB
-DW _char_cv22			; EC
-DW _char_cv23			; ED
-DW _char_cv24			; EE
-DW _char_cv25			; FF
-DW _char_cv26			; F0
-DW _char_cv27			; F1
-DW _char_cv28			; F2
-DW _char_cv29			; F3
-DW _char_cv30			; F4
-DW _char_cv31			; F5
-DW _char_cv32			; F6
-DW _char_cv33			; F7
-DW _char_cv34			; F8
-DW _char_cv35			; F9
-DW _char_cv36			; FA
-DW _char_cv37			; FB
-DW _char_cv38			; FC
-DW _char_cv39			; FD
-DW _char_cv40			; FE
-DW _char_placeholder	; FF
+	DW _char_placeholder	; 00
+	DW _char_cs01			; 01
+	DW _char_cs02			; 02
+	DW _char_cs03			; 03
+	DW _char_cs04			; 04
+	DW _char_cs05			; 05
+	DW _char_cs06			; 06
+	DW _char_cs07			; 07
+	DW _char_cs08			; 08
+	DW _char_cs09			; 09
+	DW _char_cs10			; 0A
+	DW _char_cs11			; 0B
+	DW _char_cs12			; 0C
+	DW _char_cs13			; 0D
+	DW _char_cs14			; 0E
+	DW _char_cs15			; 0F
+	DW _char_sum_x2			; 10
+	DW _char_sum_x			; 11
+	DW _char_n				; 12
+	DW _char_sum_y2			; 13
+	DW _char_sum_y			; 14
+	DW _char_sum_xy			; 15
+	DW _char_sum_x3			; 16
+	DW _char_sum_x2y		; 17
+	DW _char_sum_x4			; 18
+	DW _char_min_x			; 19
+	DW _char_max_x			; 1A
+	DW _char_min_y			; 1B
+	DW _char_max_y			; 1C
+	DW _char_cs16			; 1D
+	DW _char_cs17			; 1E
+	DW _char_cs18			; 1F
+	DW _char_0x20			; 20
+	DW _char_box			; 21
+	DW _char_cs19			; 22
+	DW _char_cs20			; 23
+	DW _char_cs21			; 24
+	DW _char_percent		; 25
+	DW _char_cs22			; 26
+	DW _char_cs23			; 27
+	DW _char_paren_l		; 28
+	DW _char_paren_r		; 29
+	DW _char_cs24			; 2A
+	DW _char_plus			; 2B
+	DW _char_sep			; 2C
+	DW _char_minus			; 2D
+	DW _char_decimal		; 2E
+	DW _char_placeholder	; 2F
+	DW _char_0				; 30
+	DW _char_1				; 31
+	DW _char_2				; 32
+	DW _char_3				; 33
+	DW _char_4				; 34
+	DW _char_5				; 35
+	DW _char_6				; 36
+	DW _char_7				; 37
+	DW _char_8				; 38
+	DW _char_9				; 39
+	DW _char_colon			; 3A
+	DW _char_cs25			; 3B
+	DW _char_lt				; 3C
+	DW _char_equals			; 3D
+	DW _char_gt				; 3E
+	DW _char_placeholder	; 3F
+	DW _char_cs26			; 40
+	DW _char_var_a			; 41
+	DW _char_var_b			; 42
+	DW _char_var_c			; 43
+	DW _char_var_d			; 44
+	DW _char_var_e			; 45
+	DW _char_var_f			; 46
+	DW _char_sto_a			; 47
+	DW _char_sto_b			; 48
+	DW _char_sto_c			; 49
+	DW _char_sto_d			; 4A
+	DW _char_sto_m			; 4B
+	DW _char_sto_x			; 4C
+	DW _char_sto_y			; 4D
+	DW _char_mul			; 4E
+	DW _char_div			; 4F
+	DW _char_base_hex		; 50
+	DW _char_base_dec		; 51
+	DW _char_base_oct		; 52
+	DW _char_base_bin		; 53
+	DW _char_var_m			; 54
+	DW _char_cmplx_rec		; 55
+	DW _char_cmplx_pol		; 56
+	DW _char_factorial		; 57
+	DW _char_var_x			; 58
+	DW _char_var_y			; 59
+	DW _char_placeholder	; 5A
+	DW _char_0x5b			; 5B
+	DW _char_dms			; 5C
+	DW _char_0x5d			; 5D
+	DW _char_pow			; 5E
+	DW _char_remainder		; 5F
+	DW _char_negative		; 60
+	DW _char_not			; 61
+	DW _char_neg			; 62
+	DW _char_abs			; 63
+	DW _char_xhat1			; 64
+	DW _char_xhat			; 65
+	DW _char_yhat			; 66
+	DW _char_xhat2			; 67
+	DW _char_log			; 68
+	DW _char_sum			; 69
+	DW _char_integral		; 6A
+	DW _char_ddx			; 6B
+	DW _char_pol			; 6C
+	DW _char_rec			; 6D
+	DW _char_and			; 6E
+	DW _char_or				; 6F
+	DW _char_sinh			; 70
+	DW _char_cosh			; 71
+	DW _char_tanh			; 72
+	DW _char_epow			; 73
+	DW _char_exp			; 74
+	DW _char_pow_2			; 75
+	DW _char_pow_3			; 76
+	DW _char_pow_m1			; 77
+	DW _char_cs27			; 78
+	DW _char_cs28			; 79
+	DW _char_cs29			; 7A
+	DW _char_0x7b			; 7B
+	DW _char_placeholder	; 7C
+	DW _char_0x7d			; 7D
+	DW _char_xor			; 7E
+	DW _char_xnor			; 7F
+	DW _char_cmplx_i		; 80
+	DW _char_euler			; 81
+	DW _char_pi				; 82
+	DW _char_sto_e			; 83
+	DW _char_sto_f			; 84
+	DW _char_d				; 85
+	DW _char_r				; 86
+	DW _char_g				; 87
+	DW _char_conjg			; 88
+	DW _char_xbar			; 89
+	DW _char_ybar			; 8A
+	DW _char_ans			; 8B
+	DW _char_ran			; 8C
+	DW _char_placeholder	; 8D
+	DW _char_placeholder	; 8E
+	DW _char_placeholder	; 8F
+	DW _char_asinh			; 90
+	DW _char_acosh			; 91
+	DW _char_atanh			; 92
+	DW _char_10pow			; 93
+	DW _char_le				; 94
+	DW _char_ne				; 95
+	DW _char_ge				; 96
+	DW _char_placeholder	; 97
+	DW _char_sqrt			; 98
+	DW _char_m_plus			; 99
+	DW _char_stat_a			; 9A
+	DW _char_stat_b			; 9B
+	DW _char_stat_c			; 9C
+	DW _char_stat_reg_r		; 9D
+	DW _char_dot			; 9E
+	DW _char_nth_rt			; 9F
+	DW _char_sin			; A0
+	DW _char_cos			; A1
+	DW _char_tan			; A2
+	DW _char_ln				; A3
+	DW _char_placeholder	; A4
+	DW _char_conv			; A5
+	DW _char_placeholder	; A6
+	DW _char_placeholder	; A7
+	DW _char_cbrt			; A8
+	DW _char_m_minus		; A9
+	DW _char_stat_ox		; AA
+	DW _char_stat_sx		; AB
+	DW _char_stat_oy		; AC
+	DW _char_stat_sy		; AD
+	DW _char_frac			; AE
+	DW _char_angle			; AF
+	DW _char_asin			; B0
+	DW _char_acos			; B1
+	DW _char_atan			; B2
+	DW _char_rnd			; B3
+	DW _char_cs30			; B4
+	DW _char_cs31			; B5
+	DW _char_cs32			; B6
+	DW _char_cs33			; B7
+	DW _char_hex_a			; B8
+	DW _char_hex_b			; B9
+	DW _char_hex_c			; BA
+	DW _char_hex_d			; BB
+	DW _char_hex_e			; BC
+	DW _char_hex_f			; BD
+	DW _char_permu			; BE
+	DW _char_combi			; BF
+	DW _char_det			; C0
+	DW _char_trn			; C1
+	DW _char_ranint			; C2
+	DW _char_arg			; C3
+	DW _char_cs34			; C4
+	DW _char_cs35			; C5
+	DW _char_cs36			; C6
+	DW _char_cs37			; C7
+	DW _char_mata			; C8
+	DW _char_matb			; C9
+	DW _char_matc			; CA
+	DW _char_matans			; CB
+	DW _char_vcta			; CC
+	DW _char_vctb			; CD
+	DW _char_vctc			; CE
+	DW _char_vctans			; CF
+	DW _char_stat_p			; D0
+	DW _char_stat_q			; D1
+	DW _char_stat_r			; D2
+	DW _char_stat_tot		; D3
+	DW _char_cs38			; D4
+	DW _char_cs39			; D5
+	DW _char_cs40			; D6
+	DW _char_cv01			; D7
+	DW _char_cv02			; D8
+	DW _char_cv03			; D9
+	DW _char_cv04			; DA
+	DW _char_cv05			; DB
+	DW _char_cv06			; DC
+	DW _char_cv07			; DD
+	DW _char_cv08			; DE
+	DW _char_cv09			; DF
+	DW _char_cv10			; E0
+	DW _char_cv11			; E1
+	DW _char_cv12			; E2
+	DW _char_cv13			; E3
+	DW _char_cv14			; E4
+	DW _char_cv15			; E5
+	DW _char_cv16			; E6
+	DW _char_cv17			; E7
+	DW _char_cv18			; E8
+	DW _char_cv19			; E9
+	DW _char_cv20			; EA
+	DW _char_cv21			; EB
+	DW _char_cv22			; EC
+	DW _char_cv23			; ED
+	DW _char_cv24			; EE
+	DW _char_cv25			; FF
+	DW _char_cv26			; F0
+	DW _char_cv27			; F1
+	DW _char_cv28			; F2
+	DW _char_cv29			; F3
+	DW _char_cv30			; F4
+	DW _char_cv31			; F5
+	DW _char_cv32			; F6
+	DW _char_cv33			; F7
+	DW _char_cv34			; F8
+	DW _char_cv35			; F9
+	DW _char_cv36			; FA
+	DW _char_cv37			; FB
+	DW _char_cv38			; FC
+	DW _char_cv39			; FD
+	DW _char_cv40			; FE
+	DW _char_placeholder	; FF
 
 ; Length = value & 0xF.
 ; If (value & 0xF0) == 0xF then append a left parenthesis at the end of the token.
 ; Else add it to the character data pointer. (Casio might be lazy here)
 ; 012F2
 _token_lengths:
-DB 01H	; 00
-DB 02H	; 01
-DB 02H	; 02
-DB 02H	; 03
-DB 02H	; 04
-DB 02H	; 05
-DB 01H	; 06
-DB 02H	; 07
-DB 02H	; 08
-DB 01H	; 09
-DB 01H	; 0A
-DB 02H	; 0B
-DB 02H	; 0C
-DB 02H	; 0D
-DB 03H	; 0E
-DB 03H	; 0F
-DB 03H	; 10
-DB 02H	; 11
-DB 01H	; 12
-DB 03H	; 13
-DB 02H	; 14
-DB 03H	; 15
-DB 03H	; 16
-DB 04H	; 17
-DB 03H	; 18
-DB 04H	; 19
-DB 04H	; 1A
-DB 04H	; 1B
-DB 04H	; 1C
-DB 02H	; 1D
-DB 01H	; 1E
-DB 02H	; 1F
-DB 01H	; 20
-DB 01H	; 21
-DB 02H	; 22
-DB 02H	; 23
-DB 02H	; 24
-DB 01H	; 25
-DB 01H	; 26
-DB 01H	; 27
-DB 01H	; 28
-DB 01H	; 29
-DB 02H	; 2A
-DB 01H	; 2B
-DB 01H	; 2C
-DB 01H	; 2D
-DB 01H	; 2E
-DB 01H	; 2F
-DB 01H	; 30
-DB 01H	; 31
-DB 01H	; 32
-DB 01H	; 33
-DB 01H	; 34
-DB 01H	; 35
-DB 01H	; 36
-DB 01H	; 37
-DB 01H	; 38
-DB 01H	; 39
-DB 01H	; 3A
-DB 01H	; 3B
-DB 01H	; 3C
-DB 01H	; 3D
-DB 01H	; 3E
-DB 01H	; 3F
-DB 02H	; 40
-DB 01H	; 41
-DB 11H	; 42
-DB 01H	; 43
-DB 11H	; 44
-DB 11H	; 45
-DB 11H	; 46
-DB 02H	; 47
-DB 02H	; 48
-DB 02H	; 49
-DB 02H	; 4A
-DB 02H	; 4B
-DB 02H	; 4C
-DB 02H	; 4D
-DB 01H	; 4E
-DB 01H	; 4F
-DB 01H	; 50
-DB 01H	; 51
-DB 01H	; 52
-DB 01H	; 53
-DB 01H	; 54
-DB 05H	; 55
-DB 04H	; 56
-DB 01H	; 57
-DB 11H	; 58
-DB 11H	; 59
-DB 01H	; 5A
-DB 01H	; 5B
-DB 01H	; 5C
-DB 01H	; 5D
-DB 0F1H	; 5E
-DB 02H	; 5F
-DB 01H	; 60
-DB 0F3H	; 61
-DB 0F3H	; 62
-DB 0F3H	; 63
-DB 02H	; 64
-DB 01H	; 65
-DB 01H	; 66
-DB 02H	; 67
-DB 0F3H	; 68
-DB 0F1H	; 69
-DB 0F1H	; 6A
-DB 0F4H	; 6B
-DB 0F3H	; 6C
-DB 0F3H	; 6D
-DB 03H	; 6E
-DB 02H	; 6F
-DB 0F4H	; 70
-DB 0F4H	; 71
-DB 0F4H	; 72
-DB 0F2H	; 73
-DB 02H	; 74
-DB 01H	; 75
-DB 01H	; 76
-DB 01H	; 77
-DB 01H	; 78
-DB 02H	; 79
-DB 02H	; 7A
-DB 01H	; 7B
-DB 01H	; 7C
-DB 01H	; 7D
-DB 03H	; 7E
-DB 04H	; 7F
-DB 01H	; 80
-DB 01H	; 81
-DB 01H	; 82
-DB 02H	; 83
-DB 02H	; 84
-DB 01H	; 85
-DB 01H	; 86
-DB 01H	; 87
-DB 0F5H	; 88
-DB 01H	; 89
-DB 01H	; 8A
-DB 03H	; 8B
-DB 04H	; 8C
-DB 01H	; 8D
-DB 01H	; 8E
-DB 01H	; 8F
-DB 0F5H	; 90
-DB 0F5H	; 91
-DB 0F5H	; 92
-DB 0F2H	; 93
-DB 01H	; 94
-DB 01H	; 95
-DB 01H	; 96
-DB 01H	; 97
-DB 0F1H	; 98
-DB 02H	; 99
-DB 01H	; 9A
-DB 01H	; 9B
-DB 01H	; 9C
-DB 01H	; 9D
-DB 01H	; 9E
-DB 0F2H	; 9F
-DB 0F3H	; A0
-DB 0F3H	; A1
-DB 0F3H	; A2
-DB 0F2H	; A3
-DB 01H	; A4
-DB 06H	; A5
-DB 01H	; A6
-DB 01H	; A7
-DB 0F2H	; A8
-DB 02H	; A9
-DB 02H	; AA
-DB 02H	; AB
-DB 02H	; AC
-DB 02H	; AD
-DB 01H	; AE
-DB 01H	; AF
-DB 0F4H	; B0
-DB 0F4H	; B1
-DB 0F4H	; B2
-DB 0F3H	; B3
-DB 02H	; B4
-DB 01H	; B5
-DB 02H	; B6
-DB 02H	; B7
-DB 01H	; B8
-DB 01H	; B9
-DB 01H	; BA
-DB 01H	; BB
-DB 01H	; BC
-DB 01H	; BD
-DB 01H	; BE
-DB 01H	; BF
-DB 0F3H	; C0
-DB 0F3H	; C1
-DB 0F7H	; C2
-DB 0F3H	; C3
-DB 02H	; C4
-DB 01H	; C5
-DB 02H	; C6
-DB 02H	; C7
-DB 04H	; C8
-DB 04H	; C9
-DB 04H	; CA
-DB 06H	; CB
-DB 04H	; CC
-DB 04H	; CD
-DB 04H	; CE
-DB 06H	; CF
-DB 0F1H	; D0
-DB 0F1H	; D1
-DB 0F1H	; D2
-DB 02H	; D3
-DB 01H	; D4
-DB 01H	; D5
-DB 03H	; D6
-DB 35H	; D7
-DB 05H	; D8
-DB 24H	; D9
-DB 04H	; DA
-DB 24H	; DB
-DB 04H	; DC
-DB 37H	; DD
-DB 07H	; DE
-DB 28H	; DF
-DB 08H	; E0
-DB 37H	; E1
-DB 07H	; E2
-DB 29H	; E3
-DB 09H	; E4
-DB 29H	; E5
-DB 09H	; E6
-DB 35H	; E7
-DB 05H	; E8
-DB 48H	; E9
-DB 08H	; EA
-DB 24H	; EB
-DB 04H	; EC
-DB 35H	; ED
-DB 05H	; EE
-DB 36H	; EF
-DB 06H	; F0
-DB 37H	; F1
-DB 07H	; F2
-DB 35H	; F3
-DB 05H	; F4
-DB 3AH	; F5
-DB 0AH	; F6
-DB 27H	; F7
-DB 07H	; F8
-DB 4BH	; F9
-DB 0BH	; FA
-DB 35H	; FB
-DB 05H	; FC
-DB 45H	; FD
-DB 05H	; FE
-DB 01H	; FF
+	DB 01H	; 00
+	DB 02H	; 01
+	DB 02H	; 02
+	DB 02H	; 03
+	DB 02H	; 04
+	DB 02H	; 05
+	DB 01H	; 06
+	DB 02H	; 07
+	DB 02H	; 08
+	DB 01H	; 09
+	DB 01H	; 0A
+	DB 02H	; 0B
+	DB 02H	; 0C
+	DB 02H	; 0D
+	DB 03H	; 0E
+	DB 03H	; 0F
+	DB 03H	; 10
+	DB 02H	; 11
+	DB 01H	; 12
+	DB 03H	; 13
+	DB 02H	; 14
+	DB 03H	; 15
+	DB 03H	; 16
+	DB 04H	; 17
+	DB 03H	; 18
+	DB 04H	; 19
+	DB 04H	; 1A
+	DB 04H	; 1B
+	DB 04H	; 1C
+	DB 02H	; 1D
+	DB 01H	; 1E
+	DB 02H	; 1F
+	DB 01H	; 20
+	DB 01H	; 21
+	DB 02H	; 22
+	DB 02H	; 23
+	DB 02H	; 24
+	DB 01H	; 25
+	DB 01H	; 26
+	DB 01H	; 27
+	DB 01H	; 28
+	DB 01H	; 29
+	DB 02H	; 2A
+	DB 01H	; 2B
+	DB 01H	; 2C
+	DB 01H	; 2D
+	DB 01H	; 2E
+	DB 01H	; 2F
+	DB 01H	; 30
+	DB 01H	; 31
+	DB 01H	; 32
+	DB 01H	; 33
+	DB 01H	; 34
+	DB 01H	; 35
+	DB 01H	; 36
+	DB 01H	; 37
+	DB 01H	; 38
+	DB 01H	; 39
+	DB 01H	; 3A
+	DB 01H	; 3B
+	DB 01H	; 3C
+	DB 01H	; 3D
+	DB 01H	; 3E
+	DB 01H	; 3F
+	DB 02H	; 40
+	DB 01H	; 41
+	DB 11H	; 42
+	DB 01H	; 43
+	DB 11H	; 44
+	DB 11H	; 45
+	DB 11H	; 46
+	DB 02H	; 47
+	DB 02H	; 48
+	DB 02H	; 49
+	DB 02H	; 4A
+	DB 02H	; 4B
+	DB 02H	; 4C
+	DB 02H	; 4D
+	DB 01H	; 4E
+	DB 01H	; 4F
+	DB 01H	; 50
+	DB 01H	; 51
+	DB 01H	; 52
+	DB 01H	; 53
+	DB 01H	; 54
+	DB 05H	; 55
+	DB 04H	; 56
+	DB 01H	; 57
+	DB 11H	; 58
+	DB 11H	; 59
+	DB 01H	; 5A
+	DB 01H	; 5B
+	DB 01H	; 5C
+	DB 01H	; 5D
+	DB 0F1H	; 5E
+	DB 02H	; 5F
+	DB 01H	; 60
+	DB 0F3H	; 61
+	DB 0F3H	; 62
+	DB 0F3H	; 63
+	DB 02H	; 64
+	DB 01H	; 65
+	DB 01H	; 66
+	DB 02H	; 67
+	DB 0F3H	; 68
+	DB 0F1H	; 69
+	DB 0F1H	; 6A
+	DB 0F4H	; 6B
+	DB 0F3H	; 6C
+	DB 0F3H	; 6D
+	DB 03H	; 6E
+	DB 02H	; 6F
+	DB 0F4H	; 70
+	DB 0F4H	; 71
+	DB 0F4H	; 72
+	DB 0F2H	; 73
+	DB 02H	; 74
+	DB 01H	; 75
+	DB 01H	; 76
+	DB 01H	; 77
+	DB 01H	; 78
+	DB 02H	; 79
+	DB 02H	; 7A
+	DB 01H	; 7B
+	DB 01H	; 7C
+	DB 01H	; 7D
+	DB 03H	; 7E
+	DB 04H	; 7F
+	DB 01H	; 80
+	DB 01H	; 81
+	DB 01H	; 82
+	DB 02H	; 83
+	DB 02H	; 84
+	DB 01H	; 85
+	DB 01H	; 86
+	DB 01H	; 87
+	DB 0F5H	; 88
+	DB 01H	; 89
+	DB 01H	; 8A
+	DB 03H	; 8B
+	DB 04H	; 8C
+	DB 01H	; 8D
+	DB 01H	; 8E
+	DB 01H	; 8F
+	DB 0F5H	; 90
+	DB 0F5H	; 91
+	DB 0F5H	; 92
+	DB 0F2H	; 93
+	DB 01H	; 94
+	DB 01H	; 95
+	DB 01H	; 96
+	DB 01H	; 97
+	DB 0F1H	; 98
+	DB 02H	; 99
+	DB 01H	; 9A
+	DB 01H	; 9B
+	DB 01H	; 9C
+	DB 01H	; 9D
+	DB 01H	; 9E
+	DB 0F2H	; 9F
+	DB 0F3H	; A0
+	DB 0F3H	; A1
+	DB 0F3H	; A2
+	DB 0F2H	; A3
+	DB 01H	; A4
+	DB 06H	; A5
+	DB 01H	; A6
+	DB 01H	; A7
+	DB 0F2H	; A8
+	DB 02H	; A9
+	DB 02H	; AA
+	DB 02H	; AB
+	DB 02H	; AC
+	DB 02H	; AD
+	DB 01H	; AE
+	DB 01H	; AF
+	DB 0F4H	; B0
+	DB 0F4H	; B1
+	DB 0F4H	; B2
+	DB 0F3H	; B3
+	DB 02H	; B4
+	DB 01H	; B5
+	DB 02H	; B6
+	DB 02H	; B7
+	DB 01H	; B8
+	DB 01H	; B9
+	DB 01H	; BA
+	DB 01H	; BB
+	DB 01H	; BC
+	DB 01H	; BD
+	DB 01H	; BE
+	DB 01H	; BF
+	DB 0F3H	; C0
+	DB 0F3H	; C1
+	DB 0F7H	; C2
+	DB 0F3H	; C3
+	DB 02H	; C4
+	DB 01H	; C5
+	DB 02H	; C6
+	DB 02H	; C7
+	DB 04H	; C8
+	DB 04H	; C9
+	DB 04H	; CA
+	DB 06H	; CB
+	DB 04H	; CC
+	DB 04H	; CD
+	DB 04H	; CE
+	DB 06H	; CF
+	DB 0F1H	; D0
+	DB 0F1H	; D1
+	DB 0F1H	; D2
+	DB 02H	; D3
+	DB 01H	; D4
+	DB 01H	; D5
+	DB 03H	; D6
+	DB 35H	; D7
+	DB 05H	; D8
+	DB 24H	; D9
+	DB 04H	; DA
+	DB 24H	; DB
+	DB 04H	; DC
+	DB 37H	; DD
+	DB 07H	; DE
+	DB 28H	; DF
+	DB 08H	; E0
+	DB 37H	; E1
+	DB 07H	; E2
+	DB 29H	; E3
+	DB 09H	; E4
+	DB 29H	; E5
+	DB 09H	; E6
+	DB 35H	; E7
+	DB 05H	; E8
+	DB 48H	; E9
+	DB 08H	; EA
+	DB 24H	; EB
+	DB 04H	; EC
+	DB 35H	; ED
+	DB 05H	; EE
+	DB 36H	; EF
+	DB 06H	; F0
+	DB 37H	; F1
+	DB 07H	; F2
+	DB 35H	; F3
+	DB 05H	; F4
+	DB 3AH	; F5
+	DB 0AH	; F6
+	DB 27H	; F7
+	DB 07H	; F8
+	DB 4BH	; F9
+	DB 0BH	; FA
+	DB 35H	; FB
+	DB 05H	; FC
+	DB 45H	; FD
+	DB 05H	; FE
+	DB 01H	; FF
 
 ; Character String Table
 
 ; 013F2
 _char_placeholder:
-DB "@"
+	DB "@"
 
 ; 013F3
 _char_cs01:
-DB "m\xb6"
+	DB "m\xb6"
 
 ; 013F5
 _char_cs02:
-DB "m\x9d"
+	DB "m\x9d"
 
 ; 013F7
 _char_cs03:
-DB "me"
+	DB "me"
 
 ; 013F9
 _char_cs04:
-DB "m\xb7"
+	DB "m\xb7"
 
 ; 013FB
 _char_cs05:
-DB "a\xb0"
+	DB "a\xb0"
 
 ; 013FD
 _char_cs06:
 _char_base_hex:
-DB "h"
+	DB "h"
 
 ; 013FE
 _char_cs07:
-DB "\xc6\xb5"
+	DB "\xc6\xb5"
 
 ; 01400
 _char_cs08:
-DB "\xc6\x9b"
+	DB "\xc6\x9b"
 
 ; 01402
 _char_cs09:
-DB "\xcb"
+	DB "\xcb"
 
 ; 01403
 _char_cs10:
-DB "\xc1"
+	DB "\xc1"
 
 ; 01404
 _char_cs11:
 _char_stat_reg_r:
-DB "re"
+	DB "re"
 
 ; 01406
 _char_cs12:
-DB "\xc5c"
+	DB "\xc5c"
 
 ; 01408
 _char_cs13:
-DB "\xc2\xb6"
+	DB "\xc2\xb6"
 
 ; 0140A
 _char_cs14:
-DB "\xc5cp"
+	DB "\xc5cp"
 
 ; 0140D
 _char_cs15:
-DB "\xc5cn"
+	DB "\xc5cn"
 
 ; 01410
 _char_sum_x2:
 _char_sum_x:
 _char_sum:
-DB "\xc0x\xa2"
+	DB "\xc0x\xa2"
 
 ; 01413
 _char_n:
-DB "n"
+	DB "n"
 
 ; 01414
 _char_sum_y2:
 _char_sum_y:
-DB "\xc0y\xa2"
+	DB "\xc0y\xa2"
 
 ; 01417
 _char_sum_xy:
-DB "\xc0xy"
+	DB "\xc0xy"
 
 ; 0141A
 _char_sum_x3:
-DB "\xc0x\xa3"
+	DB "\xc0x\xa3"
 
 ; 0141D
 _char_sum_x2y:
-DB "\xc0x\xa2y"
+	DB "\xc0x\xa2y"
 
 ; 01421
 _char_sum_x4:
-DB "\xc0x\xa4"
+	DB "\xc0x\xa4"
 
 ; 01424
 _char_min_x:
-DB "minX"
+	DB "minX"
 
 ; 01428
 _char_max_x:
-DB "maxX"
+	DB "maxX"
 
 ; 0142C
 _char_min_y:
-DB "minY"
+	DB "minY"
 
 ; 01430
 _char_max_y:
-DB "maxY"
+	DB "maxY"
 
 ; 01434
 _char_cs16:
-DB "R\x84"
+	DB "R\x84"
 
 ; 01436
 _char_cs17:
-DB "u"
+	DB "u"
 
 ; 01437
 _char_cs18:
-DB "\xc6\xb6"
+	DB "\xc6\xb6"
 
 ; 01439
 _char_0x20:
-DB " "
+	DB " "
 
 ; 0143A
 _char_box:
-DB "\xcd"
+	DB "\xcd"
 
 ; 0143B
 _char_cs19:
-DB "\xc6e"
+	DB "\xc6e"
 
 ; 0143D
 _char_cs20:
-DB "\xc6\x9d"
+	DB "\xc6\x9d"
 
 ; 0143F
 _char_cs21:
-DB "\xc6\xb7"
+	DB "\xc6\xb7"
 
 ; 01441
 _char_percent:
-DB "%"
+	DB "%"
 
 ; 01442
 _char_cs22:
-DB "F"
+	DB "F"
 
 ; 01443
 _char_cs23:
-DB "e"
+	DB "e"
 
 ; 01444
 _char_paren_l:
-DB "("
+	DB "("
 
 ; 01445
 _char_paren_r:
-DB ")"
+	DB ")"
 
 ; 01446
 _char_cs24:
-DB "N\x9a"
+	DB "N\x9a"
 
 ; 01448
 _char_plus:
-DB "+"
+	DB "+"
 
 ; 01449
 _char_sep:
-DB ","
+	DB ","
 
 ; 0144A
 _char_minus:
-DB "-"
+	DB "-"
 
 ; 0144B
 _char_decimal:
-DB "."
+	DB "."
 
 ; 0144C
 _char_0:
-DB "0"
+	DB "0"
 
 ; 0144D
 _char_1:
-DB "1"
+	DB "1"
 
 ; 0144E
 _char_2:
-DB "2"
+	DB "2"
 
 ; 0144F
 _char_3:
-DB "3"
+	DB "3"
 
 ; 01450
 _char_4:
-DB "4"
+	DB "4"
 
 ; 01451
 _char_5:
-DB "5"
+	DB "5"
 
 ; 01452
 _char_6:
-DB "6"
+	DB "6"
 
 ; 01453
 _char_7:
-DB "7"
+	DB "7"
 
 ; 01454
 _char_8:
-DB "8"
+	DB "8"
 
 ; 01455
 _char_9:
-DB "9"
+	DB "9"
 
 ; 01456
 _char_colon:
-DB ":"
+	DB ":"
 
 ; 01457
 _char_equals:
-DB "="
+	DB "="
 
 ; 01458
 _char_cs26:
-DB "Vm"
+	DB "Vm"
 
 ; 0145A
 _char_sto_a:
-DB "\x8dA"
+	DB "\x8dA"
 
 ; 0145C
 _char_var_b:
 _char_sto_b:
-DB "\x8dB"
+	DB "\x8dB"
 
 ; 0145E
 _char_sto_c:
-DB "\x8dC"
+	DB "\x8dC"
 
 ; 01460
 _char_var_d:
 _char_sto_d:
-DB "\x8dD"
+	DB "\x8dD"
 
 ; 01462
 _char_sto_m:
-DB "\x8dM"
+	DB "\x8dM"
 
 ; 01464
 _char_sto_x:
 _char_var_x:
-DB "\x8dX"
+	DB "\x8dX"
 
 ; 01466
 _char_sto_y:
 _char_var_y:
-DB "\x8dY"
+	DB "\x8dY"
 
 ; 01468
 _char_mul:
-DB "$"
+	DB "$"
 
 ; 01469
 _char_div:
-DB "&"
+	DB "&"
 
 ; 0146A
 _char_base_bin:
-DB "b"
+	DB "b"
 
 ; 0146B
 _char_cmplx_rec:
-DB "\x9ea+b\x80"
+	DB "\x9ea+b\x80"
 
 ; 01470
 _char_cmplx_pol:
-DB "\x9er\x88\xc4"
+	DB "\x9er\x88\xc4"
 
 ; 01474
 _char_factorial:
-DB "!"
+	DB "!"
 
 ; 01475
 _char_0x5b:
-DB "["
+	DB "["
 
 ; 01476
 _char_dms:
-DB "\\"
+	DB "\\"
 
 ; 01477
 _char_0x5d:
-DB "]"
+	DB "]"
 
 ; 01478
 _char_pow:
-DB "^"
+	DB "^"
 
 ; 01479
 _char_negative:
-DB "`"
+	DB "`"
 
 ; 0147A
 _char_not:
-DB "Not"
+	DB "Not"
 
 ; 0147D
 _char_neg:
-DB "Neg"
+	DB "Neg"
 
 ; 01480
 _char_var_a:
 _char_abs:
-DB "Abs"
+	DB "Abs"
 
 ; 01483
 _char_xhat1:
 _char_xhat:
-DB "\x8b\xb1"
+	DB "\x8b\xb1"
 
 ; 01485
 _char_yhat:
-DB "\x8c"
+	DB "\x8c"
 
 ; 01486
 _char_xhat2:
-DB "\x8b\xb2"
+	DB "\x8b\xb2"
 
 ; 01488
 _char_log:
-DB "log"
+	DB "log"
 
 ; 0148B
 _char_integral:
-DB "\x99"
+	DB "\x99"
 
 ; 0148C
 _char_base_dec:
 _char_ddx:
-DB "d/dx"
+	DB "d/dx"
 
 ; 01490
 _char_pol:
 _char_stat_p:
-DB "Pol"
+	DB "Pol"
 
 ; 01493
 _char_rec:
 _char_cs27:
 _char_stat_r:
-DB "Rec"
+	DB "Rec"
 
 ; 01496
 _char_and:
-DB "and"
+	DB "and"
 
 ; 01499
 _char_base_oct:
 _char_or:
-DB "or"
+	DB "or"
 
 ; 0149B
 _char_epow:
 _char_euler:
-DB "\x81^"
+	DB "\x81^"
 
 ; 0149D
 _char_exp:
-DB "\x82\x83"
+	DB "\x82\x83"
 
 ; 0149F
 _char_pow_2:
-DB "\xa2"
+	DB "\xa2"
 
 ; 014A0
 _char_pow_3:
-DB "\xa3"
+	DB "\xa3"
 
 ; 014A1
 _char_pow_m1:
-DB "\xaa"
+	DB "\xaa"
 
 ; 014A2
 _char_cs28:
-DB "c\xb0"
+	DB "c\xb0"
 
 ; 014A4
 _char_cs29:
-DB "c\xb0"
+	DB "c\xb0"
 
 ; 014A6
 _char_0x7b:
-DB "{"
+	DB "{"
 
 ; 014A7
 _char_0x7d:
-DB "}"
+	DB "}"
 
 ; 014A8
 _char_xor:
-DB "xor"
+	DB "xor"
 
 ; 014AB
 _char_xnor:
-DB "xnor"
+	DB "xnor"
 
 ; 014AF
 _char_cmplx_i:
-DB "\x80"
+	DB "\x80"
 
 ; 014B0
 _char_pi:
-DB "\xc7"
+	DB "\xc7"
 
 ; 014B1
 _char_d:
-DB "\x85"
+	DB "\x85"
 
 ; 014B2
 _char_r:
-DB "\x86"
+	DB "\x86"
 
 ; 014B3
 _char_g:
-DB "\x87"
+	DB "\x87"
 
 ; 014B4
 _char_var_c:
 _char_conjg:
-DB "Conjg"
+	DB "Conjg"
 
 ; 014B9
 _char_xbar:
-DB "\x89"
+	DB "\x89"
 
 ; 014BA
 _char_ybar:
-DB "\x8a"
+	DB "\x8a"
 
 ; 014BB
 _char_ans:
-DB "Ans"
+	DB "Ans"
 
 ; 014BE
 _char_ran:
-DB "Ran#"
+	DB "Ran#"
 
 ; 014C2
 _char_10pow:
-DB "\x83^"
+	DB "\x83^"
 
 ; 014C4
 _char_sqrt:
-DB "\x98"
+	DB "\x98"
 
 ; 014C5
 _char_var_m:
 _char_m_plus:
-DB "M+"
+	DB "M+"
 
 ; 014C7
 _char_stat_a:
-DB "\x9a"
+	DB "\x9a"
 
 ; 014C8
 _char_stat_b:
-DB "\x9b"
+	DB "\x9b"
 
 ; 014C9
 _char_stat_c:
-DB "\x9c"
+	DB "\x9c"
 
 ; 014CA
 _char_dot:
-DB "*"
+	DB "*"
 
 ; 014CB
 _char_nth_rt:
-DB "\xab\x98"
+	DB "\xab\x98"
 
 ; 014CD
 _char_ln:
-DB "ln"
+	DB "ln"
 
 ; 014CF
 _char_conv:
-DB "\x9eConv "
+	DB "\x9eConv "
 
 ; 014D5
 _char_cbrt:
-DB "\xa3\x98"
+	DB "\xa3\x98"
 
 ; 014D7
 _char_m_minus:
-DB "M-"
+	DB "M-"
 
 ; 014D9
 _char_stat_ox:
-DB "\xc8x"
+	DB "\xc8x"
 
 ; 014DB
 _char_stat_sx:
-DB "sx"
+	DB "sx"
 
 ; 014DD
 _char_stat_oy:
-DB "\xc8y"
+	DB "\xc8y"
 
 ; 014DF
 _char_stat_sy:
-DB "sy"
+	DB "sy"
 
 ; 014E1
 _char_frac:
-DB "\x93"
+	DB "\x93"
 
 ; 014E2
 _char_angle:
-DB "\x88"
+	DB "\x88"
 
 ; 014E3
 _char_cs38:
-DB "t"
+	DB "t"
 
 ; 014E4
 _char_rnd:
-DB "Rnd"
+	DB "Rnd"
 
 ; 014E7
 _char_cs30:
-DB "c\xb2"
+	DB "c\xb2"
 
 ; 014E9
 _char_cs31:
-DB "\xc8"
+	DB "\xc8"
 
 ; 014EA
 _char_cs32:
-DB "\xc3\xb0"
+	DB "\xc3\xb0"
 
 ; 014EC
 _char_cs33:
-DB "\xc6\xb0"
+	DB "\xc6\xb0"
 
 ; 014EE
 _char_hex_a:
-DB "\xb8"
+	DB "\xb8"
 
 ; 014EF
 _char_hex_b:
-DB "\xb9"
+	DB "\xb9"
 
 ; 014F0
 _char_combi:
 _char_hex_c:
-DB "\xba"
+	DB "\xba"
 
 ; 014F1
 _char_hex_d:
-DB "\xbb"
+	DB "\xbb"
 
 ; 014F2
 _char_hex_e:
-DB "\xbc"
+	DB "\xbc"
 
 ; 014F3
 _char_hex_f:
-DB "\xbd"
+	DB "\xbd"
 
 ; 014F4
 _char_permu:
-DB "\xbe"
+	DB "\xbe"
 
 ; 014F5
 _char_det:
-DB "det"
+	DB "det"
 
 ; 014F8
 _char_trn:
-DB "Trn"
+	DB "Trn"
 
 ; 014FB
 _char_ranint:
-DB "RanInt#"
+	DB "RanInt#"
 
 ; 01502
 _char_arg:
-DB "arg"
+	DB "arg"
 
 ; 01505
 _char_cs34:
-DB "\xc9\xb0"
+	DB "\xc9\xb0"
 
 ; 01507
 _char_cs36:
 _char_cs39:
-DB "G\xb0"
+	DB "G\xb0"
 
 ; 01509
 _char_cs37:
-DB "Z\xb0"
+	DB "Z\xb0"
 
 ; 0150B
 _char_matb:
-DB "MatB"
+	DB "MatB"
 
 ; 0150F
 _char_matc:
-DB "MatC"
+	DB "MatC"
 
 ; 01513
 _char_mata:
 _char_matans:
-DB "MatAns"
+	DB "MatAns"
 
 ; 01519
 _char_vctb:
-DB "VctB"
+	DB "VctB"
 
 ; 0151D
 _char_vctc:
-DB "VctC"
+	DB "VctC"
 
 ; 01521
 _char_vcta:
 _char_vctans:
-DB "VctAns"
+	DB "VctAns"
 
 ; 01527
 _char_stat_q:
-DB "Q"
+	DB "Q"
 
 ; 01528
 _char_stat_tot:
-DB "\x9et"
+	DB "\x9et"
 
 ; 0152A
 _char_cs40:
-DB "atm"
+	DB "atm"
 
 ; 0152D
-_char_cv02:
-DB "cm\x9e"
-; 01530
 _char_cv01:
-DB "in\x9ecm"
+_char_cv02:
+	DB "cm\x9ein\x9ecm"
 
 ; 01535
-_char_cv04:
-DB "m\x9e"
-; 01537
 _char_cv03:
-DB "ft\x9em"
+_char_cv04:
+	DB "m\x9eft\x9em"
 
 ; 0153B
-_char_cv06:
-DB "m\x9e"
-; 0153D
 _char_cv05:
-DB "yd\x9em"
+_char_cv06:
+	DB "m\x9eyd\x9em"
 
 ; 01541
 _char_cs25:
-_char_cv08:
-DB "k"
-DB "m\x9e"
-; 01544
 _char_cv07:
-DB "mile\x9ekm"
+_char_cv08:
+	DB "k"
+	DB "m\x9emile\x9ekm"
 
 ; 0154B
-_char_cv10:
-DB "m\x9e"
-; 0154D
 _char_cv09:
-DB "n mile\x9em"
+_char_cv10:
+	DB "m\x9en mile\x9em"
 
 ; 01555
-_char_cv12:
-DB "m\xa2\x9e"
-; 01558
 _char_cv11:
-DB "acre\x9em\xa2"
+_char_cv12:
+	DB "m\xa2\x9eacre\x9em\xa2"
 
 ; 0155F
-_char_cv14:
-DB "\xca\x9e"
-; 01561
 _char_cv13:
-DB "gal(US)\x9e\xca"
+_char_cv14:
+	DB "\xca\x9egal(US)\x9e\xca"
 
 ; 0156A
-_char_cv16:
-DB "\xca\x9e"
-; 0156C
 _char_cv15:
-DB "gal(UK)\x9e\xca"
+_char_cv16:
+	DB "\xca\x9egal(UK)\x9e\xca"
 
 ; 01575
-_char_cv18:
-DB "km\x9e"
-; 01578
 _char_cv17:
-DB "pc\x9ekm"
+_char_cv18:
+	DB "km\x9epc\x9ekm"
 
 ; 0157D
-_char_cv20:
-DB "m/s\x9e"
-; 01581
 _char_cv19:
-DB "km/h\x9em/s"
+_char_cv20:
+	DB "m/s\x9ekm/h\x9em/s"
 
 ; 01589
 _char_cs35:
-_char_cv22:
-DB "g\x9e"
-; 0158A
 _char_cv21:
-DB "oz\x9eg"
+_char_cv22:
+	DB "g\x9eoz\x9eg"
 
 ; 0158F
-_char_cv24:
-DB "kg\x9e"
-; 01592
 _char_cv23:
-DB "lb\x9ekg"
+_char_cv24:
+	DB "kg\x9elb\x9ekg"
 
 ; 01597
-_char_cv26:
-DB "Pa\x9e"
-; 0159A
 _char_cv25:
-DB "atm\x9ePa"
+_char_cv26:
+	DB "Pa\x9eatm\x9ePa"
 
 ; 015A0
-_char_cv28:
-DB "Pa\x9e"
-; 015A3
 _char_cv27:
-DB "mmHg\x9ePa"
+_char_cv28:
+	DB "Pa\x9emmHg\x9ePa"
 
 ; 015AA
-_char_cv30:
-DB "kW\x9e"
-; 015AD
 _char_cv29:
-DB "hp\x9ekW"
+_char_cv30:
+	DB "kW\x9ehp\x9ekW"
 
 ; 015B2
-_char_cv32:
-DB "Pa\x9e"
-; 015B5
 _char_cv31:
-DB "kgf/cm\xa2\x9ePa"
+_char_cv32:
+	DB "Pa\x9ekgf/cm\xa2\x9ePa"
 
 ; 015BF
-_char_cv34:
-DB "J\x9e"
-; 015C1
 _char_cv33:
-DB "kgf*m\x9eJ"
+_char_cv34:
+	DB "J\x9ekgf*m\x9eJ"
 
 ; 015C8
-_char_cv36:
-DB "kPa\x9e"
-; 015CC
 _char_cv35:
-DB "lbf/in\xa2\x9ekPa"
+_char_cv36:
+	DB "kPa\x9elbf/in\xa2\x9ekPa"
 
 ; 015D7
-_char_cv38:
-DB "\x85C\x9e"
-; 015DA
 _char_cv37:
-DB "\x85F\x9e\x85C"
+_char_cv38:
+	DB "\x85C\x9e\x85F\x9e\x85C"
 
 ; 015DF
-_char_cv40:
-DB "cal\x9e"
-; 015E3
 _char_cv39:
-DB "J\x9ecal"
+_char_cv40:
+	DB "cal\x9eJ\x9ecal"
 
 ; 015E8
 _char_var_e:
 _char_sto_e:
-DB "\x8dE"
+	DB "\x8dE"
 
 ; 015EA
 _char_var_f:
 _char_sto_f:
-DB "\x8dF"
+	DB "\x8dF"
 
 ; 015EC
 _char_remainder:
-DB "&R"
+	DB "&R"
 
 ; 015EE
 _char_lt:
-DB "<"
+	DB "<"
 
 ; 015EF
 _char_gt:
-DB ">"
+	DB ">"
 
 ; 015F0
 _char_le:
-DB "\x94"
+	DB "\x94"
 
 ; 015F1
 _char_ne:
-DB "\x95"
+	DB "\x95"
 
 ; 015F2
 _char_ge:
-DB "\x96"
+	DB "\x96"
 
 ; 015F3
 _char_sinh:
 _char_asinh:
-DB "sinh\xaa"
+	DB "sinh\xaa"
 
 ; 015F8
 _char_cosh:
 _char_acosh:
-DB "cosh\xaa"
+	DB "cosh\xaa"
 
 ; 015FD
 _char_tanh:
 _char_atanh:
-DB "tanh\xaa"
+	DB "tanh\xaa"
 
 ; 01602
 _char_sin:
 _char_asin:
-DB "sin\xaa"
+	DB "sin\xaa"
 
 ; 01606
 _char_cos:
 _char_acos:
-DB "cos\xaa"
+	DB "cos\xaa"
 
 ; 0160A
 _char_tan:
 _char_atan:
-DB "tan\xaa"
+	DB "tan\xaa"
 
 
 RSEG $$NTABgenerals3
 
-; 017BE - STUB
-_unk_017be:
-
-
-; 017C8 - STUB
-_unk_017c8:
-
-
-; 017D2 - STUB
-_unk_017d2:
-
-
-; 017DC - STUB
-_unk_017dc:
-
-
-; 017E6 - STUB
-_unk_017e6:
-
-; These 2 arrays are somehow related to text printing
-; If not defined properly, any printed text will appear corrupted
-
+; X position bitmask. Indexed with x_pos & 7. Used in char_print.
 ; 01C64
-_unk_01c64:
-	DB 0FFH, 7FH, 3FH, 1FH, 7H, 3H, 1H
+_bitmasks_x:
+	DB 11111111B
+	DB 01111111B
+	DB 00111111B
+	DB 00011111B
+	DB 00001111B
+	DB 00000111B
+	DB 00000011B
+	DB 00000001B
 
+; Y position bitmask. Indexed with (4 + y_pos) & 7. Used in char_print.
 ; 01C6C
-_unk_01c6c:
-	DB 0FFH, 80H, 0C0H, 0E0H, 0F0H, 0F8H, 0FCH
+_bitmasks_y:
+	DB 11111111B
+	DB 10000000B
+	DB 11000000B
+	DB 11100000B
+	DB 11110000B
+	DB 11111000B
+	DB 11111100B
+	DB 11111110B
 
 ; 01C80 - STUB
 _unk_01c80:
@@ -2380,14 +2356,14 @@ _f_02676:
 
 ; 0268E
 _unk_0268e:
-	DB 0BH, 0H, 0H, 0H, 0H, 0H, 0H, 0H, 0H, 0H, 0H, 0H, 0H, 0H, 0H, 0H
-	DB 0H, 0H, 0H, 0H, 98H, 0D0H, 0DCH, 0H, 0H, 0H, 0H, 0H, 0H, 0CH, 0CCH, 0CH
-	DB 0H, 0H, 0H, 0C0H, 0CCH, 0CCH, 0CCH, 0DDH, 0H, 0H, 0C0H, 0CH, 0H, 0H, 0H, 0D1H
-	DB 0ADH, 1AH, 0H, 0H, 11H, 11H, 0AAH, 0H, 0AAH, 1AH, 0H, 0H, 0H, 0H, 1H, 0H
-	DB 0H, 0C0H, 0CH, 0H, 0AH, 0H, 0C0H, 0CCH, 0AAH, 1AH, 0CCH, 0CCH, 0C1H, 0H, 0H, 10H
-	DB 0AAH, 0AAH, 1H, 0H, 0C0H, 0H, 0H, 0D1H, 0AAH, 0AAH, 0H, 0H, 32H, 65H, 7H, 0DDH
-	DB 0AAH, 0AAH, 0H, 0H, 0H, 0H, 0H, 0H, 0AAH, 0AH, 0H, 0H, 0H, 0H, 0H, 0H
-	DB 0H, 0H, 0H, 0H, 0H, 0H, 0H, 0H, 0H, 0H, 0H, 0H, 0H, 0H, 0H, 0H
+	DB	0BH,	0H,		0H,		0H,		0H,		0H,		0H,		0H,		0H,		0H,		0H,		0H,		0H,		0H,		0H,		0H
+	DB	0H,		0H,		0H,		0H,		98H,	0D0H,	0DCH,	0H,		0H,		0H,		0H,		0H,		0H,		0CH,	0CCH,	0CH
+	DB	0H,		0H,		0H,		0C0H,	0CCH,	0CCH,	0CCH,	0DDH,	0H,		0H,		0C0H,	0CH,	0H,		0H,		0H,		0D1H
+	DB	0ADH,	1AH,	0H,		0H,		11H,	11H,	0AAH,	0H,		0AAH,	1AH,	0H,		0H,		0H,		0H,		1H,		0H
+	DB	0H,		0C0H,	0CH,	0H,		0AH,	0H,		0C0H,	0CCH,	0AAH,	1AH,	0CCH,	0CCH,	0C1H,	0H,		0H,		10H
+	DB	0AAH,	0AAH,	1H,		0H,		0C0H,	0H,		0H,		0D1H,	0AAH,	0AAH,	0H,		0H,		32H,	65H,	7H,		0DDH
+	DB	0AAH,	0AAH,	0H,		0H,		0H,		0H,		0H,		0H,		0AAH,	0AH,	0H,		0H,		0H,		0H,		0H,		0H
+	DB	0H,		0H,		0H,		0H,		0H,		0H,		0H,		0H,		0H,		0H,		0H,		0H,		0H,		0H,		0H,		0H
 
 ; 0270E
 _f_0270E:
@@ -2468,7 +2444,7 @@ _f_0277E:
 	L R1, [ER0]
 	MOV R5, R1
 	MOV R0, #0H
-	AND R1, #-10H
+	AND R1, #11110000B
 	BNE _$j_027f4
 	LEA [FP]
 	MOV ER2, #0H
@@ -2483,10 +2459,10 @@ _f_0277E:
 	L R5, 9H[BP]
 	L R0, 8H[BP]
 	MOV R6, R0
-	AND R6, #0FH
+	AND R6, #00001111B
 	SRL R0, #4
 	MOV R7, #0H
-	MOV R2, #0AH
+	MOV R2, #10
 	MUL ER0, R2
 	ADD ER0, ER6
 	CMP R5, #0H
@@ -2537,17 +2513,17 @@ _f_027FA:
 	PUSH XR4
 	LEA [ER2]
 	MOV BP, ER0
-	MOV R4, #-70H
+	MOV R4, #90H
 	L R9, _use_output_charset
 	CMP R9, #1H
 	BNE _$j_02812
-	MOV R4, #-20H
+	MOV R4, #0E0H
 	BAL _$j_0281a
 _$j_02812:
 	L R8, 16H[BP]
 	CMP R8, #1H
 	BNE _$j_0281a
-	MOV R4, #-23H
+	MOV R4, #0DDH
 _$j_0281a:
 	ST R4, [EA+]
 	ADD R4, #1H
@@ -2567,12 +2543,12 @@ _$j_0282a:
 	MOV R6, #0A0H
 	CMP R9, #1H
 	BNE _$j_02840
-	MOV R6, #-10H
+	MOV R6, #0F0H
 	BAL _$j_02846
 _$j_02840:
 	CMP R8, #1H
 	BNE _$j_02846
-	MOV R6, #-30H
+	MOV R6, #0D0H
 _$j_02846:
 	CMP R4, #0H
 	BEQ _$j_0284e
@@ -2965,14 +2941,14 @@ _f_02AEA:
 	PUSH R2
 	BL _smart_strlen
 	POP R2
-	MOV R1, #6H
+	MOV R1, #6
 	MUL ER0, R1
 	CMP R2, #0H
 	BEQ _$j_02b02
-	MOV R1, #16H
+	MOV R1, #22
 	BAL _$j_02b04
 _$j_02b02:
-	MOV R1, #0CH
+	MOV R1, #12
 _$j_02b04:
 	POP ER2
 	NEG R0
@@ -3127,7 +3103,7 @@ _num_output_print:
 	PUSH XR8
 	MOV ER8, ER0
 	L R0, _mode
-	CMP R0, #2H  ; BASE-N _mode
+	CMP R0, #2H  ; BASE-N mode
 	BNE _$j_02c1c
 	BL _basen_base_print
 _$j_02c1c:
@@ -3554,12 +3530,12 @@ _$j_02f00:
 	L ER10, -8H[FP]
 	MOV R9, R0
 	MOV R1, #0H
-	L R7, _unk_01c64[ER0]
+	L R7, _bitmasks_x[ER0]
 	ADD R4, R6
 	MOV R5, #0H
 	MOV R0, R4
-	AND R0, #7H
-	L R6, _unk_01c6c[ER0]
+	AND R0, #00000111B
+	L R6, _bitmasks_y[ER0]
 	POP R0
 	ADD R0, #-1H
 	ST ER0, -0AH[FP]
@@ -3735,7 +3711,7 @@ _$j_03052:
 	SRL R1, R6
 	OR R0, R1
 _$j_03074:
-	AND R0, #7CH
+	AND R0, #01111100B
 	ST R0, [ER2]
 	ADD ER2, #1H
 	INC [EA]
@@ -3764,7 +3740,7 @@ _$j_030a2:
 	BEQ _$j_030aa
 	SLL R0, #4
 _$j_030aa:
-	AND R0, #-10H
+	AND R0, #11110000B
 	ST R0, [ER2]
 	ADD R2, #1H
 	ADD R9, #-1H
@@ -4288,14 +4264,14 @@ _pd_value:
 	MOV ER10, #0H
 	ST R10, KOD0
 	ST R11, KOD1
-	MOV R0, #7FH
-	MOV R1, #-4H
+	MOV R0, #01111111B
+	MOV R1, #11111100B
 	ST R0, KOMASK0
 	ST R1, KOMASK1
 	MOV R15, #0H
 	MOV R8, #3H
-	MOV R11, #2H
-	MOV R10, #0H
+	MOV R11, #00000010B
+	MOV R10, #00000000B
 _$j_034b4:
 	MOV R12, #0H
 	MOV R13, #3H
@@ -4304,7 +4280,7 @@ _$j_034b4:
 	ST R11, KOD1
 	NOP
 _$j_034c4:
-	L R0, 0F040H
+	L R0, KID
 	TB R0.7
 	BNE _$j_034ce
 	ADD R12, #1H
@@ -4325,7 +4301,7 @@ _$j_034d8:
 	MOV R12, #3H
 	MOV R13, #-1H
 _$j_034ee:
-	L R0, 0F040H
+	L R0, KID
 	TB R0.7
 	BEQ _$j_034fc
 	ADD R12, #-1H
@@ -4351,8 +4327,8 @@ _$j_0350e:
 ; 03518
 _f_03518:
 	PUSH ER0
-	MOV R0, #-80H
-	MOV R1, #-1H
+	MOV R0, #10000000B
+	MOV R1, #11111111B
 	ST R0, KOMASK0
 	ST R1, KOMASK1
 	POP ER0
@@ -4573,10 +4549,10 @@ _f_036A8:
 ; 036B8
 _f_036B8:
 	L R0, _mode
-	CMP R0, #88H
+	CMP R0, #88H  ; TABLE mode
 	BNE _$j_03684
 	L R0, _table_mode
-	CMP R0, #12H
+	CMP R0, #12H  ; TABLE_STAT_TABLE
 	BNE _$j_03684
 	BAL _$j_03680
 
@@ -4725,8 +4701,8 @@ _$j_037b4:
 	CMP R0, #1H
 	BEQ _$j_037f8
 	POP ER0
-	MOV R2, #BYTE1 _unk_017c8
-	MOV R3, #BYTE2 _unk_017c8
+	MOV R2, #BYTE1 _num_1
+	MOV R3, #BYTE2 _num_1
 	BL _num_add_1
 	BAL _$j_037b4
 _$j_037f8:
@@ -4850,8 +4826,8 @@ _f_038C8:
 	BL _f_1A3FC
 	MOV R0, #BYTE1 _table_fx+60
 	MOV R1, #BYTE2 _table_fx
-	MOV R2, #BYTE1 _unk_017d2
-	MOV R3, #BYTE2 _unk_017d2
+	MOV R2, #BYTE1 _num_2
+	MOV R3, #BYTE2 _num_2
 	BL _f_1A44C
 	MOV R0, #BYTE1 _table_fx+60
 	MOV R1, #BYTE2 _table_fx
@@ -4871,8 +4847,8 @@ _f_038C8:
 	BL _f_1A410
 	MOV R0, #BYTE1 _table_fx+70
 	MOV R1, #BYTE2 _table_fx
-	MOV R2, #BYTE1 _unk_017d2
-	MOV R3, #BYTE2 _unk_017d2
+	MOV R2, #BYTE1 _num_2
+	MOV R3, #BYTE2 _num_2
 	BL _f_1A44C
 	CMP R0, #3H
 	BEQ _$j_039ac
@@ -5008,8 +4984,8 @@ _f_03A1A:
 	BNE _$j_03a5e
 	CMP R2, #-70H
 	BGE _$j_03a5e
-	MOV R0, #BYTE1 _unk_017c8
-	MOV R1, #BYTE2 _unk_017c8
+	MOV R0, #BYTE1 _num_1
+	MOV R1, #BYTE2 _num_1
 	MOV ER2, BP
 	BL _f_1553C
 	MOV R0, #90H
@@ -5085,8 +5061,8 @@ _$j_03adc:
 	MOV R0, #8H
 	B _$j_03de0
 _$j_03af0:
-	MOV R0, #BYTE1 _unk_017c8
-	MOV R1, #BYTE2 _unk_017c8
+	MOV R0, #BYTE1 _num_1
+	MOV R1, #BYTE2 _num_1
 	BL _f_15526
 	MOV R0, #95H
 	MOV R1, #0H
@@ -5125,8 +5101,8 @@ _$j_03b34:
 	BEQ _$j_03b4e
 	B _$j_03dda
 _$j_03b4e:
-	MOV R0, #BYTE1 _unk_017be
-	MOV R1, #BYTE2 _unk_017be
+	MOV R0, #BYTE1 _num_0
+	MOV R1, #BYTE2 _num_0
 	BL _f_15526
 	B _$j_03dc8
 _$j_03b5a:
@@ -5160,8 +5136,8 @@ _$j_03b8e:
 	ADD ER0, #0AH
 	ADD ER2, #0AH
 	BL _f_1553C
-	MOV R0, #BYTE1 _unk_017be
-	MOV R1, #BYTE2 _unk_017be
+	MOV R0, #BYTE1 _num_0
+	MOV R1, #BYTE2 _num_0
 	MOV R2, #BYTE1 _table_fx
 	MOV R3, #BYTE2 _table_fx
 	BL _f_1553C
@@ -5218,8 +5194,8 @@ _$j_03c20:
 	BNE _$j_03cd2
 	MOV R0, #BYTE1 _table_fx+30
 	MOV R1, #BYTE2 _table_fx
-	MOV R2, #BYTE1 _unk_017d2
-	MOV R3, #BYTE2 _unk_017d2
+	MOV R2, #BYTE1 _num_2
+	MOV R3, #BYTE2 _num_2
 	BL _f_1A438
 	LEA _d_085CD
 	DEC [EA]
@@ -5246,8 +5222,8 @@ _$j_03c62:
 _$j_03c68:
 	MOV R0, #BYTE1 _table_fx+20
 	MOV R1, #BYTE2 _table_fx
-	MOV R2, #BYTE1 _unk_017d2
-	MOV R3, #BYTE2 _unk_017d2
+	MOV R2, #BYTE1 _num_2
+	MOV R3, #BYTE2 _num_2
 	BL _f_1A438
 	MOV R0, #BYTE1 _table_fx+20
 	MOV R1, #BYTE2 _table_fx
@@ -5255,8 +5231,8 @@ _$j_03c68:
 	MOV R3, #BYTE2 _d_08532
 	BL _f_1553C
 	MOV ER0, ER2
-	MOV R2, #BYTE1 _unk_017c8
-	MOV R3, #BYTE2 _unk_017c8
+	MOV R2, #BYTE1 _num_1
+	MOV R3, #BYTE2 _num_1
 	BL _f_1A410
 	MOV R0, #BYTE1 _d_08532
 	MOV R1, #BYTE2 _d_08532
@@ -5286,8 +5262,8 @@ _$j_03cc0:
 	INC [EA]
 	MOV R0, #BYTE1 _table_fx+30
 	MOV R1, #BYTE2 _table_fx
-	MOV R2, #BYTE1 _unk_017d2
-	MOV R3, #BYTE2 _unk_017d2
+	MOV R2, #BYTE1 _num_2
+	MOV R3, #BYTE2 _num_2
 	BL _f_1A44C
 _$j_03cd2:
 	MOV R0, #BYTE1 _table_fx
@@ -5300,8 +5276,8 @@ _$j_03cd2:
 _$j_03ce2:
 	MOV R0, #BYTE1 _table_fx+20
 	MOV R1, #BYTE2 _table_fx
-	MOV R2, #BYTE1 _unk_017c8
-	MOV R3, #BYTE2 _unk_017c8
+	MOV R2, #BYTE1 _num_1
+	MOV R3, #BYTE2 _num_1
 	BL _f_1B0DC
 	CMP R0, #1H
 	BNE _$j_03cfc
@@ -5319,13 +5295,13 @@ _$j_03cfc:
 	INC [EA]
 	MOV R0, #BYTE1 _table_fx+30
 	MOV R1, #BYTE2 _table_fx
-	MOV R2, #BYTE1 _unk_017d2
-	MOV R3, #BYTE2 _unk_017d2
+	MOV R2, #BYTE1 _num_2
+	MOV R3, #BYTE2 _num_2
 	BL _f_1A44C
 	MOV R0, #BYTE1 _table_fx+20
 	MOV R1, #BYTE2 _table_fx
-	MOV R2, #BYTE1 _unk_017c8
-	MOV R3, #BYTE2 _unk_017c8
+	MOV R2, #BYTE1 _num_1
+	MOV R3, #BYTE2 _num_1
 	PUSH XR0
 	BL _f_1A3FC
 	POP XR0
@@ -5359,8 +5335,8 @@ _$j_03cfc:
 _$j_03d6c:
 	MOV R0, #BYTE1 _table_fx+20
 	MOV R1, #BYTE2 _table_fx
-	MOV R2, #BYTE1 _unk_017c8
-	MOV R3, #BYTE2 _unk_017c8
+	MOV R2, #BYTE1 _num_1
+	MOV R3, #BYTE2 _num_1
 	BL _f_1A410
 	MOV R0, #BYTE1 _d_08532
 	MOV R1, #BYTE2 _d_08532
@@ -5372,8 +5348,8 @@ _$j_03d6c:
 	MOV R1, #BYTE2 _table_fx
 	BL _f_1553C
 	MOV ER0, ER2
-	MOV R2, #BYTE1 _unk_017c8
-	MOV R3, #BYTE2 _unk_017c8
+	MOV R2, #BYTE1 _num_1
+	MOV R3, #BYTE2 _num_1
 	BL _f_1A410
 	MOV R0, #BYTE1 _d_08532
 	MOV R1, #BYTE2 _d_08532
@@ -5537,8 +5513,8 @@ _$j_03eda:
 	ST R2, [ER0]
 	BAL _$j_03f18
 _$j_03eee:
-	MOV R0, #BYTE1 _unk_017c8
-	MOV R1, #BYTE2 _unk_017c8
+	MOV R0, #BYTE1 _num_1
+	MOV R1, #BYTE2 _num_1
 	BL _f_15526
 	MOV R0, #90H
 	MOV R1, #0H
@@ -5578,8 +5554,8 @@ _$j_03f38:
 	MOV R2, #98H
 	CMP R0, #1H
 	BEQ _$j_03f82
-	MOV R0, #BYTE1 _unk_017c8
-	MOV R1, #BYTE2 _unk_017c8
+	MOV R0, #BYTE1 _num_1
+	MOV R1, #BYTE2 _num_1
 	BL _f_15532
 	MOV R2, #97H
 	MOV R3, #0H
@@ -5644,8 +5620,8 @@ _$j_03fce:
 	MOV ER2, ER8
 	ADD ER2, #1EH
 	BL _f_1553C
-	MOV R2, #BYTE1 _unk_017d2
-	MOV R3, #BYTE2 _unk_017d2
+	MOV R2, #BYTE1 _num_2
+	MOV R3, #BYTE2 _num_2
 	BL _f_1A44C
 	MOV ER0, ER8
 	MOV ER2, ER8
@@ -5664,8 +5640,8 @@ _$j_03fce:
 	MOV R0, #3H
 	B _$j_04140
 _$j_04008:
-	MOV R0, #BYTE1 _unk_017dc
-	MOV R1, #BYTE2 _unk_017dc
+	MOV R0, #BYTE1 _num_3
+	MOV R1, #BYTE2 _num_3
 	MOV ER2, ER8
 	ADD ER2, #14H
 	BL _f_1553C
@@ -5697,13 +5673,13 @@ _$j_04048:
 	BEQ _$j_04068
 	MOV ER0, ER8
 	ADD ER0, #14H
-	MOV R2, #BYTE1 _unk_017e6
-	MOV R3, #BYTE2 _unk_017e6
+	MOV R2, #BYTE1 _num_4
+	MOV R3, #BYTE2 _num_4
 	BL _f_1A438
 	MOV ER0, ER8
 	ADD ER0, #14H
-	MOV R2, #BYTE1 _unk_017dc
-	MOV R3, #BYTE2 _unk_017dc
+	MOV R2, #BYTE1 _num_3
+	MOV R3, #BYTE2 _num_3
 	BL _f_1A3FC
 	ADD ER6, #0AH
 	BAL _$j_0401c
@@ -6240,8 +6216,8 @@ _$j_04498:
 _clear_result:
 	PUSH LR
 	MOV ER2, #20
-	MOV R0, #BYTE1 _result_0
-	MOV R1, #BYTE2 _result_0
+	MOV R0, #BYTE1 _result
+	MOV R1, #BYTE2 _result
 	BL _memzero
 	POP PC
 
@@ -6725,8 +6701,10 @@ _$j_04828:
 _interrupt_stub:
 	RTI
 
+PUBLIC _base_n_submodes
 PUBLIC _s_blank_line
 PUBLIC _contrast_screen
+PUBLIC _const_input_template
 PUBLIC _const_screen
 PUBLIC _conv_screen
 PUBLIC _menu_clr
@@ -6806,10 +6784,6 @@ PUBLIC _f_02DD8
 PUBLIC _line_print_col_0
 PUBLIC _line_print
 PUBLIC _char_print
-PUBLIC _f_02FB8
-PUBLIC _f_02FC8
-PUBLIC _f_02FEC
-PUBLIC _draw_byte
 PUBLIC _render
 PUBLIC _get_screen_addr
 PUBLIC _setup_status_bar
@@ -6897,6 +6871,12 @@ PUBLIC _clr_all_ko
 PUBLIC _is_key_pressed
 PUBLIC _check_ac
 
+EXTRN TABLE	: _num_0		; 017BE
+EXTRN TABLE	: _num_1		; 017C8
+EXTRN TABLE	: _num_2		; 017D2
+EXTRN TABLE	: _num_3		; 017DC
+EXTRN TABLE	: _num_4		; 017E6
+
 EXTRN CODE	: $$start_up		; 04834
 EXTRN CODE	: _memmove_nn		; 04CE8
 EXTRN CODE	: _strcpy_nn		; 04E50
@@ -6946,18 +6926,18 @@ EXTRN CODE	: _f_1B4D0			; 1B4D0
 EXTRN CODE	: _invalid_var		; 1B4EA
 
 CSEG #0 AT 8H
-DW _interrupt_stub
-DW _interrupt_stub
-DW _interrupt_stub
-DW _interrupt_stub
-DW _interrupt_stub
-DW _interrupt_stub
-DW _interrupt_stub
-DW _interrupt_stub
-DW _interrupt_stub
-DW _interrupt_stub
-DW _interrupt_stub
-DW _interrupt_stub
-DW _interrupt_stub
+	DW _interrupt_stub
+	DW _interrupt_stub
+	DW _interrupt_stub
+	DW _interrupt_stub
+	DW _interrupt_stub
+	DW _interrupt_stub
+	DW _interrupt_stub
+	DW _interrupt_stub
+	DW _interrupt_stub
+	DW _interrupt_stub
+	DW _interrupt_stub
+	DW _interrupt_stub
+	DW _interrupt_stub
 
 END

@@ -1,9 +1,13 @@
 #include <string.h>
 
+// 00840
+extern const char base_n_submodes[];
 // 00947
 extern const char s_blank_line[];
 // 00974
 extern const char contrast_screen[];
+// 0099F
+extern const char const_input_template[];
 // 009A4
 extern const char const_screen[];
 // 009BE
@@ -105,12 +109,18 @@ extern int smart_strlen(const char *str);
 extern char *smart_strcpy(char *dest, char *src);
 // 0276E
 extern char *smart_strcat(char *dest, char *src);
+// 02AAA
+extern char f_02AAA(void);
+// 02ADE
+extern char f_02ADE(char a);
 // 02B76
 extern char get_token(char id, char *dest);
 // 02BD4
 extern void print_continue_prompt(void);
 // 02C04
 extern void num_output_print(char *a);
+// 02C76
+extern char f_02C76(void);
 // 02CB6
 extern char f_02CB6(void);
 // 02CE0
@@ -147,6 +157,12 @@ extern void f_03558(void);
 extern char is_char_keycode(char keycode);
 // 03656
 extern char is_ac_key(char keycode);
+// 03660
+extern char f_03660(void);
+// 03664
+extern char f_03664(void);
+// 03698
+extern char f_03698(char keycode);
 // 036B8
 extern char f_036B8(void);
 // 036CA
@@ -161,6 +177,8 @@ extern char filter_chars_cmplx(char keycode);
 extern char f_03714(char keycode);
 // 03F78
 extern char need_reset(void);
+// 043AC
+extern int f_043AC(char a, char b, char c);
 // 0448A
 extern void f_0448A(char *a, char *b);
 // 0449A
@@ -189,6 +207,8 @@ extern void delay(int ticks);
 extern void waitkey(void);
 // 046A6
 extern char get_IRQ0(void);
+// 046AE
+extern char f_046AE(void);
 // 046C0
 extern void	f_046C0(void);
 // 046C4

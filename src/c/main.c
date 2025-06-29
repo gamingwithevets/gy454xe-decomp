@@ -79,7 +79,7 @@ void main(void) {
 					d_08126 = 0;
 					if (i = setup_menu()) {
 						f_044D2();
-						if (!(table_mode & (1 << 4))) f_044B6();
+						if (table_mode & (1 << 4)) f_044B6();
 					}
 					break;
 				case 3:
@@ -109,5 +109,6 @@ void main(void) {
 			else if (table_mode == TABLE_CALC) j = f_09BDC(i);
 			else if (table_mode == TABLE_SOLVE) j = f_09BDC(i);
 		}
+		render();
 	}
 }

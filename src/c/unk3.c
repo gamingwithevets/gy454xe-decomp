@@ -138,7 +138,7 @@ char setup_menu(void) {
 		// 01E5C: jump table
 		switch (v1) {
 			default: goto j_08e04;
-			case 1:   // Unknown
+			case 1:   // Probably a leftover from ES series when MathIO result format couldn't be changed
 			case 22:  // MathIO > MathO
 				// 08E0A
 				f_08EBA(1);

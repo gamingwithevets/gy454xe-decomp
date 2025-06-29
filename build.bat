@@ -35,7 +35,7 @@ for %%a in (*.asm) do (
 )
 echo Object files:!libs!
 echo Linking...
-rlu8 /CC /S /SD!libs!,rom,,LONGU8.lib LU8100LW.lib; | findstr /L /C:"Error E"
+rlu8 /CC /D /S /SD!libs!,rom,,LONGU8.lib LU8100LW.lib; | findstr /L /C:"Error E"
 if !errorlevel! equ 0 goto exit
 echo.
 echo Converting to Intel Hex...

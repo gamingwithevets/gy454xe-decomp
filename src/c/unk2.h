@@ -9,11 +9,11 @@ void f_082C6(void);
 // 08304
 void f_08304(void);
 // 085C0
-void f_085C0(void);
+char f_085C0(void);
 // 085D2
-void f_085D2(void);
+char f_085D2(void);
 // 085EC
-void num_to_str(void);
+char num_to_str(char *num, char *out, char c);
 // 08764
 void f_08764(void);
 // 087A2
@@ -37,7 +37,7 @@ void f_088D6(void);
 // 088EC
 char is_pow_char(char *a);
 // 088FE
-void f_088FE(void);
+char f_088FE(char *a);
 // 0891A
 char is_ins_mode(void);
 // 08926
@@ -59,7 +59,7 @@ char f_08A2A(char a);
 // 08A48
 char f_08A48(char *a);
 // 08A66
-void f_08A66(void);
+char f_08A66(char *a, char *b);
 // 08A9C
 void f_08A9C(char a);
 // 08ABA

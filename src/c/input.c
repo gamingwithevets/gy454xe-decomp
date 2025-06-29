@@ -1,6 +1,6 @@
 #include "consts.h"
 #include "generals.h"
-#include "unk1.h"
+#include "input.h"
 #include "unk2.h"
 #include "unk5.h"
 
@@ -13,8 +13,14 @@ static char f_04E86(char a);
 static char f_04E9C(char a);
 // 05162
 static void f_05162(int a, int b, char c);
+// 051CE
+static void f_051CE(int a, char b, char c);
+// 05222
+static void f_05222(int a, char b);
 // 05260
 static void f_05260(char *a, int b);
+// 052D0
+static char f_052D0(char a, int b, char c, char d);
 // 05366
 static void f_05366(f_058DC_union *a, int b, char c);
 // 05516
@@ -24,7 +30,21 @@ static void f_055BC(int a, char b, char *c);
 // 05652
 static char f_05652(char *a);
 // 0568E
-static void f_0568E(char *a);
+static char f_0568E(char *a);
+// 056AE
+static char f_056AE(char *a);
+// 056D0
+static char f_056D0(char *a);
+// 056F2
+static void f_056F2(char *a, char *b);
+// 05766
+static char f_05766(char *a);
+// 0579A
+static char f_0579A(char *a, char b);
+// 05824
+static char f_05824(char *a);
+// 0587E
+static char f_0587E(char *a);
 // 05B2C
 static char *f_05B2C(char *a, f_058DC_union *b, int c, char d);
 // 05B86
@@ -45,6 +65,27 @@ static char *f_0666C(char *a, f_058DC_union *b, int c, char d);
 static char f_06914(char *a);
 // 06944
 static char *f_06944(char *a, f_058DC_union *b, int c, char d);
+// 06C06
+static char f_06C06(char *a);
+// 06D90
+static char *f_06D90(char *a, char *b);
+// 06E40
+static char f_06E40(char *a, char b, char c);
+// 06F1C
+static char *f_06F1C(char *a);
+// 06FCE
+static void f_06FCE(char *a, char b, char c);
+// 07022
+static void f_07022(char token, char b, char *input);
+// 073BC
+static char is_mathi_char(char token);
+// 073DC
+static char *move_cursor(char a);
+// 07442
+static char *f_07442(char a);
+
+// 017c8
+extern const char num_1[];
 
 // 01DDC
 const char unk_01ddc[] = {
@@ -171,7 +212,7 @@ void f_04F6E(void) {
 	loc_m34[0] = '\0';
 	v0 = v3 + v0;
 	while (v4 <= 96) {
-		if (cursor_pos_byte == v5) f_04E6E(v2, v1);
+		if (cursor_pos_byte == v5) f_04E6E(v4, v1);
 		v7 = *v0;
 		if (!f_04E86(v7) && (len = get_token(v7, loc_m56))) {
 			v4 += (char)(len * 6);
@@ -196,7 +237,7 @@ void f_04F6E(void) {
 	return;
 }
 
-// 05162 - STUB
+// 05162
 static void f_05162(int a, int b, char c) {
 	int v0;
 
@@ -207,10 +248,10 @@ static void f_05162(int a, int b, char c) {
 			if (b >= v0) {
 				if (a < v0) a = formula_x;
 				else {
-					a -= *((int *)reg0);
+					a -= *(int *)&reg0[0];
 					if (a > 95) return;
 				}
-				b -= *((int *)reg0);
+				b -= *(int *)&reg0[0];
 				if (b > 95) b = 95;
 				f_02DD8((char)a, c, (char)b, c);
 			}
@@ -221,12 +262,12 @@ static void f_05162(int a, int b, char c) {
 }
 
 // 051CE - STUB
-void f_051CE(int a, char b, char c) {
+static void f_051CE(int a, char b, char c) {
 	return;
 }
 
 // 05222 - STUB
-void f_05222(void) {
+static void f_05222(int a, char b) {
 	return;
 }
 
@@ -241,7 +282,7 @@ static void f_05260(char *a, int b, char c) {
 				if (*++a) b += 6;
 				else break;
 			} else {
-				b -= *((int *)reg0);
+				b -= *(int *)&reg0[0];
 				if (b <= 95) {
 					v0 = c - reg0[5];
 					if (v0 >= -10 && v0 <= 31) line_print((char)b, (char)v0, a);
@@ -255,7 +296,7 @@ static void f_05260(char *a, int b, char c) {
 }
 
 // 052D0 - STUB
-char f_052D0(char a, int b, char c) {
+static char f_052D0(char a, int b, char c, char d) {
 	return 0;
 }
 
@@ -275,7 +316,7 @@ static void f_055BC(int a, char b, char *c) {
 }
 
 // 05652
-char f_05652(char *a) {
+static char f_05652(char *a) {
 	return f_02676(a[0]);
 }
 
@@ -293,45 +334,126 @@ char f_05658(char *a) {
 	return v0;
 }
 
-// 0568E - STUB
-static void f_0568E(char *a) {
-	return;
+// 0568E
+static char f_0568E(char *a) {
+	char v0;
+
+	v0 = f_05658(a);
+	// Hex A
+	if (v0 == 3 && a[1] == 0xb8) v0 = 4;
+	return v0;
 }
 
 // 056AE
-char f_056AE(char *a) {
+static char f_056AE(char *a) {
 	if (f_05652(a) != 1) return 5;
 	return unk_01ddc[f_0270E(a[0])];
 }
 
-// 056D0 - STUB
-void f_056D0(void) {
-	return;
+// 056D0
+static char f_056D0(char *a) {
+	if (f_05658(a) != 1) return 5;
+	return unk_01ddc[f_0270E(a[0])];
 }
 
 // 056F2 - STUB
-void f_056F2(char *a, char *b) {
+static void f_056F2(char *a, char *b) {
 	return;
 }
 
-// 05766 - STUB
-void f_05766(void) {
-	return;
+// 05766
+static char f_05766(char *a) {
+	char v0;
+	char v1;
+	char v2;
+
+	v0 = 0;
+	v1 = 1;
+	while (v2 = *a) {
+		// Hex A
+		if (v2 == 0xb8) ++v1;
+		// Hex B
+		else if (v2 == 0xb9 && !--v1) break;
+		// Hex C
+		else if (v2 == 0xba && v1 == 1) break;
+		++v0;
+		++a;
+	}
+	return v0;
 }
 
-// 0579A - STUB
-void f_0579A(void) {
-	return;
+// 0579A
+static char f_0579A(char *a, char b) {
+	char v0;
+	char v1;
+	char v2;
+
+	v0 = 0;
+	v1 = f_056D0(a);
+	if ((b < 1 || v1) && (b != 2 || v1 == 3 || v1 == 4)) {
+		v0 = v1 == 2 ? 3 : (v1 == 4 ? 4 : 2);
+		if (b) {
+			a += v0;
+			v1 = 0;
+			while (v1 < b) {
+				v2 = 1;
+				while (*a) {
+					// Hex A
+					if (*a == 0xb8) ++v2;
+					// Hex B
+					else if (*a == 0xb9 && !--v2) break;
+					// Hex C
+					else if (*a == 0xba && v2 == 1) break;
+					++v0;
+					++a;
+				}
+				++v0;
+				// Hex A
+				if (*++a == 0xb8) {
+					++a;
+					++v0;
+				}
+				++v1;
+			}
+		}
+	}
+	return v0;
 }
 
-// 05824 - STUB
-void f_05824(void) {
-	return;
+// 05824
+static char f_05824(char *a) {
+	char v0;
+	char v1;
+	char v2;
+	char v3;
+
+	v0 = f_056D0(a);
+	v1 = 0;
+	if (v2 = f_0579A(a, v1)) {
+		a += v2;
+		v1 = 1;
+		if (v0 == 2 || v0 == 4) {
+			// Hex D, Hex E
+			v0 = 0xbb;
+			v3 = 0xbc;
+		} else {
+			// Hex A, Hex B
+			v0 = 0xb8;
+			v3 = 0xb9;
+		}
+		while (*a) {
+			if (*a == v0) ++v1;
+			else if (*a == v3 && !--v1) break;
+			++v2;
+			++a;
+		}
+	}
+	return v2;
 }
 
 // 0587E - STUB
-void f_0587E(void) {
-	return;
+static char f_0587E(char *a) {
+	return 0;
 }
 
 // 058DC
@@ -350,7 +472,7 @@ void f_058DC(void) {
 	if (d_080FE != 1 && v2) v1 = 1;
 	v3 = *input_area_ptr;
 	v4 = 0;
-	*((int *)reg0) = 0;
+	*(int *)&reg0[0] = 0;
 	reg0[5] = 0;
 	f_08A9C(0);
 	if (!f_06944(v3, &loc_m4, 0, 62) || loc_m4.byte[2] > 62) {
@@ -370,8 +492,8 @@ void f_058DC(void) {
 		v4 = formula_x;
 		v1 = 96 - formula_x - 6;
 		do {
-			*((int *)reg0) += 8;
-		} while (*((int *)(reg0+2)) - *((int *)reg0) <= v1 && loc_m4.word[0] - *((int *)reg0) <= v1);
+			*(int *)&reg0[0] += 8;
+		} while (*(int *)&reg0[2] - *(int *)&reg0[0] <= v1 && loc_m4.word[0] - *(int *)&reg0[0] <= v1);
 		v1 = loc_m4.byte[2] - loc_m4.byte[3] + 1;
 		if (loc_m4.byte[2] > 31) {
 			if (v2 && loc_m4.byte[3] + 62 - reg0[4] > 12) {
@@ -388,9 +510,9 @@ void f_058DC(void) {
 		if (f_08ABA(v5)) f_10E5C(loc_m4.byte[2]);
 		if (loc_m4.word[0] <= 96) v4 = (char)(96 - loc_m4.byte[0]);
 		else {
-			*((int *)reg0) = cursor_pos_byte << 3;
-			if (loc_m4.word[0] - *((int *)reg0) <= 88) {
-				*((int *)reg0) = --cursor_pos_byte << 3;
+			*(int *)&reg0[0] = cursor_pos_byte << 3;
+			if (loc_m4.word[0] - *(int *)&reg0[0] <= 88) {
+				*(int *)&reg0[0] = --cursor_pos_byte << 3;
 				f_046C4();
 			}
 			d_0812C = 1;
@@ -400,7 +522,7 @@ void f_058DC(void) {
 	}
 	f_08A9C(1);
 	f_06944(v3, &loc_m4, v4, v1);
-	v4 = *((int *)reg0);
+	v4 = *(int *)&reg0[0];
 	v5 = reg0[5];
 	v1 -= v5 + 5;
 	if (v0) table_prompt_print(v1);
@@ -426,9 +548,59 @@ static char *f_05B2C(char *a, f_058DC_union *b, int c, char d) {
 	return v1;
 }
 
-// 05B86 - STUB
+// 05B86
 static char *f_05B86(char *a, f_058DC_union *b, int c, char d) {
-	return 0;
+	char v0;
+	char *v1;
+	char v2;
+	char loc_m2[2];
+	char loc_m3;
+	char loc_m4;
+	char loc_m5;
+	char loc_m6;
+	char loc_m7;
+
+	loc_m6 = 0;
+	v0 = reg0[8];
+	if (++reg0[8] > 50) return 0;
+	if (!reg0[9]) {
+		loc_m7 = d_0800A;
+		d_0800A = 0;
+	}
+	loc_m4 = b->byte[3];
+	v2 = b->byte[2];
+	if (*a != 0x5e) {
+		loc_m2[0] = *a == 0x73 ? 0x81 : 0x83;
+		loc_m2[1] = '\0';
+		f_05260(loc_m2, c, d);
+		loc_m6 = 6;
+		c += 6;
+		loc_m4 = f_0898C();
+		v2 = f_0897C();
+	}
+	loc_m5 = f_08ACC();
+	loc_m3 = v2 - 5;
+	if (!reg0[9]) {
+		if (v1 = f_06944(a+2, b, c, d)) {
+			d_08640[v0].word[0] = b->word[0];
+			d_08640[v0].word[1] = b->word[1];
+			if (d_0800A) reg0[4] -= loc_m3 - loc_m4 + b->byte[3];
+j_05c7a:
+			if (is_pow_char(v1+1)) return 0;
+			font_size = loc_m5;
+			b->word[0] += (char)(loc_m6 + 1);
+			b->byte[2] += loc_m3;
+			b->byte[3] += loc_m4;
+			if (!reg0[9] && !d_0800A) d_0800A = loc_m7;
+		}
+		return v1;
+	} else {
+		b->word[0] = d_08640[v0].word[0];
+		b->word[1] = d_08640[v0].word[1];
+		d -= loc_m3 - loc_m4 + b->byte[3];
+		if (v1 = f_06944(a+2, b, c, d)) goto j_05c7a;
+		else return v1;
+	}
 }
 
 // 05D0C - STUB
@@ -475,12 +647,12 @@ static char *f_05EBC(char *a, f_058DC_union *b, int c, char d) {
 	return v2;
 }
 
-// 05EBC - STUB
+// 06002 - STUB
 static char *f_06002(char *a, f_058DC_union *b, int c, char d) {
 	return 0;
 }
 
-// 05EBC - STUB
+// 062CE - STUB
 static char *f_062CE(char *a, f_058DC_union *b, int c, char d) {
 	return 0;
 }
@@ -557,7 +729,7 @@ j_069e6:
 					break;
 				// 06A92
 				case 10:
-					loc_m5 = f_052D0(*a, c, d);
+					loc_m5 = f_052D0(*a, c, d, 1);
 					c += loc_m5;
 					b->word[0] += loc_m5;
 				// 06AB4
@@ -581,7 +753,7 @@ j_069e6:
 					if (!f_04E86(*a)) {
 						loc_m4.byte[2] = f_0897C();
 						loc_m4.byte[3] = f_0898C();
-						b->word[0] += f_052D0(*a, c, d);
+						b->word[0] += f_052D0(*a, c, d, 0);
 						goto j_069e6;
 					}
 					break;
@@ -600,108 +772,73 @@ j_069ea:
 	return a;
 }
 
-// 069F4 - STUB
-void f_069F4(void) {
-	return;
-}
-
-// 06A58 - STUB
-void f_06A58(void) {
-	return;
-}
-
-// 06A92 - STUB
-void f_06A92(void) {
-	return;
-}
-
-// 06AB4 - STUB
-void f_06AB4(void) {
-	return;
-}
-
-// 06B0E - STUB
-void f_06B0E(void) {
-	return;
-}
-
-// 06B12 - STUB
-void f_06B12(void) {
-	return;
-}
-
-// 06B4E - STUB
-void f_06B4E(void) {
-	return;
-}
-
 // 06B52 - STUB
-void f_06B52(void) {
-	return;
+char f_06B52(char *a) {
+	return 0;
 }
 
 // 06C06 - STUB
-void f_06C06(void) {
-	return;
+static char f_06C06(char *a) {
+	return 0;
 }
 
 // 06C54 - STUB
-void f_06C54(void) {
+void f_06C54(char *a, char *b, char c, char d) {
 	return;
 }
 
-// 06D0A - STUB
-void f_06D0A(void) {
-	return;
-}
+// 06D90
+static char *f_06D90(char *a, char *b) {
+	char v0;
+	char *v1;
+	char v2;
+	char v3;
 
-// 06D20 - STUB
-void f_06D20(void) {
-	return;
-}
-
-// 06D42 - STUB
-void f_06D42(void) {
-	return;
-}
-
-// 06D68 - STUB
-void f_06D68(void) {
-	return;
-}
-
-// 06D72 - STUB
-void f_06D72(void) {
-	return;
-}
-
-// 06D7C - STUB
-void f_06D7C(void) {
-	return;
-}
-
-// 06D90 - STUB
-void f_06D90(void) {
-	return;
+	v0 = 1;
+	*b = 0;
+	v1 = a;
+	// Hex E
+	if (*a == 0xbc) --a;
+	// Hex B
+	if (*a == 0xb9) --a;
+	while ((v2 = *a), *input_area_ptr != a) {
+		--a;
+		// Hex B
+		if (v2 == 0xb9) ++v0;
+		// Hex A, Hex B
+		else if (v2 == 0xb8 && !--v0 && *a != 0xb9) {
+			// Hex D, Hex F
+			if (*a == 0xbb && *--a == 0xbd) --a;
+			v3 = (char)v1 - (char)a;
+			if (v3 <= f_05824(a)) {
+				if (v2 = f_056D0(a) && v3 >= f_0579A(a, 1)) {
+					*b = 1;
+					if (v2 != 1 && v2 != 2 && v3 >= f_0579A(a, 2)) *b = 2;
+				}
+			} else a = 0;
+			break;
+		}
+	}
+	return a;
 }
 
 // 06E40 - STUB
-void f_06E40(char *a, char b, char c) {
-	return;
+static char f_06E40(char *a, char b, char c) {
+	return 0;
 }
 
 // 06F1C - STUB
-char *f_06F1C(char *a) {
-	return;
+static char *f_06F1C(char *a) {
+	return 0;
 }
 
 // 06FCE - STUB
-void f_06FCE(char *a, char b, char c) {
+static void f_06FCE(char *a, char b, char c) {
 	return;
 }
 
 // 07022
-void f_07022(char token, char b, char *input) {
+static void f_07022(char token, char b, char *input) {
 	char *v0;
 	char v1;
 	char *v2;
@@ -720,7 +857,7 @@ void f_07022(char token, char b, char *input) {
 	v0 = input_area;
 	loc_m4 = cursor_pos_byte;
 	loc_m1 = cursor_pos_byte;
-	loc_m5 = f_087BA();
+	loc_m5 = is_mathi();
 	loc_m3 = is_ins_mode();
 	input[0] = token;
 	input[1] = 0;
@@ -737,7 +874,7 @@ void f_07022(char token, char b, char *input) {
 				if (f_08A2A(f_05658(input))) smart_strcat(input, "!");
 			}
 		} else {
-			// Check for x^n, nth root, char 0x7c (unused)
+			// Check for x^n, nth root, cursor (unused)
 			if (loc_m3 == 1 || token == 0x5e || token == 0x9f || token == 0xae || token == 0x7c) v1 = f_06E40(v2, 0, loc_m3);
 			loc_m6 = 2;
 			// Check for x^2, x^3, x^-1
@@ -859,19 +996,49 @@ j_07272:
 	return;
 }
 
-// 073BC - STUB
-void f_073BC(void) {
-	return;
+// 073BC
+static char is_mathi_char(char token) {
+	// Hex A - Hex F
+	if (is_mathi() && token >= 0xb8 && token <= 0xbd) return 1;
+	else return 0;
 }
 
-// 073DC - STUB
-void f_073DC(void) {
-	return;
+// 073DC
+static char *move_cursor(char direction) {
+	char pos;
+	char *input;
+	char *cur_char;
+
+	pos = cursor_pos_byte;
+	input = input_area;
+	if (!direction) {
+		if (pos) --pos;
+	} else ++pos;
+	do {
+		cur_char = &input[pos];
+		if (is_mathi_char(*cur_char)) {
+			// Hex B, Hex C, Box
+			if ((*cur_char != 0xb9 && *cur_char != 0xba) || cur_char[-1] == '!') {
+				if (!direction) {
+					if (pos) --pos;
+				} else ++pos;
+				continue;
+			}
+		}
+		break;
+	} while (1);
+	cursor_pos_byte = pos;
+	return cur_char;
 }
 
-// 07442 - STUB
-void f_07442(void) {
-	return;
+// 07442
+static char *f_07442(char direction) {
+	char *cur_char;
+
+	cur_char = &input_area[cursor_pos_byte];
+	// Box
+	if (cursor_pos_byte && cur_char[-1] == '!') cur_char = move_cursor(direction);
+	return cur_char;
 }
 
 // 07470
@@ -882,23 +1049,179 @@ void f_07470(char token, char b) {
 	return;
 }
 
-// 07488 - STUB
-void f_07488(void) {
+// 07488
+void f_07488(char keycode) {
+	char *v0;
+	char v1;
+	char v2;
+	char v3;
+	char *v4;
+	char v4_0;
+	char *v5;
+	char *v6;
+	char loc_m1;
+	char loc_m6[5];
+	char *loc_m8;
+	char *loc_m10;
+	char loc_m11;
+
+	v0 = input_area;
+	v1 = cursor_pos_byte;
+	loc_m10 = &input_area[v1];
+	v2 = is_ins_mode();
+	if (v3 = is_mathi()) {
+		smart_strcpy(f_11030(), v0);
+		reg0[6] = v1;
+	}
+	switch (keycode) {
+		case K_UP:
+		case K_DOWN:
+			if (!v3) {
+				if (keycode != K_UP)
+j_076b6:
+					cursor_pos_byte = smart_strlen(v0);
+				else cursor_pos_byte = 0;
+				goto j_0769c;
+			} else {
+				f_046AE();
+				do {
+					loc_m10 = f_06D90(loc_m10, &loc_m1);
+					if (loc_m10) {
+						loc_m11 = 0;
+						// Sum and integral functions
+						if (*loc_m10 == 0x69 || *loc_m10 == 0x6a) {
+							if (keycode == K_UP) v2 = 2;
+							else {
+								v2 = 1;
+								loc_m11 = 1;
+							}
+						}
+						// Cursor (unused)
+						else if (*loc_m10 == '|') {
+							if (loc_m1) {
+								if (keycode == K_UP) {
+									v2 = 1;
+									loc_m11 = 1;
+								} else v2 = 2;
+							} else continue;
+						}
+						// Fraction
+						else if (*loc_m10 == 0xae) {
+							if (keycode == K_UP) {
+								v2 = 0;
+								loc_m11 = 1;
+							} else v2 = 1;
+						} else continue;
+						if (v2 != loc_m1) {
+							v2 = f_0579A(loc_m10, v2);
+							loc_m1 = 0;
+							if (loc_m11) loc_m1 = f_05766(&loc_m10[v2]);
+							cursor_pos_byte = loc_m1 + (char)(loc_m10 - v0 + v2);
+							f_07442(0);
+							return;
+						}
+					} else goto j_076a6;
+				} while (1);
+			}
+			break;
+		case K_RIGHT:
+			f_046AE();
+			if (*loc_m10) {
+				move_cursor(1);
+				loc_m10 = f_07442(1);
+				if (!*loc_m10) goto j_076a6;
+			} else if (!v3) goto j_076a6;
+			else cursor_pos_byte = 0;
+j_0769c:
+			if (!input_area[0])
+j_076a6:
+				f_046C4();
+			break;
+		case K_LEFT:
+			f_046AE();
+			if (v1) {
+				move_cursor(0);
+				loc_m10 = f_07442(0);
+				if (loc_m10 != v0) goto j_0769c;
+				else goto j_076a6;
+
+			} else if (!v3) goto j_076a6;
+			else goto j_076b6;
+		case K_DEL:
+			if (!*loc_m10) {
+				if (v1 && v1 != 1) {
+					if (!is_mathi_char(loc_m10[-1])) loc_m10[-1] = 0;
+					move_cursor(0);
+					return;
+				} else {
+					cursor_pos_byte = 0;
+					input_area[0] = 0;
+					return;
+				}
+			} else {
+				if (!v3 || !v2) loc_m10 = move_cursor(0);
+				v4 = &loc_m10[1];
+				if (v3) {
+					// Box
+					if (*loc_m10 == '!') {
+						if (loc_m10 == input_area) ++loc_m10;
+						else return;
+					}
+					// Hex B (MathI control character)
+					if (*loc_m10 == 0xb9) return;
+					// Hex C (MathI control character)
+					if (*loc_m10 == 0xba) return;
+					if (f_05658(loc_m10) == 1) {
+						v4_0 = f_05824(loc_m10) + 1;
+						loc_m1 = f_056D0(loc_m10);
+						// Logarithm function
+						loc_m6[0] = *loc_m10 != 0x68 ? f_0579A(loc_m10, 0) : 0;
+						// Derivative function
+						loc_m6[1] = (loc_m1 != 3 && *loc_m10 != 0x6b) ? f_0579A(loc_m10, 1) : 0;
+						loc_m6[2] = loc_m1 == 4 ? f_0579A(loc_m10, 2) : 0;
+						// Exponentiation
+						if (*v4 == '^') v4 = f_07442(0);
+						loc_m8 = v4;
+						loc_m1 = 0;
+						do {
+							loc_m11 = loc_m6[loc_m1];
+							if (loc_m6[loc_m1]) {
+								v5 = &loc_m10[loc_m11];
+								loc_m11 = f_088FE(v5) ? 0 : f_05766(v5);
+								v2 = 0;
+								while (v2 < loc_m11) {
+									*v4++ = *v6++;
+									++v2;
+								}
+							}
+						} while (++loc_m1 < 3);
+						v6 = &loc_m10[v4_0];
+						if (v4 == loc_m8 && f_08A66(v4-1, v6)) *v4++ = '!';
+						loc_m10 = v4;
+						v4 = v6;
+					} else if (f_08A66(loc_m10-1, v4)) {
+						*loc_m10 = '!';
+						return;
+					}
+				}
+				do *loc_m10++ = *v4++;
+				while (loc_m10[-1]);
+			}
+	}
 	return;
 }
 
-// 077C4 - STUB
-void f_077C4(void) {
-	return;
+// 077C4
+char f_077C4(char *a) {
+	return num_cmp(a, num_1);
 }
 
 // 077CC - STUB
-void f_077CC(void) {
-	return;
+char f_077CC(char *a, char *b, char c) {
+	return 0;
 }
 
 // 07B60 - STUB
-void f_07B60(char **a) {
+void f_07B60(char *a) {
 	return;
 }
-

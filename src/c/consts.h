@@ -113,17 +113,17 @@ enum keycode {
 	K_PLUS		= 0x2B,  // Plus sign (+)
 	K_COMMA		= 0x2C,  // Function argument seperator (comma/semicolon depending on model)
 	K_MINUS		= 0x2D,  // Minus sign (not to be confused with the negative sign)
-	K_PERIOD	= 0x2D,  // Decimal point (dot/comma depending on model)
-	K_0			= 0x30,  // Multi-statement colon
-	K_1			= 0x31,  // Multi-statement colon
-	K_2			= 0x32,  // Multi-statement colon
-	K_3			= 0x33,  // Multi-statement colon
-	K_4			= 0x34,  // Multi-statement colon
-	K_5			= 0x35,  // Multi-statement colon
-	K_6			= 0x36,  // Multi-statement colon
-	K_7			= 0x37,  // Multi-statement colon
-	K_8			= 0x38,  // Multi-statement colon
-	K_9			= 0x39,  // Multi-statement colon
+	K_PERIOD	= 0x2E,  // Decimal point (dot/comma depending on model)
+	K_0			= 0x30,  // Number 0
+	K_1			= 0x31,  // Number 1
+	K_2			= 0x32,  // Number 2
+	K_3			= 0x33,  // Number 3
+	K_4			= 0x34,  // Number 4
+	K_5			= 0x35,  // Number 5
+	K_6			= 0x36,  // Number 6
+	K_7			= 0x37,  // Number 7
+	K_8			= 0x38,  // Number 8
+	K_9			= 0x39,  // Number 9
 	K_COLON		= 0x3A,  // Multi-statement colon
 	K_EQUALS	= 0x3D,  // Equals sign (=) used in equations
 	K_VAR_A		= 0x41,  // Variable A
@@ -241,6 +241,21 @@ enum angle_unit {
 	ANGLE_GRA	= 6
 };
 
+// Errors
+enum error {
+	ERROR_ACBREAK		= 1,
+	ERROR_SYNTAX		= 2,
+	ERROR_MATH			= 3,
+	ERROR_OUTOFMEM		= 4,
+	ERROR_STACK			= 5,
+	ERROR_ARGUMENT		= 6,
+	ERROR_DIMENSION		= 7,
+	ERROR_SOLVE			= 8,
+	ERROR_TIMEOUT		= 9,
+	ERROR_VARIABLE		= 10,
+	ERROR_NULL			= 11
+}
+
 // RAM addresses
 
 // 08000
@@ -256,6 +271,8 @@ extern char cursor_noflash;
 extern char d_080DE;
 // 080DF
 extern char d_080DF;
+// 080E0
+extern char (*d_080E0)[2];
 // 080F2
 extern int  last_key_scancode;
 // 080F5
@@ -343,7 +360,7 @@ extern char (*input_area_ptr)[100];
 // 0812C
 extern char d_0812C;
 // 08140
-extern char result_0[10];
+extern char result[20];
 // 08154
 extern char input_area[100];
 // 081B7
@@ -355,7 +372,9 @@ extern void *vars_start;
 // 0829E
 extern char mode_ram[880];
 // 0860E
-extern char *magic_string;
+extern char magic_string[16];
+// 08640
+extern f_058DC_union *d_08640;
 // 08A18
 extern void *stack_start;
 
