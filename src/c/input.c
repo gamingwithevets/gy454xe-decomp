@@ -1080,8 +1080,7 @@ void f_07488(char keycode) {
 				if (keycode != K_UP)
 j_076b6:
 					cursor_pos_byte = smart_strlen(v0);
-				else cursor_pos_byte = 0;
-				goto j_0769c;
+				else goto j_07696;
 			} else {
 				f_046AE();
 				do {
@@ -1131,7 +1130,9 @@ j_076b6:
 				loc_m10 = f_07442(1);
 				if (!*loc_m10) goto j_076a6;
 			} else if (!v3) goto j_076a6;
-			else cursor_pos_byte = 0;
+			else
+j_07696:
+				cursor_pos_byte = 0;
 j_0769c:
 			if (!input_area[0])
 j_076a6:
