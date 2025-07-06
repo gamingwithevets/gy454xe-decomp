@@ -3,36 +3,22 @@
 #include "unk4.h"
 #include "unk5.h"
 
-// 09050
 static char menufunc_base_n(void);
-// 09058
 static char menufunc_drg(void);
-// 09070
 static char menufunc_cmplx(void);
-// 09078
 static char menufunc_hyp(void);
-// 09090
 static char menufunc_stat_dist(void);
-// 090BC
 static char f_090BC(char a);
-// 09210
 static char menufunc_matrix(void);
-// 0923C
 static char menufunc_vector(void);
-// 09474
 static void f_09474(char a, char *b);
-// 094AE
 static char const_conv_inputter(char menucode);
-// 09552
 static char menufunc_const(void);
-// 0958A
 static char menufunc_conv(void);
-// 095C2
 static char menufunc_clr(void);
-// 096E4
 static char menufunc_verif(void);
 
-// 01E8A
+// DATA: GY454XE  Re 01E8A
 static char (* const menu_funcs[])(void) = {
 	menufunc_stat_dist,	// STAT/DIST
 	menufunc_cmplx,		// CMPLX
@@ -47,7 +33,7 @@ static char (* const menu_funcs[])(void) = {
 	menufunc_verif 		// VERIF
 };
 
-// 09014
+// FUNCTION: GY454XE  Re 09014
 signed char f_09014(void) {
 	char v0;
 
@@ -57,29 +43,29 @@ signed char f_09014(void) {
 	return v0;
 }
 
-// 09050
+// FUNCTION: GY454XE  Re 09050
 static char menufunc_base_n(void) {
 	return f_0A010(MODE_BASE_N, 0x14);
 }
 
-// 09058
+// FUNCTION: GY454XE  Re 09058
 static char menufunc_drg(void) {
 	if (f_036B8()) return 0;
 	return f_0A010(NULL, 0x16);
 }
 
-// 09070
+// FUNCTION: GY454XE  Re 09070
 static char menufunc_cmplx(void) {
 	return f_0A010(MODE_CMPLX, 0x13);
 }
 
-// 09078
+// FUNCTION: GY454XE  Re 09078
 static char menufunc_hyp(void) {
 	if (f_036B8()) return 0;
 	return f_0A010(NULL, 0x17);
 }
 
-// 09090
+// FUNCTION: GY454XE  Re 09090
 static char menufunc_stat_dist(void) {
 	char v0;
 
@@ -91,7 +77,7 @@ static char menufunc_stat_dist(void) {
 	return f_09118(v0, 0);
 }
 
-// 090BC
+// FUNCTION: GY454XE  Re 090BC
 static char f_090BC(char a) {
 	char v0;
 	char v1;
@@ -111,12 +97,12 @@ static char f_090BC(char a) {
 	return v0;
 }
 
-// 09118 - STUB
+// STUB: GY454XE  Re 
 char f_09118(char a, char b) {
 	return 0;
 }
 
-// 09210
+// FUNCTION: GY454XE  Re 09210
 static char menufunc_matrix(void) {
 	char v0;
 
@@ -128,7 +114,7 @@ static char menufunc_matrix(void) {
 	return f_09268(v0, 0);
 }
 
-// 0923C
+// FUNCTION: GY454XE  Re 0923C
 static char menufunc_vector(void) {
 	char v0;
 
@@ -145,7 +131,7 @@ char f_09268(char a, char b) {
 	return 0;
 }
 
-// 09474
+// FUNCTION: GY454XE  Re 09474
 static void f_09474(char a, char *b) {
 	char *v0;
 
@@ -154,7 +140,7 @@ static void f_09474(char a, char *b) {
 	return;
 }
 
-// 094AE
+// FUNCTION: GY454XE  Re 094AE
 static char const_conv_inputter(char menucode) {
 	char out;
 	char min;
@@ -169,7 +155,6 @@ static char const_conv_inputter(char menucode) {
 	max = K_4;
 	numpos = 1;
 	digitpos = 10;
-	// cstring @ 0099F
 	strcpy(num_str, const_input_template);
 	do {
 		font_size = 10;
@@ -196,7 +181,7 @@ static char const_conv_inputter(char menucode) {
 	return out;
 }
 
-// 09552
+// FUNCTION: GY454XE  Re 09552
 static char menufunc_const(void) {
 	char v0;
 	char v1;
@@ -213,7 +198,7 @@ static char menufunc_const(void) {
 	return v0;
 }
 
-// 0958A
+// FUNCTION: GY454XE  Re 0958A
 static char menufunc_conv(void) {
 	char v0;
 	char v1;
@@ -230,13 +215,13 @@ static char menufunc_conv(void) {
 	return v0;
 }
 
-// 095C2
+// FUNCTION: GY454XE  Re 095C2
 static char menufunc_clr(void) {
 	char v0;
 	char v1;
 	char *v2;
 	char val;
-	int scancode;
+	scancode sc;
 
 	v0 = 0xff;
 	v1 = 1;
@@ -252,9 +237,9 @@ static char menufunc_clr(void) {
 			if (val != 1) {
 				if (val != 2) {
 					if (val == 3) {
-						scancode = last_key_scancode;
+						sc.kio = last_key_scancode.kio;
 						reset_all();
-						last_key_scancode = scancode;
+						last_key_scancode.kio = sc.kio;
 					}
 				} else {
 					clear_mem();
@@ -284,8 +269,8 @@ static char menufunc_clr(void) {
 	return v0;
 }
 
-// 096E4
+// FUNCTION: GY454XE  Re 096E4
 static char menufunc_verif(void) {
-	// VERIF mode does not exist on fx-570ES PLUS, therefore this is a stub function
+	// VERIF mode does not exist on fx-570ES PLUS
 	return 0;
 }

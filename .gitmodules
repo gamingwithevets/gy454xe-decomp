@@ -1,3 +1,6 @@
 [submodule "assets/pyu8disasx"]
 	path = assets/pyu8disasx
 	url = https://github.com/gamingwithevets/pyu8disasx.git
+[submodule "assets/intelhex"]
+	path = assets/intelhex
+	url = https://github.com/python-intelhex/intelhex.git

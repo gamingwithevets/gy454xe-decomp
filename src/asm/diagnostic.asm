@@ -1,36 +1,36 @@
 TYPE(ML610CASESplus)
 MODEL LARGE
 
-_last_key_scancode	EQU 80F2H
-_d_0810E			EQU 810EH
 _cursor_noflash		EQU 80DDH
+_last_key_scancode	EQU 80F2H
+_setup_contrast		EQU 810EH
 _font_size			EQU 811BH
 _use_rambuf			EQU 811DH
 _magic_string		EQU 860EH
 _screen_buffer		EQU 87D0H
 _screen_buffer_y1	EQU _screen_buffer+12
 _screen_buffer_y31	EQU _screen_buffer+12*31
+_version			EQU 1:0FFF4H
+_checksum			EQU 1:0FFFCH
 
-EXTRN CODE	: _fill_screen		; 02CFE
-EXTRN CODE	: _buffer_clear		; 02D38
-EXTRN CODE	: _line_print_col_0	; 02E78
-EXTRN CODE	: _line_print		; 02E7A
-EXTRN CODE	: _render			; 0312C
-EXTRN CODE	: _pd_value			; 03486
-EXTRN CODE	: _f_03558			; 03558
-EXTRN CODE	: _clr_port0		; 04728
-EXTRN CODE	: _set_contrast_sfr	; 04776
-EXTRN CODE	: _clr_all_ko		; 047EA
-EXTRN CODE	: _check_ac			; 04806
-EXTRN CODE	: _memset_n			; 07E94
-EXTRN CODE	: _set_contrast		; 08FA2
-EXTRN CODE	: _reset_all		; 0AFB0
-EXTRN CODE	: _getscancode		; 0B0C6
-EXTRN CODE	: _set_modifiers	; 0B5C6
-EXTRN CODE	: _wait_shift		; 0B654
-EXTRN CODE	: _diag_initloop	; 0B804
-EXTRN CODE	: _version			; 1FFF4
-EXTRN CODE	: _checksum			; 1FFFC
+EXTRN CODE	: _fill_screen
+EXTRN CODE	: _buffer_clear
+EXTRN CODE	: _line_print_col_0
+EXTRN CODE	: _line_print
+EXTRN CODE	: _render
+EXTRN CODE	: _pd_value
+EXTRN CODE	: _f_03558
+EXTRN CODE	: _clr_port0
+EXTRN CODE	: _set_contrast_sfr
+EXTRN CODE	: _clr_all_ko
+EXTRN CODE	: _check_ac
+EXTRN CODE	: _memset_n
+EXTRN CODE	: _set_contrast
+EXTRN CODE	: _reset_all
+EXTRN CODE	: _getscancode
+EXTRN CODE	: _set_modifiers
+EXTRN CODE	: _wait_shift
+EXTRN CODE	: _diag_initloop
 
 $$NCODdiagnostic SEGMENT CODE 2H ANY
 $$NTABdiagnostic SEGMENT TABLE 2H #0
@@ -40,38 +40,38 @@ RSEG $$NTABdiagnostic
 ; All keys in the key check in order. High nibble = KI, low nibble = KO.
 ; The null byte is actually unnecessary as diag_check_key returns if the key count is
 ; exactly 49, thus only the first 49 entries are ever used.
-; 01EB6
+; DATA: GY454XE  Re 01EB6
 _diagkey_unk:
-DB 81H, 82H, 83H, 84H, 85H
-DB 71H, 72H, 73H, 74H, 75H, 76H
-DB 61H, 62H, 63H, 64H, 65H, 66H
-DB 51H, 52H, 53H, 54H, 55H, 56H
-DB 41H, 42H, 43H, 44H, 45H, 46H
-DB 31H, 32H, 33H, 34H, 35H
-DB 21H, 22H, 23H, 24H, 25H
-DB 11H, 12H, 13H, 14H, 15H
-DB 57H, 47H, 37H, 27H, 17H
-DB 0
+	DB 81H, 82H, 83H, 84H, 85H
+	DB 71H, 72H, 73H, 74H, 75H, 76H
+	DB 61H, 62H, 63H, 64H, 65H, 66H
+	DB 51H, 52H, 53H, 54H, 55H, 56H
+	DB 41H, 42H, 43H, 44H, 45H, 46H
+	DB 31H, 32H, 33H, 34H, 35H
+	DB 21H, 22H, 23H, 24H, 25H
+	DB 11H, 12H, 13H, 14H, 15H
+	DB 57H, 47H, 37H, 27H, 17H
+	DB 0
 
-; 01EE8
+; DATA: GY454XE  Re 01EE8
 _s_dpressac:
-DB "Press AC", 0
+	DB "Press AC", 0
 
-; 01EF1
+; DATA: GY454XE  Re 01EF1
 _s_dtestok:
-DB "TEST OK", 0
+	DB "TEST OK", 0
 
-; 01EF9
+; DATA: GY454XE  Re 01EF9
 _s_dresetall:
-DB "Reset All", 0
+	DB "Reset All", 0
 
-; 01F03
+; DATA: GY454XE  Re 01F03
 _s_diagnostic:
-DB "DIAGNOSTIC ", 0
+	DB "DIAGNOSTIC ", 0
 
 RSEG $$NCODdiagnostic
 
-; 04898
+; FUNCTION: GY454XE  Re 04898
 _diag_init_check:
 	PUSH LR
 	PUSH XR4
@@ -94,7 +94,7 @@ _$j_048bc:
 	BL _clr_all_ko
 	BAL _$j_04980
 
-; 048C2
+; FUNCTION: GY454XE  Re 048C2
 _diagnostic_mode:
 	PUSH LR
 	PUSH QR0
@@ -118,7 +118,7 @@ _$j_048f2:
 	POP QR0
 	POP PC
 
-; 048F6
+; FUNCTION: GY454XE  Re 048F6
 _diagnostic:
 	PUSH LR
 	PUSH XR4
@@ -160,11 +160,11 @@ _diagnostic:
 	BL _render
 	MOV ER0, FP
 	BL _getscancode
-	L R0, _d_0810E
+	L R0, _setup_contrast
 	PUSH R0
 	BL _reset_all
 	POP R0
-	ST R0, _d_0810E
+	ST R0, _setup_contrast
 	BL _set_contrast_sfr
 	BL _f_03558
 	ADD SP, #4
@@ -173,7 +173,7 @@ _$j_04980:
 	POP XR4
 	POP PC
 
-; 04986
+; FUNCTION: GY454XE  Re 04986
 _diag_check_key:
 	PUSH LR
 	PUSH XR4
@@ -227,7 +227,7 @@ _$j_049a4:
 	ADD SP, #0AH
 	BAL _$j_04980
 
-; 049F2
+; FUNCTION: GY454XE  Re 049F2
 _line_print_small:
 	PUSH LR
 	MOV R1, R0
@@ -236,7 +236,7 @@ _line_print_small:
 	BL _line_print_col_0
 	POP PC
 
-; 04A02
+; FUNCTION: GY454XE  Re 04A02
 _diag_scr_fill_ws:
 	PUSH LR
 	MOV R1, #1H
@@ -245,7 +245,7 @@ _$j_04a0a:
 	BL _render_waitshift
 	POP PC
 
-; 04A10
+; FUNCTION: GY454XE  Re 04A10
 _diag_scr_ckb1_ws:
 	MOV R2, #01010101B
 _$j_04a12:
@@ -263,12 +263,12 @@ _$j_04a12:
 	BL _f_04A34
 	BAL _$j_04a0a
 
-; 04A30
+; FUNCTION: GY454XE  Re 04A30
 _diag_scr_ckb2_ws:
 	MOV R2, #10101010B
 	BAL _$j_04a12
 
-; 04A34
+; FUNCTION: GY454XE  Re 04A34
 _f_04A34:
 	PUSH LR
 	PUSH QR8
@@ -289,7 +289,7 @@ _$j_04a42:
 	BPS _$j_04a42
 	BAL _$j_04a9a
 
-; 04A58
+; FUNCTION: GY454XE  Re 04A58
 _diag_scr_box_ws:
 	PUSH LR
 	PUSH QR8
@@ -324,7 +324,7 @@ _$j_04a9a:
 	POP QR8
 	POP PC
 
-; 04A9E
+; FUNCTION: GY454XE  Re 04A9E
 _diag_checksum:
 	PUSH LR
 	PUSH QR0
@@ -332,7 +332,7 @@ _diag_checksum:
 	MOV FP, SP
 	ADD SP, #-10H
 	BL _buffer_clear
-	MOV R0, #7H
+	MOV R0, #7
 	ST R0, _font_size
 	LEA OFFSET _version
 	L XR0, SEG _version:[EA+]
@@ -343,7 +343,7 @@ _diag_checksum:
 	MOV R9, #'r'
 	L ER10, SEG _version:[EA+]
 	MOV BP, #0H
-	BL _f_04B90
+	BL _store_regs_to_stack
 	MOV R1, #1H
 	MOV ER2, SP
 	BL _line_print_col_0
@@ -367,7 +367,7 @@ _$j_04afa:
 	MOV R1, #'U'
 	MOV R2, #'M'
 	MOV R3, #' '
-	BL _f_04B90
+	BL _store_regs_to_stack
 	MOV R1, #8H
 	MOV ER2, SP
 	BL _line_print_col_0
@@ -381,7 +381,7 @@ _$j_04b1e:
 	MOV R0, #'P'
 	MOV R1, #'d'
 	MOV R3, #0H
-	BL _f_04B90
+	BL _store_regs_to_stack
 	MOV R1, #15
 	MOV ER2, SP
 	BL _line_print_col_0
@@ -403,8 +403,8 @@ _$j_04b4a:
 	MOV R1, #'e'
 	MOV R2, #'a'
 	MOV R3, #'d'
-	BL _f_04B90
-	MOV R0, #18H
+	BL _store_regs_to_stack
+	MOV R0, #24
 	MOV R1, #15
 	MOV ER2, SP
 	BL _line_print
@@ -428,7 +428,7 @@ _$j_04b7a:
 	POP QR0
 	POP PC
 
-_f_04B90:
+_store_regs_to_stack:
 	PUSH BP
 	MOV BP, FP
 	ADD BP, #-10H
@@ -438,7 +438,7 @@ _f_04B90:
 	ST QR8, [EA+]
 	RT
 
-; 04BA0
+; FUNCTION: GY454XE  Re 04BA0
 _diag_get_checksum:
 	PUSH LR
 	PUSH QR8
@@ -474,7 +474,7 @@ _$j_04bc2:
 	POP QR8
 	POP PC
 
-; 04BE6
+; FUNCTION: GY454XE  Re 04BE6
 _diag_pd_check:
 	PUSH LR
 	PUSH QR8
@@ -518,7 +518,7 @@ _$j_04c30:
 	MOV R0, #0H
 	BAL _$j_04c2c
 
-; 04C34
+; FUNCTION: GY454XE  Re 04C34
 _hex_to_char:
 	MOV R1, R0
 	AND R1, #0FH
@@ -539,7 +539,7 @@ _$j_04c4c:
 _$j_04c4e:
 	RT
 
-; 04C50
+; FUNCTION: GY454XE  Re 04C50
 _diag_print_hex:
 	PUSH LR
 	PUSH QR8
@@ -569,7 +569,7 @@ _$j_04c68:
 	POP QR8
 	POP PC
 
-; 04C8A
+; FUNCTION: GY454XE  Re 04C8A
 _f_04C8A:
 	CMP R0, #3H
 	BLT _$j_04c9c
@@ -585,14 +585,14 @@ _$j_04c9a:
 _$j_04c9c:
 	RT
 
-; 04C9E
+; FUNCTION: GY454XE  Re 04C9E
 _render_waitshift:
 	PUSH LR
 	BL _render
 	BL _wait_shift
 	POP PC
 
-; 04CAA
+; FUNCTION: GY454XE  Re 04CAA
 _diag_factory_test:
 	PUSH LR
 	MOV R1, #3H

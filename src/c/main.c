@@ -19,7 +19,7 @@ const char *init_unk_0[] = {
 
 const char **init_unk_1 = &d_080DC;
 
-// 09712
+// FUNCTION: GY454XE  Re 09712
 void main(void) {
 	char i, j;
 

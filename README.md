@@ -26,11 +26,18 @@ A term coined by [the LEGO Island modding/decompiling community](https://youtu.b
 This may not be related to this decomp at all, but it is worth mentioning.
 
 ### Naming scheme
-As of now, we have not decided on a real naming scheme for the decomp. All files are named as `n_<name>`, where `n` is the order of the file's code in the final binary, and `<name>` is the actual filename.
+As of now, we have not decided on a real naming scheme for the decomp. Scripts and headers that have not been given actual named are named `unk[n]`, where `[n]` is the order of the file's code in the final binary.
+
+### Building custom ROMs
+Currently, this decomp only includes code sourced from the fx-570ES PLUS `VerE` real ROM and the fx-991ES PLUS `VerE` emulator ROM.
+However, we plan to expand the decomp to include features from all released ES PLUS models.
+
+To configure ROMs, edit `src/asm/features.inc`.
 
 ## Building
 As the U8/U16 SDK only officially supports Windows, these instructions below assume a Windows environment.
 1. Install the U8/U16 Development Tools / LAPIS Development Tools LEXIDE-Ω, or simply the  It may be difficult to find a copy legally.
-2. Assuming you have the SDK installed at `C:\LAPIS\LEXIDE`, copy `assets/ML610CASESplus.DCL` to `C:\LAPIS\LEXIDE\Dcl`.
-3. Run `build.bat` in the root directory. Note that a successful build is NOT guaranteed.
-4. Convert the outputted Intel Hex file to binary. This can be done in various ways, however I recommend using the [bincopy](https://pypi.org/project/bincopy/) Python library.
+2. Clone this repository with `git`: ```git clone https://github.com/gamingwithevets/gy454xe-decomp.git --recursive``` The `--recursive` flag is important as it will also set up all necessary submodules.
+3. Assuming you have the SDK installed at `C:\LAPIS\LEXIDE`, copy `assets/ML610CASESplus.DCL` to `C:\LAPIS\LEXIDE\Dcl`.
+4. Run `build.bat` in the root directory.
+5. If needed, convert the outputted Intel Hex file to binary. There are many tools online, however this project uses the [Python Intel HEX library](https://pypi.org/project/intelhex/) for this.

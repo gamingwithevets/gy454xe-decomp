@@ -5,8 +5,31 @@ ROMWINDOW 0, 7FFFH
 DSEG #0 AT 8000H
 ; 08000
 _ram_start:
+; 8000H - 8009H is multipurpose
 _reg0:
-	DS 10
+_d_08000:
+	DS 2
+; 08002
+_d_08002:
+	DS 2
+; 08004
+_d_08004:
+	DS 1
+; 08005
+_d_08005:
+	DS 1
+; 08006
+_d_08006:
+	DS 1
+; 08007
+_d_08007:
+	DS 1
+; 08008
+_d_08008:
+	DS 1
+; 08009
+_d_08009:
+	DS 1
 ; 0800A
 _d_0800A:
 	DS 1
@@ -2723,7 +2746,14 @@ _d_08A17:
 _stack_start:
 
 PUBLIC _ram_start
-PUBLIC _reg0
+PUBLIC _d_08000
+PUBLIC _d_08002
+PUBLIC _d_08004
+PUBLIC _d_08005
+PUBLIC _d_08006
+PUBLIC _d_08007
+PUBLIC _d_08008
+PUBLIC _d_08009
 PUBLIC _d_0800A
 PUBLIC _d_080DC
 PUBLIC _cursor_noflash
@@ -2741,6 +2771,8 @@ PUBLIC _table_mode
 PUBLIC _d_080FD
 PUBLIC _d_080FE
 PUBLIC _d_080FF
+PUBLIC _d_08100
+PUBLIC _d_08101
 PUBLIC _setup_start
 PUBLIC _setup_num_fmt
 PUBLIC _setup_num_fmt_n
@@ -2754,6 +2786,7 @@ PUBLIC _setup_rdec
 PUBLIC _setup_simp
 PUBLIC _setup_decimalo
 PUBLIC _setup_contrast
+PUBLIC _d_0810F
 PUBLIC _cursor_pos_byte
 PUBLIC _d_08111
 PUBLIC _formula_x
@@ -2775,6 +2808,7 @@ PUBLIC _d_08124
 PUBLIC _d_08125
 PUBLIC _d_08126
 PUBLIC _input_area_ptr
+PUBLIC _d_0812A
 PUBLIC _d_0812C
 PUBLIC _result
 PUBLIC _input_area

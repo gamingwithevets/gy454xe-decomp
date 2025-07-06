@@ -4,7 +4,7 @@ import math
 import pyu8disasx.disas as disas
 import pyu8disasx.labeltool.labeltool as labeltool
 
-def process_ins_param(param):
+def process_ins_param(param, is_lea):
 	if type(param) == list: return ', '.join(param)
 	elif type(param) == disas.Address:
 		if param.seg is None:
@@ -20,6 +20,11 @@ def process_ins_param(param):
 	elif type(param) == disas.BitOffset and type(param.item) == disas.Address:
 		addr = param.item.addr.value
 		if addr in dis.data_labels: return f'{dis.data_labels[addr]}.{param.bit}'
+	elif type(param) == disas.Pointer and not is_lea and type(param.disp) == disas.Num and type(param.register) == disas.Register and param.register.n in (12, 14) and param.register.size == 2:
+		val = disas.conv_sign(param.disp.value, param.disp.bits)
+		if param.disp.bits == 16 and ((val >= 0 and val <= 0x1f) or (val >= -0x20 and val < 0)):
+			param.register.ptr = False
+			return str(param) + '  ;  Unnecessary Disp16 used instead of Disp6!'
 
 	return str(param)
 
@@ -63,8 +68,9 @@ with open(out, 'w') as f:
 		tab = '\t'
 		#string = f'{addr >> 16:X}:{addr & 0xfffe:04X}H\t\t{"".join([format(a, "04X") for a in instrl])}{tab*(3-len(instrl))}\t{instr[0]}'
 		string = f'\t{instr[0]}'
-		if len(instr) >= 2: string += ' ' + process_ins_param(instr[1])
-		if len(instr) == 3: string += ', ' + process_ins_param(instr[2])
+		is_lea = instr[0] == 'LEA'
+		if len(instr) >= 2: string += ' ' + process_ins_param(instr[1], is_lea)
+		if len(instr) == 3: string += ', ' + process_ins_param(instr[2], is_lea)
 		f.write(string + '\n')
 
 	f.write('\n')

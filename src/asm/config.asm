@@ -1,47 +1,56 @@
+/*
+== ES PLUS ROM CONFIGURATION FILE ==
+This file is used for configuring the ROM settings located at the end of the ROM,
+which includes default settings and version information.
+
+For feature customization, see src/features/features.inc.
+*/
+
 TYPE(ML610CASESplus)
 MODEL LARGE
 
-; ROM configuration and version information. This is always at address 1:FFD4H in all ES PLUS ROMs.
-CSEG #1 AT 0FFD4H
+TSEG #1 AT 0FFD4H
 
 ; == Default Settings ==
-_setup_default:
-; Values are in order as follows:
-; #0  -> 8102H: Number format. 8 = Fix, 9 = Sci, Norm1 = 0, Norm2 = 1
-; #1  -> 8103H: FixN/SciN. Unused for Norm1 and Norm2
-; #2  -> 8104H: Decimal mark. 0 = Comma, 1 = Dot
-; #3  -> 8105H: Angle Unit. 4 = Degree, 5 = Radian, 6 = Gradian
-; #4  -> 8106H: Math input toggle.
-; #5  -> 8107H: Fraction result. 0 = Improper fraction (d/c), 1 = Mixed fraction (ab/c)
-; #6  -> 8108H: Complex result. 0: Polar coordinates (r∠θ), 1: Rectangular coordinates (a+bi)
-; #7  -> 8109H: STAT: Frequency toggle.
-; #8  -> 810AH: Recurring decimal result toggle. Only relevant on models with this feature.
-; #9  -> 810BH: Manual simplification toggle. Only relevant on models with this feature.
-; #10 -> 810CH: Decimal output toggle.
-; #11         : Terminator byte for alignment. Not used.
-	DB 0, 0, 1, 4, 1, 0, 1, 0, 0, 0, 0, 0
+; Number format. 8 = Fix, 9 = Sci, Norm1 = 0, Norm2 = 1
+	DB 0
+; FixN/SciN. (Unused for Norm1 and Norm2)
+	DB 0
+; Decimal mark. 0 = Comma, 1 = Dot
+	DB 1
+; Angle Unit. 4 = Degree, 5 = Radian, 6 = Gradian
+	DB 4
+; Math input toggle.
+	DB 1
+; Fraction result. 0 = Improper fraction (d/c), 1 = Mixed fraction (ab/c)
+	DB 0
+; Complex result. 0: Polar coordinates (r∠θ), 1: Rectangular coordinates (a+bi)
+	DB 1
+; STAT: Frequency toggle.
+	DB 0
+; Recurring decimal result toggle. Only relevant on models with this feature.
+	DB 0
+; Manual simplification toggle. Only relevant on models with this feature.
+	DB 0
+; Decimal output toggle.
+	DB 0
+; Unused
+	DB 0
 
 ; Unknown.
 DB 0, 0, 0, 0, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
 
-CSEG #1 AT 0FFF4H
+TSEG #1 AT 0FFF4H
 
 ; == Version Info ==
 
 ; Version string. Must be exactly 6 characters.
-_version:
 	DB "GY454X"
 ; Revision string. Must be exactly 2 characters.
 	DB "E "
-; ROM checksum (see _diag_get_checksum for checksum algorithm).
+; ROM checksum (see diag_get_checksum for checksum algorithm).
 ; Must be manually filled in.
-_checksum:
-DW 1234H
+	DW 1234H
 
 ; Filler bytes. They don't do anything.
 DB 1, 1
-
-PUBLIC _setup_default
-PUBLIC _version
-PUBLIC _checksum
-

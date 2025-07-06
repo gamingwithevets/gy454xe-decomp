@@ -1,10 +1,9 @@
 #include "unk0.h"
 #include "unk5.h"
 
-// 01804
 extern const char num_256[];
 
-// 04D64
+// FUNCTION: GY454XE  Re 04D64
 long num_unk_1__(char *a) {
 	long v0;
 	char v1[10];
@@ -36,7 +35,7 @@ long num_unk_1__(char *a) {
 	return v2;
 }
 
-// 04DE0
+// FUNCTION: GY454XE  Re 04DE0
 void num_unk_2__(char *a, long b) {
 	unsigned char i;
 	char v1[4];

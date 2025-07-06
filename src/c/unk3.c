@@ -7,7 +7,7 @@
 
 typedef char *char_p;
 
-// 007E6
+// DATA: 007E6
 const char_p unk_007e6[] = {
 	&mode_ram[0],
 	&mode_ram[10],
@@ -15,16 +15,16 @@ const char_p unk_007e6[] = {
 	&mode_ram[30]
 };
 
-// 007FC
+// DATA: 007FC
 const char_p unk_007fc = &mode_ram[90];
-// 0081A
+// DATA: 007FE
 const char_p table_start_ptr = &mode_ram[0];
-// 0081C
+// DATA: 00800
 const char_p table_end_ptr = &mode_ram[10];
-// 0081E
+// DATA: 00802
 const char_p table_step_ptr = &mode_ram[20];
 
-// 08BC4
+// FUNCTION: GY454XE  Re 08BC4
 void f_08BC4(char m, char sm) {
 	int v0;
 	char v1[40];
@@ -72,7 +72,7 @@ void f_08BC4(char m, char sm) {
 	return;
 }
 
-// 08CD6
+// FUNCTION: GY454XE  Re 08CD6
 char mode_menu(void) {
 	char m;
 	char i;
@@ -111,7 +111,7 @@ char mode_menu(void) {
 	return m;
 }
 
-// 08D6E
+// FUNCTION: GY454XE  Re 08D6E
 char show_mode_menu(void) {
 	char v0;
 	char v1;
@@ -126,7 +126,7 @@ char f_08D94(void) {
 	return 0;
 }
 
-// 08DBA
+// FUNCTION: GY454XE  Re 08DBA
 char setup_menu(void) {
 	char v0;
 	char v1;
@@ -135,87 +135,87 @@ char setup_menu(void) {
 	v1 = 2;
 	if (display_menu(&v1, 0) == 3) {
 		v0 = 0xff;
-		// 01E5C: jump table
+		// SWITCH: GY454XE  Re 01E5C
 		switch (v1) {
 			default: goto j_08e04;
+			// CASE: GY454XE  Re 08E0A
 			case 1:   // Probably a leftover from ES series when MathIO result format couldn't be changed
 			case 22:  // MathIO > MathO
-				// 08E0A
 				f_08EBA(1);
 				setup_decimalo = 0;
 				goto j_08e06;
+			// CASE: GY454XE  Re 08E18
 			case 23:  // MathIO > LineO
-				// 08E18
 				f_08EBA(1);
 				setup_decimalo = 1;
 				goto j_08e06;
+			// CASE: GY454XE  Re 08E26
 			case 2:  // LineIO
-				// 08E26
 				f_08EBA(0);
 				setup_decimalo = 1;
 				goto j_08e06;
+			// CASE: GY454XE  Re 08E34
 			case 3:  // Deg
-				// 08E34
 				setup_angle_unit = ANGLE_DEG;
 				goto j_08e06;
+			// CASE: GY454XE  Re 08E3C
 			case 4:  // Rad
-				// 08E3C
 				setup_angle_unit = ANGLE_RAD;
 				goto j_08e06;
+			// CASE: GY454XE  Re 08E44
 			case 5:  // Gra
-				// 08E44
 				setup_angle_unit = ANGLE_GRA;
 				goto j_08e06;
+			// CASE: GY454XE  Re 08E4C
 			case 6:  // Fix
 			case 7:  // Sci
 			case 8:  // Norm
-				// 08E4C
 				v0 = f_08F00(v1);
 				goto j_08e06;
+			// CASE: GY454XE  Re 08E56
 			case 9:  // ab/c
-				// 08E56
 				setup_frac_result = 1;
 				goto j_08e06;
+			// CASE: GY454XE  Re 08E5E
 			case 10:  // d/c
-				// 08E5E
 				setup_frac_result = 0;
 				goto j_08e06;
+			// CASE: GY454XE  Re 08E66
 			case 12:  // CMPLX > a+bi
-				// 08E66
 				setup_cmplx_result = 1;
 				goto j_08e06;
+			// CASE: GY454XE  Re 08E6E
 			case 13:  // CMPLX > r∠θ
-				// 08E6E
 				setup_cmplx_result = 0;
 				goto j_08e06;
+			// CASE: GY454XE  Re 08E76
 			case 14:  // STAT > ON
-				// 08E76
 				setup_stat_freq = 1;
 				setup_stat();
 				goto j_08e06;
+			// CASE: GY454XE  Re 08E7A
 			case 15:  // STAT > OFF
-				// 08E7A
 				setup_stat_freq = 0;
 				setup_stat();
 				goto j_08e06;
+			// CASE: GY454XE  Re 08E86
 			case 16:  // Rdec > ON
-				// 08E86
 				setup_rdec = 1;
 				goto j_08e06;
+			// CASE: GY454XE  Re 08E90
 			case 17:  // Rdec > OFF
-				// 08E90
 				setup_rdec = 0;
 				goto j_08e06;
+			// CASE: GY454XE  Re 08E9A
 			case 18:  // Disp > Dot
-				// 08E9A
 				setup_decimal_mark = 1;
 				goto j_08e06;
+			// CASE: GY454XE  Re 08EA4
 			case 19:  // Disp > Comma
-				// 08EA4
 				setup_decimal_mark = 0;
 				goto j_08e06;
+			// CASE: GY454XE  Re 08EAE
 			case 11:  // <CONT>
-				// 08EAE
 				set_contrast(0);
 				v0 = 0;
 				goto j_08e06;
@@ -227,7 +227,7 @@ j_08e06:
 	return v0;
 }
 
-// 08EBA
+// FUNCTION: GY454XE  Re 08EBA
 void f_08EBA(char a) {
 	setup_mathi = a;
 	if (!(mode == MODE_EQN || mode == MODE_INEQ || mode == MODE_RATIO) || (d_080FE & 0xf) != 3) {
@@ -246,7 +246,7 @@ void f_08F00(char a) {
 	return;
 }
 
-// 08FA2
+// FUNCTION: GY454XE  Re 08FA2
 void set_contrast(char debug) {
 	char max;
 	char min;

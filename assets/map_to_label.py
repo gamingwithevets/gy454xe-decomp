@@ -51,7 +51,7 @@ def map_to_label(mapfile, outfile):
 		if addr < 0x22:
 			continue
 		type_ = m.group(4).strip()
-		if type_ in ('DATA', 'TABLE'):
+		if type_ in ('DATA', 'TABLE') or name in ('version', 'checksum'):
 			data_labels.setdefault(addr, name)
 		else:
 			labels.setdefault(addr, [name, True])  # Always True
@@ -78,6 +78,6 @@ def map_to_label(mapfile, outfile):
 		else:
 			labels.setdefault(addr, [name, True])  # Still always True, as per your decree
 
-	with open(outfile, 'w', encoding = 'utf-8') as f: labeltool.save_labels(f, 0, labels, data_labels, {})
+	with open(outfile, 'w', encoding = 'utf-8') as f: labeltool.save_labels(f, 0, dict(sorted(labels.items())), dict(sorted(data_labels.items())), {})
 
 if __name__ == '__main__': map_to_label(sys.argv[1], sys.argv[2])

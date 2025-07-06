@@ -3,11 +3,21 @@
 
 #include "ML610CASESplus.H"
 
+// Definitions for checking conditional symbols
+
 // Struct used by f_058DC and its child functions. Also used by f_089AC.
 typedef union {
 	int word[2];
 	char byte[4];
 } f_058DC_union;
+
+typedef union {
+	struct {
+		char ki;
+		char ko;
+	} b;
+	unsigned int kio;
+} scancode;
 
 // Mode constants (mode 80F9H)
 enum mode {
@@ -247,135 +257,102 @@ enum error {
 	ERROR_SYNTAX		= 2,
 	ERROR_MATH			= 3,
 	ERROR_OUTOFMEM		= 4,
-	ERROR_STACK			= 5,
-	ERROR_ARGUMENT		= 6,
-	ERROR_DIMENSION		= 7,
-	ERROR_SOLVE			= 8,
-	ERROR_TIMEOUT		= 9,
-	ERROR_VARIABLE		= 10,
-	ERROR_NULL			= 11
+	ERROR_STACK			= 7,
+	ERROR_ARGUMENT		= 8,
+	ERROR_DIMENSION		= 9,
+	ERROR_SOLVE			= 10,
+	ERROR_TIMEOUT		= 11,
+	ERROR_VARIABLE		= 12,
+	ERROR_NULL			= 13
+};
+
+// Variables
+enum var {
+	VAR_M		= 1,
+	VAR_ANS		= 1,
+	VAR_A		= 1,
+	VAR_B		= 1,
+	VAR_C		= 1,
+	VAR_D		= 1,
+	VAR_E		= 1,
+	VAR_F		= 1,
+	VAR_X		= 1,
+	VAR_Y		= 1,
+	VAR_PREANS	= 1
 };
 
 // RAM addresses
 
-// 08000
 extern void *ram_start;
-extern char reg0[10];
-// 0800A
+extern unsigned int d_08000;
+extern unsigned int d_08002;
+extern char d_08004;
+extern char d_08005;
+extern char d_08006;
+extern char d_08007;
+extern char d_08008;
+extern char d_08009;
 extern char d_0800A;
-// 080DC
 extern char d_080DC;
-// 080DD
 extern char cursor_noflash;
-// 080DE
 extern char d_080DE;
-// 080DF
 extern char d_080DF;
-// 080E0
 extern char (*d_080E0)[2];
-// 080F2
-extern int  last_key_scancode;
-// 080F5
+extern scancode last_key_scancode;
 extern char last_key_keycode;
-// 080F7
 extern char d_080F7;
-// 080F8
 extern char modifiers;
-// 080F9
 extern char mode;
-// 080FA
 extern char submode;
-// 080FB
 extern char screen_state;
-// 080FC
 extern char table_mode;
-// 080FD
 extern char d_080FD;
-// 080FE
 extern char d_080FE;
-// 080FF
 extern char d_080FF;
-// 08102
+extern char d_08100;
+extern char d_08101;
 extern char setup_num_fmt;
-// 08104
 extern char setup_decimal_mark;
-// 08105
 extern char setup_angle_unit;
-// 08106
 extern char setup_mathi;
-// 08107
 extern char setup_frac_result;
-// 08108
 extern char setup_cmplx_result;
-// 08109
 extern char setup_stat_freq;
-// 0810A
 extern char setup_rdec;
-// 0810C
 extern char setup_decimalo;
-// 0810E
 extern char setup_contrast;
-// 08110
+extern char d_0810F;
 extern char cursor_pos_byte;
-// 08111
 extern char d_08111;
-// 08112
 extern char formula_x;
-// 08113
 extern char formula_y;
-// 08114
 extern char cursor_x;
-// 08115
 extern char cursor_y;
-// 08116
 extern char cursor_char;
-// 08117
 extern char d_08117;
-// 08118
 extern char table_viewport;
-// 08119
 extern char table_y;
-// 0811A
 extern char table_x;
-// 0811B
 extern char font_size;
-// 0811C
 extern char draw_mode;
-// 0811D
 extern char use_rambuf;
-// 08120
 extern char d_08120;
-// 08122
 extern char d_08122;
-// 08123
 extern char use_output_charset;
-// 08124
 extern char d_08124;
-// 08125
 extern char d_08125;
-// 08126
 extern char d_08126;
-// 08128
-extern char (*input_area_ptr)[100];
-// 0812C
+extern char *input_area_ptr;
+extern char *d_0812A;
 extern char d_0812C;
-// 08140
 extern char result[20];
-// 08154
 extern char input_area[100];
-// 081B7
 extern char cache_area[100];
-// 08224
 extern int timer;
-// 08224
 extern void *vars_start;
-// 0829E
 extern char mode_ram[880];
-// 0860E
 extern char magic_string[16];
-// 08640
 extern f_058DC_union *d_08640;
-// 08A18
 extern void *stack_start;
 
 #endif
