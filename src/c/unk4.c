@@ -220,9 +220,7 @@ char f_09BDC(char a) {
 
 // FUNCTION: GY454XE  Re 09D54
 char f_09D54(char tmode) {
-	if (table_mode & (1 << 7)) {
-		smart_strcpy(input_area, cache_area);
-	}
+	if (table_mode & (1 << 7)) smart_strcpy(input_area, cache_area);
 	table_mode = tmode;
 	d_080FD = 1;
 	d_080FE = 4;
@@ -380,8 +378,9 @@ char f_0A564(void) {
 }
 
 // STUB: GY454XE  Re 0A57A
-void f_0A57A(void) {
-	return;
+char f_0A57A(void) {
+	if (table_mode & (1 << 4) && (d_080FE == 3 || !d_080FE)) return 1;
+	return 0;
 }
 
 // STUB: GY454XE  Re 0A594
@@ -439,7 +438,7 @@ void f_0AB6A(void) {
 	return;
 }
 
-// STUB: GY454XE  Re 0ABA8
+// FUNCTION: GY454XE  Re 0ABA8
 char *f_0ABA8(char a, char b, char c) {
 	char *v0;
 
@@ -511,7 +510,7 @@ void f_0AF0A(void) {
 	return;
 }
 
-// STUB: GY454XE  Re 0AF16
+// FUNCTION: GY454XE  Re 0AF16
 void f_0AF16(void) {
 	table_mode = 1;
 	d_080FD = 0;
@@ -2132,6 +2131,7 @@ j_0c4a6:
  			f_085C0();
  			d_080FE = 3;
  			v3 = get_numtype(a->result_ptr);
+ 			// Matrix/Vector pointer
  			if (v3 == 0x60 || v3 == 0x90) {
  				table_mode = v3 == 0x60 ? TABLE_MATRIX : TABLE_VECTOR;
  				f_15486(a->result_ptr);
@@ -2154,7 +2154,7 @@ j_0c4a6:
 	 				if (a->result_ptr[10] == 0x70) num_fromdigit(&a->result_ptr[10], 0);
 	 				else d_080FF = 20;
 	 			}
-	 			if (!a->unk_0x0a || table_mode == 1 || !(table_mode & (1 << 7))) {
+	 			if (a->unk_0x0a || (table_mode != 1 && !(table_mode & (1 << 7)))) {
 	 				if (d_080FF & (1 << 4)) num_fromdigit(&a->result_ptr[10], 0);
 	 				d_080FF = 0;
 	 				f_0A410(a->result_ptr);
@@ -2249,7 +2249,7 @@ static char keyfunc_mov_y(f_09962_struct *a) {
 	}
 }
 
-// STUB: GY454XE  Re 0C836
+// FUNCTION: GY454XE  Re 0C836
 static char keyfunc_base(f_09962_struct *a) {
 	submode = base_n_submodes[last_key_keycode - K_BASE_BIN];
 	if (f_03664()) {
@@ -2259,7 +2259,7 @@ static char keyfunc_base(f_09962_struct *a) {
 	return 2;
 }
 
-// STUB: GY454XE  Re 0C86A
+// FUNCTION: GY454XE  Re 0C86A
 static char keyfunc_mode(f_09962_struct *a) {
 	f_0B998();
 	return 2;

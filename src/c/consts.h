@@ -241,7 +241,7 @@ enum num_format {
 	NUM_FMT_FIX		= 8,
 	NUM_FMT_SCI		= 9,
 	NUM_FMT_NORM1	= 0,
-	NUM_FMT_NORM2	= 1
+	NUM_FMT_NORM2	= 4
 };
 
 // Angle unit constants (setup_angle_unit 8105H)
@@ -312,6 +312,7 @@ extern char d_080FF;
 extern char d_08100;
 extern char d_08101;
 extern char setup_num_fmt;
+extern char setup_num_fmt_n;
 extern char setup_decimal_mark;
 extern char setup_angle_unit;
 extern char setup_mathi;

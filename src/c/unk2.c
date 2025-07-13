@@ -3,29 +3,75 @@
 #include "input.h"
 #include "unk2.h"
 
-// STUB: GY454XE  Re 07F30
-void f_07F30(void) {
+// Static functions
+static void f_07F30(char *a, char *b, char c, char d);
+static void f_0802E(char *a, char *b, char c, char d);
+static void f_081DE(char *a, char *b, char c, char d);
+static char f_08304(char *a, char *b);
+
+// FUNCTION: GY454XE  Re 07F30
+static void f_07F30(char *a, char *b, char c, char d) {
+	int v0;
+	char v1;
+	char loc_m10[10];
+	f_07F30_struct loc_m34;
+	char loc_m42[8];
+
+	b[0] = '\0';
+	if (!a) return;
+	v0 = c == 2 ? -2 : -9;
+	num_cpy(loc_m10, a);
+	if (f_1AFD8(loc_m10, 11)) num_cpy(loc_m10, a);
+	if (f_0277E(loc_m10, &loc_m34)) {
+		// Force Sci9 for numbers with exponent > 9
+		if (d && (loc_m34.unk_0x10 > 9 || loc_m34.unk_0x10 < -9) && loc_m34.unk_0x09) f_081DE(a, b, 9, 0);
+		else {
+			loc_m34.unk_0x12 = 0;
+			v1 = f_10CC2(&loc_m34);
+			loc_m34.unk_0x15 = 1;
+			if (loc_m34.unk_0x10 < v0 || loc_m34.unk_0x10 >= 10 || v1) {
+				f_027FA(&loc_m34, loc_m42);
+				loc_m34.unk_0x14 = 11;
+				if (v1) f_10DA6(&loc_m34);
+				f_0285C(&loc_m34, b);
+				smart_strcat(b, loc_m42);
+			} else {
+				loc_m34.unk_0x12 = loc_m34.unk_0x10;
+				loc_m34.unk_0x14 = loc_m34.unk_0x10 < 0 ? (char)(loc_m34.unk_0x10 + 12) : (char)10;
+				f_0285C(&loc_m34, b);
+			}
+		}
+	}
 	return;
 }
 
 // STUB: GY454XE  Re 0802E
-void f_0802E(void) {
+static void f_0802E(char *a, char *b, char c, char d) {
 	return;
 }
 
 // STUB: GY454XE  Re 081DE
-void f_081DE(void) {
+static void f_081DE(char *a, char *b, char c, char d) {
 	return;
 }
 
-// STUB: GY454XE  Re 082C6
-void f_082C6(void) {
-	return;
+// FUNCTION: GY454XE  Re 082C6
+char f_082C6(char *num) {
+	char v0;
+
+	v0 = f_02AB2();
+	if (v0 == 1) return 1;
+	// Degs Mins Secs format
+	if (get_numtype(num) != 0x40) return 0;
+	if (v0 < 2 || v0 > 12) {
+		if (v0 == 13 || !f_02AAA()) return 1;
+	}
+	return 0;
 }
 
 // STUB: GY454XE  Re 08304
-void f_08304(void) {
-	return;
+static char f_08304(char *a, char *b) {
+	return 0;
 }
 
 // FUNCTION: GY454XE  Re 085C0
@@ -49,17 +95,68 @@ void f_085D2(void) {
 // FUNCTION: GY454XE  Re 085EC
 char num_to_str(char *num, char *out, char c) {
 	char v0;
+	char v1;
+	char v2;
+	char v3;
 	char loc_m10[10];
 
 	v0 = d_080FF;
+	// Send it to a different parser if it's an ERROR value
 	if ((*num & 0xf0) == 0xf0) {
-		f_10E14();
+		f_10E14(num);
 		return 0;
+	}
+	if (mode == MODE_BASE_N) {
+		f_1444C(num, out);
+		return 0;
+	}
+	v1 = f_02AB2();
+	if (f_082C6(num)) {
+		v1 = f_08304(num, out);
+		if (v1 != 1) f_02ACA();
+		else return v1;
+	}
+	num_cpy(loc_m10, num);
+	f_1B208(loc_m10);
+	if (v1 <= 10 && v1 > 1) goto j_08678;
+	if (v0 & (1 << 4)) {
+j_08678:
+		f_14800(loc_m10);
+		if (v1 >= 11) {
+			char tmp = f_02AAA();
+			if (tmp == 1) {
+				char tmp2 = f_08304(loc_m10, out);
+				if (tmp2 == 1) return tmp2;
+				else f_02ACA();
+			} else if (tmp > 1 && tmp < 10) f_02ACA();
+		}
+		if (v0 & (1 << 4)) {
+			f_02986(num, out, 12);
+			return 10;
+		}
+		if (c >= 4) c = 0;
+		v2 = setup_num_fmt;
+		if (setup_num_fmt == NUM_FMT_FIX) f_0802E(loc_m10, out, setup_num_fmt_n, c);
+		else if (setup_num_fmt == NUM_FMT_SCI) f_081DE(loc_m10, out, setup_num_fmt_n, c);
+		else if (v2 == NUM_FMT_NORM2) f_07F30(loc_m10, out, 3, c);
+		else f_07F30(loc_m10, out, 2, c);
+		v3 = f_02AB2();
+		if (v3 && v3 <= 10) return v3;
+		else return 10;
+	} else {
+		char tmp = f_077CC(out, loc_m10, c);
+		if (tmp == 10) goto j_08678;
+		return tmp;
 	}
 }
 
-// STUB: GY454XE  Re 08764
-void f_08764(void) {
+// FUNCTION: GY454XE  Re 08764
+void f_08764(char *a, char *b) {
+	if (d_080FF & (1 << 4) && !use_output_charset) {
+		smart_strcat(a, s_blank_line);
+		a[16 - smart_strlen(b)] = '\0';
+	}
+	smart_strcat(a, b);
 	return;
 }
 
@@ -87,8 +184,9 @@ char is_matho(void) {
 }
 
 // FUNCTION: GY454XE  Re 087F6
-void f_087F6(int a, int b) {
-	if (a > b) a = b;
+int f_087F6(int a, int b) {
+	if (a > b) return a;
+	return b;
 }
 
 // FUNCTION: GY454XE  Re 08800
@@ -109,7 +207,7 @@ int f_088AA(void) {
 }
 
 // STUB: GY454XE  Re 088B8
-void f_088B8(void) {
+void f_088B8(char *a) {
 	return;
 }
 

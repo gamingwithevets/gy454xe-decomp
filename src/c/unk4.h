@@ -16,7 +16,7 @@ void f_0A372(void);
 void f_0A3B4(void);
 void f_0A410(void);
 char f_0A564(void);
-void f_0A57A(void);
+char f_0A57A(void);
 void f_0A594(char a);
 void f_0A5E4(void);
 void f_0A6DA(void);

@@ -3,6 +3,7 @@
 #include "emu_kb.h"
 #include "input.h"
 #include "unk2.h"
+#include "unk4.h"
 #include "unk5.h"
 
 // Static declarations
@@ -1344,8 +1345,138 @@ static void f_0832A_E(char *a, char *b) {
 }
 #endif
 
-// STUB: GY454XE  Re 07B60
+// FUNCTION: GY454XE  Re 07B60
 // STUB: GY455XE  Im 083B8
 void f_07B60(char *result) {
+	if (f_0A57A()) num_output_print(result);
+	else {
+		char v0;
+		char v1;
+		char v2;
+		char v3;
+		char v4;
+		char v5;
+		char *v6;
+		char v7;
+		char loc_m36[36];
+		char loc_m56[20];
+		char loc_m92[36];
+		char loc_m128[36];
+		char loc_m129;
+		char loc_m130;
+		char loc_m131;
+		char *loc_m134;
+
+		v0 = 0;
+		loc_m129 = 0;
+		v1 = d_080FF;
+		v2 = f_02C76();
+		v3 = is_matho();
+		v4 = 0;
+		v5 = 0;
+		if (v3 && is_mathi()) v4 = 1;
+		v5 = v4;
+		if (v6 = f_11030() || v4) v6 = loc_m36;
+		v7 = f_02AB2();
+		v4 = 0;
+		if (v1 && (1 << 4)) {
+			if (v1 == 0x13 || !v5) f_02ADE(0xa);
+			v7 = f_02AB2();
+			v4 = 1;
+		}
+		if (v5) {
+			if (v7 != 0xa) {
+				v0 = 1;
+				use_output_charset = 1;
+			}
+			if (!d_0812C) {
+j_07bfe:
+				*v6 = 0;
+				cursor_pos_byte = 0;
+				num_cpy_im(loc_m56, result);
+				loc_m130 = num_invalid__(loc_m56);
+				v1 = num_invalid__(&loc_m56[10]);
+				loc_m131 = 0;
+				if (!v2) {
+					v2 = 1;
+					if (loc_m130 == 1 || v1 != 1) {
+						if (!f_082C6(loc_m56) || v1 != 1 || loc_m130 != 4) {
+							f_16E44(loc_m56, &loc_m56[10]);
+							loc_m130 = num_invalid__(loc_m56);
+							v1 = num_invalid__(&loc_m56[10]);
+							if (v1 != 1) {
+								v2 = 0;
+								loc_m131 = 6;
+							}
+						}
+					}
+				}
+				if (!v5) buffer_clear_lastnline(12);
+				loc_m134 = v6;
+				if (v4) loc_m134 = loc_m92;
+				if (loc_m130 == 1 || v1 == 1 || v4) {
+					loc_m129 = 1;
+					loc_m130 = num_to_str(loc_m56, loc_m134, loc_m131);
+				} else {
+					loc_m130 = 0xf0;
+					loc_m92[0] = '\0';
+				}
+				if (v4) {
+					f_10E7A(0, v6);
+					f_08764(v6, loc_m92);
+				}
+				if (v1 == 1 && !v4) {
+					f_02ABA(loc_m130);
+					if (!v0) {
+						if (mode == MODE_BASE_N) basen_base_print();
+						smart_strcpy(loc_m92, v6);
+					} else goto j_07e64;
+				} else {
+					if (loc_m129) {
+						loc_m131 = 1;
+						if (!v2) loc_m131 = v1 == 2 ? 2 : 5;
+					} else if (v1 == 2) loc_m131 = 3;
+					else loc_m131 = 4;
+					v1 = num_to_str(&loc_m56[10], loc_m128, loc_m131);
+					if (v2 && !v4) f_02B3E(loc_m128, 0x80);
+					f_10E7A(1, loc_m92);
+					if (!v4) {
+						if (v2) {
+							if (loc_m129) {
+								if (loc_m128[0] == '`') loc_m128[0] = '-';
+								else f_110A6(loc_m92);
+							}
+						} else f_088B8(loc_m92);
+					}
+					if (v7) {
+						loc_m130 = f_10E34(loc_m130, v1);
+						f_02ABA(loc_m130);
+					}
+					f_08764(loc_m92, loc_m128);
+					if (v4) goto j_07e4e;
+				}
+				if (v5) {
+					char tmp;
+					v4 = smart_strlen(v6);
+					tmp = f_087F6(v4, smart_strlen(loc_m92) * 6);
+					loc_m131 = !v4 ? 10 : 20;
+					if (f_08ABA(tmp)) f_10E5C(loc_m131);
+				}
+				f_02AEA(v6, 0);
+				f_02AEA(loc_m92, 1);
+			}
+		} else goto j_07bfe;
+		goto j_07e64;
+j_07e4e:
+		if (v4) f_110B2(v6);
+		smart_strcat(v6, loc_m92);
+j_07e64:
+		d_08122 = 1;
+		loc_m134 = input_area_ptr;
+		input_area_ptr = v6;
+		f_058DC();
+		input_area_ptr = loc_m134;
+		use_output_charset = 0;
+	}
 	return;
 }

@@ -2811,22 +2811,22 @@ _$j_029ac:
 	BEQ _$j_029dc
 	CMP R6, #6H
 	BEQ _$j_029c6
-	MOV R0, #45H
-	MOV R1, #52H
-	MOV R2, #4FH
+	MOV R0, #'E'
+	MOV R1, #'R'
+	MOV R2, #'O'
 	BAL _$j_029cc
 _$j_029c6:
-	MOV R0, #-1CH
-	MOV R1, #-17H
-	MOV R2, #-19H
+	MOV R0, #0E4H  ; "Tiny" font
+	MOV R1, #0E9H
+	MOV R2, #0E7H
 _$j_029cc:
 	MOV R3, #0H
 	LEA [BP]
-	ST ER0, [EA+]
-	ST R1, [EA+]
-	ST R2, [EA+]
-	ST R1, [EA+]
-	ST R3, [EA+]
+	ST ER0, [EA+]  ; ER
+	ST R1, [EA+]   ; R
+	ST R2, [EA+]   ; O
+	ST R1, [EA+]   ; R
+	ST R3, [EA+]   ; [null]
 	BAL _$j_029a2
 _$j_029dc:
 	MOV R2, #0AH
@@ -6392,6 +6392,7 @@ _$j_04584:
 	POP QR8
 	POP PC
 
+; Unused since ES
 ; FUNCTION: GY454XE  Re 04588
 _f_04588:
 	MOV ER0, SP

@@ -97,7 +97,7 @@ static char f_090BC(char a) {
 	return v0;
 }
 
-// STUB: GY454XE  Re 
+// STUB: GY454XE  Re 09118
 char f_09118(char a, char b) {
 	return 0;
 }
@@ -126,7 +126,7 @@ static char menufunc_vector(void) {
 	return f_09268(v0, 0);
 }
 
-// 09268 - STUB
+// STUB: GY454XE  Re 09268
 char f_09268(char a, char b) {
 	return 0;
 }

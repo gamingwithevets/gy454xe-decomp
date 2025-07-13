@@ -1,5 +1,36 @@
 #include <string.h>
 
+#ifndef GENERALS_H
+#define GENERALS_H
+
+// Struct used by f_07F30 and f_0277E.
+typedef struct {
+	char unk_0x00;
+	char unk_0x01;
+	char unk_0x02;
+	char unk_0x03;
+	char unk_0x04;
+	char unk_0x05;
+	char unk_0x06;
+	char unk_0x07;
+	char unk_0x08;
+	char unk_0x09;
+	char unk_0x0a;
+	char unk_0x0b;
+	char unk_0x0c;
+	char unk_0x0d;
+	char unk_0x0e;
+	char unk_0x0f;
+	int unk_0x10;
+	int unk_0x12;
+	char unk_0x14;
+	char unk_0x15;
+	char unk_0x16;
+	char unk_0x17;
+} f_07F30_struct;
+
+#endif
+
 extern const char base_n_submodes[];
 extern const char s_blank_line[];
 extern const char contrast_screen[];
@@ -55,8 +86,18 @@ extern char f_0270E(char a);
 extern int smart_strlen(const char *str);
 extern char *smart_strcpy(char *dest, char *src);
 extern char *smart_strcat(char *dest, char *src);
+extern char f_0277E(char *a, f_07F30_struct *b);
+extern char f_027FA(f_07F30_struct *a, char *b);
+extern char f_0285C(f_07F30_struct *a, char *b);
+extern void f_02986(char *a, char *b, char c);
 extern char f_02AAA(void);
+extern char f_02AB2(void);
+extern char f_02ABA(char a);
+extern void f_02ACA(void);
 extern char f_02ADE(char a);
+extern char f_02AEA(char *a, char b);
+extern void basen_base_print(void);
+extern void f_02B3E(char *a, char b);
 extern char get_token(char id, char *dest);
 extern char get_token_length(char id);
 extern void print_continue_prompt(void);
