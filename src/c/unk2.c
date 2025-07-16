@@ -2,43 +2,44 @@
 #include "generals.h"
 #include "input.h"
 #include "unk2.h"
+#include "unk5.h"
 
 // Static functions
-static void f_07F30(char *a, char *b, char c, char d);
-static void f_0802E(char *a, char *b, char c, char d);
-static void f_081DE(char *a, char *b, char c, char d);
+static void num_to_str_norm(char *num, char *out, char n, char d);
+static void num_to_str_fix(char *num, char *out, char n, char d);
+static void num_to_str_sci(char *num, char *out, char n, char d);
 static char f_08304(char *a, char *b);
 
 // FUNCTION: GY454XE  Re 07F30
-static void f_07F30(char *a, char *b, char c, char d) {
+static void num_to_str_norm(char *num, char *out, char n, char d) {
 	int v0;
 	char v1;
-	char loc_m10[10];
-	f_07F30_struct loc_m34;
-	char loc_m42[8];
+	char num_tmp[10];
+	num_struct nts;
+	char exp_str[8];
 
-	b[0] = '\0';
-	if (!a) return;
-	v0 = c == 2 ? -2 : -9;
-	num_cpy(loc_m10, a);
-	if (f_1AFD8(loc_m10, 11)) num_cpy(loc_m10, a);
-	if (f_0277E(loc_m10, &loc_m34)) {
-		// Force Sci9 for numbers with exponent > 9
-		if (d && (loc_m34.unk_0x10 > 9 || loc_m34.unk_0x10 < -9) && loc_m34.unk_0x09) f_081DE(a, b, 9, 0);
+	out[0] = '\0';
+	if (!num) return;
+	v0 = n == 2 ? -2 : -9;
+	num_cpy(num_tmp, num);
+	if (f_1AFD8(num_tmp, 11)) num_cpy(num_tmp, num);
+	if (init_num_struct(num_tmp, &nts)) {
+		// Force Sci9 for numbers with |exponent| > 9
+		if (d && (nts.exponent > 9 || nts.exponent < -9) && nts.num[9]) num_to_str_sci(num, out, 9, 0);
 		else {
-			loc_m34.unk_0x12 = 0;
-			v1 = f_10CC2(&loc_m34);
-			loc_m34.unk_0x15 = 1;
-			if (loc_m34.unk_0x10 < v0 || loc_m34.unk_0x10 >= 10 || v1) {
-				f_027FA(&loc_m34, loc_m42);
-				loc_m34.unk_0x14 = 11;
-				if (v1) f_10DA6(&loc_m34);
-				f_0285C(&loc_m34, b);
-				smart_strcat(b, loc_m42);
+			nts.unk_0x12 = 0;
+			v1 = f_10CC2(&nts);
+			nts.unk_0x15 = 1;
+			if (nts.exponent < v0 || nts.exponent >= 10 || v1) {
+				num_exp_to_str(&nts, exp_str);
+				nts.unk_0x14 = 11;
+				if (v1) f_10DA6(&nts);
+				f_0285C(&nts, out);
+				smart_strcat(out, exp_str);
 			} else {
-				loc_m34.unk_0x12 = loc_m34.unk_0x10;
-				loc_m34.unk_0x14 = loc_m34.unk_0x10 < 0 ? (char)(loc_m34.unk_0x10 + 12) : (char)10;
-				f_0285C(&loc_m34, b);
+				nts.unk_0x12 = nts.exponent;
+				nts.unk_0x14 = nts.exponent < 0 ? (char)(nts.exponent + 12) : 10;
+				f_0285C(&nts, out);
 			}
 		}
 	}
@@ -46,12 +47,12 @@ static void f_07F30(char *a, char *b, char c, char d) {
 }
 
 // STUB: GY454XE  Re 0802E
-static void f_0802E(char *a, char *b, char c, char d) {
+static void num_to_str_fix(char *num, char *out, char n, char d) {
 	return;
 }
 
 // STUB: GY454XE  Re 081DE
-static void f_081DE(char *a, char *b, char c, char d) {
+static void num_to_str_sci(char *num, char *out, char n, char d) {
 	return;
 }
 
@@ -136,10 +137,10 @@ j_08678:
 		}
 		if (c >= 4) c = 0;
 		v2 = setup_num_fmt;
-		if (setup_num_fmt == NUM_FMT_FIX) f_0802E(loc_m10, out, setup_num_fmt_n, c);
-		else if (setup_num_fmt == NUM_FMT_SCI) f_081DE(loc_m10, out, setup_num_fmt_n, c);
-		else if (v2 == NUM_FMT_NORM2) f_07F30(loc_m10, out, 3, c);
-		else f_07F30(loc_m10, out, 2, c);
+		if (setup_num_fmt == NUM_FMT_FIX) num_to_str_fix(loc_m10, out, setup_num_fmt_n, c);
+		else if (setup_num_fmt == NUM_FMT_SCI) num_to_str_sci(loc_m10, out, setup_num_fmt_n, c);
+		else if (v2 == NUM_FMT_NORM2) num_to_str_norm(loc_m10, out, 3, c);
+		else num_to_str_norm(loc_m10, out, 2, c);
 		v3 = f_02AB2();
 		if (v3 && v3 <= 10) return v3;
 		else return 10;
@@ -238,13 +239,21 @@ char is_ins_mode(void) {
 	return v0;
 }
 
-// STUB: GY454XE  Re 08926
-void f_08926(void) {
+// FUNCTION: GY454XE  Re 08926
+void concat_num_str(char *out, char *num) {
+	char string[20];
+
+	num_to_str_norm(num, string, 2, 0);
+	smart_strcat(out, string);
 	return;
 }
 
 // STUB: GY454XE  Re 0895A
-void f_0895A(void) {
+void concat_sqrt(char *out, char *num) {
+	// STRING: GY454XE  Re 01FB2
+	smart_strcat(out, "\x98\xb8");
+	concat_num_str(out, num);
+	concat_mathi_r(out);
 	return;
 }
 
@@ -270,7 +279,7 @@ char get_font_width(void) {
 }
 
 // STUB: GY454XE  Re 089AC
-void f_089AC(f_058DC_union *a, f_058DC_union b) {
+void f_089AC(array_bw_4 *a, array_bw_4 b) {
 	return;
 }
 

@@ -379,7 +379,7 @@ char f_0A564(void) {
 
 // STUB: GY454XE  Re 0A57A
 char f_0A57A(void) {
-	if (table_mode & (1 << 4) && (d_080FE == 3 || !d_080FE)) return 1;
+	if (table_mode & (1 << 4) && (d_080FE == 3 || d_080FE == 0)) return 1;
 	return 0;
 }
 
@@ -512,7 +512,7 @@ void f_0AF0A(void) {
 
 // FUNCTION: GY454XE  Re 0AF16
 void f_0AF16(void) {
-	table_mode = 1;
+	table_mode = TABLE_NONE;
 	d_080FD = 0;
 	d_080FE = 1;
 	d_080FF = 0;
@@ -544,7 +544,7 @@ void clear_setup(void) {
 	mode = MODE_COMP;
 	submode = 0;
 	screen_state = 3;
-	table_mode = 1;
+	table_mode = TABLE_NONE;
 	f_0B8B8(2);
 }
 
@@ -974,7 +974,7 @@ static char is_sto_keycode(char keycode) {
 
 // FUNCTION: GY454XE  Re 0B7B6
 char f_0B7B6(void) {
-	if (mode == MODE_EQN && table_mode == 1) return 1;
+	if (mode == MODE_EQN && table_mode == TABLE_NONE) return 1;
 	return 0;
 }
 
@@ -1769,7 +1769,7 @@ void f_0BA50(void) {
 
 // FUNCTION: GY454XE  Re 0BAA8
 void f_0BAA8(char *a) {
-	if (table_mode == 1 && smart_strlen(a) == 1 && f_14516(*a)) {
+	if (table_mode == TABLE_NONE && smart_strlen(a) == 1 && f_14516(*a)) {
 		a[1] = 0x8b;  // Ans
 		a[2] = 0;
 	}
@@ -1792,7 +1792,7 @@ static char f_0BAF2(char **a) {
 		if (d_080FE & (1 << 6)) input_area_ptr = d_0812A;
 		else {
 			f_0BAA8(*a);
-			if (!(mode & (1 << 7)) && (table_mode == 1 || table_mode & (1 << 7))) smart_strcpy(cache_area, input_area);
+			if (!(mode & (1 << 7)) && (table_mode == TABLE_NONE || table_mode & (1 << 7))) smart_strcpy(cache_area, input_area);
 		}
 	}
 	return 1;
@@ -1827,7 +1827,7 @@ static char *f_0BBDA(char *a) {
 
 	v0 = 10;
 	if (!(v1 = get_calc_history_addr())) return NULL;
-	if (*a++ & 1) v0 = 20;
+	if (*a++ & 0x80) v0 = 20;
 	a += 2;
 	a += v0;
 	a = strchr(a, ':');
@@ -1992,15 +1992,15 @@ void f_0C0D0(void) {
 		v0 = f_02CB6();
 		if (d_080FE == 1) {
 			d_08122 = 1;
-			if (!is_mathi()) f_04F6E();
+			if (!is_mathi()) input_print_linei();
 			else {
-				f_10FC0();
-				f_058DC();
+				disable_ins();
+				input_print_mathi();
 			}
 		} else {
 			d_08122 = 0;
 			cursor_pos_byte = 0;
-			if (table_mode == 1 || table_mode == TABLE_RANGE || (table_mode & (1 << 7))) if (v0) f_02BE8();
+			if (table_mode == TABLE_NONE || table_mode == TABLE_RANGE || (table_mode & (1 << 7))) if (v0) f_02BE8();
 		}
 	}
 	return;
@@ -2109,7 +2109,7 @@ j_0c396:
 						f_0AF0A();
 						goto j_0c390;
 					}
-				} else v1 = f_15CEE(&loc_m2, a->result_ptr);
+				} else v1 = num_parse(&loc_m2, a->result_ptr);
 				if (v1 > 0 && v1 < 32) {
 					char tmp = loc_m2 - v2;
 					if (a->unk_0x08) f_06C54(a->input_area_ptr, v2, tmp, 0);

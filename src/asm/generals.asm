@@ -955,10 +955,6 @@ _menu_setup_decimalo:
 
 RSEG $$NTABgenerals2
 
-; DATA: GY454XE  Re 010C7
-_s_continue_prompt:
-	DB "Continue:[=]", 0
-
 ; DATA: GY454XE  Re 010F2
 _tokens:
 	DW _char_placeholder	; 00
@@ -2474,7 +2470,7 @@ _smart_strcat:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 0277E
-_f_0277E:
+_init_num_struct:
 	PUSH LR
 	PUSH XR12
 	PUSH XR4
@@ -2484,119 +2480,119 @@ _f_0277E:
 	MOV R5, R1
 	MOV R0, #0H
 	AND R1, #11110000B
-	BNE _$j_027f4
+	BNE _$j_027f4       ; If not floating point type, return 0
 	LEA [FP]
-	MOV ER2, #0H
+	MOV ER2, #0H        ; Initialize the struct
 	ST XR0, [EA+]
 	ST XR0, [EA+]
 	ST XR0, [EA+]
 	ST XR0, [EA+]
 	ST XR0, [EA+]
 	ST XR0, [EA+]
-	CMP R5, #0H
+	CMP R5, #0H         ; If first nibble of Area 2 is 0, return 1
 	BEQ _$j_027f2
-	L R5, 9H[BP]
-	L R0, 8H[BP]
-	MOV R6, R0
-	AND R6, #00001111B
-	SRL R0, #4
+	L R5, 9H[BP]        ; Area 4
+	L R0, 8H[BP]        ; Area 3
+	MOV R6, R0          ; ==== Convert Area 3 from BCD to hex ====
+	AND R6, #00001111B  ; Area 3's ones digit
+	SRL R0, #4          ; Area 3's tens digit
 	MOV R7, #0H
 	MOV R2, #10
-	MUL ER0, R2
-	ADD ER0, ER6
-	CMP R5, #0H
+	MUL ER0, R2         ; Multiply tens digit by... 10
+	ADD ER0, ER6        ; Add in the ones digit. Now we have Area 3 as hex
+	CMP R5, #0H         ; If Area 4 is 0, subtract 100 from Area 3
 	BEQ _$j_027c0
-	CMP R5, #5H
+	CMP R5, #5H         ; Do the same if Area 4 is 5
 	BNE _$j_027c4
 _$j_027c0:
 	ADD R0, #-64H
 	ADDC R1, #-1H
 _$j_027c4:
-	ST ER0, 10H[FP]
-	MOV ER0, #1H
-	CMP R5, #5H
-	SUBC R0, R1
-	ST R0, 0FH[FP]
+	ST ER0, 10H[FP]     ; Store Area 3 into the struct
+	MOV ER0, #1H        ; Set R0 = 1, R1 = 0
+	CMP R5, #5H         ; Set carry flag if Area 4 < 5 (positive)
+	SUBC R0, R1         ; Subtract carry from 1. This will be 0 if Area 4 < 5, 1 otherwise
+	ST R0, 0FH[FP]      ; Store result in struct
 	MOV ER2, #0H
-	MOV R6, #1H
+	MOV R6, #1H         ; Skip type nibble
 	MOV ER4, #0H
 _$j_027d4:
 	MOV ER0, ER2
 	ADD ER0, BP
-	L R7, [ER0]
-	XOR R6, #1H
-	BEQ _$j_027e2
-	SRL R7, #4
-	BAL _$j_027e6
+	L R7, [ER0]         ; Load byte from number
+	XOR R6, #1H         ; Invert R6
+	BEQ _$j_027e2       ; If R6 == 0, jump
+	SRL R7, #4          ; Shift top nibble to low nibble
+	BAL _$j_027e6       ; Jump
 _$j_027e2:
-	AND R7, #0FH
-	ADD R2, #1H
+	AND R7, #0FH        ; AND with 0xF to clear top nibble
+	ADD R2, #1H         ; Increment the load index
 _$j_027e6:
 	MOV ER0, ER4
 	ADD ER0, FP
-	ST R7, [ER0]
-	ADD R4, #1H
-	CMP R4, #0FH
+	ST R7, [ER0]        ; Copy to the struct
+	ADD R4, #1H         ; Increment the store index
+	CMP R4, #0FH        ; Repeat 15 times
 	BLT _$j_027d4
 _$j_027f2:
-	MOV R0, #1H
+	MOV R0, #1H         ; Return 1
 _$j_027f4:
 	POP XR4
 	POP XR12
 	POP PC
 
 ; FUNCTION: GY454XE  Re 027FA
-_f_027FA:
+_num_exp_to_str:
 	PUSH LR
 	PUSH QR8
 	PUSH XR4
 	LEA [ER2]
 	MOV BP, ER0
-	MOV R4, #90H
+	MOV R4, #90H   ; × in ×10
 	L R9, _use_output_charset
 	CMP R9, #1H
-	BNE _$j_02812
-	MOV R4, #0E0H
+	BNE _$j_02812  ; If use_output_charset != 1...
+	MOV R4, #0E0H  ; Use character 0xE0 (???)
 	BAL _$j_0281a
 _$j_02812:
-	L R8, 16H[BP]
+	L R8, 16H[BP]  ; Otherwise, if unk_0x16 == 1, use character 0xDD (tiny)
 	CMP R8, #1H
 	BNE _$j_0281a
 	MOV R4, #0DDH
 _$j_0281a:
-	ST R4, [EA+]
-	ADD R4, #1H
+	ST R4, [EA+]   ; Copy to output string
+	ADD R4, #1H    ; Go to the next character
 	L ER6, 10H[BP]
-	BPS _$j_0282a
-	ADD R4, #1H
-	XOR R6, #-1H
-	XOR R7, #-1H
-	ADD ER6, #1H
+	BPS _$j_0282a  ; If exponent < 0...
+	ADD R4, #1H    ; Go to the next next character
+	XOR R6, #11111111B  ; Invert to get -(exponent+1)
+	XOR R7, #11111111B
+	ADD ER6, #1H   ; Add 1
 _$j_0282a:
-	ST R4, [EA+]
+	ST R4, [EA+]   ; Copy to output string
 	MOV ER0, ER6
 	MOV R2, #0AH
-	DIV ER0, R2
-	MOV R4, R0
-	MOV R5, R2
-	MOV R6, #0A0H
-	CMP R9, #1H
+	DIV ER0, R2    ; Floor divide exponent by 10
+	MOV R4, R0     ; Tens digit
+	MOV R5, R2     ; Ones digit
+	MOV R6, #0A0H  ; Start with superscript 0 (0xA0 is for big/small font)
+	CMP R9, #1H    ; If use_output_charset != 1...
 	BNE _$j_02840
-	MOV R6, #0F0H
+	MOV R6, #0F0H  ; Start with character 0xF0 (???)
 	BAL _$j_02846
 _$j_02840:
-	CMP R8, #1H
+	CMP R8, #1H    ; Otherwise, if unk_0x16 == 1, start with number 0 (0xD0 tiny)
 	BNE _$j_02846
 	MOV R6, #0D0H
 _$j_02846:
-	CMP R4, #0H
+	CMP R4, #0H    ; If tens digit is zero, skip copying tens digit
 	BEQ _$j_0284e
-	ADD R4, R6
+	ADD R4, R6     ; Copy the corresponding character for tens digit to output string
 	ST R4, [EA+]
 _$j_0284e:
-	ADD R5, R6
+	ADD R5, R6     ; Same thing for ones digit
 	ST R5, [EA+]
-	MOV R2, #0H
+	MOV R2, #0H    ; Finish off with the terminator
 	ST R2, [EA+]
 	POP XR4
 	POP QR8
@@ -2837,7 +2833,7 @@ _$j_029dc:
 	ADD ER2, #1EH
 	MOV ER0, FP
 	ADD ER0, #-0AH
-	BL _f_0277E
+	BL _init_num_struct
 	CMP R0, #0H
 	BEQ _$j_029a2
 	CMP R6, #6H
@@ -2872,7 +2868,7 @@ _$j_02a28:
 	ADD ER2, #16H
 	MOV ER0, FP
 	ADD ER0, #1EH
-	BL _f_027FA
+	BL _num_exp_to_str
 	MOV ER0, #0H
 	ST ER0, -10H[FP]
 	MOV ER0, FP
@@ -2974,7 +2970,7 @@ _f_02ADE:
 	RT
 
 ; FUNCTION: GY454XE  Re 02AEA
-_f_02AEA:
+_result_str_print:
 	PUSH LR
 	PUSH ER0
 	PUSH R2
@@ -2982,7 +2978,7 @@ _f_02AEA:
 	POP R2
 	MOV R1, #6
 	MUL ER0, R1
-	CMP R2, #0H
+	CMP R2, #0
 	BEQ _$j_02b02
 	MOV R1, #22
 	BAL _$j_02b04
@@ -2991,7 +2987,7 @@ _$j_02b02:
 _$j_02b04:
 	POP ER2
 	NEG R0
-	ADD R0, #60H
+	ADD R0, #96
 	BL _line_print
 	POP PC
 
@@ -3169,7 +3165,7 @@ _$j_02c36:
 _$j_02c46:
 	MOV R10, #7H
 _$j_02c48:
-	MOV R0, #20H
+	MOV R0, #32
 	SUB R0, R10
 	MOV R10, R0
 	BL _buffer_clear_lastnline
@@ -3182,7 +3178,7 @@ _$j_02c48:
 	MOV ER2, FP
 	ADD ER2, #-1AH
 	MOV R1, R10
-	MOV R0, #60H
+	MOV R0, #96
 	SUB R0, R11
 	BL _line_print
 	POP XR8
@@ -3387,7 +3383,7 @@ _$j_02dd4:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 02DD8
-_f_02DD8:
+_draw_line:
 	PUSH LR
 	PUSH XR4
 	PUSH QR8
@@ -3411,14 +3407,14 @@ _f_02DD8:
 	MOV R3, #1H
 	MOV ER8, #0H
 	CMP ER10, ER8
-	BC GES, _$j_02e12
+	BGES _$j_02e12
 	XOR R10, #11111111B
 	XOR R11, #11111111B
 	ADD ER10, #1H
 	MOV R2, #-1H
 _$j_02e12:
 	CMP BP, ER8
-	BC GES, _$j_02e1e
+	BGES _$j_02e1e
 	XOR R12, #11111111B
 	XOR R13, #11111111B
 	ADD BP, #1H
@@ -3452,7 +3448,7 @@ _$j_02e48:
 	SUB R4, R12
 	SUBC R5, R13
 	ADD ER4, #0H
-	BC GES, _$j_02e5a
+	BGES _$j_02e5a
 	ADD ER4, ER10
 	L R0, -1H[FP]
 	ADD R7, R0
@@ -6830,8 +6826,8 @@ PUBLIC _f_0270E
 PUBLIC _smart_strlen
 PUBLIC _smart_strcpy
 PUBLIC _smart_strcat
-PUBLIC _f_0277E
-PUBLIC _f_027FA
+PUBLIC _init_num_struct
+PUBLIC _num_exp_to_str
 PUBLIC _f_0285C
 PUBLIC _f_02986
 PUBLIC _f_02AAA
@@ -6839,7 +6835,7 @@ PUBLIC _f_02AB2
 PUBLIC _f_02ABA
 PUBLIC _f_02ACA
 PUBLIC _f_02ADE
-PUBLIC _f_02AEA
+PUBLIC _result_str_print
 PUBLIC _basen_base_print
 PUBLIC _f_02B3E
 PUBLIC _get_token
@@ -6854,7 +6850,7 @@ PUBLIC _fill_screen
 PUBLIC _buffer_clear
 PUBLIC _f_02D52
 PUBLIC _f_02D90
-PUBLIC _f_02DD8
+PUBLIC _draw_line
 PUBLIC _line_print_col_0
 PUBLIC _line_print
 PUBLIC _char_print
@@ -6945,6 +6941,7 @@ PUBLIC _clr_all_ko
 PUBLIC _is_key_pressed
 PUBLIC _check_ac
 
+EXTRN TABLE	: _s_continue_prompt
 EXTRN TABLE	: _num_0
 EXTRN TABLE	: _num_1
 EXTRN TABLE	: _num_2

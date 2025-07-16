@@ -8,15 +8,16 @@
 
 // Static declarations
 static void f_04E6E(char x, char y);
-static char f_04E86(char a);
+static char is_next_disp(char a);
 static char f_04E9C(char a);
+static void f_05076(int a, int b, char c, char d);
 static void f_05162(int a, int b, char c);
 static void f_051CE(int a, char b, char c);
 static void f_05222(int a, char b);
 static void f_05260(char *a, int b);
 static char f_052D0(char a, int b, char c, char d);
-static void f_05366(f_058DC_union *a, int b, char c);
-static void f_05516(int a, char b, char c, f_058DC_union d);
+static void f_05366(array_bw_4 *a, int b, char c);
+static void f_05516(int a, char b, char c, array_bw_4 d);
 static void f_055BC(int a, char b, char *c);
 static char f_05652(char *a);
 static char f_0568E(char *a);
@@ -27,16 +28,16 @@ static char f_05766(char *a);
 static char f_0579A(char *a, char b);
 static char f_05824(char *a);
 static char f_0587E(char *a);
-static char *f_05B2C(char *a, f_058DC_union *b, int c, char d);
-static char *f_05B86(char *a, f_058DC_union *b, int c, char d);
-static char *f_05D0C(char *a, f_058DC_union *b, int c, char d);
-static char *f_05EBC(char *a, f_058DC_union *b, int c, char d);
-static char *f_06002(char *a, f_058DC_union *b, int c, char d);
-static char *f_062CE(char *a, f_058DC_union *b, int c, char d);
-static char *f_06456(char *a, f_058DC_union *b, int c, char d);
-static char *f_0666C(char *a, f_058DC_union *b, int c, char d);
+static char *f_05B2C(char *a, array_bw_4 *b, int c, char d);
+static char *f_05B86(char *a, array_bw_4 *b, int c, char d);
+static char *f_05D0C(char *a, array_bw_4 *b, int c, char d);
+static char *f_05EBC(char *a, array_bw_4 *b, int c, char d);
+static char *f_06002(char *a, array_bw_4 *b, int c, char d);
+static char *f_062CE(char *a, array_bw_4 *b, int c, char d);
+static char *f_06456(char *a, array_bw_4 *b, int c, char d);
+static char *f_0666C(char *a, array_bw_4 *b, int c, char d);
 static char f_06914(char *a);
-static char *f_06944(char *a, f_058DC_union *b, int c, char d);
+static char *f_06944(char *a, array_bw_4 *b, int c, char d);
 static char f_06C06(char *a);
 static char *f_06D90(char *a, char *b);
 static char f_06E40(char *a, char b, char c);
@@ -46,6 +47,7 @@ static void f_07022(char token, char b, char *input);
 static char is_mathi_char(char token);
 static char *move_cursor(char a);
 static char *f_07442(char a);
+static char is_num_1(char *num);
 
 extern const char num_1[];
 
@@ -55,7 +57,7 @@ const char unk_01ddc[] = {
 };
 
 // DATA: GY454XE  Re 01DF4
-static char *(*const jmp_01df4[])(char *, f_058DC_union *, int, char) = {
+static char *(*const jmp_01df4[])(char *, array_bw_4 *, int, char) = {
 	f_05B86,
 	f_05B2C,
 	f_05D0C,
@@ -84,9 +86,9 @@ static void f_04E6E(char x, char y) {
 }
 
 // FUNCTION: GY454XE  Re 04E86
-static char f_04E86(char a) {
-	if (d_080FE & (1 << 6) && a == 0x3a) return 1;
-	else if (a) return 0;
+static char is_next_disp(char chr) {
+	if (d_080FE & (1 << 6) && chr == ':') return 1;
+	else if (chr) return 0;
 	else return 1;
 }
 
@@ -112,7 +114,7 @@ static char f_04E9C(char a) {
 		while ((char)(v0 + 1) >= (char)v4) {
 			++v4;
 			v6 = *v5;
-			if (f_04E86(v6)) {
+			if (is_next_disp(v6)) {
 				++v3;
 				break;
 			} else {
@@ -129,7 +131,7 @@ static char f_04E9C(char a) {
 	while (v3 > 0) {
 		v6 = *(v0 + v2);
 		v4 = v6;
-		v7 = (char)((f_04E86(v6) ? 1 : get_token(v4, loc_m22)) * 6);
+		v7 = (char)((is_next_disp(v6) ? 1 : get_token(v4, loc_m22)) * 6);
 		if (v3 >= v7) {
 			v3 -= v7;
 			if (v0) --v0;
@@ -145,57 +147,62 @@ j_04f60:
 }
 
 // FUNCTION: GY454XE  Re 04F6E
-void f_04F6E(void) {
-	char *v0;
-	char v1;
-	char v2;
+void input_print_linei(void) {
+	char *input;
+	char y;
+	char x;
 	char v3;
-	char v4;
+	char x_tmp;
 	char v5;
 	char len;
 	char v6;
-	char v7;
-	char loc_m2[2];
-	char loc_m34[50];
-	char loc_m56[34];
+	char tok;
+	char space[2];
+	char inputstr[50];
+	char tokstr[34];
 
-	loc_m2[0] = ' ';
-	loc_m2[1] = '\0';
-	v0 = input_area_ptr;
-	v1 = formula_y;
+	space[0] = ' ';
+	space[1] = '\0';
+	input = input_area_ptr;
+	y = formula_y;
 	if (f_08ADC()) {
-		table_prompt_print(v1);
+		table_prompt_print(y);
 		formula_x += 30;
 	}
-	v2 = formula_x;
+	x = formula_x;
 	v3 = f_04E9C(90);
-	v4 = v2;
+	x_tmp = x;
 	v5 = v3;
-	loc_m34[0] = '\0';
-	v0 = v3 + v0;
-	while (v4 <= 96) {
-		if (cursor_pos_byte == v5) f_04E6E(v4, v1);
-		v7 = *v0;
-		if (!f_04E86(v7) && (len = get_token(v7, loc_m56))) {
-			v4 += (char)(len * 6);
-			smart_strcat(loc_m34, loc_m56);
+	inputstr[0] = '\0';
+	input = v3 + input;
+	while (x_tmp <= 96) {
+		if (cursor_pos_byte == v5) f_04E6E(x_tmp, y);
+		tok = *input;
+		if (!is_next_disp(tok) && (len = get_token(tok, tokstr))) {
+			x_tmp += (char)(len * 6);
+			smart_strcat(inputstr, tokstr);
 			++v5;
-			++v0;
+			++input;
 		} else break;
 	}
 	v6 = 1;
-	if (f_04E86(v7)) v6 = 0;
-	v4 = (char)(smart_strlen(loc_m34) * 6) + v2;
-	while (v4 < 60) {
-		smart_strcat(loc_m34, loc_m2);
-		v4 += 6;
+	if (is_next_disp(tok)) v6 = 0;
+	x_tmp = (char)(smart_strlen(inputstr) * 6) + x;
+	while (x_tmp < 60) {
+		smart_strcat(inputstr, space);
+		x_tmp += 6;
 		v6 = 0;
 	}
-	line_print(v2, v1, loc_m34);
-	if (v3 > 0) f_10F52(v1);
-	if (v6) f_10F76(v1);
+	line_print(x, y, inputstr);
+	if (v3 > 0) f_10F52(y);
+	if (v6) f_10F76(y);
 	formula_x = 0;
 
+	return;
+}
+
+// FUNCTION: GY454XE  Re 05076
+static void f_05076(int a, int b, char c, char d) {
 	return;
 }
 
@@ -215,7 +222,7 @@ static void f_05162(int a, int b, char c) {
 				}
 				b -= d_08000;
 				if (b > 95) b = 95;
-				f_02DD8((char)a, c, (char)b, c);
+				draw_line((char)a, c, (char)b, c);
 			}
 		}
 	}
@@ -279,12 +286,12 @@ static char f_052D0(char a, int b, char c, char d) {
 }
 
 // STUB: GY454XE  Re 05366
-static void f_05366(f_058DC_union *a, int b, char c) {
+static void f_05366(array_bw_4 *a, int b, char c) {
 	return;
 }
 
 // STUB: GY454XE  Re 05516
-static void f_05516(int a, char b, char c, f_058DC_union d) {
+static void f_05516(int a, char b, char c, array_bw_4 d) {
 	return;
 }
 
@@ -458,87 +465,87 @@ static char f_0587E(char *a) {
 }
 
 // FUNCTION: GY454XE  Re 058DC
-void f_058DC(void) {
+void input_print_mathi(void) {
 	char v0;
 	char v1;
 	char v2;
-	char *v3;
+	char *input;
 	unsigned int v4;
 	char v5;
-	f_058DC_union loc_m4;
+	array_bw_4 arr;
 
 	v0 = 0;
 	v1 = 0;
 	v2 = d_08122;
 	if (d_080FE != 1 && v2) v1 = 1;
-	v3 = input_area_ptr;
+	input = input_area_ptr;
 	v4 = 0;
 	d_08000 = 0;
 	d_08005 = 0;
 	f_08A9C(0);
-	if (!f_06944(v3, &loc_m4, 0, 62) || loc_m4.byte[2] > 62) {
-		smart_strcpy(v3, f_11030());
+	if (!f_06944(input, &arr, 0, 62) || arr.byte[2] > 62) {
+		smart_strcpy(input, f_11030());
 		cursor_pos_byte = d_08006;
 		f_08A9C(0);
-		f_06944(v3, &loc_m4, 0, 62);
+		f_06944(input, &arr, 0, 62);
 	}
 	if (f_08ADC()) {
 		formula_x += 30;
 		v0 = 1;
 	}
-	v5 = loc_m4.word[0] > 96 ? 96 : loc_m4.byte[0];
+	v5 = arr.word[0] > 96 ? 96 : arr.byte[0];
 	if (!v1) {
-		d_08124 = loc_m4.byte[2];
+		d_08124 = arr.byte[2];
 		d_08111 = v5;
 		v4 = formula_x;
 		v1 = 96 - formula_x - 6;
-		while (d_08002 - d_08000 <= v1 && loc_m4.word[0] - d_08000 <= v1) d_08000 += 8;
-		v1 = loc_m4.byte[2] - loc_m4.byte[3] + 1;
-		if (loc_m4.byte[2] > 31) {
-			char tmp = loc_m4.byte[3] + 62 - d_08004;
+		while (d_08002 - d_08000 <= v1 && arr.word[0] - d_08000 <= v1) d_08000 += 8;
+		v1 = arr.byte[2] - arr.byte[3] + 1;
+		if (arr.byte[2] > 31) {
+			char tmp = arr.byte[3] + 62 - d_08004;
 			if (v2 && tmp > 12) {
 				v5 = 93	- v1 - 4;
 				while ((char)(d_08004 - d_08005) > v5) d_08005 += 8;
 			} else {
-				d_08005 = loc_m4.byte[2] - 31;
+				d_08005 = arr.byte[2] - 31;
 				d_08124 = 31;
 			}
 		}
 		buffer_clear();
 	} else {
-		if (f_08ABA(v5)) f_10E5C(loc_m4.byte[2]);
-		if (loc_m4.word[0] <= 96) v4 = (char)(96 - loc_m4.byte[0]);
+		if (f_08ABA(v5)) f_10E5C(arr.byte[2]);
+		if (arr.word[0] <= 96) v4 = (char)(96 - arr.byte[0]);
 		else {
 			d_08000 = cursor_pos_byte << 3;
-			if (loc_m4.word[0] - d_08000 <= 88) {
+			if (arr.word[0] - d_08000 <= 88) {
 				d_08000 = --cursor_pos_byte << 3;
 				f_046C4();
 			}
 			d_0812C = 1;
-			buffer_clear_lastnline(32 - loc_m4.byte[2]);
+			buffer_clear_lastnline(32 - arr.byte[2]);
 		}
-		v1 = 32 - loc_m4.byte[3];
+		v1 = 32 - arr.byte[3];
 	}
 	f_08A9C(1);
-	f_06944(v3, &loc_m4, v4, v1);
+	f_06944(input, &arr, v4, v1);
 	v4 = d_08000;
 	v5 = d_08005;
 	v1 -= v5 + 5;
 	if (v0) table_prompt_print(v1);
 	if (v4 > 0) f_10F52(v1);
-	if (loc_m4.word[0] - v4 > (char)(96 - formula_x)) f_10F76(v1);
+	if (arr.word[0] - v4 > (char)(96 - formula_x)) f_10F76(v1);
 	formula_x = 0;
 	if (d_080FE == 1) {
 		font_size = 6;
 		if (v5 > 0) f_10F92();
-		if (loc_m4.byte[2] > (char)(v5 + 31)) f_10FA2();
+		if (arr.byte[2] > (char)(v5 + 31)) f_10FA2();
 	}
 
 	return;
 }
 
 // FUNCTION: GY454XE  Re 05B2C
-static char *f_05B2C(char *a, f_058DC_union *b, int c, char d) {
+static char *f_05B2C(char *a, array_bw_4 *b, int c, char d) {
 	char v0;
 	char *v1;
 
@@ -548,7 +555,7 @@ static char *f_05B2C(char *a, f_058DC_union *b, int c, char d) {
 }
 
 // FUNCTION: GY454XE  Re 05B86
-static char *f_05B86(char *a, f_058DC_union *b, int c, char d) {
+static char *f_05B86(char *a, array_bw_4 *b, int c, char d) {
 	char v0;
 	char *v1;
 	char v2;
@@ -603,16 +610,16 @@ j_05c7a:
 }
 
 // STUB: GY454XE  Re 05D0C
-static char *f_05D0C(char *a, f_058DC_union *b, int c, char d) {
+static char *f_05D0C(char *a, array_bw_4 *b, int c, char d) {
 	return 0;
 }
 
 // FUNCTION: GY454XE  Re 05EBC
-static char *f_05EBC(char *a, f_058DC_union *b, int c, char d) {
+static char *f_05EBC(char *a, array_bw_4 *b, int c, char d) {
 	char v0;
 	int v1;
 	char *v2;
-	f_058DC_union loc_m4;
+	array_bw_4 loc_m4;
 
 	v0 = f_08ACC();
 	// STRING: GY454XE  Re 01E2D
@@ -647,22 +654,22 @@ static char *f_05EBC(char *a, f_058DC_union *b, int c, char d) {
 }
 
 // STUB: GY454XE  Re 06002
-static char *f_06002(char *a, f_058DC_union *b, int c, char d) {
+static char *f_06002(char *a, array_bw_4 *b, int c, char d) {
 	return 0;
 }
 
 // STUB: GY454XE  Re 062CE
-static char *f_062CE(char *a, f_058DC_union *b, int c, char d) {
+static char *f_062CE(char *a, array_bw_4 *b, int c, char d) {
 	return 0;
 }
 
 // STUB: GY454XE  Re 06456
-static char *f_06456(char *a, f_058DC_union *b, int c, char d) {
+static char *f_06456(char *a, array_bw_4 *b, int c, char d) {
 	return 0;
 }
 
 // STUB: GY454XE  Re 0666C
-static char *f_0666C(char *a, f_058DC_union *b, int c, char d) {
+static char *f_0666C(char *a, array_bw_4 *b, int c, char d) {
 	return 0;
 }
 
@@ -677,9 +684,9 @@ static char f_06914(char *a) {
 }
 
 // FUNCTION: GY454XE  Re 06944
-static char *f_06944(char *a, f_058DC_union *b, int c, char d) {
+static char *f_06944(char *a, array_bw_4 *b, int c, char d) {
 	int v0;
-	f_058DC_union loc_m4;
+	array_bw_4 loc_m4;
 	char loc_m5;
 
 	v0 = c;
@@ -750,7 +757,7 @@ j_069e6:
 				case 0:
 				case 12:
 				case 13:
-					if (!f_04E86(*a)) {
+					if (!is_next_disp(*a)) {
 						loc_m4.byte[2] = f_0897C();
 						loc_m4.byte[3] = f_0898C();
 						b->word[0] += f_052D0(*a, c, d, 0);
@@ -956,18 +963,18 @@ static void f_07022(char token, char b, char *input) {
 		d_08006 = loc_m4;
 		loc_m7 = is_pow_char(v2);
 		if (b == 0) {
-			if (loc_m7 || (*v2 == 0x21 && is_pow_char(&v2[1]))) {
+			if (loc_m7 || (*v2 == '!' && is_pow_char(&v2[1]))) {
 				// STRING: GY454XE  Re 01E35
 				if (f_08A2A(f_05658(input))) smart_strcat(input, "!");
 			}
 		} else {
 			// Check for x^n, nth root, cursor (unused)
-			if (loc_m3 == 1 || token == 0x5e || token == 0x9f || token == 0xae || token == 0x7c) v1 = f_06E40(v2, 0, loc_m3);
+			if (loc_m3 == 1 || token == '^' || token == 0x9f || token == 0xae || token == 0x7c) v1 = f_06E40(v2, 0, loc_m3);
 			loc_m6 = 2;
 			// Check for x^2, x^3, x^-1
 			if (token == 0x75 || token == 0x76 || token == 0x77) {
 				// Convert to x^n
-				input[0] = 0x5e;
+				input[0] = '^';
 				v1 = 0;
 				loc_m6 = 4;
 				// Check for x^-1
@@ -976,7 +983,7 @@ static void f_07022(char token, char b, char *input) {
 			} else if (token == 0xa8) input[0] = 0x9f;
 			v3 = 0;
 			loc_m2 = f_056AE(input);
-			if (input[0] == 0x5e && f_08A48(&input[-1])) {
+			if (input[0] == '^' && f_08A48(&input[-1])) {
 				// Add a box then the pow
 				// STRING: GY454XE  Re 01E37
 				smart_strcpy(input, "!^");
@@ -985,7 +992,8 @@ static void f_07022(char token, char b, char *input) {
 			}
 			loc_m11 = unk_01e24[loc_m2];
 			if (unk_01e24[loc_m2] + v1 + loc_m7 + v3 < 100) {
-				if (!loc_m2) {
+				// x^2, x^3, x^-1, x^n
+				if (loc_m2 == 0) {
 					concat_mathi_l(input);
 					// STRING: GY454XE  Re 01E3A
 					if (token == 0x75) smart_strcat(input, "2");
@@ -995,6 +1003,7 @@ static void f_07022(char token, char b, char *input) {
 					else if (token == 0x77) smart_strcat(input, "`1");
 					else f_06FCE(input, loc_m4, v1);
 					concat_mathi_r(input);
+				// logab
 				} else if (loc_m2 == 1) {
 					concat_mathi_l(input);
 					if (token == 0x68) loc_m2 = 0;
@@ -1008,6 +1017,7 @@ static void f_07022(char token, char b, char *input) {
 					concat_mathi_r(input);
 				} else if (loc_m2 == 2) {
 					loc_m6 = 3;
+					// Cube root
 					if (token == 0xa8) {
 j_07200:
 						// STRING: GY454XE  Re 01E43
@@ -1017,9 +1027,9 @@ j_07200:
 							smart_strcat(input, "3");
 							loc_m6 = 6;
 						} else f_06FCE(input, loc_m1, v3);
-						concat_mathi_root_l(input);
+						concat_mathi_rl(input);
 						f_06FCE(input, loc_m4, v1);
-						concat_mathi_root_r(input);
+						concat_mathi_rend(input);
 						v1 += v3;
 					} else goto j_07272;
 				} else if (loc_m2 == 3) {
@@ -1045,15 +1055,15 @@ j_07272:
 						// STRING: GY454XE  Re 01E4C
 						smart_strcat(input, "\xbd\xbb\xb8");
 						f_06FCE(input, loc_m1, v3);
-						concat_mathi_root_l(input);
+						concat_mathi_rl(input);
 						loc_m2 = 0;
 						if (loc_m4 != loc_m1) loc_m2 = v1;
 						f_06FCE(input, loc_m4, loc_m2);
-						concat_mathi_root_l(input);
+						concat_mathi_rl(input);
 						loc_m2 = 0;
 						if (loc_m4 == loc_m1) loc_m2 = v1;
 						f_06FCE(input, loc_m4, loc_m2);
-						concat_mathi_root_r(input);
+						concat_mathi_rend(input);
 						v1 += v3;
 					} else goto j_07200;
 				}
@@ -1073,8 +1083,9 @@ j_07272:
 		}
 		loc_m10[loc_m2] = v0[loc_m2];
 		v2 = &v0[loc_m4];
+		// strcpy at home
 		do {
-			*v2 = input[0];
+			*v2 = *input;
 			++input;
 			++v2;
 		} while (*input);
@@ -1123,7 +1134,9 @@ static char *f_07442(char direction) {
 	char *cur_char;
 
 	cur_char = &input_area[cursor_pos_byte];
-	// Box
+	// Check if character behind cursor is a box.
+	// This condition will never be true under normal operation as there is always at least
+	// 1 MathI control character after a box.
 	if (cursor_pos_byte && cur_char[-1] == '!') cur_char = move_cursor(direction);
 	return cur_char;
 }
@@ -1256,9 +1269,9 @@ j_076b6:
 						if (loc_m10 == input_area) ++loc_m10;
 						else return;
 					}
-					// Hex B (MathI control character)
+					// Hex B
 					if (*loc_m10 == 0xb9) return;
-					// Hex C (MathI control character)
+					// Hex C
 					if (*loc_m10 == 0xba) return;
 					if (f_05658(loc_m10) == 1) {
 						v4_0 = f_05824(loc_m10) + 1;
@@ -1301,13 +1314,150 @@ j_076b6:
 }
 
 // FUNCTION: GY454XE  Re 077C4
-char f_077C4(char *a) {
-	return num_cmp(a, num_1);
+static char is_num_1(char *num) {
+	return num_cmp(num, num_1);
 }
 
-// STUB: GY454XE  Re 077CC
-char f_077CC(char *a, char *b, char c) {
-	return 0;
+// FUNCTION: GY454XE  Re 077CC
+char f_077CC(char *out, char *num, char c) {
+	char v0;
+	char v1;
+	char v2;
+	char v3;
+	char v4;
+	char loc_m10[10];
+	char loc_m20[10];
+	char loc_m30[10];
+	char loc_m40[10];
+	char loc_m50[10];
+
+	v0 = 0;
+	v1 = 0;
+	v2 = get_numtype(num);
+	// Not ERROR format
+	if (v2 != 0xf0) {
+		num_cpy(loc_m50, num);
+		out[0] = '\0';
+		v0 = f_02AB2();
+		f_1B378(loc_m50);
+		if (num_invalid__(loc_m50) == 1)
+j_0781e:
+			v0 = 10;
+		else {
+			num_cpy(loc_m50, num);
+			v3 = is_matho();
+			f_04796();
+			// Fraction format
+			if (v2 == 0x20) {
+				f_1AC92(loc_m50);
+				num_cpy(loc_m40, num);
+				f_1AC7E(loc_m40);
+				num_cpy(loc_m30, num);
+				f_1AC6A(loc_m30);
+				v1 = 1;
+			// Radical format
+			} else if (v2 == 0x80) {
+				if (v3 == 0 || v0 != 13) {
+					f_14800(num);
+					goto j_0781e;
+				} else {
+					f_16C54(loc_m50);
+					v2 = num_invalid__(loc_m30);
+					v0 = num_invalid__(loc_m50);
+					v1 = is_num_1(loc_m10);
+					v4 = f_0B7B6();
+					if (v0 == 2) {
+						if (v2 == 1) {
+							num_abs(loc_m50);
+							concat_negative(out);
+						} else if (!v4 && v2 == 2 && (c || v1 != 1)) {
+							num_abs(loc_m50);
+							num_abs(loc_m30);
+							v0 = 4;
+							v2 = 4;
+							concat_negative(out);
+						}
+					}
+					if (v1 != 1) concat_mathi_frac_startl(out);
+					// STRING: GY454XE  Re 01E50
+					else if (c && v2 != 1) smart_strcat(out, "(");
+					if (v0 == 2) {
+						concat_negative(out);
+						num_abs(loc_m50);
+					}
+					v0 = is_num_1(loc_m40);
+					if (is_num_1(loc_m50) == 1 && v0 == 1) concat_num_str(out, loc_m50);
+					if (v0 != 1) concat_sqrt(out, loc_m40);
+					if (v2 != 1) {
+						// STRING: GY454XE  Re 01E52
+						if (v2 == 2) smart_strcat(out, "-");
+						else concat_plus(out);
+						num_abs(loc_m30);
+						if (is_num_1(loc_m30) != 1) concat_num_str(out, loc_m30);
+						concat_sqrt(out, loc_m20);
+					}
+					if (v1 != 1) {
+						concat_mathi_rl(out);
+						concat_num_str(out, loc_m10);
+						concat_mathi_rend(out);
+					// STRING: GY454XE  Re 01E54
+					} else if (c && v2 != 1) smart_strcat(out, ")");
+					v0 = 13;
+				}
+			} else {
+				if (num_get_exp(num) <= 9) {
+					if (v0 > 10) v1 = f_10C1E(loc_m50);
+					if (v1 != 1) {
+						if (!f_112B6() && v0 >= 13 && num_get_exp(num) >= -7 && v3) {
+							v1 = f_10C2C(loc_m50);
+							if (!v1) goto j_0781e;
+						} else goto j_0781e;
+					}
+					v4 = num_invalid__(loc_m40);
+					if (v4 == 1) {
+						if (v1 == -1) concat_num_str(out, loc_m50);
+					} else {
+						char tmp;
+						char tmp2;
+						
+						num_abs(loc_m50);
+						num_abs(loc_m40);
+						v2 = 0;
+						if (v0 == 12) v2 = 1;
+						else if ((v0 == 0 || v0 == 13) && setup_frac_result != FRAC_RESULT_IMP) v2 = 1;
+						tmp = num_invalid__(loc_m50);
+						tmp2 = 0;
+						if (tmp != 1) tmp2 = 1;
+						v0 = tmp2;
+						if (v4 == 2) concat_negative(out);
+						if (!v2 && v0 == 1) {
+							f_1A438(loc_m50, loc_m30);
+							f_1A460(loc_m40, loc_m50);
+						}
+						if (v2 != 1 && v0 != 1) {
+							// STRING: GY454XE  Re 01E56
+							if (v3) smart_strcat(out, "|\xbd\xbb\xb8");
+							concat_num_str(out, loc_m50);
+							if (v3) concat_mathi_rl(out);
+							else concat_10pow(out);
+							tmp = 12;
+						}
+						if (v3) concat_mathi_frac_startl(out);
+						else tmp = 11;
+						v0 = tmp;
+						if (v1 == -1) v0 = 13;
+						concat_num_str(out, loc_m40);
+						if (v3) concat_mathi_rl(out);
+						else concat_10pow(out);
+						concat_num_str(out, loc_m30);
+						if (v3) concat_mathi_rend(out);
+					}
+					if (v1 == -1) f_02B3E(out, 0x82);
+				} else goto j_0781e;
+			}
+		}
+	}
+	return v0;
 }
 
 #if REAL == 0
@@ -1374,12 +1524,13 @@ void f_07B60(char *result) {
 		v3 = is_matho();
 		v4 = 0;
 		v5 = 0;
-		if (v3 && is_mathi()) v4 = 1;
+		if (v3 && (int)is_mathi()) v4 = 1;
 		v5 = v4;
-		if (v6 = f_11030() || v4) v6 = loc_m36;
+		v6 = f_11030();
+		if (!v6 || !v4) v6 = loc_m36;
 		v7 = f_02AB2();
 		v4 = 0;
-		if (v1 && (1 << 4)) {
+		if (v1 & (1 << 4)) {
 			if (v1 == 0x13 || !v5) f_02ADE(0xa);
 			v7 = f_02AB2();
 			v4 = 1;
@@ -1399,7 +1550,7 @@ j_07bfe:
 				loc_m131 = 0;
 				if (!v2) {
 					v2 = 1;
-					if (loc_m130 == 1 || v1 != 1) {
+					if (loc_m130 != 1 || v1 != 1) {
 						if (!f_082C6(loc_m56) || v1 != 1 || loc_m130 != 4) {
 							f_16E44(loc_m56, &loc_m56[10]);
 							loc_m130 = num_invalid__(loc_m56);
@@ -1430,6 +1581,7 @@ j_07bfe:
 					if (!v0) {
 						if (mode == MODE_BASE_N) basen_base_print();
 						smart_strcpy(loc_m92, v6);
+						v6[0] = '\0';
 					} else goto j_07e64;
 				} else {
 					if (loc_m129) {
@@ -1444,7 +1596,7 @@ j_07bfe:
 						if (v2) {
 							if (loc_m129) {
 								if (loc_m128[0] == '`') loc_m128[0] = '-';
-								else f_110A6(loc_m92);
+								else concat_plus(loc_m92);
 							}
 						} else f_088B8(loc_m92);
 					}
@@ -1462,19 +1614,19 @@ j_07bfe:
 					loc_m131 = !v4 ? 10 : 20;
 					if (f_08ABA(tmp)) f_10E5C(loc_m131);
 				}
-				f_02AEA(v6, 0);
-				f_02AEA(loc_m92, 1);
+				result_str_print(v6, 0);
+				result_str_print(loc_m92, 1);
 			}
 		} else goto j_07bfe;
 		goto j_07e64;
 j_07e4e:
-		if (v4) f_110B2(v6);
+		if (v4) concat_argsep(v6);
 		smart_strcat(v6, loc_m92);
 j_07e64:
 		d_08122 = 1;
 		loc_m134 = input_area_ptr;
 		input_area_ptr = v6;
-		f_058DC();
+		input_print_mathi();
 		input_area_ptr = loc_m134;
 		use_output_charset = 0;
 	}

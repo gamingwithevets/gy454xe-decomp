@@ -9,7 +9,7 @@
 typedef union {
 	int word[2];
 	char byte[4];
-} f_058DC_union;
+} array_bw_4;
 
 typedef union {
 	struct {
@@ -18,6 +18,18 @@ typedef union {
 	} b;
 	unsigned int kio;
 } scancode;
+
+// Struct used by num_to_str functions and some functions in generals.
+typedef struct {
+	char num[15];
+	char negative;
+	int exponent;
+	int unk_0x12;
+	char unk_0x14;
+	char unk_0x15;
+	char use_tiny_font;
+	char unk_0x17;
+} num_struct;
 
 // Mode constants (mode 80F9H)
 enum mode {
@@ -74,6 +86,7 @@ enum submode_matvct {
 
 // Table constants (table_mode 80FCH)
 enum table_mode {
+	TABLE_NONE			= 0x01,
 	TABLE_RANGE			= 0x06,
 	TABLE_STAT_TABLE	= 0x12,
 	TABLE_MATRIX		= 0x13,
@@ -165,13 +178,13 @@ enum keycode {
 	K_ARCSIN	= 0xB0,  // sin⁻¹ / Asn / Arcsin
 	K_ARCCOS	= 0xB1,  // cos⁻¹ / Acs / Arccos
 	K_ARCTAN	= 0xB2,  // tan⁻¹ / Atn / Arctan
-	K_HEX_A		= 0xB3,  // Hexadecimal A
-	K_HEX_B		= 0xB8,  // Hexadecimal B
-	K_HEX_C		= 0xB9,  // Hexadecimal C
-	K_HEX_D		= 0xBA,  // Hexadecimal D
-	K_HEX_E		= 0xBB,  // Hexadecimal E
-	K_HEX_F		= 0xBC,  // Hexadecimal F
-	K_RND		= 0xBD,  // Rnd( function
+	K_RND		= 0xB3,  // Rnd( function
+	K_HEX_A		= 0xB8,  // Hexadecimal A
+	K_HEX_B		= 0xB9,  // Hexadecimal B
+	K_HEX_C		= 0xBA,  // Hexadecimal C
+	K_HEX_D		= 0xBB,  // Hexadecimal D
+	K_HEX_E		= 0xBC,  // Hexadecimal E
+	K_HEX_F		= 0xBD,  // Hexadecimal F
 	K_PERMU		= 0xBE,  // nPr
 	K_COMBI		= 0xBF,  // nCr
 	K_RANINT	= 0xC2,  // RanInt#( function
@@ -249,6 +262,12 @@ enum angle_unit {
 	ANGLE_DEG	= 4,
 	ANGLE_RAD	= 5,
 	ANGLE_GRA	= 6
+};
+
+// Fraction Result (setup_frac_result 8107H)
+enum frac_result {
+	FRAC_RESULT_IMP = 0,
+	FRAC_RESULT_MIX = 1
 };
 
 // Errors
@@ -353,7 +372,7 @@ extern int timer;
 extern void *vars_start;
 extern char mode_ram[880];
 extern char magic_string[16];
-extern f_058DC_union *d_08640;
+extern array_bw_4 *d_08640;
 extern void *stack_start;
 
 #endif

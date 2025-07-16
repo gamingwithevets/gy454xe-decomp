@@ -14,7 +14,7 @@ md obj
 for /f "usebackq tokens=* delims=" %%A in (src\features\features.inc) do (
 	set "line=%%A"
 	for /f "tokens=* delims= " %%B in ("!line!") do set "line=%%B"
-	echo !line! | findstr /C:"REAL" >nul
+	echo !line! | findstr /C:"REAL=1" >nul
 	if !errorlevel! == 0 (
 		set "pad=FF"
 	)
@@ -83,6 +83,7 @@ if %errorlevel% equ 1 (
 )
 echo Converting to binary file...
 python ..\assets\intelhex\intelhex\scripts\hex2bin.py -p %pad% rom.hex rom.bin
+if %errorlevel% equ 1 goto exit
 echo Generating label file...
 python ..\assets\map_to_label.py rom.map labels
 echo Disassembling...

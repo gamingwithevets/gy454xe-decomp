@@ -95,7 +95,7 @@ void main(void) {
 		if (f_0B6B6()) j = f_09962(0);
 		else {
 			if (table_mode != TABLE_EQN && table_mode != TABLE_INEQ && TABLE_RATIO && last_key_keycode == K_AC) {
-				table_mode = 1;
+				table_mode = TABLE_NONE;
 				f_0B8B8(1);
 				j = 0;
 			} else if (table_mode == TABLE_STAT_TABLE) {
