@@ -1,15 +1,12 @@
 #ifndef CONSTS_H
 #define CONSTS_H
 
-#include "ML610CASESplus.H"
-
-// Definitions for checking conditional symbols
-
-// Struct used by f_058DC and its child functions. Also used by f_089AC.
+// Possibly a coordinate-related union?
 typedef union {
-	int word[2];
+	unsigned int word[2];
 	char byte[4];
-} array_bw_4;
+	long dword;
+} mathi_bbox;
 
 typedef union {
 	struct {
@@ -165,7 +162,7 @@ enum keycode {
 	K_LOG		= 0x68,  // log₁₀ n
 	K_POL		= 0x6C,  // Pol( function
 	K_REC		= 0x6D,  // Rec( function
-	K_EXP		= 0x74,  // ×₁₀ character
+	K_EXP		= 0x74,  // ×10 character
 	K_EULER		= 0x81,  // Euler's number (e)
 	K_PI		= 0x82,  // Pi
 	K_ANS		= 0x8B,  // Ans variable
@@ -234,7 +231,7 @@ enum keycode {
 	K_FMT_FRAC	= 0xFB,  // Improper fraction/Mixed fraction toggle
 	K_CALC		= 0xFC,  // CALC
 	K_SOLVE		= 0xFD,  // SOLVE
-	K_DEL		= 0xFE  // DEL
+	K_DEL		= 0xFE   // DEL
 };
 
 /*
@@ -242,7 +239,7 @@ enum keycode {
 * The decimal result function ([SHIFT] [=]) is present since ES models, but up until ClassWiz models, it is not
 labeled on the calculator's front side, and is only mentioned in the User's Guide for some reason. 
 
-** The Execute key is labeled as [=] on all ES and ES PLUS models, and most ClassWiz EX models. However,
+** The Execute key is labeled as [=] on most ES, ES PLUS and ClassWiz EX models, and labeled as [EXE] on French . However,
 most ClassWiz CW models had this key renamed to [EXE] to avoid confusion with the equals sign.
 
 */
@@ -287,17 +284,36 @@ enum error {
 
 // Variables
 enum var {
-	VAR_M		= 1,
+	VAR_M		= 0,
 	VAR_ANS		= 1,
-	VAR_A		= 1,
-	VAR_B		= 1,
-	VAR_C		= 1,
-	VAR_D		= 1,
-	VAR_E		= 1,
-	VAR_F		= 1,
-	VAR_X		= 1,
-	VAR_Y		= 1,
-	VAR_PREANS	= 1
+	VAR_A		= 2,
+	VAR_B		= 3,
+	VAR_C		= 4,
+	VAR_D		= 5,
+	VAR_E		= 6,
+	VAR_F		= 7,
+	VAR_X		= 8,
+	VAR_Y		= 9,
+	VAR_PREANS	= 10
+};
+
+// Result format (result_format 80FFH)
+enum result_fmt {
+	RESULT_DMS		= 1,
+	RESULT_ENGM4	= 2,
+	RESULT_ENGN3	= 3,
+	RESULT_ENGM2	= 4,
+	RESULT_ENGM1	= 5,
+	RESULT_ENG1		= 6,
+	RESULT_ENG2		= 7,
+	RESULT_ENG3		= 8,
+	RESULT_ENG4		= 9,
+	RESULT_DECIMAL	= 10,
+	RESULT_FRAC		= 11,
+	RESULT_FRAC_MIX	= 12,
+	RESULT_STANDARD	= 13,
+	RESULT_RDEC		= 14,
+	RESULT_FACT		= 15
 };
 
 // RAM addresses
@@ -310,7 +326,7 @@ extern char d_08005;
 extern char d_08006;
 extern char d_08007;
 extern char d_08008;
-extern char d_08009;
+extern char mathi_enable_draw;
 extern char d_0800A;
 extern char d_080DC;
 extern char cursor_noflash;
@@ -319,7 +335,7 @@ extern char d_080DF;
 extern char (*d_080E0)[2];
 extern scancode last_key_scancode;
 extern char last_key_keycode;
-extern char d_080F7;
+extern char force_nochar;
 extern char modifiers;
 extern char mode;
 extern char submode;
@@ -327,8 +343,8 @@ extern char screen_state;
 extern char table_mode;
 extern char d_080FD;
 extern char d_080FE;
-extern char d_080FF;
-extern char d_08100;
+extern char result_template;
+extern char result_format;
 extern char d_08101;
 extern char setup_num_fmt;
 extern char setup_num_fmt_n;
@@ -341,7 +357,7 @@ extern char setup_stat_freq;
 extern char setup_rdec;
 extern char setup_decimalo;
 extern char setup_contrast;
-extern char d_0810F;
+extern char replay_idx;
 extern char cursor_pos_byte;
 extern char d_08111;
 extern char formula_x;
@@ -360,7 +376,7 @@ extern char d_08120;
 extern char d_08122;
 extern char use_output_charset;
 extern char d_08124;
-extern char d_08125;
+extern char arrow_state;
 extern char d_08126;
 extern char *input_area_ptr;
 extern char *d_0812A;
@@ -372,7 +388,7 @@ extern int timer;
 extern void *vars_start;
 extern char mode_ram[880];
 extern char magic_string[16];
-extern array_bw_4 *d_08640;
+extern mathi_bbox d_08640[100];
 extern void *stack_start;
 
 #endif

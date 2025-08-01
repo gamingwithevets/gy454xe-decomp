@@ -6,47 +6,9 @@ ROMWINDOW 0, 7FFFH
 ; generals may be partially written in C (at least 1 C source and 1 ASM source), however full assembly will be used for now.
 ; generals may be made up of multiple ASM files. For now, these are combined into a single ASM file.
 
-_d_080DC			EQU 80DCH
-_cursor_noflash		EQU 80DDH
-_d_080DE			EQU 80DEH
-_d_080DF			EQU 80DFH
-_last_key_scancode	EQU 80F2H
-_d_080F4			EQU 80F4H
-_last_key_keycode	EQU 80F5H
-_d_080F7			EQU 80F7H
-_modifiers			EQU 80F8H
-_mode				EQU 80F9H
-_submode			EQU 80FAH
-_screen_state		EQU 80FBH
-_table_mode			EQU 80FCH
-_d_080FD			EQU 80FDH
-_d_080FE			EQU 80FEH
-_d_080FF			EQU 80FFH
-_d_08100			EQU 8100H
-_d_08101			EQU 8101H
-_setup_num_fmt		EQU 8102H
-_setup_decimal_mark	EQU 8104H
-_setup_angle_unit	EQU 8105H
-_setup_mathi		EQU 8106H
-_setup_cmplx_result	EQU 8108H
-_setup_stat_freq	EQU 8109H
-_setup_contrast		EQU 810EH
-_font_size			EQU 811BH
-_draw_mode			EQU 811CH
-_use_rambuf			EQU 811DH
-_d_08121			EQU 8121H
-_use_output_charset	EQU 8123H
-_d_08125			EQU 8125H
-_d_08126			EQU 8126H
-_d_0812C			EQU 812CH
-_result				EQU 8140H
-_input_area			EQU 8154H
-_vars_start			EQU 8226H
-_var_m				EQU 8226H
-_var_x				EQU 8276H
+_calc_history		EQU 829EH
 _vars_im_start		EQU 8408H
 _var_m_im			EQU 8408H
-_calc_history		EQU 829EH
 _d_0850A			EQU 850AH
 _d_08514			EQU 8514H
 _d_0851E			EQU 851EH
@@ -58,25 +20,12 @@ _d_085B4			EQU 85B4H
 _d_085C8			EQU 85C8H
 _d_085CA			EQU 85CAH
 _d_085CD			EQU 85CDH
-_magic_string		EQU 860EH
-_screen_buffer		EQU 87D0H
-_screen_buffer_1	EQU _screen_buffer+1
-_screen_buffer_2	EQU _screen_buffer+2
-_screen_buffer_3	EQU _screen_buffer+3
-_screen_buffer_4	EQU _screen_buffer+4
-_screen_buffer_5	EQU _screen_buffer+5
-_screen_buffer_6	EQU _screen_buffer+6
-_screen_buffer_7	EQU _screen_buffer+7
-_screen_buffer_8	EQU _screen_buffer+8
-_screen_buffer_9	EQU _screen_buffer+9
-_screen_buffer_10	EQU _screen_buffer+10
-_screen_buffer_11	EQU _screen_buffer+11
-_screen_buffer_end	EQU _screen_buffer+12*32-1
-_stack_start		EQU 8A18H
 _stop_type			EQU 8E00H
 
 _pd_val_emu			EQU 0F050H
 _real_screen		EQU 0F800H
+_real_screen_10		EQU 0F80AH
+_real_screen_11		EQU 0F80BH
 _real_screen_end	EQU _real_screen+16*32-1
 
 $$NCODgenerals SEGMENT CODE 2H ANY
@@ -122,14 +71,15 @@ RSEG $$NTABgenerals0
 ; The default character set for the 9px ("big") and 6px ("small") fonts contains a total of
 ; 176 (0xB0) characters, from 0x20 to 0xCF.
 ; The default character set for the 5px ("tiny") fonts contains a total of 45 (techincally 46,
-; but 0xFD is unused) characters, from 0xD0 to 0xFC. These characters are only used in _modes with
-; small input boxes, e.g. TABLE, EQN, MATRIX, VECTOR, etc.
+; but 0xFD is unused) characters, from 0xD0 to 0xFC. These characters are only used in table type
+; modes, e.g. TABLE, EQN, MATRIX, VECTOR, etc.
 ; The "localization" character set can contain up to 31 (0x1F) chraracters, starting from index 0x01.
 ; However, in practice, most of these character slots are left completely unused.
 ; In GY builds (including this decomp), only 11 characters are actually used. 3 additional characters
 ; were filled up in LY builds.
 
 ; DATA: GY454XE  Re 00022
+; DATA: GY455XE  Im 00022
 _font_big_0:
 	DB	01H,	01H,	01H,	01H,	01H,	01H,	00H,	01H,	01H
 	DB	36H,	36H,	13H,	24H,	00H,	00H,	01H,	00H,	00H
@@ -243,6 +193,7 @@ _font_big_0:
 	DB	00H,	00H,	00H,	0C0H,	20H,	0C0H,	20H,	3FH,	0DFH
 
 ; DATA: GY454XE  Re 00400
+; DATA: GY455XE  Im 00400
 _font_small_0:
 	DB	01H,	01H,	01H,	01H,	00H,	01H
 	DB	36H,	12H,	25H,	00H,	01H,	00H
@@ -355,13 +306,14 @@ _font_small_0:
 	DB	0FCH,	0C7H,	0C4H,	0C5H,	0C4H,	0FFH
 	DB	00H,	80H,	40H,	80H,	5FH,	9FH
 
-; The 5px "tiny" font actually has a width of 4, meaning 8 chr/4 img.
+; The 5px "tiny" font actually has a width of 4, meaning 2 chr/1 img.
 ; Charmap for reference:
 ;    x0 x1 x2 x3 x4 x5 x6 x7 x8 x9 xA xB xC xD xE xF
 ; Dx 0  1  2  3  4  5  6  7  8  9  +  -  .  *1 0  0⁻
 ; Ex A  B  C  D  E  F  M  O  Q  R  X  Y     ,  ^  v
 ; Fx a  b  c  d  n  s  (  )  ´  ∑  i  ∠  >
 ; DATA: GY454XE  Re 00694
+; DATA: GY455XE  Im 00694
 _font_tiny:
 	DB	72H,	52H,	52H,	52H,	72H
 	DB	77H,	11H,	77H,	41H,	77H
@@ -388,6 +340,7 @@ _font_tiny:
 	DB	40H,	20H,	10H,	20H,	40H
 
 ; DATA: GY454XE  Re 00707
+; DATA: GY455XE  Im 00707
 _font_big_1:
 	DB	22H,	21H,	00H,	23H,	40H,	83H,	8CH,	8CH,	73H
 	DB	04H,	08H,	00H,	9CH,	43H,	0DFH,	63H,	0E7H,	5AH
@@ -399,6 +352,7 @@ _font_big_1:
 
 ; Note: the small font's localization character set is actually 7px tall!
 ; DATA: GY454XE  Re 00746
+; DATA: GY455XE  Im 00746
 _font_small_1:
 	DB	02H,	21H,	03H,	20H,	43H,	8CH,	73H
 	DB	04H,	08H,	9CH,	43H,	0DFH,	63H,	0DEH
@@ -411,6 +365,7 @@ _font_small_1:
 RSEG $$NTABgenerals1
 
 ; DATA: GY454XE  Re 00840
+; DATA: GY455XE  Im 00840
 _base_n_submodes:
 	DB 1
 	DB 7
@@ -418,6 +373,7 @@ _base_n_submodes:
 	DB 15
 
 ; DATA: GY454XE  Re 00844
+; DATA: GY455XE  Im 00844
 _vars_list:
 	DB 'M'
 	DB 'A'
@@ -433,6 +389,7 @@ _vars_list:
 ; Character blacklists
 
 ; DATA: GY454XE  Re 0084E
+; DATA: GY455XE  Im 0084E
 _blacklist:
 	DB 6AH	; Integral function (∫)
 	DB 6BH	; Derivative function (d/dx)
@@ -444,6 +401,7 @@ _blacklist:
 	DB 0
 
 ; DATA: GY454XE  Re 00856
+; DATA: GY455XE  Im 00856
 _blacklist_stat_mat_vct:
 	DB 6AH	; Integral function (∫)
 	DB 6BH	; Derivative function (d/dx)
@@ -452,6 +410,7 @@ _blacklist_stat_mat_vct:
 	DB 0
 
 ; DATA: GY454XE  Re 0085B
+; DATA: GY455XE  Im 0085B
 _blacklist_table:
 	DB 6AH	; Integral function (∫)
 	DB 6BH	; Derivative function (d/dx)
@@ -464,6 +423,7 @@ _blacklist_table:
 	DB 0
 
 ; DATA: GY454XE  Re 00864
+; DATA: GY455XE  Im 00864
 _blacklist_cmplx:
 	DB 6AH	; Integral function (∫)
 	DB 6BH	; Derivative function (d/dx)
@@ -476,51 +436,63 @@ _blacklist_cmplx:
 	DB 0
 
 ; DATA: GY454XE  Re 00875
+; DATA: GY455XE  Im 00875
 _s_err_acbreak:
 	DB "AC Break", 0
 
 ; DATA: GY454XE  Re 0087E
+; DATA: GY455XE  Im 0087E
 _s_err_syntax:
 	DB "Syntax ERROR", 0
 
 ; DATA: GY454XE  Re 0088B
+; DATA: GY455XE  Im 0088B
 _s_err_math:
 	DB "Math ERROR", 0
 
 ; DATA: GY454XE  Re 00896
+; DATA: GY455XE  Im 00896
 _s_err_outofmem:
 	DB "Insufficient MEM", 0
 
 ; DATA: GY454XE  Re 008A7
+; DATA: GY455XE  Im 008A7
 _s_err_stack:
 	DB "Stack ERROR", 0
 
 ; DATA: GY454XE  Re 008B3
+; DATA: GY455XE  Im 008B3
 _s_err_argument:
 	DB "Argument ERROR", 0
 
 ; DATA: GY454XE  Re 008C2
+; DATA: GY455XE  Im 008C2
 _s_err_dimension:
 	DB "Dimension ERROR", 0
 
 ; DATA: GY454XE  Re 008D2
+; DATA: GY455XE  Im 008D2
 _s_err_solve:
 	DB "Can't Solve", 0
 
 ; DATA: GY454XE  Re 008DE
+; DATA: GY455XE  Im 008DE
 _s_err_timeout:
 	DB "Time Out", 0
 
 ; DATA: GY454XE  Re 008E7
+; DATA: GY455XE  Im 008E7
 _s_err_variable:
 	DB "Variable ERROR", 0
 
 ; DATA: GY454XE  Re 008F6
+; DATA: GY455XE  Im 008F6
 _s_err_null:
 	DB "NULL ERROR", 0
 	DB 0
 
 ; DATA: GY454XE  Re 00902
+; DATA: GY455XE  Im 00902
 _errors:
 	DW _s_err_acbreak
 	DW _s_err_syntax
@@ -537,62 +509,75 @@ _errors:
 	DW _s_err_null
 
 ; DATA: GY454XE  Re 0091C
+; DATA: GY455XE  Im 0091C
 _s_prompt_goto:
 	DB "[\x9f][\x9e]:Goto", 0
 
-; FUNCTION: GY454XE  Re 00928
-_unk_00928:
+; DATA: GY454XE  Re 00928
+; DATA: GY455XE  Im 00928
+_s_table_x:
 	;  "  X"
 	DB "\xec\xec\xea", 0
 
-; FUNCTION: GY454XE  Re 0092C
-_unk_0092c:
+; DATA: GY454XE  Re 0092C
+; DATA: GY455XE  Im 0092C
+_s_table_y:
 	;  "  Y"
 	DB "\xec\xec\xeb", 0
 	
-; FUNCTION: GY454XE  Re 00930
-_unk_00930:
+; DATA: GY454XE  Re 00930
+; DATA: GY455XE  Im 00930
+_s_table_freq:
 	;  " FREQ"
 	DB "\xec\xe5\xe9\xe4\xe8", 0
 	
 	
-; FUNCTION: GY454XE  Re 00936
-_unk_00936:
+; DATA: GY454XE  Re 00936
+; DATA: GY455XE  Im 00936
+_s_table_ans:
 	;  " Ans"
 	DB "\xec\xe0\xf4\xf5", 0
 
-; FUNCTION: GY454XE  Re 0093B
-_unk_0093b:
+; DATA: GY454XE  Re 0093B
+; DATA: GY455XE  Im 0093B
+_s_table_fx:
 	;  " F(X)"
 	DB "\xec\xe5\xf6\xea\xf7", 0
 
-; FUNCTION: GY454XE  Re 00941
-_unk_00941:
+; DATA: GY454XE  Re 00941
+; DATA: GY455XE  Im 00941
+_s_table_a:
 	;  "  a"
 	DB "\xec\xec\xf0", 0
 
-; FUNCTION: GY454XE  Re 00945
-_unk_00945:
+; DATA: GY454XE  Re 00945
+; DATA: GY455XE  Im 00945
+_s_table_1:
 	;  "1"
 	DB "\xd1", 0
 
 ; DATA: GY454XE  Re 00947
+; DATA: GY455XE  Im 00947
 _s_blank_line:
 	DB "                ", 0
 
 ; DATA: GY454XE  Re 00958
-_unk_00958:
+; DATA: GY455XE  Im 00958
+_s_prompt_fix:
 	DB "Fix 0~9?", 0
 	
 ; DATA: GY454XE  Re 00961
-_unk_00961:
+; DATA: GY455XE  Im 00961
+_s_prompt_sci:
 	DB "Sci 0~9?", 0
 
 ; DATA: GY454XE  Re 0096A
-_unk_0096a:
+; DATA: GY455XE  Im 0096A
+_s_prompt_norm:
 	DB "Norm 1~2?", 0
 
 ; DATA: GY454XE  Re 00974
+; DATA: GY455XE  Im 00974
 _contrast_screen:
 	DB "CONTRAST", 0
 	DB "", 0
@@ -600,10 +585,12 @@ _contrast_screen:
 	DB " [\x9f]        [\x9e]", 0
 
 ; DATA: GY454XE  Re 0099F
+; DATA: GY455XE  Im 0099F
 _const_input_template:
 	DB "[__]", 0
 	
 ; DATA: GY454XE  Re 009A4
+; DATA: GY455XE  Im 009A4
 _const_screen:
 	DB "CONSTANT", 0
 	DB "Number 01~40?", 0
@@ -612,6 +599,7 @@ _const_screen:
 	DB 0
 
 ; DATA: GY454XE  Re 009BE
+; DATA: GY455XE  Im 009BE
 _conv_screen:
 	DB "CONVERSION", 0
 	DB "Number 01~40?", 0
@@ -620,6 +608,7 @@ _conv_screen:
 	DB 0
 
 ; DATA: GY454XE  Re 009DA
+; DATA: GY455XE  Im 009DA
 _menu_clr:
 	DB "Clear?", 0
 	DB "1:Setup 2:Memory", 0
@@ -628,38 +617,47 @@ _menu_clr:
 	DB 0
 	
 ; DATA: GY454XE  Re 009FA
+; DATA: GY455XE  Im 009FA
 _s_clr_setup:
 	DB "Clear Setup?", 0
 
 ; DATA: GY454XE  Re 00A07
+; DATA: GY455XE  Im 00A07
 _s_clr_mem:
 	DB "Clear Memory?", 0
 
 ; DATA: GY454XE  Re 00A15
+; DATA: GY455XE  Im 00A15
 _s_reset_all:
 	DB "Reset All?", 0
 
 ; DATA: GY454XE  Re 00A20
+; DATA: GY455XE  Im 00A20
 _s_clr_done_all:
 	DB "   Reset All", 0
 
 ; DATA: GY454XE  Re 00A2D
+; DATA: GY455XE  Im 00A2D
 _s_prompt_yes:
 	DB "[=]   :Yes", 0
 
 ; DATA: GY454XE  Re 00A38
+; DATA: GY455XE  Im 00A38
 _s_prompt_cancel:
 	DB "[AC]  :Cancel", 0
 
 ; DATA: GY454XE  Re 00A46
+; DATA: GY455XE  Im 00A46
 _s_clr_done:
 	DB "   Complete!", 0
 	
 ; DATA: GY454XE  Re 00A53
+; DATA: GY455XE  Im 00A53
 _s_clr_prompt_ac:
 	DB " Press [AC] key", 0
 	
 ; DATA: GY454XE  Re 00A63
+; DATA: GY455XE  Im 00A63
 _menu_matrix_table:
 	DB "1:Dim   2:Data", 0
 	DB "", 0
@@ -668,6 +666,7 @@ _menu_matrix_table:
 	DB 0
 	
 ; DATA: GY454XE  Re 00A76
+; DATA: GY455XE  Im 00A76
 _menu_matrix:
 	DB "1:Dim   2:Data", 0
 	DB "3:MatA  4:MatB", 0
@@ -676,6 +675,7 @@ _menu_matrix:
 	DB 0
 	
 ; DATA: GY454XE  Re 00AB4
+; DATA: GY455XE  Im 00AB4
 _menu_matrix_data:
 	DB "1:MatA  2:MatB", 0
 	DB "3:MatC", 0
@@ -683,34 +683,41 @@ _menu_matrix_data:
 	DB 0
 
 ; DATA: GY454XE  Re 00ACC
+; DATA: GY455XE  Im 00ACC
 _menu_matrix_dim0:
 	DB "1:3$3   2:3$2", 0
 	DB "3:3$1   4:2$3", 0
 	DB "5:2$2   6:2$1", 0
 
 ; DATA: GY454XE  Re 00AF6
+; DATA: GY455XE  Im 00AF6
 _menu_matrix_dim1:
 	DB "1:1$3   2:1$2", 0
 	DB "3:1$1", 0
 	DB "", 0
 
 ; DATA: GY454XE  Re 00B0C
+; DATA: GY455XE  Im 00B0C
 _unk_00b0c:
 	DB "Matrix?", 0
 
 ; DATA: GY454XE  Re 00B14
+; DATA: GY455XE  Im 00B14
 _unk_00b14:
 	DB "MatA(m$n) m$n?", 0
 
 ; DATA: GY454XE  Re 00B23
+; DATA: GY455XE  Im 00B23
 _unk_00b23:
 	DB "MatB(m$n) m$n?", 0
 
 ; DATA: GY454XE  Re 00B32
+; DATA: GY455XE  Im 00B32
 _unk_00b32:
 	DB "MatC(m$n) m$n?", 0
 
 ; DATA: GY454XE  Re 00B41
+; DATA: GY455XE  Im 00B41
 _menu_vector_table:
 	DB "1:Dim   2:Data", 0
 	DB "", 0
@@ -719,6 +726,7 @@ _menu_vector_table:
 	DB 0
 	
 ; DATA: GY454XE  Re 00B54
+; DATA: GY455XE  Im 00B54
 _menu_vector:
 	DB "1:Dim   2:Data", 0
 	DB "3:VctA  4:VctB", 0
@@ -727,6 +735,7 @@ _menu_vector:
 	DB 0
 	
 ; DATA: GY454XE  Re 00B8A
+; DATA: GY455XE  Im 00B8A
 _menu_vector_data:
 	DB "1:VctA  2:VctB", 0
 	DB "3:VctC", 0
@@ -734,28 +743,34 @@ _menu_vector_data:
 	DB 0
 
 ; DATA: GY454XE  Re 00BA2
+; DATA: GY455XE  Im 00BA2
 _menu_vector_dim:
 	DB "1:3     2:2", 0
 	DB "", 0
 	DB "", 0
 
 ; DATA: GY454XE  Re 00BB1
+; DATA: GY455XE  Im 00BB1
 _unk_00bb1:
 	DB "Vector?", 0
 
 ; DATA: GY454XE  Re 00BB9
+; DATA: GY455XE  Im 00BB9
 _unk_00bb9:
 	DB "VctA(m) m?", 0
 
 ; DATA: GY454XE  Re 00BC4
+; DATA: GY455XE  Im 00BC4
 _unk_00bc4:
 	DB "VctB(m) m?", 0
 
 ; DATA: GY454XE  Re 00BCF
+; DATA: GY455XE  Im 00BCF
 _unk_00bcf:
 	DB "VctC(m) m?", 0
 
 ; DATA: GY454XE  Re 00BDA
+; DATA: GY455XE  Im 00BDA
 _menu_cmplx:
 	DB "1:arg   2:Conjg", 0
 	DB "3:\x9er\x88\xc4  4:\x9ea+b\x80", 0
@@ -763,6 +778,7 @@ _menu_cmplx:
 	DB "", 0
 
 ; DATA: GY454XE  Re 00BFC
+; DATA: GY455XE  Im 00BFC
 _menu_base_n_0:
 	DB "1:and   2:or", 0
 	DB "3:xor   4:xnor", 0
@@ -771,6 +787,7 @@ _menu_base_n_0:
 	DB 0
 
 ; DATA: GY454XE  Re 00C28
+; DATA: GY455XE  Im 00C28
 _menu_base_n_1:
 	DB "1:d     2:h", 0
 	DB "3:b     4:o", 0
@@ -779,6 +796,7 @@ _menu_base_n_1:
 	DB 0
 
 ; DATA: GY454XE  Re 00C43
+; DATA: GY455XE  Im 00C43
 _menu_drg:
 	DB "1:\x85     2:\x86", 0
 	DB "3:\x87", 0
@@ -787,6 +805,7 @@ _menu_drg:
 	DB 0
 
 ; DATA: GY454XE  Re 00C56
+; DATA: GY455XE  Im 00C56
 _menu_hyp:
 	DB "1:sinh  2:cosh", 0
 	DB "3:tanh  4:sinh\xaa", 0
@@ -795,6 +814,7 @@ _menu_hyp:
 	DB 0
 
 ; DATA: GY454XE  Re 00C87
+; DATA: GY455XE  Im 00C87
 _menu_stat_data_edit:
 	DB "1:Ins   2:Del-A", 0
 	DB "", 0
@@ -803,6 +823,7 @@ _menu_stat_data_edit:
 	DB 0
 	
 ; DATA: GY454XE  Re 00C9B
+; DATA: GY455XE  Im 00C9B
 _menu_stat_1var_sum:
 	DB "1:\xc0x\xa2   2:\xc0x\xa", 0
 	DB "", 0
@@ -811,6 +832,7 @@ _menu_stat_1var_sum:
 	DB 0
 
 ; DATA: GY454XE  Re 00CAC
+; DATA: GY455XE  Im 00CAC
 _menu_stat_2var_sum:
 	DB "1:\xc0x\xa2   2:\xc0x", 0
 	DB "3:\xc0y\xa2   4:\xc0y", 0
@@ -818,6 +840,7 @@ _menu_stat_2var_sum:
 	DB "7:\xc0x\xa2y  8:\xc0x\xa4", 0
 
 ; DATA: GY454XE  Re 00CE2
+; DATA: GY455XE  Im 00CE2
 _menu_stat_1var_var:
 	DB "1:n     2:\x89", 0
 	DB "3:\xc8x    4:sx", 0
@@ -826,6 +849,7 @@ _menu_stat_1var_var:
 	DB 0
 
 ; DATA: GY454XE  Re 00CFE
+; DATA: GY455XE  Im 00CFE
 _menu_stat_2var_var:
 	DB "1:n     2:\x89", 0
 	DB "3:\xc8x    4:sx", 0
@@ -834,6 +858,7 @@ _menu_stat_2var_var:
 	DB 0
 	
 ; DATA: GY454XE  Re 00D29
+; DATA: GY455XE  Im 00D29
 _menu_stat_1var_minmax:
 	DB "1:minX  2:maxX", 0
 	DB "", 0
@@ -842,6 +867,7 @@ _menu_stat_1var_minmax:
 	DB 0
 
 ; DATA: GY454XE  Re 00D3C
+; DATA: GY455XE  Im 00D3C
 _menu_stat_2var_minmax:
 	DB "1:minX  2:maxX", 0
 	DB "3:minY  4:maxY", 0
@@ -850,6 +876,7 @@ _menu_stat_2var_minmax:
 	DB 0
 
 ; DATA: GY454XE  Re 00D5D
+; DATA: GY455XE  Im 00D5D
 _menu_stat_distr:
 	DB "1:P(    2:Q(", 0
 	DB "3:R(    4:\x9et", 0
@@ -858,6 +885,7 @@ _menu_stat_distr:
 	DB 0
 
 ; DATA: GY454XE  Re 00D7A
+; DATA: GY455XE  Im 00D7A
 _menu_stat_reg:
 	DB "1:\x9a     2:\x9b", 0
 	DB "3:r     4:\x8b", 0
@@ -866,6 +894,7 @@ _menu_stat_reg:
 	DB 0
 
 ; DATA: GY454XE  Re 00D98
+; DATA: GY455XE  Im 00D98
 _menu_stat_reg_quad:
 	DB "1:\x9a     2:\x9b", 0
 	DB "3:\x9c     4:\x8b\xb1", 0
@@ -874,6 +903,7 @@ _menu_stat_reg_quad:
 	DB 0
 
 ; DATA: GY454XE  Re 00DBF
+; DATA: GY455XE  Im 00DBF
 _menu_ratio:
 	DB "1:a:b=X:d", 0
 	DB "2:a:b=c:X", 0
@@ -882,6 +912,7 @@ _menu_ratio:
 	DB 0
 
 ; DATA: GY454XE  Re 00DD6
+; DATA: GY455XE  Im 00DD6
 _menu_verify:
 	DB "1:=     2:\x95", 0
 	DB "3:>     4:<", 0
@@ -890,6 +921,7 @@ _menu_verify:
 	DB 0
 
 ; DATA: GY454XE  Re 00DFC
+; DATA: GY455XE  Im 00DFC
 _menu_ineq:
 	DB "1:aX\xa2+bX+c", 0
 	DB "2:aX\xa3+bX\xa2+cX+d", 0
@@ -898,6 +930,7 @@ _menu_ineq:
 	DB 0
 
 ; DATA: GY454XE  Re 00E19
+; DATA: GY455XE  Im 00E19
 _menu_ineq_poly2:
 	DB "1:aX\xa2+bX+c>0", 0
 	DB "2:aX\xa2+bX+c<0", 0
@@ -906,6 +939,7 @@ _menu_ineq_poly2:
 	DB 0
 
 ; DATA: GY454XE  Re 00E4E
+; DATA: GY455XE  Im 00E4E
 _menu_ineq_poly3:
 	DB "1:aX\xa3+bX\xa2+cX+d>0", 0
 	DB "2:aX\xa3+bX\xa2+cX+d<0", 0
@@ -914,6 +948,7 @@ _menu_ineq_poly3:
 	DB 0
 
 ; DATA: GY454XE  Re 00E93
+; DATA: GY455XE  Im 00E93
 _menu_setup_stat_freq:
 	DB "Frequency?", 0
 	DB "1:ON    2:OFF", 0
@@ -922,6 +957,7 @@ _menu_setup_stat_freq:
 	DB 0
 
 ; DATA: GY454XE  Re 00EAF
+; DATA: GY455XE  Im 00EAF
 _menu_setup_rdec:
 	DB "Recur Decimal?", 0
 	DB "1:ON    2:OFF", 0
@@ -930,6 +966,7 @@ _menu_setup_rdec:
 	DB 0
 
 ; DATA: GY454XE  Re 00ECF
+; DATA: GY455XE  Im 00ECF
 _menu_setup_cmplx_result:
 	DB "Complex Result?", 0
 	DB "1:a+b\x80  2:r\x88\xc4", 0
@@ -938,6 +975,7 @@ _menu_setup_cmplx_result:
 	DB 0
 
 ; DATA: GY454XE  Re 00EF0
+; DATA: GY455XE  Im 00EF0
 _menu_setup_decimal_mark:
 	DB "Decimal Point?", 0
 	DB "1:Dot   2:Comma", 0
@@ -946,6 +984,7 @@ _menu_setup_decimal_mark:
 	DB 0
 
 ; DATA: GY454XE  Re 00F12
+; DATA: GY455XE  Im 00F12
 _menu_setup_decimalo:
 	DB "Result Format?", 0
 	DB "1:MathO 2:LineO", 0
@@ -953,9 +992,60 @@ _menu_setup_decimalo:
 	DB "", 0
 	DB 0
 
+; DATA: GY454XE  Re 00F34
+; DATA: GY455XE  Im 00F34
+_s_prompt_solve:
+	DB "Solve for ", 0
+
+; DATA: GY454XE  Re 00F3F
+; DATA: GY455XE  Im 00F3F
+_s_table_prompt_start:
+	DB "Start?", 0
+
+; DATA: GY454XE  Re 00F45
+; DATA: GY455XE  Im 00F45
+_s_table_prompt_end:
+	DB "End?  ", 0
+
+; DATA: GY454XE  Re 00F4D
+; DATA: GY455XE  Im 00F4D
+_s_table_prompt_step:
+	DB "Step? ", 0
+
+; DATA: GY454XE  Re 00F54
+; DATA: GY455XE  Im 00F54
+_s_ratio_optn_c:
+	DB "a:b=X:d", 0
+
+; DATA: GY454XE  Re 00F5C
+; DATA: GY455XE  Im 00F5C
+_s_ratio_optn_d:
+	DB "a:b=c:X", 0
+
+; DATA: GY454XE  Re 00F64
+; DATA: GY455XE  Im 00F64
+_s_verif_result_false:
+	DB "FALSE", 0
+
+; DATA: GY454XE  Re 00F6A
+; DATA: GY455XE  Im 00F6A
+_s_verif_result_true:
+	DB "TRUE", 0
+
+; DATA: GY454XE  Re 00F6F
+; DATA: GY455XE  Im 00F6F
+_s_ineq_allreal:
+	DB "All", 0
+
+; DATA: GY454XE  Re 00F73
+; DATA: GY455XE  Im 00F73
+_s_ineq_nosolution:
+	DB "No-Solution", 0
+
 RSEG $$NTABgenerals2
 
 ; DATA: GY454XE  Re 010F2
+; DATA: GY455XE  Im 010F2
 _tokens:
 	DW _char_placeholder	; 00
 	DW _char_cs01			; 01
@@ -1218,6 +1308,7 @@ _tokens:
 ; If (value & 0xF0) == 0xF then append a left parenthesis at the end of the token.
 ; Else add it to the character data pointer. (Casio might be lazy here)
 ; DATA: GY454XE  Re 012F2
+; DATA: GY455XE  Im 012F2
 _token_lengths:
 	DB 01H	; 00
 	DB 02H	; 01
@@ -1479,819 +1570,1010 @@ _token_lengths:
 ; Character String Table
 
 ; DATA: GY454XE  Re 013F2
+; DATA: GY455XE  Im 013F2
 _char_placeholder:
 	DB "@"
 
 ; DATA: GY454XE  Re 013F3
+; DATA: GY455XE  Im 013F3
 _char_cs01:
 	DB "m\xb6"
 
 ; DATA: GY454XE  Re 013F5
+; DATA: GY455XE  Im 013F5
 _char_cs02:
 	DB "m\x9d"
 
 ; DATA: GY454XE  Re 013F7
+; DATA: GY455XE  Im 013F7
 _char_cs03:
 	DB "me"
 
 ; DATA: GY454XE  Re 013F9
+; DATA: GY455XE  Im 013F9
 _char_cs04:
 	DB "m\xb7"
 
 ; DATA: GY454XE  Re 013FB
+; DATA: GY455XE  Im 013FB
 _char_cs05:
 	DB "a\xb0"
 
-; FUNCTION: GY454XE  Re 013FD
+; DATA: GY454XE  Re 013FD
+; DATA: GY455XE  Im 013FD
 _char_cs06:
 _char_base_hex:
 	DB "h"
 
 ; DATA: GY454XE  Re 013FE
+; DATA: GY455XE  Im 013FE
 _char_cs07:
 	DB "\xc6\xb5"
 
 ; DATA: GY454XE  Re 01400
+; DATA: GY455XE  Im 01400
 _char_cs08:
 	DB "\xc6\x9b"
 
 ; DATA: GY454XE  Re 01402
+; DATA: GY455XE  Im 01402
 _char_cs09:
 	DB "\xcb"
 
 ; DATA: GY454XE  Re 01403
+; DATA: GY455XE  Im 01403
 _char_cs10:
 	DB "\xc1"
 
-; FUNCTION: GY454XE  Re 01404
+; DATA: GY454XE  Re 01404
+; DATA: GY455XE  Im 01404
 _char_cs11:
 _char_stat_reg_r:
 	DB "re"
 
 ; DATA: GY454XE  Re 01406
+; DATA: GY455XE  Im 01406
 _char_cs12:
 	DB "\xc5c"
 
 ; DATA: GY454XE  Re 01408
+; DATA: GY455XE  Im 01408
 _char_cs13:
 	DB "\xc2\xb6"
 
 ; DATA: GY454XE  Re 0140A
+; DATA: GY455XE  Im 0140A
 _char_cs14:
 	DB "\xc5cp"
 
 ; DATA: GY454XE  Re 0140D
+; DATA: GY455XE  Im 0140D
 _char_cs15:
 	DB "\xc5cn"
 
-; FUNCTION: GY454XE  Re 01410
+; DATA: GY454XE  Re 01410
+; DATA: GY455XE  Im 01410
 _char_sum_x2:
 _char_sum_x:
 _char_sum:
 	DB "\xc0x\xa2"
 
 ; DATA: GY454XE  Re 01413
+; DATA: GY455XE  Im 01413
 _char_n:
 	DB "n"
 
-; FUNCTION: GY454XE  Re 01414
+; DATA: GY454XE  Re 01414
+; DATA: GY455XE  Im 01414
 _char_sum_y2:
 _char_sum_y:
 	DB "\xc0y\xa2"
 
 ; DATA: GY454XE  Re 01417
+; DATA: GY455XE  Im 01417
 _char_sum_xy:
 	DB "\xc0xy"
 
 ; DATA: GY454XE  Re 0141A
+; DATA: GY455XE  Im 0141A
 _char_sum_x3:
 	DB "\xc0x\xa3"
 
 ; DATA: GY454XE  Re 0141D
+; DATA: GY455XE  Im 0141D
 _char_sum_x2y:
 	DB "\xc0x\xa2y"
 
 ; DATA: GY454XE  Re 01421
+; DATA: GY455XE  Im 01421
 _char_sum_x4:
 	DB "\xc0x\xa4"
 
 ; DATA: GY454XE  Re 01424
+; DATA: GY455XE  Im 01424
 _char_min_x:
 	DB "minX"
 
 ; DATA: GY454XE  Re 01428
+; DATA: GY455XE  Im 01428
 _char_max_x:
 	DB "maxX"
 
 ; DATA: GY454XE  Re 0142C
+; DATA: GY455XE  Im 0142C
 _char_min_y:
 	DB "minY"
 
 ; DATA: GY454XE  Re 01430
+; DATA: GY455XE  Im 01430
 _char_max_y:
 	DB "maxY"
 
 ; DATA: GY454XE  Re 01434
+; DATA: GY455XE  Im 01434
 _char_cs16:
 	DB "R\x84"
 
 ; DATA: GY454XE  Re 01436
+; DATA: GY455XE  Im 01436
 _char_cs17:
 	DB "u"
 
 ; DATA: GY454XE  Re 01437
+; DATA: GY455XE  Im 01437
 _char_cs18:
 	DB "\xc6\xb6"
 
 ; DATA: GY454XE  Re 01439
+; DATA: GY455XE  Im 01439
 _char_0x20:
 	DB " "
 
 ; DATA: GY454XE  Re 0143A
+; DATA: GY455XE  Im 0143A
 _char_box:
 	DB "\xcd"
 
 ; DATA: GY454XE  Re 0143B
+; DATA: GY455XE  Im 0143B
 _char_cs19:
 	DB "\xc6e"
 
 ; DATA: GY454XE  Re 0143D
+; DATA: GY455XE  Im 0143D
 _char_cs20:
 	DB "\xc6\x9d"
 
 ; DATA: GY454XE  Re 0143F
+; DATA: GY455XE  Im 0143F
 _char_cs21:
 	DB "\xc6\xb7"
 
 ; DATA: GY454XE  Re 01441
+; DATA: GY455XE  Im 01441
 _char_percent:
 	DB "%"
 
 ; DATA: GY454XE  Re 01442
+; DATA: GY455XE  Im 01442
 _char_cs22:
 	DB "F"
 
 ; DATA: GY454XE  Re 01443
+; DATA: GY455XE  Im 01443
 _char_cs23:
 	DB "e"
 
 ; DATA: GY454XE  Re 01444
+; DATA: GY455XE  Im 01444
 _char_paren_l:
 	DB "("
 
 ; DATA: GY454XE  Re 01445
+; DATA: GY455XE  Im 01445
 _char_paren_r:
 	DB ")"
 
 ; DATA: GY454XE  Re 01446
+; DATA: GY455XE  Im 01446
 _char_cs24:
 	DB "N\x9a"
 
 ; DATA: GY454XE  Re 01448
+; DATA: GY455XE  Im 01448
 _char_plus:
 	DB "+"
 
 ; DATA: GY454XE  Re 01449
+; DATA: GY455XE  Im 01449
 _char_sep:
 	DB ","
 
 ; DATA: GY454XE  Re 0144A
+; DATA: GY455XE  Im 0144A
 _char_minus:
 	DB "-"
 
 ; DATA: GY454XE  Re 0144B
+; DATA: GY455XE  Im 0144B
 _char_decimal:
 	DB "."
 
 ; DATA: GY454XE  Re 0144C
+; DATA: GY455XE  Im 0144C
 _char_0:
 	DB "0"
 
 ; DATA: GY454XE  Re 0144D
+; DATA: GY455XE  Im 0144D
 _char_1:
 	DB "1"
 
 ; DATA: GY454XE  Re 0144E
+; DATA: GY455XE  Im 0144E
 _char_2:
 	DB "2"
 
 ; DATA: GY454XE  Re 0144F
+; DATA: GY455XE  Im 0144F
 _char_3:
 	DB "3"
 
 ; DATA: GY454XE  Re 01450
+; DATA: GY455XE  Im 01450
 _char_4:
 	DB "4"
 
 ; DATA: GY454XE  Re 01451
+; DATA: GY455XE  Im 01451
 _char_5:
 	DB "5"
 
 ; DATA: GY454XE  Re 01452
+; DATA: GY455XE  Im 01452
 _char_6:
 	DB "6"
 
 ; DATA: GY454XE  Re 01453
+; DATA: GY455XE  Im 01453
 _char_7:
 	DB "7"
 
 ; DATA: GY454XE  Re 01454
+; DATA: GY455XE  Im 01454
 _char_8:
 	DB "8"
 
 ; DATA: GY454XE  Re 01455
+; DATA: GY455XE  Im 01455
 _char_9:
 	DB "9"
 
 ; DATA: GY454XE  Re 01456
+; DATA: GY455XE  Im 01456
 _char_colon:
 	DB ":"
 
 ; DATA: GY454XE  Re 01457
+; DATA: GY455XE  Im 01457
 _char_equals:
 	DB "="
 
 ; DATA: GY454XE  Re 01458
+; DATA: GY455XE  Im 01458
 _char_cs26:
 	DB "Vm"
 
 ; DATA: GY454XE  Re 0145A
+; DATA: GY455XE  Im 0145A
 _char_sto_a:
 	DB "\x8dA"
 
-; FUNCTION: GY454XE  Re 0145C
+; DATA: GY454XE  Re 0145C
+; DATA: GY455XE  Im 0145C
 _char_var_b:
 _char_sto_b:
 	DB "\x8dB"
 
 ; DATA: GY454XE  Re 0145E
+; DATA: GY455XE  Im 0145E
 _char_sto_c:
 	DB "\x8dC"
 
-; FUNCTION: GY454XE  Re 01460
+; DATA: GY454XE  Re 01460
+; DATA: GY455XE  Im 01460
 _char_var_d:
 _char_sto_d:
 	DB "\x8dD"
 
 ; DATA: GY454XE  Re 01462
+; DATA: GY455XE  Im 01462
 _char_sto_m:
 	DB "\x8dM"
 
-; FUNCTION: GY454XE  Re 01464
+; DATA: GY454XE  Re 01464
+; DATA: GY455XE  Im 01464
 _char_sto_x:
 _char_var_x:
 	DB "\x8dX"
 
-; FUNCTION: GY454XE  Re 01466
+; DATA: GY454XE  Re 01466
+; DATA: GY455XE  Im 01466
 _char_sto_y:
 _char_var_y:
 	DB "\x8dY"
 
 ; DATA: GY454XE  Re 01468
+; DATA: GY455XE  Im 01468
 _char_mul:
 	DB "$"
 
 ; DATA: GY454XE  Re 01469
+; DATA: GY455XE  Im 01469
 _char_div:
 	DB "&"
 
 ; DATA: GY454XE  Re 0146A
+; DATA: GY455XE  Im 0146A
 _char_base_bin:
 	DB "b"
 
 ; DATA: GY454XE  Re 0146B
+; DATA: GY455XE  Im 0146B
 _char_cmplx_rec:
 	DB "\x9ea+b\x80"
 
 ; DATA: GY454XE  Re 01470
+; DATA: GY455XE  Im 01470
 _char_cmplx_pol:
 	DB "\x9er\x88\xc4"
 
 ; DATA: GY454XE  Re 01474
+; DATA: GY455XE  Im 01474
 _char_factorial:
 	DB "!"
 
 ; DATA: GY454XE  Re 01475
+; DATA: GY455XE  Im 01475
 _char_0x5b:
 	DB "["
 
 ; DATA: GY454XE  Re 01476
+; DATA: GY455XE  Im 01476
 _char_dms:
 	DB "\\"
 
 ; DATA: GY454XE  Re 01477
+; DATA: GY455XE  Im 01477
 _char_0x5d:
 	DB "]"
 
 ; DATA: GY454XE  Re 01478
+; DATA: GY455XE  Im 01478
 _char_pow:
 	DB "^"
 
 ; DATA: GY454XE  Re 01479
+; DATA: GY455XE  Im 01479
 _char_negative:
 	DB "`"
 
 ; DATA: GY454XE  Re 0147A
+; DATA: GY455XE  Im 0147A
 _char_not:
 	DB "Not"
 
 ; DATA: GY454XE  Re 0147D
+; DATA: GY455XE  Im 0147D
 _char_neg:
 	DB "Neg"
 
-; FUNCTION: GY454XE  Re 01480
+; DATA: GY454XE  Re 01480
+; DATA: GY455XE  Im 01480
 _char_var_a:
 _char_abs:
 	DB "Abs"
 
-; FUNCTION: GY454XE  Re 01483
+; DATA: GY454XE  Re 01483
+; DATA: GY455XE  Im 01483
 _char_xhat1:
 _char_xhat:
 	DB "\x8b\xb1"
 
 ; DATA: GY454XE  Re 01485
+; DATA: GY455XE  Im 01485
 _char_yhat:
 	DB "\x8c"
 
 ; DATA: GY454XE  Re 01486
+; DATA: GY455XE  Im 01486
 _char_xhat2:
 	DB "\x8b\xb2"
 
 ; DATA: GY454XE  Re 01488
+; DATA: GY455XE  Im 01488
 _char_log:
 	DB "log"
 
 ; DATA: GY454XE  Re 0148B
+; DATA: GY455XE  Im 0148B
 _char_integral:
 	DB "\x99"
 
-; FUNCTION: GY454XE  Re 0148C
+; DATA: GY454XE  Re 0148C
+; DATA: GY455XE  Im 0148C
 _char_base_dec:
 _char_ddx:
 	DB "d/dx"
 
-; FUNCTION: GY454XE  Re 01490
+; DATA: GY454XE  Re 01490
+; DATA: GY455XE  Im 01490
 _char_pol:
 _char_stat_p:
 	DB "Pol"
 
-; FUNCTION: GY454XE  Re 01493
+; DATA: GY454XE  Re 01493
+; DATA: GY455XE  Im 01493
 _char_rec:
 _char_cs27:
 _char_stat_r:
 	DB "Rec"
 
 ; DATA: GY454XE  Re 01496
+; DATA: GY455XE  Im 01496
 _char_and:
 	DB "and"
 
-; FUNCTION: GY454XE  Re 01499
+; DATA: GY454XE  Re 01499
+; DATA: GY455XE  Im 01499
 _char_base_oct:
 _char_or:
 	DB "or"
 
-; FUNCTION: GY454XE  Re 0149B
+; DATA: GY454XE  Re 0149B
+; DATA: GY455XE  Im 0149B
 _char_epow:
 _char_euler:
 	DB "\x81^"
 
 ; DATA: GY454XE  Re 0149D
+; DATA: GY455XE  Im 0149D
 _char_exp:
 	DB "\x82\x83"
 
 ; DATA: GY454XE  Re 0149F
+; DATA: GY455XE  Im 0149F
 _char_pow_2:
 	DB "\xa2"
 
 ; DATA: GY454XE  Re 014A0
+; DATA: GY455XE  Im 014A0
 _char_pow_3:
 	DB "\xa3"
 
 ; DATA: GY454XE  Re 014A1
+; DATA: GY455XE  Im 014A1
 _char_pow_m1:
 	DB "\xaa"
 
 ; DATA: GY454XE  Re 014A2
+; DATA: GY455XE  Im 014A2
 _char_cs28:
 	DB "c\xb0"
 
 ; DATA: GY454XE  Re 014A4
+; DATA: GY455XE  Im 014A4
 _char_cs29:
 	DB "c\xb0"
 
 ; DATA: GY454XE  Re 014A6
+; DATA: GY455XE  Im 014A6
 _char_0x7b:
 	DB "{"
 
 ; DATA: GY454XE  Re 014A7
+; DATA: GY455XE  Im 014A7
 _char_0x7d:
 	DB "}"
 
 ; DATA: GY454XE  Re 014A8
+; DATA: GY455XE  Im 014A8
 _char_xor:
 	DB "xor"
 
 ; DATA: GY454XE  Re 014AB
+; DATA: GY455XE  Im 014AB
 _char_xnor:
 	DB "xnor"
 
 ; DATA: GY454XE  Re 014AF
+; DATA: GY455XE  Im 014AF
 _char_cmplx_i:
 	DB "\x80"
 
 ; DATA: GY454XE  Re 014B0
+; DATA: GY455XE  Im 014B0
 _char_pi:
 	DB "\xc7"
 
 ; DATA: GY454XE  Re 014B1
+; DATA: GY455XE  Im 014B1
 _char_d:
 	DB "\x85"
 
 ; DATA: GY454XE  Re 014B2
+; DATA: GY455XE  Im 014B2
 _char_r:
 	DB "\x86"
 
 ; DATA: GY454XE  Re 014B3
+; DATA: GY455XE  Im 014B3
 _char_g:
 	DB "\x87"
 
-; FUNCTION: GY454XE  Re 014B4
+; DATA: GY454XE  Re 014B4
+; DATA: GY455XE  Im 014B4
 _char_var_c:
 _char_conjg:
 	DB "Conjg"
 
 ; DATA: GY454XE  Re 014B9
+; DATA: GY455XE  Im 014B9
 _char_xbar:
 	DB "\x89"
 
 ; DATA: GY454XE  Re 014BA
+; DATA: GY455XE  Im 014BA
 _char_ybar:
 	DB "\x8a"
 
 ; DATA: GY454XE  Re 014BB
+; DATA: GY455XE  Im 014BB
 _char_ans:
 	DB "Ans"
 
 ; DATA: GY454XE  Re 014BE
+; DATA: GY455XE  Im 014BE
 _char_ran:
 	DB "Ran#"
 
 ; DATA: GY454XE  Re 014C2
+; DATA: GY455XE  Im 014C2
 _char_10pow:
 	DB "\x83^"
 
 ; DATA: GY454XE  Re 014C4
+; DATA: GY455XE  Im 014C4
 _char_sqrt:
 	DB "\x98"
 
-; FUNCTION: GY454XE  Re 014C5
+; DATA: GY454XE  Re 014C5
+; DATA: GY455XE  Im 014C5
 _char_var_m:
 _char_m_plus:
 	DB "M+"
 
 ; DATA: GY454XE  Re 014C7
+; DATA: GY455XE  Im 014C7
 _char_stat_a:
 	DB "\x9a"
 
 ; DATA: GY454XE  Re 014C8
+; DATA: GY455XE  Im 014C8
 _char_stat_b:
 	DB "\x9b"
 
 ; DATA: GY454XE  Re 014C9
+; DATA: GY455XE  Im 014C9
 _char_stat_c:
 	DB "\x9c"
 
 ; DATA: GY454XE  Re 014CA
+; DATA: GY455XE  Im 014CA
 _char_dot:
 	DB "*"
 
 ; DATA: GY454XE  Re 014CB
+; DATA: GY455XE  Im 014CB
 _char_nth_rt:
 	DB "\xab\x98"
 
 ; DATA: GY454XE  Re 014CD
+; DATA: GY455XE  Im 014CD
 _char_ln:
 	DB "ln"
 
 ; DATA: GY454XE  Re 014CF
+; DATA: GY455XE  Im 014CF
 _char_conv:
 	DB "\x9eConv "
 
 ; DATA: GY454XE  Re 014D5
+; DATA: GY455XE  Im 014D5
 _char_cbrt:
 	DB "\xa3\x98"
 
 ; DATA: GY454XE  Re 014D7
+; DATA: GY455XE  Im 014D7
 _char_m_minus:
 	DB "M-"
 
 ; DATA: GY454XE  Re 014D9
+; DATA: GY455XE  Im 014D9
 _char_stat_ox:
 	DB "\xc8x"
 
 ; DATA: GY454XE  Re 014DB
+; DATA: GY455XE  Im 014DB
 _char_stat_sx:
 	DB "sx"
 
 ; DATA: GY454XE  Re 014DD
+; DATA: GY455XE  Im 014DD
 _char_stat_oy:
 	DB "\xc8y"
 
 ; DATA: GY454XE  Re 014DF
+; DATA: GY455XE  Im 014DF
 _char_stat_sy:
 	DB "sy"
 
 ; DATA: GY454XE  Re 014E1
+; DATA: GY455XE  Im 014E1
 _char_frac:
 	DB "\x93"
 
 ; DATA: GY454XE  Re 014E2
+; DATA: GY455XE  Im 014E2
 _char_angle:
 	DB "\x88"
 
 ; DATA: GY454XE  Re 014E3
+; DATA: GY455XE  Im 014E3
 _char_cs38:
 	DB "t"
 
 ; DATA: GY454XE  Re 014E4
+; DATA: GY455XE  Im 014E4
 _char_rnd:
 	DB "Rnd"
 
 ; DATA: GY454XE  Re 014E7
+; DATA: GY455XE  Im 014E7
 _char_cs30:
 	DB "c\xb2"
 
 ; DATA: GY454XE  Re 014E9
+; DATA: GY455XE  Im 014E9
 _char_cs31:
 	DB "\xc8"
 
 ; DATA: GY454XE  Re 014EA
+; DATA: GY455XE  Im 014EA
 _char_cs32:
 	DB "\xc3\xb0"
 
 ; DATA: GY454XE  Re 014EC
+; DATA: GY455XE  Im 014EC
 _char_cs33:
 	DB "\xc6\xb0"
 
 ; DATA: GY454XE  Re 014EE
+; DATA: GY455XE  Im 014EE
 _char_hex_a:
 	DB "\xb8"
 
 ; DATA: GY454XE  Re 014EF
+; DATA: GY455XE  Im 014EF
 _char_hex_b:
 	DB "\xb9"
 
-; FUNCTION: GY454XE  Re 014F0
+; DATA: GY454XE  Re 014F0
+; DATA: GY455XE  Im 014F0
 _char_combi:
 _char_hex_c:
 	DB "\xba"
 
 ; DATA: GY454XE  Re 014F1
+; DATA: GY455XE  Im 014F1
 _char_hex_d:
 	DB "\xbb"
 
 ; DATA: GY454XE  Re 014F2
+; DATA: GY455XE  Im 014F2
 _char_hex_e:
 	DB "\xbc"
 
 ; DATA: GY454XE  Re 014F3
+; DATA: GY455XE  Im 014F3
 _char_hex_f:
 	DB "\xbd"
 
 ; DATA: GY454XE  Re 014F4
+; DATA: GY455XE  Im 014F4
 _char_permu:
 	DB "\xbe"
 
 ; DATA: GY454XE  Re 014F5
+; DATA: GY455XE  Im 014F5
 _char_det:
 	DB "det"
 
 ; DATA: GY454XE  Re 014F8
+; DATA: GY455XE  Im 014F8
 _char_trn:
 	DB "Trn"
 
 ; DATA: GY454XE  Re 014FB
+; DATA: GY455XE  Im 014FB
 _char_ranint:
 	DB "RanInt#"
 
 ; DATA: GY454XE  Re 01502
+; DATA: GY455XE  Im 01502
 _char_arg:
 	DB "arg"
 
 ; DATA: GY454XE  Re 01505
+; DATA: GY455XE  Im 01505
 _char_cs34:
 	DB "\xc9\xb0"
 
-; FUNCTION: GY454XE  Re 01507
+; DATA: GY454XE  Re 01507
+; DATA: GY455XE  Im 01507
 _char_cs36:
 _char_cs39:
 	DB "G\xb0"
 
 ; DATA: GY454XE  Re 01509
+; DATA: GY455XE  Im 01509
 _char_cs37:
 	DB "Z\xb0"
 
 ; DATA: GY454XE  Re 0150B
+; DATA: GY455XE  Im 0150B
 _char_matb:
 	DB "MatB"
 
 ; DATA: GY454XE  Re 0150F
+; DATA: GY455XE  Im 0150F
 _char_matc:
 	DB "MatC"
 
-; FUNCTION: GY454XE  Re 01513
+; DATA: GY454XE  Re 01513
+; DATA: GY455XE  Im 01513
 _char_mata:
 _char_matans:
 	DB "MatAns"
 
 ; DATA: GY454XE  Re 01519
+; DATA: GY455XE  Im 01519
 _char_vctb:
 	DB "VctB"
 
 ; DATA: GY454XE  Re 0151D
+; DATA: GY455XE  Im 0151D
 _char_vctc:
 	DB "VctC"
 
-; FUNCTION: GY454XE  Re 01521
+; DATA: GY454XE  Re 01521
+; DATA: GY455XE  Im 01521
 _char_vcta:
 _char_vctans:
 	DB "VctAns"
 
 ; DATA: GY454XE  Re 01527
+; DATA: GY455XE  Im 01527
 _char_stat_q:
 	DB "Q"
 
 ; DATA: GY454XE  Re 01528
+; DATA: GY455XE  Im 01528
 _char_stat_tot:
 	DB "\x9et"
 
 ; DATA: GY454XE  Re 0152A
+; DATA: GY455XE  Im 0152A
 _char_cs40:
 	DB "atm"
 
-; FUNCTION: GY454XE  Re 0152D
+; DATA: GY454XE  Re 0152D
+; DATA: GY455XE  Im 0152D
 _char_cv01:
 _char_cv02:
 	DB "cm\x9ein\x9ecm"
 
-; FUNCTION: GY454XE  Re 01535
+; DATA: GY454XE  Re 01535
+; DATA: GY455XE  Im 01535
 _char_cv03:
 _char_cv04:
 	DB "m\x9eft\x9em"
 
-; FUNCTION: GY454XE  Re 0153B
+; DATA: GY454XE  Re 0153B
+; DATA: GY455XE  Im 0153B
 _char_cv05:
 _char_cv06:
 	DB "m\x9eyd\x9em"
 
-; FUNCTION: GY454XE  Re 01541
+; DATA: GY454XE  Re 01541
+; DATA: GY455XE  Im 01541
 _char_cs25:
 _char_cv07:
 _char_cv08:
 	DB "k"
 	DB "m\x9emile\x9ekm"
 
-; FUNCTION: GY454XE  Re 0154B
+; DATA: GY454XE  Re 0154B
+; DATA: GY455XE  Im 0154B
 _char_cv09:
 _char_cv10:
 	DB "m\x9en mile\x9em"
 
-; FUNCTION: GY454XE  Re 01555
+; DATA: GY454XE  Re 01555
+; DATA: GY455XE  Im 01555
 _char_cv11:
 _char_cv12:
 	DB "m\xa2\x9eacre\x9em\xa2"
 
-; FUNCTION: GY454XE  Re 0155F
+; DATA: GY454XE  Re 0155F
+; DATA: GY455XE  Im 0155F
 _char_cv13:
 _char_cv14:
 	DB "\xca\x9egal(US)\x9e\xca"
 
-; FUNCTION: GY454XE  Re 0156A
+; DATA: GY454XE  Re 0156A
+; DATA: GY455XE  Im 0156A
 _char_cv15:
 _char_cv16:
 	DB "\xca\x9egal(UK)\x9e\xca"
 
-; FUNCTION: GY454XE  Re 01575
+; DATA: GY454XE  Re 01575
+; DATA: GY455XE  Im 01575
 _char_cv17:
 _char_cv18:
 	DB "km\x9epc\x9ekm"
 
-; FUNCTION: GY454XE  Re 0157D
+; DATA: GY454XE  Re 0157D
+; DATA: GY455XE  Im 0157D
 _char_cv19:
 _char_cv20:
 	DB "m/s\x9ekm/h\x9em/s"
 
-; FUNCTION: GY454XE  Re 01589
+; DATA: GY454XE  Re 01589
+; DATA: GY455XE  Im 01589
 _char_cs35:
 _char_cv21:
 _char_cv22:
 	DB "g\x9eoz\x9eg"
 
-; FUNCTION: GY454XE  Re 0158F
+; DATA: GY454XE  Re 0158F
+; DATA: GY455XE  Im 0158F
 _char_cv23:
 _char_cv24:
 	DB "kg\x9elb\x9ekg"
 
-; FUNCTION: GY454XE  Re 01597
+; DATA: GY454XE  Re 01597
+; DATA: GY455XE  Im 01597
 _char_cv25:
 _char_cv26:
 	DB "Pa\x9eatm\x9ePa"
 
-; FUNCTION: GY454XE  Re 015A0
+; DATA: GY454XE  Re 015A0
+; DATA: GY455XE  Im 015A0
 _char_cv27:
 _char_cv28:
 	DB "Pa\x9emmHg\x9ePa"
 
-; FUNCTION: GY454XE  Re 015AA
+; DATA: GY454XE  Re 015AA
+; DATA: GY455XE  Im 015AA
 _char_cv29:
 _char_cv30:
 	DB "kW\x9ehp\x9ekW"
 
-; FUNCTION: GY454XE  Re 015B2
+; DATA: GY454XE  Re 015B2
+; DATA: GY455XE  Im 015B2
 _char_cv31:
 _char_cv32:
 	DB "Pa\x9ekgf/cm\xa2\x9ePa"
 
-; FUNCTION: GY454XE  Re 015BF
+; DATA: GY454XE  Re 015BF
+; DATA: GY455XE  Im 015BF
 _char_cv33:
 _char_cv34:
 	DB "J\x9ekgf*m\x9eJ"
 
-; FUNCTION: GY454XE  Re 015C8
+; DATA: GY454XE  Re 015C8
+; DATA: GY455XE  Im 015C8
 _char_cv35:
 _char_cv36:
 	DB "kPa\x9elbf/in\xa2\x9ekPa"
 
-; FUNCTION: GY454XE  Re 015D7
+; DATA: GY454XE  Re 015D7
+; DATA: GY455XE  Im 015D7
 _char_cv37:
 _char_cv38:
 	DB "\x85C\x9e\x85F\x9e\x85C"
 
-; FUNCTION: GY454XE  Re 015DF
+; DATA: GY454XE  Re 015DF
+; DATA: GY455XE  Im 015DF
 _char_cv39:
 _char_cv40:
 	DB "cal\x9eJ\x9ecal"
 
-; FUNCTION: GY454XE  Re 015E8
+; DATA: GY454XE  Re 015E8
+; DATA: GY455XE  Im 015E8
 _char_var_e:
 _char_sto_e:
 	DB "\x8dE"
 
-; FUNCTION: GY454XE  Re 015EA
+; DATA: GY454XE  Re 015EA
+; DATA: GY455XE  Im 015EA
 _char_var_f:
 _char_sto_f:
 	DB "\x8dF"
 
 ; DATA: GY454XE  Re 015EC
+; DATA: GY455XE  Im 015EC
 _char_remainder:
 	DB "&R"
 
 ; DATA: GY454XE  Re 015EE
+; DATA: GY455XE  Im 015EE
 _char_lt:
 	DB "<"
 
 ; DATA: GY454XE  Re 015EF
+; DATA: GY455XE  Im 015EF
 _char_gt:
 	DB ">"
 
 ; DATA: GY454XE  Re 015F0
+; DATA: GY455XE  Im 015F0
 _char_le:
 	DB "\x94"
 
 ; DATA: GY454XE  Re 015F1
+; DATA: GY455XE  Im 015F1
 _char_ne:
 	DB "\x95"
 
 ; DATA: GY454XE  Re 015F2
+; DATA: GY455XE  Im 015F2
 _char_ge:
 	DB "\x96"
 
-; FUNCTION: GY454XE  Re 015F3
+; DATA: GY454XE  Re 015F3
+; DATA: GY455XE  Im 015F3
 _char_sinh:
 _char_asinh:
 	DB "sinh\xaa"
 
-; FUNCTION: GY454XE  Re 015F8
+; DATA: GY454XE  Re 015F8
+; DATA: GY455XE  Im 015F8
 _char_cosh:
 _char_acosh:
 	DB "cosh\xaa"
 
-; FUNCTION: GY454XE  Re 015FD
+; DATA: GY454XE  Re 015FD
+; DATA: GY455XE  Im 015FD
 _char_tanh:
 _char_atanh:
 	DB "tanh\xaa"
 
-; FUNCTION: GY454XE  Re 01602
+; DATA: GY454XE  Re 01602
+; DATA: GY455XE  Im 01602
 _char_sin:
 _char_asin:
 	DB "sin\xaa"
 
-; FUNCTION: GY454XE  Re 01606
+; DATA: GY454XE  Re 01606
+; DATA: GY455XE  Im 01606
 _char_cos:
 _char_acos:
 	DB "cos\xaa"
 
-; FUNCTION: GY454XE  Re 0160A
+; DATA: GY454XE  Re 0160A
+; DATA: GY455XE  Im 0160A
 _char_tan:
 _char_atan:
 	DB "tan\xaa"
@@ -2301,6 +2583,7 @@ RSEG $$NTABgenerals3
 
 ; X position bitmask. Indexed with x_pos & 7. Used in char_print.
 ; DATA: GY454XE  Re 01C64
+; DATA: GY455XE  Im 01C64
 _bitmasks_x:
 	DB 11111111B
 	DB 01111111B
@@ -2313,6 +2596,7 @@ _bitmasks_x:
 
 ; Y position bitmask. Indexed with (4 + y_pos) & 7. Used in char_print.
 ; DATA: GY454XE  Re 01C6C
+; DATA: GY455XE  Im 01C6C
 _bitmasks_y:
 	DB 11111111B
 	DB 10000000B
@@ -2324,6 +2608,7 @@ _bitmasks_y:
 	DB 11111110B
 
 ; DATA: GY454XE  Re 01C74
+; DATA: GY455XE  Im 01C74
 _unk_01c74:
 	DB 10010101B
 	DB 00000000B
@@ -2338,43 +2623,65 @@ _unk_01c74:
 	DB 00000111B
 	DB 00000110B
 
-; STUB: GY454XE  Re 01C80
-_unk_01c80:
+; DATA: GY454XE  Re 01C80
+; DATA: GY455XE  Im 01C80
+_num_gk_weight:
+	DB 04H, 17H, 95H, 91H, 83H, 67H, 34H, 69H, 99H, 00H  ; 0.417959183673469
 
-
-; STUB: GY454XE  Re 01C8A
+; DATA: GY454XE  Re 01C8A
+; DATA: GY455XE  Im 01C8A
 _unk_01c8a:
+	DB 02H, 09H, 48H, 21H, 41H, 08H, 47H, 28H, 99H, 00H  ; 0.209482141084728
 
+; DATA: GY454XE  Re 01C94
+; DATA: GY455XE  Im 01C94
+_num_gk_nodes_symm:
+	DB 09H, 49H, 10H, 79H, 12H, 34H, 27H, 59H, 99H, 00H  ; 0.949107912342759
+	DB 06H, 30H, 92H, 09H, 26H, 29H, 97H, 86H, 98H, 00H  ; 0.0630920926299786
+	DB 01H, 29H, 48H, 49H, 66H, 16H, 88H, 70H, 99H, 00H  ; 0.12948496616887
+	DB 07H, 41H, 53H, 11H, 85H, 59H, 93H, 94H, 99H, 00H  ; 0.741531185599394
+	DB 01H, 40H, 65H, 32H, 59H, 71H, 55H, 26H, 99H, 00H  ; 0.140653259715526
+	DB 02H, 79H, 70H, 53H, 91H, 48H, 92H, 77H, 99H, 00H  ; 0.279705391489277
+	DB 04H, 05H, 84H, 51H, 51H, 37H, 73H, 97H, 99H, 00H  ; 0.405845151377397
+	DB 01H, 90H, 35H, 05H, 78H, 06H, 47H, 85H, 99H, 00H  ; 0.190350578064785
+	DB 03H, 81H, 83H, 00H, 50H, 50H, 51H, 19H, 99H, 00H  ; 0.381830050505119
 
-; STUB: GY454XE  Re 01C94
-_unk_01c94:
-
-
-; STUB: GY454XE  Re 01CEE
-_unk_01cee:
+; DATA: GY454XE  Re 01CEE
+; DATA: GY455XE  Im 01CEE
+_num_gk_nodes_expanded:
+	DB 09H, 91H, 45H, 53H, 71H, 12H, 08H, 13H, 99H, 00H  ; 0.991455371120813
+	DB 02H, 29H, 35H, 32H, 20H, 10H, 52H, 92H, 98H, 00H  ; 0.0229353220105292
+	DB 08H, 64H, 86H, 44H, 23H, 35H, 97H, 69H, 99H, 00H  ; 0.864864423359769
+	DB 01H, 04H, 79H, 00H, 10H, 32H, 22H, 50H, 99H, 00H  ; 0.10479001032225
+	DB 05H, 86H, 08H, 72H, 35H, 46H, 76H, 91H, 99H, 00H  ; 0.586087235467691
+	DB 01H, 69H, 00H, 47H, 26H, 63H, 92H, 68H, 99H, 00H  ; 0.169004726639268
+	DB 02H, 07H, 78H, 49H, 55H, 00H, 78H, 99H, 99H, 00H  ; 0.207784955007899
+	DB 02H, 04H, 43H, 29H, 40H, 07H, 52H, 99H, 99H, 00H  ; 0.204432940075299
 
 RSEG $$NTABgenerals4
 
 ; 96x13 bitmap image, 12 bytes per row. Need I say more?
 ; DATA: GY454XE  Re 01F10
+; DATA: GY455XE  Im 01F12
 _casio_logo:
-	DB	00H,	01H,	0FFH,	0C0H,	3EH,	03H,	0FFH,	0C7H,	0FH,	0FEH,	00H,	00H
-	DB	00H,	03H,	0FFH,	0E0H,	3EH,	07H,	0FFH,	0E7H,	1FH,	0FFH,	00H,	00H
-	DB	00H,	07H,	0FFH,	0F0H,	7FH,	07H,	0FFH,	0E7H,	3FH,	0FFH,	80H,	00H
-	DB	00H,	07H,	80H,	0F0H,	77H,	07H,	00H,	0E7H,	3CH,	07H,	80H,	00H
-	DB	00H,	07H,	00H,	70H,	0F7H,	87H,	00H,	07H,	38H,	03H,	80H,	00H
-	DB	00H,	07H,	00H,	00H,	0E3H,	87H,	0FFH,	0C7H,	38H,	03H,	8EH,	00H
-	DB	00H,	07H,	00H,	01H,	0E3H,	0C7H,	0FFH,	0E7H,	38H,	03H,	91H,	00H
-	DB	00H,	07H,	00H,	01H,	0C1H,	0C3H,	0FFH,	0E7H,	38H,	03H,	0ACH,	80H
-	DB	00H,	07H,	00H,	73H,	0FFH,	0E0H,	00H,	0E7H,	38H,	03H,	0AAH,	80H
-	DB	00H,	07H,	80H,	0F3H,	0FFH,	0E7H,	00H,	0E7H,	3CH,	07H,	0ACH,	80H
-	DB	00H,	07H,	0FFH,	0F7H,	0FFH,	0F7H,	0FFH,	0E7H,	3FH,	0FFH,	0AAH,	80H
-	DB	00H,	03H,	0FFH,	0E7H,	00H,	77H,	0FFH,	0E7H,	1FH,	0FFH,	11H,	00H
-	DB	00H,	01H,	0FFH,	0C7H,	00H,	73H,	0FFH,	0C7H,	0FH,	0FEH,	0EH,	00H
+	DB	00000000B,	00000001B,	11111111B,	11000000B,	00111110B,	00000011B,	11111111B,	11000111B,	00001111B,	11111110B,	00000000B,	00000000B
+	DB	00000000B,	00000011B,	11111111B,	11100000B,	00111110B,	00000111B,	11111111B,	11100111B,	00011111B,	11111111B,	00000000B,	00000000B
+	DB	00000000B,	00000111B,	11111111B,	11110000B,	01111111B,	00000111B,	11111111B,	11100111B,	00111111B,	11111111B,	10000000B,	00000000B
+	DB	00000000B,	00000111B,	10000000B,	11110000B,	01110111B,	00000111B,	00000000B,	11100111B,	00111100B,	00000111B,	10000000B,	00000000B
+	DB	00000000B,	00000111B,	00000000B,	01110000B,	11110111B,	10000111B,	00000000B,	00000111B,	00111000B,	00000011B,	10000000B,	00000000B
+	DB	00000000B,	00000111B,	00000000B,	00000000B,	11100011B,	10000111B,	11111111B,	11000111B,	00111000B,	00000011B,	10001110B,	00000000B
+	DB	00000000B,	00000111B,	00000000B,	00000001B,	11100011B,	11000111B,	11111111B,	11100111B,	00111000B,	00000011B,	10010001B,	00000000B
+	DB	00000000B,	00000111B,	00000000B,	00000001B,	11000001B,	11000011B,	11111111B,	11100111B,	00111000B,	00000011B,	10101100B,	10000000B
+	DB	00000000B,	00000111B,	00000000B,	01110011B,	11111111B,	11100000B,	00000000B,	11100111B,	00111000B,	00000011B,	10101010B,	10000000B
+	DB	00000000B,	00000111B,	10000000B,	11110011B,	11111111B,	11100111B,	00000000B,	11100111B,	00111100B,	00000111B,	10101100B,	10000000B
+	DB	00000000B,	00000111B,	11111111B,	11110111B,	11111111B,	11110111B,	11111111B,	11100111B,	00111111B,	11111111B,	10101010B,	10000000B
+	DB	00000000B,	00000011B,	11111111B,	11100111B,	00000000B,	01110111B,	11111111B,	11100111B,	00011111B,	11111111B,	00010001B,	00000000B
+	DB	00000000B,	00000001B,	11111111B,	11000111B,	00000000B,	01110011B,	11111111B,	11000111B,	00001111B,	11111110B,	00001110B,	00000000B
 
 RSEG $$NCODgenerals
 
 ; FUNCTION: GY454XE  Re 02676
+; FUNCTION: GY455XE  Im 02808
 _f_02676:
 	MOV R1, #0H
 	SRL R0, #1
@@ -2390,54 +2697,65 @@ _f_02676:
 	RT
 
 ; DATA: GY454XE  Re 0268E
+; DATA: GY455XE  Im 02820
 _unk_0268e:
-	DB	0BH,	0H,		0H,		0H,		0H,		0H,		0H,		0H,		0H,		0H,		0H,		0H,		0H,		0H,		0H,		0H
-	DB	0H,		0H,		0H,		0H,		98H,	0D0H,	0DCH,	0H,		0H,		0H,		0H,		0H,		0H,		0CH,	0CCH,	0CH
-	DB	0H,		0H,		0H,		0C0H,	0CCH,	0CCH,	0CCH,	0DDH,	0H,		0H,		0C0H,	0CH,	0H,		0H,		0H,		0D1H
-	DB	0ADH,	1AH,	0H,		0H,		11H,	11H,	0AAH,	0H,		0AAH,	1AH,	0H,		0H,		0H,		0H,		1H,		0H
-	DB	0H,		0C0H,	0CH,	0H,		0AH,	0H,		0C0H,	0CCH,	0AAH,	1AH,	0CCH,	0CCH,	0C1H,	0H,		0H,		10H
-	DB	0AAH,	0AAH,	1H,		0H,		0C0H,	0H,		0H,		0D1H,	0AAH,	0AAH,	0H,		0H,		32H,	65H,	7H,		0DDH
-	DB	0AAH,	0AAH,	0H,		0H,		0H,		0H,		0H,		0H,		0AAH,	0AH,	0H,		0H,		0H,		0H,		0H,		0H
-	DB	0H,		0H,		0H,		0H,		0H,		0H,		0H,		0H,		0H,		0H,		0H,		0H,		0H,		0H,		0H,		0H
+	DB  0BH,  00H,  00H,  00H,  00H,  00H,  00H,  00H
+	DB  00H,  00H,  00H,  00H,  00H,  00H,  00H,  00H
+	DB  00H,  00H,  00H,  00H,  98H, 0D0H, 0DCH,  00H
+	DB  00H,  00H,  00H,  00H,  00H,  0CH, 0CCH,  0CH
+	DB  00H,  00H,  00H, 0C0H, 0CCH, 0CCH, 0CCH, 0DDH
+	DB  00H,  00H, 0C0H,  0CH,  00H,  00H,  00H, 0D1H
+	DB 0ADH,  1AH,  00H,  00H,  11H,  11H, 0AAH,  00H
+	DB 0AAH,  1AH,  00H,  00H,  00H,  00H,  01H,  00H
+	DB  00H, 0C0H,  0CH,  00H,  0AH,  00H, 0C0H, 0CCH
+	DB 0AAH,  1AH, 0CCH, 0CCH, 0C1H,  00H,  00H,  10H
+	DB 0AAH, 0AAH,  01H,  00H, 0C0H,  00H,  00H, 0D1H
+	DB 0AAH, 0AAH,  00H,  00H,  32H,  65H,  07H, 0DDH
+	DB 0AAH, 0AAH,  00H,  00H,  00H,  00H,  00H,  00H
+	DB 0AAH,  0AH,  00H,  00H,  00H,  00H,  00H,  00H
+	DB  00H,  00H,  00H,  00H,  00H,  00H,  00H,  00H
+	DB  00H,  00H,  00H,  00H,  00H,  00H,  00H,  00H
 
 ; FUNCTION: GY454XE  Re 0270E
-_f_0270E:
-	MOV R1, #5EH
+; FUNCTION: GY455XE  Im 028A0
+_get_mathi_draw_idx:
+	MOV R1, #5EH       ; Pow
 	SUB R0, R1
-	MOV R1, R0
+	MOV R1, R0         ; Compare with 0
 	BEQ _$j_0274e
-	MOV R0, #1H
-	CMP R1, #5H
+	MOV R0, #1
+	CMP R1, #63H-5EH   ; Absolute value
 	BEQ _$j_0274e
-	MOV R0, #6H
-	CMP R1, #15H
+	MOV R0, #6
+	CMP R1, #73H-5EH   ; e^n
 	BEQ _$j_0274e
-	MOV R0, #7H
-	CMP R1, #1EH
+	MOV R0, #7
+	CMP R1, #7CH-5EH   ; Mixed fraction
 	BEQ _$j_0274e
-	MOV R0, #8H
-	CMP R1, #35H
+	MOV R0, #8
+	CMP R1, #93H-5EH   ; 10^n
 	BEQ _$j_0274e
-	MOV R0, #9H
-	CMP R1, #3AH
+	MOV R0, #9
+	CMP R1, #98H-5EH   ; Square root
 	BEQ _$j_0274e
-	MOV R0, #0AH
-	CMP R1, #41H
+	MOV R0, #10
+	CMP R1, #9FH-5EH   ; nth root
 	BEQ _$j_0274e
-	MOV R0, #0BH
-	CMP R1, #50H
+	MOV R0, #11
+	CMP R1, #0AEH-5EH  ; Fraction
 	BEQ _$j_0274e
-	MOV R0, #0DH
-	CMP R1, #0AH
+	MOV R0, #13
+	CMP R1, #68H-5EH   ; logab, Sum, Integral, Derivative
 	BLT _$j_0274e
-	CMP R1, #0DH
+	CMP R1, #6BH-5EH
 	BGT _$j_0274e
 	MOV R0, R1
-	ADD R0, #-8H
+	ADD R0, #-8        ; 2, 3, 4, 5 respectively
 _$j_0274e:
 	RT
 
 ; FUNCTION: GY454XE  Re 02750
+; FUNCTION: GY455XE  Im 028E2
 _smart_strlen:
 	MOV ER0, ER0
 	BEQ _$j_02758
@@ -2446,6 +2764,7 @@ _$j_02758:
 	RT
 
 ; FUNCTION: GY454XE  Re 0275A
+; FUNCTION: GY455XE  Im 028EC
 _smart_strcpy:
 	PUSH LR
 	MOV ER0, ER0
@@ -2460,6 +2779,7 @@ _$j_0276a:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 0276E
+; FUNCTION: GY455XE  Im 02900
 _smart_strcat:
 	PUSH LR
 	MOV ER0, ER0
@@ -2470,6 +2790,7 @@ _smart_strcat:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 0277E
+; FUNCTION: GY455XE  Im 02910
 _init_num_struct:
 	PUSH LR
 	PUSH XR12
@@ -2542,6 +2863,7 @@ _$j_027f4:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 027FA
+; FUNCTION: GY455XE  Im 0298C
 _num_exp_to_str:
 	PUSH LR
 	PUSH QR8
@@ -2599,6 +2921,7 @@ _$j_0284e:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 0285C
+; FUNCTION: GY455XE  Im 029EE
 _f_0285C:
 	PUSH QR8
 	PUSH XR4
@@ -2778,6 +3101,7 @@ _$j_0297e:
 	BAL _$j_0294c
 
 ; FUNCTION: GY454XE  Re 02986
+; FUNCTION: GY455XE  Im 02B18
 _f_02986:
 	PUSH LR
 	PUSH XR12
@@ -2803,7 +3127,7 @@ _$j_029ac:
 	MOV ER0, FP
 	ADD ER0, #-0AH
 	BL _num_cpy
-	BL _f_14800
+	BL _num_to_str_std_lineo
 	BEQ _$j_029dc
 	CMP R6, #6H
 	BEQ _$j_029c6
@@ -2830,7 +3154,7 @@ _$j_029dc:
 	BL _f_1AFD8
 	MOV ER4, ER6
 	MOV ER2, FP
-	ADD ER2, #1EH
+	ADD ER2, #-22H
 	MOV ER0, FP
 	ADD ER0, #-0AH
 	BL _init_num_struct
@@ -2848,12 +3172,12 @@ _$j_029fe:
 _$j_02a06:
 	MOV R0, #1H
 	ST R0, -0DH[FP]
-	L ER0, 0EEH[FP]
+	L ER0, -12H[FP]
 	CMP R0, #0AH
 	CMPC R1, #0H
 	BGES _$j_02a28
 	PUSH R2
-	L R2, _d_080FF
+	L R2, _result_template
 	CMP R2, #14H
 	POP R2
 	BEQ _$j_02aa2
@@ -2865,14 +3189,14 @@ _$j_02a24:
 	BLTS _$j_02a72
 _$j_02a28:
 	MOV ER2, FP
-	ADD ER2, #16H
+	ADD ER2, #-2AH
 	MOV ER0, FP
-	ADD ER0, #1EH
+	ADD ER0, #-22H
 	BL _num_exp_to_str
 	MOV ER0, #0H
 	ST ER0, -10H[FP]
 	MOV ER0, FP
-	ADD ER0, #16H
+	ADD ER0, #-2AH
 	BL _smart_strlen
 	MOV R4, R0
 	L R0, -13H[FP]
@@ -2892,18 +3216,18 @@ _$j_02a5a:
 	ST R0, -0EH[FP]
 	MOV ER2, BP
 	MOV ER0, FP
-	ADD ER0, #1EH
+	ADD ER0, #-22H
 	BL _f_0285C
 	MOV ER2, FP
-	ADD ER2, #16H
+	ADD ER2, #-2AH
 	MOV ER0, BP
 	BL _smart_strcat
 	BAL _$j_029a2
 _$j_02a72:
 	ST ER0, -10H[FP]
-	L ER0, 0EEH[FP]
+	L ER0, -12H[FP]
 	BPS _$j_02a80
-	L R0, 0EEH[FP]
+	L R0, -12H[FP]
 	ADD R0, R6
 	ADD R0, #-1H
 	BAL _$j_02a92
@@ -2922,7 +3246,7 @@ _$j_02a92:
 	ST R0, -0EH[FP]
 	MOV ER2, BP
 	MOV ER0, FP
-	ADD ER0, #1EH
+	ADD ER0, #-22H
 	BL _f_0285C
 	B _$j_029a2
 _$j_02aa2:
@@ -2932,44 +3256,46 @@ _$j_02aa2:
 	BAL _$j_02a24
 
 ; FUNCTION: GY454XE  Re 02AAA
-_f_02AAA:
-	L R0, _d_08100
+_get_result_disp_fmt:
+	L R0, _result_format
 	SRL R0, #4
 	RT
 
 ; FUNCTION: GY454XE  Re 02AB2
-_f_02AB2:
-	L R0, _d_08100
+_get_result_store_fmt:
+	L R0, _result_format
 	AND R0, #0FH
 	RT
 
 ; FUNCTION: GY454XE  Re 02ABA
-_f_02ABA:
-	L R1, _d_08100
+_set_result_store2disp:
+	L R1, _result_format
 	AND R1, #0FH
 	SLL R0, #4
 	OR R1, R0
-	ST R1, _d_08100
+	ST R1, _result_format
 	RT
 
 ; FUNCTION: GY454XE  Re 02ACA
-_f_02ACA:
-	L R1, _d_08100
-	AND R1, #-10H
+_set_result_store_fmt:
+	L R1, _result_format
+	AND R1, #0F0H
 	OR R0, R1
-	ST R0, _d_08100
+	ST R0, _result_format
 	MOV R0, #0H
 	ST R0, _d_0812C
 	RT
 
 ; FUNCTION: GY454XE  Re 02ADE
-_f_02ADE:
-	ST R0, _d_08100
+; FUNCTION: GY455XE  Im 02C70
+_set_result_fmt:
+	ST R0, _result_format
 	MOV R0, #0H
 	ST R0, _d_0812C
 	RT
 
 ; FUNCTION: GY454XE  Re 02AEA
+; FUNCTION: GY455XE  Im 02C7C
 _result_str_print:
 	PUSH LR
 	PUSH ER0
@@ -2992,6 +3318,7 @@ _$j_02b04:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 02B10
+; FUNCTION: GY455XE  Im 02CA2
 _basen_base_print:
 	PUSH LR
 	L R0, _submode
@@ -3008,6 +3335,7 @@ _basen_base_print:
 	POP PC
 
 ; DATA: GY454XE  Re 02B2E
+; DATA: GY455XE  Im 02CC0
 _base_strs:
 	DB "Bin", 0
 	DB "Oct", 0
@@ -3015,6 +3343,7 @@ _base_strs:
 	DB "Hex", 0
 
 ; FUNCTION: GY454XE  Re 02B3E
+; FUNCTION: GY455XE  Im 02CD0
 _f_02B3E:
 	LEA [ER0]
 	L R3, [EA+]
@@ -3048,6 +3377,7 @@ _$j_02b6a:
 	RT
 
 ; FUNCTION: GY454XE  Re 02B76
+; FUNCTION: GY455XE  Im 02D08
 _get_token:
 	PUSH ER4
 	LEA [ER2]
@@ -3089,6 +3419,7 @@ _$j_02bb8:
 	RT
 
 ; FUNCTION: GY454XE  Re 02BBE
+; FUNCTION: GY455XE  Im 02D50
 _get_token_length:
 	MOV R1, #0H
 	MOV R2, #BYTE1 _token_lengths
@@ -3104,6 +3435,7 @@ _$j_02bd2:
 	RT
 
 ; FUNCTION: GY454XE  Re 02BD4
+; FUNCTION: GY455XE  Im 02D66
 _print_continue_prompt:
 	PUSH LR
 	BL _buffer_clear
@@ -3115,7 +3447,8 @@ _print_continue_prompt:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 02BE8
-_f_02BE8:
+; FUNCTION: GY455XE  Im 02D7A
+_print_input_area:
 	PUSH LR
 	MOV R2, #BYTE1 _s_blank_line
 	MOV R3, #BYTE2 _s_blank_line
@@ -3130,6 +3463,7 @@ _f_02BE8:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 02C04
+; FUNCTION: GY455XE  Im 02D96
 _num_output_print:
 	PUSH LR
 	PUSH FP
@@ -3156,7 +3490,7 @@ _$j_02c26:
 	BL _num_to_str
 	ADD SP, #2H
 _$j_02c36:
-	BL _f_02ABA
+	BL _set_result_store2disp
 	L R0, _font_size
 	CMP R0, #0AH
 	BNE _$j_02c46
@@ -3187,12 +3521,13 @@ _$j_02c48:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 02C76
+; FUNCTION: GY455XE  Im 02E08
 _f_02C76:
 	PUSH LR
 	PUSH R8
 	MOV R8, #1H
 	MOV R0, #0H
-	BL _f_0B7B6
+	BL _is_eqn_result
 	L R1, _mode
 	CMP R1, #0C4H  ; CMPLX mode
 	BEQ _$j_02c8e
@@ -3221,6 +3556,7 @@ _$j_02cb0:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 02CB6
+; FUNCTION: GY455XE  Im 02E48
 _f_02CB6:
 	PUSH ER8
 	L R8, _table_mode
@@ -3235,7 +3571,7 @@ _$j_02cca:
 	POP ER8
 	RT
 _$j_02cce:
-	CMP R8, #6H
+	CMP R8, #6H  ; TABLE_RANGE
 	BNE _$j_02cdc
 	CMP R9, #1H
 	BLT _$j_02cdc
@@ -3247,6 +3583,7 @@ _$j_02cdc:
 	BAL _$j_02cca
 
 ; FUNCTION: GY454XE  Re 02CE0
+; FUNCTION: GY455XE  Im 02E72
 _buffer_clear_lastnline:
 	PUSH LR
 	MOV R2, #80H
@@ -3264,6 +3601,7 @@ _buffer_clear_lastnline:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 02CFE
+; FUNCTION: GY455XE  Im 02E90
 _fill_screen:
 	PUSH LR
 	PUSH ER4
@@ -3296,6 +3634,7 @@ _$j_02d34:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 02D38
+; FUNCTION: GY455XE  Im 02ECA
 _buffer_clear:
 	PUSH QR8
 	MOV ER8, #0H
@@ -3312,6 +3651,7 @@ _$j_02d48:
 	RT
 
 ; FUNCTION: GY454XE  Re 02D52
+; FUNCTION: GY455XE  Im 02EE4
 _f_02D52:
 	PUSH LR
 	PUSH XR4
@@ -3344,7 +3684,8 @@ _f_02D52:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 02D90
-_f_02D90:
+; FUNCTION: GY455XE  Im 02F22
+_draw_line_vert:
 	PUSH LR
 	PUSH XR8
 	MOV ER8, ER0
@@ -3352,16 +3693,16 @@ _f_02D90:
 	TB R11.7
 	BEQ _$j_02da2
 	ADD R0, #1H
-	BL _f_02FC8
+	BL _plot_pixel_unsafe
 _$j_02da2:
 	TB R11.5
 	BEQ _$j_02dae
 	MOV ER0, ER8
 	ADD R0, #-1H
-	BL _f_02FC8
+	BL _plot_pixel_unsafe
 _$j_02dae:
 	MOV ER0, ER8
-	BL _f_02FC8
+	BL _plot_pixel_unsafe
 	CMP R9, R10
 	BEQ _$j_02dbc
 	ADD R9, #1H
@@ -3371,18 +3712,19 @@ _$j_02dbc:
 	BEQ _$j_02dc8
 	MOV ER0, ER8
 	ADD R0, #1H
-	BL _f_02FC8
+	BL _plot_pixel_unsafe
 _$j_02dc8:
 	TB R11.4
 	BEQ _$j_02dd4
 	MOV ER0, ER8
 	ADD R0, #-1H
-	BL _f_02FC8
+	BL _plot_pixel_unsafe
 _$j_02dd4:
 	POP XR8
 	POP PC
 
 ; FUNCTION: GY454XE  Re 02DD8
+; FUNCTION: GY455XE  Im 02F6A
 _draw_line:
 	PUSH LR
 	PUSH XR4
@@ -3402,7 +3744,7 @@ _draw_line:
 	EXTBW ER8
 	SUB R12, R8
 	SUBC R13, R9
-	BL _f_02FB8
+	BL _plot_pixel
 	MOV R2, #1H
 	MOV R3, #1H
 	MOV ER8, #0H
@@ -3461,7 +3803,7 @@ _$j_02e5a:
 	MOV R0, R7
 	MOV R1, R6
 _$j_02e68:
-	BL _f_02FB8
+	BL _plot_pixel
 	ADD R8, #-1H
 	BC AL, _$j_02e48
 _$j_02e70:
@@ -3471,10 +3813,12 @@ _$j_02e70:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 02E78
+; FUNCTION: GY455XE  Im 0300A
 _line_print_col_0:
 	MOV R0, #0H
 
 ; FUNCTION: GY454XE  Re 02E7A
+; FUNCTION: GY455XE  Im 0300C
 _line_print:
 	PUSH LR
 	PUSH QR8
@@ -3512,6 +3856,7 @@ _$j_02eb4:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 02EBA
+; FUNCTION: GY455XE  Im 0304C
 _char_print:
 	PUSH LR
 	PUSH XR4
@@ -3523,8 +3868,8 @@ _char_print:
 	CMP R1, #20H
 	BGES _$j_02fac
 	MOV R3, #0CH
-	MOV R4, #BYTE1 _screen_buffer_end
-	MOV R5, #BYTE2 _screen_buffer_end
+	MOV R4, #BYTE1 (_screen_buffer+12*32-1)
+	MOV R5, #BYTE2 (_screen_buffer+12*32-1)
 	L R7, _use_rambuf
 	BNE _$j_02ede
 	MOV R3, #10H
@@ -3643,18 +3988,20 @@ _$j_02fb4:
 	BAL _$j_02fa4
 
 ; FUNCTION: GY454XE  Re 02FB8
-_f_02FB8:
-	CMP R0, #0H
+; FUNCTION: GY455XE  Im 0314A
+_plot_pixel:
+	CMP R0, #0
 	BLTS _$j_02fea
-	CMP R0, #5FH
+	CMP R0, #95
 	BGTS _$j_02fea
-	CMP R1, #0H
+	CMP R1, #0
 	BLTS _$j_02fea
-	CMP R1, #1FH
+	CMP R1, #31
 	BGTS _$j_02fea
 
 ; FUNCTION: GY454XE  Re 02FC8
-_f_02FC8:
+; FUNCTION: GY455XE  Im 0315A
+_plot_pixel_unsafe:
 	PUSH ER4
 	MOV R3, #10000000B
 	SRL R3, R0
@@ -3676,6 +4023,7 @@ _$j_02fea:
 	RT
 
 ; FUNCTION: GY454XE  Re 02FEC
+; FUNCTION: GY455XE  Im 0317E
 _f_02FEC:
 	PUSH ER8
 	L R1, _font_size
@@ -3788,10 +4136,11 @@ _$j_030b4:
 	RT
 
 ; FUNCTION: GY454XE  Re 030BE
+; FUNCTION: GY455XE  Im 03250
 _draw_byte:
 	PUSH FP
-	MOV R14, #24H
-	MOV R15, #78H
+	MOV R14, #BYTE1 _screen_buffer_y1_neg
+	MOV R15, #BYTE2 _screen_buffer_y1_neg
 	ADD FP, ER0
 	BGE _$j_030e8
 	MOV FP, SP
@@ -3851,6 +4200,7 @@ _$j_03124:
 	BAL _$j_030e8
 
 ; FUNCTION: GY454XE  Re 0312C
+; FUNCTION: GY455XE  Im 032BE
 _render:
 	PUSH XR4
 	PUSH QR8
@@ -3877,6 +4227,7 @@ _$j_0313c:
 	RT
 
 ; FUNCTION: GY454XE  Re 03158
+; FUNCTION: GY455XE  Im 032EA
 _get_screen_addr:
 	PUSH XR8
 	MOV R8, #0CH
@@ -3911,58 +4262,59 @@ _$j_03188:
 	BAL _$j_03176
 
 ; FUNCTION: GY454XE  Re 03192
+; FUNCTION: GY455XE  Im 03324
 _setup_status_bar:
 	PUSH LR
 	MOV ER2, #12
 	MOV R0, #BYTE1 _screen_buffer
 	MOV R1, #BYTE2 _screen_buffer
 	BL _memzero
-	TB _modifiers.3
+	TB _modifiers.3  ; SHIFT
 	BEQ _$j_031a8
-	SB _screen_buffer.4  ; SHIFT
+	SB _screen_buffer.4  ; [S]
 _$j_031a8:
-	TB _modifiers.2
+	TB _modifiers.2  ; ALPHA
 	BEQ _$j_031b2
-	SB _screen_buffer.2  ; ALPHA
+	SB _screen_buffer.2  ; [A]
 _$j_031b2:
 	TB _modifiers.0
 	BEQ _$j_031bc
-	SB _screen_buffer_1.1  ; STO
+	SB (_screen_buffer+1).1  ; STO
 _$j_031bc:
 	TB _modifiers.1
 	BEQ _$j_031c6
-	SB _screen_buffer_2.6  ; RCL
+	SB (_screen_buffer+2).6  ; RCL
 _$j_031c6:
 	MOV R0, #BYTE1 _var_m
 	MOV R1, #BYTE2 _var_m
 	BL _num_invalid__
 	CMP R0, #1H
 	BEQ _$j_031d6
-	SB _screen_buffer_1.4  ; M
+	SB (_screen_buffer+1).4  ; M
 _$j_031d6:
 	L R0, _mode
 	CMP R0, #0C4H  ; CMPLX mode
 	BNE _$j_031f2
-	SB _screen_buffer_4.7  ; CMPLX
+	SB (_screen_buffer+4).7  ; CMPLX
 	MOV R0, #BYTE1 _var_m_im
 	MOV R1, #BYTE2 _var_m_im
 	BL _num_invalid__
 	CMP R0, #1H
 	BEQ _$j_031f2
-	SB _screen_buffer_1.4  ; M
+	SB (_screen_buffer+1).4  ; M
 _$j_031f2:
 	L R0, _mode
 	CMP R0, #3H  ; STAT mode
 	BNE _$j_031fe
-	SB _screen_buffer_3.6  ; STAT
+	SB (_screen_buffer+3).6  ; STAT
 _$j_031fe:
 	CMP R0, #6H  ; MATRIX mode
 	BNE _$j_03206
-	SB _screen_buffer_5.6  ; MAT
+	SB (_screen_buffer+5).6  ; MAT
 _$j_03206:
 	CMP R0, #7H  ; VECTOR mode
 	BNE _$j_0320e
-	SB _screen_buffer_5.1  ; VCT
+	SB (_screen_buffer+5).1  ; VCT
 _$j_0320e:
 	L R0, _mode
 	CMP R0, #2H  ; Skip if in BASE-N mode
@@ -3970,53 +4322,53 @@ _$j_0320e:
 	L R0, _setup_angle_unit
 	CMP R0, #4H  ; Degree
 	BNE _$j_03222
-	SB _screen_buffer_7.5  ; [D]
+	SB (_screen_buffer+7).5  ; [D]
 _$j_03222:
 	CMP R0, #5H  ; Radian
 	BNE _$j_0322a
-	SB _screen_buffer_7.1  ; [R]
+	SB (_screen_buffer+7).1  ; [R]
 _$j_0322a:
 	CMP R0, #6H  ; Gradian
 	BNE _$j_03232
-	SB _screen_buffer_8.4  ; [G]
+	SB (_screen_buffer+8).4  ; [G]
 _$j_03232:
 	L R0, _setup_num_fmt
 	CMP R0, #8H  ; Fix
 	BNE _$j_0323e
-	SB _screen_buffer_8.0  ; FIX
+	SB (_screen_buffer+8).0  ; FIX
 _$j_0323e:
 	CMP R0, #9H  ; Sci
 	BNE _$j_03246
-	SB _screen_buffer_9.5  ; SCI
+	SB (_screen_buffer+9).5  ; SCI
 _$j_03246:
 	L R0, _setup_mathi
 	BEQ _$j_03258
 	L R0, _mode
 	AND R0, #11000000B  ; If current mode has MathIO enabled
 	BEQ _$j_03258
-	SB _screen_buffer_10.6  ; Math
+	SB (_screen_buffer+10).6  ; Math
 _$j_03258:
 	TB _d_080FE.6
 	BEQ _$j_03262
-	SB _screen_buffer_11.4  ; Disp
+	SB (_screen_buffer+11).4  ; Disp
 _$j_03262:
 	TB _d_080FE.7
 	BNE _$j_03290
-	TB _d_08125.0
+	TB _arrow_state.0
 	BEQ _$j_03272
-	SB _screen_buffer_11.7  ; ^
+	SB (_screen_buffer+11).7  ; ^
 _$j_03272:
-	TB _d_08125.1
+	TB _arrow_state.1
 	BEQ _$j_0327c
-	SB _screen_buffer_10.3  ; v
+	SB (_screen_buffer+10).3  ; v
 _$j_0327c:
-	TB _d_08125.2
+	TB _arrow_state.2
 	BEQ _$j_03286
-	SB _screen_buffer.6  ; Unused
+	SB _screen_buffer.6  ; Unused (Left?)
 _$j_03286:
-	TB _d_08125.3
+	TB _arrow_state.3
 	BEQ _$j_03290
-	SB _screen_buffer_11.1  ; Unused
+	SB (_screen_buffer+11).1  ; Unused (Right?)
 _$j_03290:
 	MOV ER0, #12
 	PUSH ER0
@@ -4029,6 +4381,7 @@ _$j_03290:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 032A4
+; FUNCTION: GY455XE  Im 03436
 _f_032A4:
 	PUSH LR
 	PUSH ER6
@@ -4072,6 +4425,7 @@ _$j_032d4:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 032F0
+; FUNCTION: GY455XE  Im 03482
 _f_032F0:
 	PUSH LR
 	PUSH XR12
@@ -4131,6 +4485,7 @@ _$j_03340:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 0336A
+; FUNCTION: GY455XE  Im 034FC
 _f_0336A:
 	PUSH LR
 	PUSH QR8
@@ -4166,6 +4521,7 @@ _$j_03394:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 033AC
+; FUNCTION: GY455XE  Im 0353E
 _f_033AC:
 	PUSH R4
 	LEA [ER2]
@@ -4204,6 +4560,7 @@ _$j_033e0:
 	BAL _$j_033d6
 
 ; FUNCTION: GY454XE  Re 033EA
+; FUNCTION: GY455XE  Im 0357C
 _print_4lines_4str:
 	PUSH LR
 	PUSH QR8
@@ -4231,6 +4588,7 @@ _$j_03410:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 0341E
+; FUNCTION: GY455XE  Im 035B0
 _print_4lines_head:
 	PUSH LR
 	PUSH QR8
@@ -4247,6 +4605,7 @@ _print_4lines_head:
 	BAL _$j_0344e
 
 ; FUNCTION: GY454XE  Re 0343C
+; FUNCTION: GY455XE  Im 035CE
 _print_4lines:
 	MOV R2, #4H
 	PUSH LR
@@ -4266,6 +4625,7 @@ _$j_0344e:
 	BAL _$j_03410
 
 ; FUNCTION: GY454XE  Re 0345E
+; FUNCTION: GY455XE  Im 035F0
 _f_0345E:
 	PUSH LR
 	MOV R0, #7H
@@ -4279,16 +4639,19 @@ _f_0345E:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 0347A
+; FUNCTION: GY455XE  Im 0360C
 _set_up_arrow:
-	SB 0F80BH.7
+	SB _real_screen_11.7
 	RT
 
 ; FUNCTION: GY454XE  Re 03480
+; FUNCTION: GY455XE  Im 03612
 _set_down_arrow:
-	SB 0F80AH.3
+	SB _real_screen_10.3
 	RT
 
 ; FUNCTION: GY454XE  Re 03486
+; FUNCTION: GY455XE  Im 03618
 _pd_value:
 IF REAL == 1
 	PUSH LR
@@ -4355,7 +4718,7 @@ _$j_03504:
 	SRL R11, #1
 	BAL _$j_034b4
 _$j_0350e:
-	BL _f_03518
+	BL _set_ko1_ko9
 	MOV R0, R15
 	POP QR8
 	POP PC
@@ -4369,7 +4732,8 @@ ELSE
 ENDIF
 
 ; FUNCTION: GY454XE  Re 03518
-_f_03518:
+; FUNCTION: GY455XE  Im 03624
+_set_ko1_ko9:
 	PUSH ER0
 	MOV R0, #10000000B
 	MOV R1, #11111111B
@@ -4379,6 +4743,7 @@ _f_03518:
 	RT
 
 ; FUNCTION: GY454XE  Re 0352A
+; FUNCTION: GY455XE  Im 03636
 _print_error:
 	PUSH LR
 	MOV R1, #7H
@@ -4403,6 +4768,7 @@ _print_error:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 03558
+; FUNCTION: GY455XE  Im 03664
 _f_03558:
 	PUSH LR
 	MOV ER0, #1H
@@ -4411,9 +4777,9 @@ _f_03558:
 	MOV R2, #0E6H  ; AC key
 	ST R2, _last_key_keycode
 	MOV R3, #1H
-	ST R3, _d_080F7
+	ST R3, _force_nochar
 	ST R1, _d_08126
-	ST R1, _d_08125
+	ST R1, _arrow_state
 	L R2, _modifiers
 	AND R2, #10000000B
 	ST R2, _modifiers
@@ -4435,14 +4801,15 @@ _f_03558:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 035B8
+; FUNCTION: GY455XE  Im 036C4
 _is_char_keycode:
 	MOV R1, R0
 	BEQ _$j_035ce
-	L R0, _d_080F7
+	L R0, _force_nochar
 	BEQ _$j_035ca
-	CMP R1, #1FH
+	CMP R1, #1FH   ; <= K_STO_M
 	BLE _$j_035ce
-	CMP R1, #0DFH
+	CMP R1, #0DFH  ; > K_SUM
 	BGT _$j_035ce
 _$j_035ca:
 	MOV R0, #1H
@@ -4452,42 +4819,44 @@ _$j_035ce:
 	RT
 
 ; FUNCTION: GY454XE  Re 035D2
-_f_035D2:
+; FUNCTION: GY455XE  Im 036DE
+_is_format_keycode:
 	MOV R1, R0
 	BEQ _$j_035ce
-	L R0, _d_080F7
+	L R0, _force_nochar
 	BEQ _$j_035ce
-	CMP R1, #-0FH
+	CMP R1, #0F1H  ; If keycode == K_FACT, return 1
 	BEQ _$j_035ca
-	CMP R1, #-0AH
+	CMP R1, #0F6H  ; If K_DMS <= keycode <= K_FMT_FRAC (display format keycodes), return 1
 	BLT _$j_035e8
-	CMP R1, #-5H
+	CMP R1, #0FBH
 	BLE _$j_035ca
 _$j_035e8:
 	MOV R0, #0H
 	RT
 
 ; FUNCTION: GY454XE  Re 035EC
+; FUNCTION: GY455XE  Im 036F8
 _f_035EC:
 	PUSH LR
 	MOV ER2, ER0
 	MOV R1, #0H
 	ST R1, [ER2]
 	L R1, _mode
-	CMP R1, #6H
+	CMP R1, #6H   ; MATRIX
 	BEQ _$j_03622
-	CMP R1, #7H
+	CMP R1, #7H   ; VECTOR
 	BEQ _$j_03622
-	CMP R1, #45H
+	CMP R1, #45H  ; EQN
 	BEQ _$j_03648
-	CMP R1, #4BH
+	CMP R1, #4BH  ; INEQ
 	BEQ _$j_03648
-	CMP R1, #4AH
+	CMP R1, #4AH  ; RATIO
 	BEQ _$j_03648
-	CMP R1, #88H
+	CMP R1, #88H  ; TABLE
 	BNE _$j_03618
 	L R0, _table_mode
-	CMP R0, #12H
+	CMP R0, #12H  ; TABLE_STAT_TABLE
 	BEQ _$j_03652
 _$j_03618:
 	TB _d_080FE.6
@@ -4522,20 +4891,23 @@ _$j_03652:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 03656
-_is_ac_key:
-	CMP R0, #0E6H
+; FUNCTION: GY455XE  Im 03762
+_is_ac_keycode:
+	CMP R0, #0E6H  ; K_AC
 	BEQ _$j_0365c
-	BAL _f_03698
+	BAL _is_mov_x_keycode
 _$j_0365c:
 	MOV R0, #1H
 	RT
 
 ; FUNCTION: GY454XE  Re 03660
+; FUNCTION: GY455XE  Im 0376C
 _f_03660:
 	MOV R1, #3H
 	BAL _$j_03666
 
 ; FUNCTION: GY454XE  Re 03664
+; FUNCTION: GY455XE  Im 03770
 _f_03664:
 	MOV R1, #1H
 _$j_03666:
@@ -4546,12 +4918,13 @@ _$j_03666:
 	BAL _$j_03684
 
 ; FUNCTION: GY454XE  Re 03672
-_f_03672:
-	L R1, _d_080F7
+; FUNCTION: GY455XE  Im 0377E
+_is_mov_keycode:
+	L R1, _force_nochar
 	BEQ _$j_03684
-	CMP R0, #0E0H
+	CMP R0, #0E0H  ; >= K_UP
 	BLT _$j_03684
-	CMP R0, #0E3H
+	CMP R0, #0E3H  ; <= K_LEFT
 	BGT _$j_03684
 _$j_03680:
 	MOV R0, #1H
@@ -4561,36 +4934,40 @@ _$j_03684:
 	RT
 
 ; FUNCTION: GY454XE  Re 03688
-_f_03688:
-	L R1, _d_080F7
+; FUNCTION: GY455XE  Im 03794
+_is_mov_y_keycode:
+	L R1, _force_nochar
 	BEQ _$j_03684
-	CMP R0, #0E0H
+	CMP R0, #0E0H  ; K_UP
 	BEQ _$j_03680
-	CMP R0, #0E1H
+	CMP R0, #0E1H  ; K_DOWN
 	BEQ _$j_03680
 	BAL _$j_03684
 
 ; FUNCTION: GY454XE  Re 03698
-_f_03698:
-	L R1, _d_080F7
+; FUNCTION: GY455XE  Im 037A4
+_is_mov_x_keycode:
+	L R1, _force_nochar
 	BEQ _$j_03684
-	CMP R0, #0E3H
+	CMP R0, #0E3H  ; K_LEFT
 	BEQ _$j_03680
-	CMP R0, #0E2H
+	CMP R0, #0E2H  ; K_RIGHT
 	BEQ _$j_03680
 	BAL _$j_03684
 
 ; FUNCTION: GY454XE  Re 036A8
+; FUNCTION: GY455XE  Im 037B4
 _f_036A8:
-	L R1, _d_080F7
+	L R1, _force_nochar
 	BEQ _$j_03684
-	CMP R0, #17H
+	CMP R0, #17H  ; K_STO_A
 	BLT _$j_03684
-	CMP R0, #19H
+	CMP R0, #19H  ; K_STO_C
 	BGT _$j_03684
 	BAL _$j_03680
 
 ; FUNCTION: GY454XE  Re 036B8
+; FUNCTION: GY455XE  Im 037C4
 _f_036B8:
 	L R0, _mode
 	CMP R0, #88H  ; TABLE mode
@@ -4601,6 +4978,7 @@ _f_036B8:
 	BAL _$j_03680
 
 ; FUNCTION: GY454XE  Re 036CA
+; FUNCTION: GY455XE  Im 037D6
 _filter_chars_stat_mat_vct:
 	L R1, _table_mode
 	CMP R1, #1H
@@ -4617,6 +4995,7 @@ _$j_036e2:
 	BAL _$j_036ec
 
 ; FUNCTION: GY454XE  Re 036E8
+; FUNCTION: GY455XE  Im 037F4
 _filter_chars:
 	LEA _blacklist
 _$j_036ec:
@@ -4629,6 +5008,7 @@ _$j_036f6:
 	RT
 
 ; FUNCTION: GY454XE  Re 036F8
+; FUNCTION: GY455XE  Im 03804
 _filter_chars_table:
 	L R1, _mode
 	CMP R1, #88H  ; TABLE mode
@@ -4637,6 +5017,7 @@ _filter_chars_table:
 	BAL _$j_036ec
 
 ; FUNCTION: GY454XE  Re 03706
+; FUNCTION: GY455XE  Im 03812
 _filter_chars_cmplx:
 	L R1, _mode
 	CMP R1, #0C4H  ; CMPLX mode
@@ -4645,6 +5026,7 @@ _filter_chars_cmplx:
 	BAL _$j_036ec
 
 ; FUNCTION: GY454XE  Re 03714
+; FUNCTION: GY455XE  Im 03820
 _f_03714:
 	PUSH LR
 	MOV ER0, BP
@@ -4657,6 +5039,7 @@ _$j_03724:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 03726
+; FUNCTION: GY455XE  Im 03832
 _num_sum_1__:
 	PUSH LR
 	CMP R6, #0H
@@ -4693,11 +5076,11 @@ _$j_0375e:
 	POP BP
 	BLT _$j_0378a
 	MOV ER0, BP
-	BL _f_14800
+	BL _num_to_str_std_lineo
 	MOV ER2, ER0
 	MOV ER0, ER8
 	ADD ER0, #0AH
-	BL _f_14800
+	BL _num_to_str_std_lineo
 	BL _num_cmp
 	CMP R0, #4H
 	BNE _$j_0378e
@@ -4769,6 +5152,7 @@ _$j_0380e:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 03814
+; FUNCTION: GY455XE  Im 03920
 _f_03814:
 	PUSH LR
 	PUSH ER0
@@ -4789,6 +5173,7 @@ _f_03814:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 0383C
+; FUNCTION: GY455XE  Im 03948
 _f_0383C:
 	MOV FP, SP
 	L FP, 2H[FP]
@@ -4854,6 +5239,7 @@ _$j_038c0:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 038C8
+; FUNCTION: GY455XE  Im 039D4
 _f_038C8:
 	POP FP
 	PUSH FP
@@ -4903,8 +5289,8 @@ _f_038C8:
 	MOV R6, #1H
 	BL _num_eval__
 	BNE _$j_039ac
-	MOV R0, #BYTE1 _unk_01c80
-	MOV R1, #BYTE2 _unk_01c80
+	MOV R0, #BYTE1 _num_gk_weight
+	MOV R1, #BYTE2 _num_gk_weight
 	MOV R2, #BYTE1 _table_fx+80
 	MOV R3, #BYTE2 _table_fx
 	BL _f_1553C
@@ -4920,8 +5306,8 @@ _f_038C8:
 	MOV ER2, BP
 	BL _f_1A438
 	PUSH ER8
-	MOV R8, #BYTE1 _unk_01c94
-	MOV R9, #BYTE2 _unk_01c94
+	MOV R8, #BYTE1 _num_gk_nodes_symm
+	MOV R9, #BYTE2 _num_gk_nodes_symm
 _$j_03968:
 	BL _check_ac
 	CMP R0, #0H
@@ -4936,8 +5322,8 @@ _$j_03968:
 	MOV R1, #BYTE2 _table_fx
 	BL _f_03814
 	BNE _$j_039aa
-	MOV R0, #BYTE1 _unk_01cee
-	MOV R1, #BYTE2 _unk_01cee
+	MOV R0, #BYTE1 _num_gk_nodes_expanded
+	MOV R1, #BYTE2 _num_gk_nodes_expanded
 	CMP ER8, ER0
 	BLT _$j_03968
 _$j_03992:
@@ -4969,7 +5355,7 @@ _$j_039b4:
 	BL _f_1B238
 	MOV R0, #BYTE1 _table_fx+80
 	MOV R1, #BYTE2 _table_fx
-	BL _f_14800
+	BL _num_to_str_std_lineo
 	MOV R2, #BYTE1 _table_fx+60
 	MOV R3, #BYTE2 _table_fx
 	BL _f_1A438
@@ -4980,7 +5366,7 @@ _$j_039b4:
 	BL _f_1B238
 	MOV R0, #BYTE1 _table_fx+90
 	MOV R1, #BYTE2 _table_fx
-	BL _f_14800
+	BL _num_to_str_std_lineo
 	MOV R2, #BYTE1 _table_fx+60
 	MOV R3, #BYTE2 _table_fx
 	BL _f_1A438
@@ -5004,6 +5390,7 @@ _$j_03a14:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 03A1A
+; FUNCTION: GY455XE  Im 03B26
 _f_03A1A:
 	PUSH LR
 	PUSH BP
@@ -5049,6 +5436,7 @@ _$j_03a6c:
 	BAL _$j_03a66
 
 ; FUNCTION: GY454XE  Re 03A72
+; FUNCTION: GY455XE  Im 03B7E
 _f_03A72:
 	PUSH LR
 	CMP R6, #0H
@@ -5074,7 +5462,7 @@ _$j_03a9c:
 	B _$j_03de0
 _$j_03aa2:
 	MOV ER0, BP
-	BL _f_14800
+	BL _num_to_str_std_lineo
 	MOV R0, #BYTE1 _d_0850A
 	MOV R1, #BYTE2 _d_0850A
 	BL _f_154F2
@@ -5084,7 +5472,7 @@ _$j_03aa2:
 _$j_03aba:
 	MOV R2, R0
 	MOV ER0, BP
-	BL _f_14800
+	BL _num_to_str_std_lineo
 	MOV R0, #BYTE1 _d_08514
 	MOV R1, #BYTE2 _d_08514
 	BL _f_154F2
@@ -5098,7 +5486,7 @@ _$j_03ad8:
 	ADD FP, #-1H
 _$j_03adc:
 	MOV ER0, BP
-	BL _f_14800
+	BL _num_to_str_std_lineo
 	BL _num_invalid__
 	CMP R0, #2H
 	BNE _$j_03afe
@@ -5435,6 +5823,7 @@ _$j_03de0:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 03DE6
+; FUNCTION: GY455XE  Im 03EF2
 _f_03DE6:
 	POP FP
 	PUSH FP
@@ -5484,7 +5873,7 @@ _f_03DE6:
 	ADD ER2, #1EH
 	BL _f_1A44C
 	POP ER0
-	BL _f_14800
+	BL _num_to_str_std_lineo
 	BL _f_1B238
 	CMP R0, #0H
 	BEQ _$j_03e6c
@@ -5499,6 +5888,7 @@ _$j_03e6c:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 03E72
+; FUNCTION: GY455XE  Im 03F7E
 _f_03E72:
 	PUSH LR
 	CMP R6, #0H
@@ -5525,7 +5915,7 @@ _$j_03e96:
 _$j_03ea2:
 	MOV R2, R0
 	MOV ER0, BP
-	BL _f_14800
+	BL _num_to_str_std_lineo
 	MOV ER0, ER8
 	ADD ER0, #-4H
 	BL _f_154F2
@@ -5539,7 +5929,7 @@ _$j_03ec0:
 	ADD FP, #-1H
 _$j_03ec4:
 	MOV ER0, BP
-	BL _f_14800
+	BL _num_to_str_std_lineo
 	MOV ER0, BP
 	BL _num_invalid__
 	CMP R0, #4H
@@ -5880,7 +6270,7 @@ _$j_04150:
 	B _$j_042a0
 _$j_0419c:
 	MOV ER0, BP
-	BL _f_14800
+	BL _num_to_str_std_lineo
 	MOV ER0, ER8
 	ADD ER0, #0EH
 	BL _f_154F2
@@ -5903,7 +6293,7 @@ _$j_041b6:
 	BNE _$j_042a0
 	MOV ER0, ER8
 	ADD ER0, #4H
-	BL _f_1B288
+	BL _get_num_err_type
 	CMP R0, #0H
 	BEQ _$j_041ec
 	MOV ER0, ER8
@@ -5925,13 +6315,13 @@ _$j_041ec:
 	BL _num_eval__
 	POP R6
 	MOV ER0, BP
-	BL _f_14800
+	BL _num_to_str_std_lineo
 	MOV ER0, ER8
 	ADD ER0, #4H
 	BL _f_154F2
 	MOV ER0, ER8
 	ADD ER0, #4H
-	BL _f_1B288
+	BL _get_num_err_type
 	CMP R0, #0H
 	BEQ _$j_04224
 	CMP R0, #3H
@@ -6001,6 +6391,7 @@ _$j_042a6:
 	B _$j_03f94
 
 ; FUNCTION: GY454XE  Re 042AA
+; FUNCTION: GY455XE  Im 043B6
 _f_042AA:
 	PUSH LR
 	PUSH QR8
@@ -6011,28 +6402,28 @@ _f_042AA:
 	MOV BP, SP
 	MOV R0, #BYTE1 _calc_history
 	MOV R1, #BYTE2 _calc_history
-	MOV R2, #BYTE1 _calc_history+10
-	MOV R3, #BYTE2 _calc_history
+	MOV R2, #BYTE1 (_calc_history+10)
+	MOV R3, #BYTE2 (_calc_history+10)
 	BL _f_1B0DC
 	CMP R0, #0F0H
 	BEQ _$j_043a4
 	CMP R0, #4H
 	BEQ _$j_043a4
-	MOV R0, #BYTE1 _calc_history+20
-	MOV R1, #BYTE2 _calc_history
+	MOV R0, #BYTE1 (_calc_history+20)
+	MOV R1, #BYTE2 (_calc_history+20)
 	BL _num_invalid__
 	CMP R0, #4H
 	BNE _$j_043a4
-	MOV R0, #BYTE1 _calc_history+10
-	MOV R1, #BYTE2 _calc_history
+	MOV R0, #BYTE1 (_calc_history+10)
+	MOV R1, #BYTE2 (_calc_history+10)
 	BL _f_15526
 	MOV ER0, BP
 	MOV R2, #BYTE1 _calc_history
 	MOV R3, #BYTE2 _calc_history
 	BL _f_1A3FC
 	MOV ER0, BP
-	MOV R2, #BYTE1 _calc_history+20
-	MOV R3, #BYTE2 _calc_history
+	MOV R2, #BYTE1 (_calc_history+20)
+	MOV R3, #BYTE2 (_calc_history)
 	BL _f_1A44C
 	MOV ER0, BP
 	BL _f_1B238
@@ -6080,7 +6471,7 @@ _$j_04338:
 	BNE _$j_04396
 	MOV R2, #3H
 	MOV ER0, BP
-	BL _f_1B12C
+	BL _init_num
 _$j_0435a:
 	MOV R0, #0H
 	MOV R1, R9
@@ -6099,8 +6490,8 @@ _$j_0435a:
 	BNE _$j_04396
 	MOV R0, #BYTE1 _var_x
 	MOV R1, #BYTE2 _var_x
-	MOV R2, #BYTE1 _calc_history+20
-	MOV R3, #BYTE2 _calc_history
+	MOV R2, #BYTE1 (_calc_history+20)
+	MOV R3, #BYTE2 (_calc_history)
 	BL _f_1A410
 	MOV R0, #BYTE1 _var_x
 	MOV R1, #BYTE2 _var_x
@@ -6125,6 +6516,7 @@ _$j_043a8:
 	BAL _$j_04398
 
 ; FUNCTION: GY454XE  Re 043AC
+; FUNCTION: GY455XE  Im 044B8
 _f_043AC:
 	PUSH R0
 	ADD R1, #-1H
@@ -6145,6 +6537,7 @@ _f_043AC:
 	RT
 
 ; FUNCTION: GY454XE  Re 043CE
+; FUNCTION: GY455XE  Im 044DA
 _f_043CE:
 	PUSH LR
 	PUSH XR8
@@ -6156,7 +6549,7 @@ _f_043CE:
 	MOV R0, #1H
 	CMP R10, #3H
 	BEQ _$j_043e8
-	BL _f_04448
+	BL _get_num_stat_table_cols
 _$j_043e8:
 	MOV R2, R11
 	ADD R2, #-1H
@@ -6188,11 +6581,12 @@ _$j_04414:
 	BAL _$j_0440e
 
 ; FUNCTION: GY454XE  Re 0441A
+; FUNCTION: GY455XE  Im 04526
 _f_0441A:
 	PUSH QR8
 	MOV ER10, ER2
-	MOV R8, #BYTE1 _calc_history+80
-	MOV R9, #BYTE2 _calc_history
+	MOV R8, #BYTE1 (_calc_history+80)
+	MOV R9, #BYTE2 (_calc_history+80)
 	L R12, _d_080DE
 	CMP R0, #3H
 	BEQ _$j_04432
@@ -6203,7 +6597,7 @@ _$j_0442a:
 	RT
 _$j_04432:
 	PUSH LR
-	BL _f_04448
+	BL _get_num_stat_table_cols
 	MUL BP, R0
 	MOV R0, #0AH
 	MUL BP, R0
@@ -6213,29 +6607,31 @@ _$j_04432:
 	BAL _$j_0442a
 
 ; FUNCTION: GY454XE  Re 04448
-_f_04448:
+; FUNCTION: GY455XE  Im 04554
+_get_num_stat_table_cols:
 	MOV R0, #2H
 	L R1, _mode
-	CMP R1, #88H  ; TABLE mode
+	CMP R1, #88H  ; If TABLE mode, return 2
 	BEQ _$j_04466
-	MOV R0, #1H
+	MOV R0, #1H   ; Start with 1
 	L R1, _submode
-	CMP R1, #1H
+	CMP R1, #1H   ; If not in 1-VAR submode, add 1
 	BEQ _$j_0445e
 	ADD R0, #1H
 _$j_0445e:
 	L R1, _setup_stat_freq
-	BEQ _$j_04466
+	BEQ _$j_04466  ; If frequency is enabled, add 1
 	ADD R0, #1H
 _$j_04466:
 	RT
 
 ; FUNCTION: GY454XE  Re 04468
+; FUNCTION: GY455XE  Im 04574
 _f_04468:
 	PUSH LR
 	ST R0, _d_080DE
 	BL _f_0AF0A
-	LEA 258H
+	LEA 600
 	PUSH EA
 	MOV ER2, #0H
 	ST R2, _d_080DF
@@ -6246,6 +6642,7 @@ _f_04468:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 0448A
+; FUNCTION: GY455XE  Im 04596
 _f_0448A:
 	PUSH LR
 	ADD ER0, #0H
@@ -6257,6 +6654,7 @@ _$j_04498:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 0449A
+; FUNCTION: GY455XE  Im 045A6
 _clear_result:
 	PUSH LR
 	MOV ER2, #20
@@ -6266,6 +6664,7 @@ _clear_result:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 044A8
+; FUNCTION: GY455XE  Im 045B4
 _memzero:
 	PUSH LR
 	PUSH ER2
@@ -6275,42 +6674,48 @@ _memzero:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 044B6
+; FUNCTION: GY455XE  Im 045C2
 _f_044B6:
 	MOV R0, #0H
 	ST R0, _d_080FE
-	ST R0, _d_080FF
+	ST R0, _result_template
 _$j_044c0:
 	ST R0, _d_08101
 _$j_044c4:
-	ST R0, _d_08100
+	ST R0, _result_format
 	ST R0, _d_0812C
 	RT
 
 ; FUNCTION: GY454XE  Re 044CE
+; FUNCTION: GY455XE  Im 045DA
 _f_044CE:
 	MOV R0, #0H
 	BAL _$j_044c0
 
 ; FUNCTION: GY454XE  Re 044D2
+; FUNCTION: GY455XE  Im 045DE
 _f_044D2:
 	MOV R0, #0H
 	BAL _$j_044c4
 
 ; FUNCTION: GY454XE  Re 044D6
-_f_044D6:
+; FUNCTION: GY455XE  Im 045E2
+_set_keycode:
 	ST R0, _last_key_keycode
 	MOV R0, #1H
-	ST R0, _d_080F7
+	ST R0, _force_nochar
 	RT
 
 ; FUNCTION: GY454XE  Re 044E2
-_f_044E2:
+; FUNCTION: GY455XE  Im 045EE
+_set_char_keycode:
 	ST R0, _last_key_keycode
 	MOV R0, #0H
-	ST R0, _d_080F7
+	ST R0, _force_nochar
 	RT
 
 ; FUNCTION: GY454XE  Re 044EE
+; FUNCTION: GY455XE  Im 045FA
 _l_var:
 	PUSH LR
 	PUSH QR8
@@ -6359,6 +6764,7 @@ _$j_0454c:
 	BAL _$j_04532
 
 ; FUNCTION: GY454XE  Re 0454E
+; FUNCTION: GY455XE  Im 0465A
 _st_var:
 	PUSH LR
 	PUSH QR8
@@ -6390,11 +6796,13 @@ _$j_04584:
 
 ; Unused since ES
 ; FUNCTION: GY454XE  Re 04588
+; FUNCTION: GY455XE  Im 04694
 _f_04588:
 	MOV ER0, SP
 	RT
 
 ; FUNCTION: GY454XE  Re 0458C
+; FUNCTION: GY455XE  Im 04698
 _get_remaining_stack_space:
 	MOV R2, #BYTE1 _stack_start
 	MOV R3, #BYTE2 _stack_start
@@ -6404,6 +6812,7 @@ _get_remaining_stack_space:
 	RT
 
 ; FUNCTION: GY454XE  Re 04598
+; FUNCTION: GY455XE  Im 046A4
 _reset_magic_string:
 	LEA _magic_string
 	MOV R0, #0FH
@@ -6414,6 +6823,7 @@ _$rms_loop:
 	RT
 
 ; FUNCTION: GY454XE  Re 045A6
+; FUNCTION: GY455XE  Im 046B2
 _need_reset:
 	PUSH LR
 	PUSH XR4
@@ -6453,12 +6863,13 @@ _$nr_no:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 045EE
+; FUNCTION: GY455XE  Im 046FA
 _shutdown:
 	L R0, _cursor_noflash
 	BNE _$stop_exit
 	BL _buffer_clear
-	MOV R0, #156
-	MOV R1, #0
+	MOV R0, #BYTE1 156
+	MOV R1, #BYTE2 156
 	PUSH ER0
 	MOV R0, #BYTE1 _screen_buffer
 	MOV R1, #BYTE2 _screen_buffer
@@ -6470,8 +6881,8 @@ _shutdown:
 	BL _memcpy_nn
 	POP ER0
 	BL _render
-	MOV R0, #88H
-	MOV R1, #13H
+	MOV R0, #BYTE1 5000
+	MOV R1, #BYTE2 5000
 	BL _delay
 	MOV ER0, #3
 	ST R0, 0F031H
@@ -6485,6 +6896,7 @@ _shutdown:
 	B $$start_up
 
 ; FUNCTION: GY454XE  Re 04640
+; FUNCTION: GY455XE  Im 0474C
 _delay:
 	MOV ER2, ER0
 	LEA TM0CON
@@ -6505,7 +6917,9 @@ _delay:
 	MOV R0, #0
 	ST R0, [EA+]
 	ST R0, [EA]
+
 ; FUNCTION: GY454XE  Re 04670
+; FUNCTION: GY455XE  Im 0477C
 _stop_enable:
 	LEA STPACP
 	MOV R2, #50H
@@ -6520,6 +6934,7 @@ _$stop_exit:
 	RT
 	
 ; FUNCTION: GY454XE  Re 04686
+; FUNCTION: GY455XE  Im 04792
 _waitkey:
 	LEA IRQ0
 	L R0, [EA]
@@ -6537,18 +6952,19 @@ _waitkey:
 	RT
 	
 ; FUNCTION: GY454XE  Re 046A6
+; FUNCTION: GY455XE  Im 047B2
 _get_IRQ0:
 	LEA IRQ0
 	L R0, [EA]
 	RT
 	
 ; FUNCTION: GY454XE  Re 046AE
+; FUNCTION: GY455XE  Im 047BA
 _f_046AE:
 	TB _d_080F4.7
 	BNE _$j_046bc
 	MOV R0, #88H
-; FUNCTION: GY454XE  Re 046B6
-_f_046B6:
+_$j_046b6:
 	ST R0, _d_080F4
 	RT
 _$j_046bc:
@@ -6556,23 +6972,27 @@ _$j_046bc:
 	RT
 	
 ; FUNCTION: GY454XE  Re 046C0
+; FUNCTION: GY455XE  Im 047CC
 _f_046C0:
 	MOV R0, #80H
-	BAL _f_046B6
+	BAL _$j_046b6
 	
 ; FUNCTION: GY454XE  Re 046C4
+; FUNCTION: GY455XE  Im 047D0
 _f_046C4:
 	MOV R0, #0
 	ST R0, _d_080F4
 	RT
 
-; FUNCTION: GY454XE  Re 046CC	
+; FUNCTION: GY454XE  Re 046CC
+; FUNCTION: GY455XE  Im 047D8
 _f_046CC:
 	TB _d_080F4.7
 	BEQ _$j_046dc
 	BAL _$j_046bc
 	
 ; FUNCTION: GY454XE  Re 046D4
+; FUNCTION: GY455XE  Im 047E0
 _f_046D4:
 	TB _d_080F4.3
 	BEQ _$j_046dc
@@ -6582,6 +7002,7 @@ _$j_046dc:
 	RT
 
 ; FUNCTION: GY454XE  Re 046E0
+; FUNCTION: GY455XE  Im 047EC
 _f_046E0:
 	PUSH LR
 	MOV ER2, #1H
@@ -6606,12 +7027,13 @@ _$j_046f2:
 	BL _f_04738
 	MOV R0, #0H
 	ST R0, KICON
-	BL _f_03518
+	BL _set_ko1_ko9
 	BL _clr_all_kimask
 	BL _clr_all_ko
 	POP PC
 
 ; FUNCTION: GY454XE  Re 04728
+; FUNCTION: GY455XE  Im 04834
 _clr_port0:
 	LEA P0D
 	MOV ER0, #0H
@@ -6622,15 +7044,34 @@ _clr_port0:
 	RT
 
 ; FUNCTION: GY454XE  Re 04738
+; FUNCTION: GY455XE  Im 04844
 _f_04738:
 	LEA IE0
-	MOV ER0, #-1EH
+	MOV ER0, #00100010B
 	ST ER0, [EA]
 	MOV R0, #3H
 	ST R0, EXICON0
 	RT
 
+; Used in ES. Segment 8 was repurposed for checksum calculation from ES PLUS LY onwards, so this function is not used anymore.
+; FUNCTION: GY454XE  Re 04748
+; FUNCTION: GY455XE  Im 04854
+_f_04748:
+	MOV ER0, #0H
+	LEA 40H
+_$j_0474e:
+	L R2, 8:[EA+]
+	CMP R1, R2
+	BNE _$j_0475e
+	ADD R1, #1H
+	CMP R1, #20H
+	BNE _$j_0474e
+	MOV R0, #1H
+_$j_0475e:
+	RT
+
 ; FUNCTION: GY454XE  Re 04760
+; FUNCTION: GY455XE  Im 0486C
 _f_04760:
 	MOV ER0, #3H
 	ST R0, 0F033H
@@ -6641,22 +7082,37 @@ _f_04760:
 	MOV R0, #11H
 
 ; FUNCTION: GY454XE  Re 04776
+; FUNCTION: GY455XE  Im 04882
 _set_contrast_sfr:
 	ST R0, 0F032H
 	RT
 
+; No longer used since ES PLUS LY.
+; FUNCTION: GY454XE  Re 0477C
+; FUNCTION: GY455XE  Im 04888
+_f_0477C:
+	L R0, 0F031H
+	AND R0, #11111011B
+	ST R0, 0F031H
+	OR R0, #00000100B
+	ST R0, 0F031H
+	RT
+
 ; FUNCTION: GY454XE  Re 0478E
+; FUNCTION: GY455XE  Im 0489A
 _set_scr_normal:
 	MOV R0, #5H
 	ST R0, 0F031H
 	RT
 
 ; FUNCTION: GY454XE  Re 04796
+; FUNCTION: GY455XE  Im 048A2
 _f_04796:
 	TB _table_mode.4
 	BNE _$j_047a2
 
 ; FUNCTION: GY454XE  Re 0479C
+; FUNCTION: GY455XE  Im 048A8
 _f_0479C:
 	MOV R0, #6H
 	ST R0, 0F031H
@@ -6672,6 +7128,7 @@ _$j_047ba:
 	RT
 
 ; FUNCTION: GY454XE  Re 047C0
+; FUNCTION: GY455XE  Im 048CC
 _set_disp_indicator:
 	CMP R0, #0H
 	BEQ _$j_047ba
@@ -6679,36 +7136,42 @@ _set_disp_indicator:
 	RT
 
 ; FUNCTION: GY454XE  Re 047CA
+; FUNCTION: GY455XE  Im 048D6
 _set_contrast2_0:
 	MOV R0, #0H
 	ST R0, 0F033H
 	RT
 
 ; FUNCTION: GY454XE  Re 047D2
+; FUNCTION: GY455XE  Im 048DE
 _set_all_kimask:
 	MOV R0, #11111111B
 	ST R0, KIMASK
 	RT
 
 ; FUNCTION: GY454XE  Re 047DA
+; FUNCTION: GY455XE  Im 048E6
 _clr_all_kimask:
 	MOV R0, #0H
 	ST R0, KIMASK
 	RT
 
 ; FUNCTION: GY454XE  Re 047E2
+; FUNCTION: GY455XE  Im 048EE
 _set_all_ko:
 	MOV R0, #01111111B
 	ST R0, KOD0
 	RT
 
 ; FUNCTION: GY454XE  Re 047EA
+; FUNCTION: GY455XE  Im 048F6
 _clr_all_ko:
 	MOV R2, #0H
 	ST R2, KOD0
 	RT
 
 ; FUNCTION: GY454XE  Re 047F2
+; FUNCTION: GY455XE  Im 048FE
 _is_key_pressed:
 	MOV R0, #7FH
 	ST R0, KOD0
@@ -6748,8 +7211,8 @@ ELSE
 	MOV R5, #BYTE2 _stop_type
 	MOV R2, #2H
 	ST R2, [ER4]
-	MOV R0, #9AH
-	MOV R1, #12H
+	MOV R0, #BYTE1 4762
+	MOV R1, #BYTE2 4762
 	BL _delay
 	MOV ER0, #0H
 	L R2, [ER4]
@@ -6767,11 +7230,20 @@ ENDIF
 	POP PC
 
 ; FUNCTION: GY454XE  Re 04832
+; FUNCTION: GY455XE  Im 04940
 _interrupt_stub:
 	RTI
 
 PUBLIC _base_n_submodes
+PUBLIC _vars_list
+PUBLIC _s_table_x
+PUBLIC _s_table_y
+PUBLIC _s_table_freq
+PUBLIC _s_table_fx
 PUBLIC _s_blank_line
+PUBLIC _s_prompt_fix
+PUBLIC _s_prompt_sci
+PUBLIC _s_prompt_norm
 PUBLIC _contrast_screen
 PUBLIC _const_input_template
 PUBLIC _const_screen
@@ -6819,10 +7291,20 @@ PUBLIC _menu_setup_rdec
 PUBLIC _menu_setup_cmplx_result
 PUBLIC _menu_setup_decimal_mark
 PUBLIC _menu_setup_decimalo
+PUBLIC _s_prompt_solve
+PUBLIC _s_table_prompt_start
+PUBLIC _s_table_prompt_end
+PUBLIC _s_table_prompt_step
+PUBLIC _s_ratio_optn_c
+PUBLIC _s_ratio_optn_d
+PUBLIC _s_verif_result_false
+PUBLIC _s_verif_result_true
+PUBLIC _s_ineq_allreal
+PUBLIC _s_ineq_nosolution
 PUBLIC _unk_01c74
 
 PUBLIC _f_02676
-PUBLIC _f_0270E
+PUBLIC _get_mathi_draw_idx
 PUBLIC _smart_strlen
 PUBLIC _smart_strcpy
 PUBLIC _smart_strcat
@@ -6830,18 +7312,18 @@ PUBLIC _init_num_struct
 PUBLIC _num_exp_to_str
 PUBLIC _f_0285C
 PUBLIC _f_02986
-PUBLIC _f_02AAA
-PUBLIC _f_02AB2
-PUBLIC _f_02ABA
-PUBLIC _f_02ACA
-PUBLIC _f_02ADE
+PUBLIC _get_result_disp_fmt
+PUBLIC _get_result_store_fmt
+PUBLIC _set_result_store2disp
+PUBLIC _set_result_store_fmt
+PUBLIC _set_result_fmt
 PUBLIC _result_str_print
 PUBLIC _basen_base_print
 PUBLIC _f_02B3E
 PUBLIC _get_token
 PUBLIC _get_token_length
 PUBLIC _print_continue_prompt
-PUBLIC _f_02BE8
+PUBLIC _print_input_area
 PUBLIC _num_output_print
 PUBLIC _f_02C76
 PUBLIC _f_02CB6
@@ -6849,38 +7331,34 @@ PUBLIC _buffer_clear_lastnline
 PUBLIC _fill_screen
 PUBLIC _buffer_clear
 PUBLIC _f_02D52
-PUBLIC _f_02D90
+PUBLIC _draw_line_vert
 PUBLIC _draw_line
 PUBLIC _line_print_col_0
 PUBLIC _line_print
 PUBLIC _char_print
+PUBLIC _plot_pixel
 PUBLIC _render
 PUBLIC _get_screen_addr
 PUBLIC _setup_status_bar
 PUBLIC _f_032A4
-PUBLIC _f_032F0
 PUBLIC _f_0336A
-PUBLIC _f_033AC
 PUBLIC _print_4lines_4str
 PUBLIC _print_4lines_head
 PUBLIC _print_4lines
-PUBLIC _f_0345E
 PUBLIC _set_up_arrow
 PUBLIC _set_down_arrow
 PUBLIC _pd_value
-PUBLIC _f_03518
 PUBLIC _print_error
 PUBLIC _f_03558
 PUBLIC _is_char_keycode
-PUBLIC _f_035D2
+PUBLIC _is_format_keycode
 PUBLIC _f_035EC
-PUBLIC _is_ac_key
+PUBLIC _is_ac_keycode
 PUBLIC _f_03660
 PUBLIC _f_03664
-PUBLIC _f_03672
-PUBLIC _f_03688
-PUBLIC _f_03698
-PUBLIC _f_036A8
+PUBLIC _is_mov_keycode
+PUBLIC _is_mov_y_keycode
+PUBLIC _is_mov_x_keycode
 PUBLIC _f_036B8
 PUBLIC _filter_chars_stat_mat_vct
 PUBLIC _filter_chars
@@ -6888,27 +7366,21 @@ PUBLIC _filter_chars_table
 PUBLIC _filter_chars_cmplx
 PUBLIC _f_03714
 PUBLIC _num_sum_1__
-PUBLIC _f_03814
-PUBLIC _f_0383C
-PUBLIC _f_038C8
-PUBLIC _f_03A1A
 PUBLIC _f_03A72
-PUBLIC _f_03DE6
 PUBLIC _f_03E72
 PUBLIC _f_042AA
 PUBLIC _f_043AC
 PUBLIC _f_043CE
 PUBLIC _f_0441A
-PUBLIC _f_04448
-PUBLIC _f_04468
+PUBLIC _get_num_stat_table_cols
 PUBLIC _f_0448A
 PUBLIC _clear_result
 PUBLIC _memzero
 PUBLIC _f_044B6
 PUBLIC _f_044CE
 PUBLIC _f_044D2
-PUBLIC _f_044D6
-PUBLIC _f_044E2
+PUBLIC _set_keycode
+PUBLIC _set_char_keycode
 PUBLIC _l_var
 PUBLIC _st_var
 PUBLIC _get_remaining_stack_space
@@ -6916,7 +7388,6 @@ PUBLIC _reset_magic_string
 PUBLIC _need_reset
 PUBLIC _shutdown
 PUBLIC _delay
-PUBLIC _stop_enable
 PUBLIC _waitkey
 PUBLIC _get_IRQ0
 PUBLIC _f_046AE
@@ -6926,8 +7397,6 @@ PUBLIC _f_046CC
 PUBLIC _f_046D4
 PUBLIC _f_046E0
 PUBLIC _clr_port0
-PUBLIC _f_04738
-PUBLIC _f_04760
 PUBLIC _set_contrast_sfr
 PUBLIC _set_scr_normal
 PUBLIC _f_04796
@@ -6960,9 +7429,9 @@ EXTRN CODE	: _f_0AF0A
 EXTRN CODE	: _f_0AF16
 EXTRN CODE	: _f_0AF30
 EXTRN CODE	: _f_0B05A
-EXTRN CODE	: _f_0B7B6
+EXTRN CODE	: _is_eqn_result
 EXTRN CODE	: _f_0B8B8
-EXTRN CODE	: _f_14800
+EXTRN CODE	: _num_to_str_std_lineo
 EXTRN CODE	: _f_154E0
 EXTRN CODE	: _f_154F2
 EXTRN CODE	: _f_15526
@@ -6985,16 +7454,59 @@ EXTRN CODE	: _num_invalid__
 EXTRN CODE	: _num_cmp
 EXTRN CODE	: _f_1B0DC
 EXTRN CODE	: _num_fromdigit
-EXTRN CODE	: _f_1B12C
+EXTRN CODE	: _init_num
 EXTRN CODE	: _num_negate
 EXTRN CODE	: _f_1B238
-EXTRN CODE	: _f_1B288
+EXTRN CODE	: _get_num_err_type
 EXTRN CODE	: _num_mulxp__
 EXTRN CODE	: _num_trunc__
 EXTRN CODE	: _num_frombyte
 EXTRN CODE	: _num_cpy
 EXTRN CODE	: _f_1B4D0
 EXTRN CODE	: _invalid_var
+EXTRN DATA	: _d_080DC
+EXTRN DATA	: _cursor_noflash
+EXTRN DATA	: _d_080DE
+EXTRN DATA	: _d_080DF
+EXTRN DATA	: _last_key_scancode
+EXTRN DATA	: _d_080F4
+EXTRN DATA	: _last_key_keycode
+EXTRN DATA	: _force_nochar
+EXTRN DATA	: _modifiers
+EXTRN DATA	: _mode
+EXTRN DATA	: _submode
+EXTRN DATA	: _screen_state
+EXTRN DATA	: _table_mode
+EXTRN DATA	: _d_080FD
+EXTRN DATA	: _d_080FE
+EXTRN DATA	: _result_template
+EXTRN DATA	: _result_format
+EXTRN DATA	: _d_08101
+EXTRN DATA	: _setup_num_fmt
+EXTRN DATA	: _setup_decimal_mark
+EXTRN DATA	: _setup_angle_unit
+EXTRN DATA	: _setup_mathi
+EXTRN DATA	: _setup_cmplx_result
+EXTRN DATA	: _setup_stat_freq
+EXTRN DATA	: _setup_contrast
+EXTRN DATA	: _font_size
+EXTRN DATA	: _draw_mode
+EXTRN DATA	: _use_rambuf
+EXTRN DATA	: _d_08121
+EXTRN DATA	: _use_output_charset
+EXTRN DATA	: _arrow_state
+EXTRN DATA	: _d_08126
+EXTRN DATA	: _d_0812C
+EXTRN DATA	: _result
+EXTRN DATA	: _input_area
+EXTRN DATA	: _vars_start
+EXTRN DATA	: _var_m
+EXTRN DATA	: _var_x
+EXTRN DATA	: _magic_string
+EXTRN DATA	: _screen_buffer
+EXTRN NUMBER: _screen_buffer_y1_neg
+EXTRN DATA	: _stack_start
+
 
 CSEG #0 AT 8H
 	DW _interrupt_stub

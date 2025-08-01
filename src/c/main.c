@@ -2,24 +2,12 @@
 #include "consts.h"
 #include "generals.h"
 #include "diagnostic.h"
+#include "setup.h"
 #include "menufuncs.h"
 #include "unk4.h"
 
-const char *init_unk_0[] = {
-	"Start?",
-	"End?",
-	"Step?",
-	"a:b=X:d",
-	"a:b=c:X",
-	"FALSE",
-	"TRUE",
-	"All",
-	"No-Solution",
-};
-
-const char **init_unk_1 = &d_080DC;
-
 // FUNCTION: GY454XE  Re 09712
+// FUNCTION: GY455XE  Im 0A036
 void main(void) {
 	char i, j;
 
@@ -52,14 +40,14 @@ void main(void) {
 	while (1) {
 		if (j) {
 			set_scr_normal();
-			f_044D6(getkeycode(1));
+			set_keycode(getkeycode(1));
 			if (last_key_keycode == K_MODE) screen_state = 1;
 			else if (last_key_keycode == K_SETUP) screen_state = 2;
-			else if (1 <= last_key_keycode && last_key_keycode <= 11) screen_state = 3;
+			else if (K_SD <= last_key_keycode && last_key_keycode <= K_VERIFY) screen_state = 3;
 			else if (last_key_keycode == K_CALC) {
 				if (f_09D84()) continue;
-				if (mode == MODE_COMP || mode == MODE_CMPLX) f_09D54(TABLE_CALC);
-				else continue;
+				if (mode != MODE_COMP && mode != MODE_CMPLX) continue;
+				f_09D54(TABLE_CALC);
 			}
 			else if (last_key_keycode == K_SOLVE) {
 				if (f_09D84()) continue;
@@ -84,7 +72,7 @@ void main(void) {
 					break;
 				case 3:
 					i = f_09014();
-					if (i > 0) d_080F7 = 0;
+					if ((signed char)i > 0) force_nochar = 0;
 					break;
 			}
 			if (!i) render();
@@ -94,20 +82,21 @@ void main(void) {
 		}
 		if (f_0B6B6()) j = f_09962(0);
 		else {
-			if (table_mode != TABLE_EQN && table_mode != TABLE_INEQ && TABLE_RATIO && last_key_keycode == K_AC) {
+			char tm = table_mode;
+			if (tm != TABLE_EQN && tm != TABLE_INEQ && tm != TABLE_RATIO && last_key_keycode == K_AC) {
 				table_mode = TABLE_NONE;
 				f_0B8B8(1);
 				j = 0;
-			} else if (table_mode == TABLE_STAT_TABLE) {
-				f_0A0BC();
+			} else if (tm == TABLE_STAT_TABLE) {
+				draw_stat_table();
 				j = 1;
 			}
-			else if (table_mode == TABLE_MATRIX) j = f_0A93A(i);
-			else if (table_mode == TABLE_VECTOR) j = f_0A936(i);
-			else if (table_mode == TABLE_EQN) j = f_0A594(i);
-			else if (table_mode == TABLE_RANGE) j = f_0A050(i);
-			else if (table_mode == TABLE_CALC) j = f_09BDC(i);
-			else if (table_mode == TABLE_SOLVE) j = f_09BDC(i);
+			else if (tm == TABLE_MATRIX) j = f_0A93A(i);
+			else if (tm == TABLE_VECTOR) j = f_0A936(i);
+			else if (tm == TABLE_EQN) j = f_0A594(i);
+			else if (tm == TABLE_RANGE) j = f_0A050(i);
+			else if (tm == TABLE_CALC) j = f_09BDC(i);
+			else if (tm == TABLE_SOLVE) j = f_09BDC(i);
 		}
 		render();
 	}

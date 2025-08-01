@@ -1,14 +1,14 @@
 #include "emu_kb.h"
 
 void input_print_linei(void);
-char f_05658(char *a);
+char f_05658(char *input);
 void input_print_mathi(void);
 char f_06B52(char *a);
-void f_06C54(char *a, char *b, char c, char d);
-void f_07470(char token, char b);
+void math2line(char *input, char *b, char c, char d);
+void insert_token(char token, char is_func);
 void f_07488(char keycode);
-char f_077CC(char *out, char *num, char c);
+char num_to_str_std(char *out, char *num, char c);
 #if REAL == 0
 int f_082A2_E(emu_kb *kb);
 #endif
-void f_07B60(char *result);
+void print_result(char *result);

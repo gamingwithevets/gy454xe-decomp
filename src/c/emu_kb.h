@@ -17,6 +17,17 @@ typedef struct {
 	char *error_buf;		// 9838H
 } emu_kb;
 
+enum es_stop_type {
+	ES_STOP_GETKEY = 1,
+	ES_STOP_ACBREAK = 2,
+	ES_STOP_DOOFF = 3,
+	ES_STOP_DDOUT = 4,
+	ES_STOP_QRCODE_IN = 5,
+	ES_STOP_QRCODE_OUT = 6,
+	ES_STOP_QRCODE_IN3 = 7,
+	ES_STOP_ACBREAK2 = 8
+};
+
 #endif
 
 void f_04DF6_E(void);

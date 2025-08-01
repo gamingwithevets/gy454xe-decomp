@@ -4,20 +4,19 @@
 #include "emu_kb.h"
 #include "input.h"
 #include "unk2.h"
-#include "unk3.h"
 #include "unk4.h"
 #include "unk5.h"
 
 // Weird struct used in f_09962 and the functions that it calls from a jump table.
 typedef struct {
-	char *input_area_ptr;
-	char *result_ptr;
+	char *input_area;
+	char *result;
 	char unk_0x04;
-	char unk_0x05;
+	char is_func;
 	char mode;
 	char unk_0x07;
-	char unk_0x08;
-	char unk_0x09;
+	char is_mathi;
+	char is_matho;
 	char unk_0x0a;
 	char unk_0x0b;
 } f_09962_struct;
@@ -35,39 +34,52 @@ typedef struct {
 	int shutdown_timer;
 } getscancode_struct;
 
-// Struct used by the menu list.
+// Struct used by the menu list. NOTE: For any index, if the index has the MSB set, it is returned directly with a return code of 1.
 typedef struct {
 	const char *string;	// String printed when menu is displayed.
-	char ret_mode;		// Return value in values if the corresponding bit (MSB->LSB = 0->7) is set; otherwise use it as index
-	char char_mode;		// Set bits (MSB->LSB = 0->7) denote tokens. display_menu returns 2 
+	char ret_mode;		// Return value in values if the corresponding bit (MSB->LSB = 0->7) is set; otherwise use it as index.
+	char char_mode;		// Set bits (MSB->LSB = 0->7) denote tokens. display_menu returns 2 if tokens are returned, otherwide it will return 3.
 	char values[8];		// Values corresponding to the (up to) 8 choices.
 	char prev_page;		// Index of menu to go to when pressing up. NULL = none.
 	char next_page;		// Index of menu to go to when pressing down. NULL = none.
-	char parent;		// Index of menu to go to when pressing left.
+	char parent;		// Index of menu to go to when pressing left. 
 	char keycode;		// Keycode associated with this menu.
 } menu;
 
 // Static declarations (placed first so we can define jump table)
 static char keyfunc_nop(f_09962_struct *a);
+static void copy_input_prompt(char idx, char is_solve, char is_init_str);
+static char f_0A24E(char a, char keycode);
+static void f_0A3B4(void);
 static void f_0A410(char *a);
+static void f_0AE14(char a);
+static void set_result(char *a);
 static void f_0B226(getscancode_struct *a);
 static void copy_cursor_from_scr(char *cursor, char *scr);
 static void copy_cursor_to_scr(char *scr, char *cursor);
 static void f_0B67E(void);
+static char is_meta_keycode(void);
+static void f_0B736(void);
 static char is_rcl_keycode(char keycode);
 static char is_sto_keycode(char keycode);
 static char show_error(char idx);
-static char conv_func_token(char keycode);
+static char get_func_tok(char keycode);
+static char get_storcl_tok(char keycode);
+static void print_result_0(void);
 static char f_0B9C8(f_09962_struct *a);
 static void f_0BA28(f_09962_struct *a);
-static char f_0BADA(void);
+static void f_0BA50(char m);
+static void f_0BAA8(char *input);
+static char is_mathi_mode(void);
 static char f_0BAF2(char **a);
 static char f_0BB42(char **a);
-static char *f_0BBDA(char *a);
+static char *find_replay_entry(char *a);
 static char f_0BC6C(char *a);
-static char f_0BEEE(f_09962_struct *a);
+static void read_replay_entry(void);
+static char _keyfunc_mov_x(f_09962_struct *a);
 static char f_0BF8A(void);
-static char f_0BFDC(f_09962_struct *a);
+static char _keyfunc_mov_y(f_09962_struct *a);
+static void print_result_basic(void);
 static void f_0C08C(f_09962_struct *a);
 static char f_0C148(f_09962_struct *a);
 static char f_0C1A0(f_09962_struct *a);
@@ -77,11 +89,11 @@ static char keyfunc_sto_rcl(f_09962_struct *a);
 static char keyfunc_rcl(f_09962_struct *a);
 static char keyfunc_sto(f_09962_struct *a);
 static char keyfunc_exe(f_09962_struct *a);
-static char keyfunc_abc(f_09962_struct *a);
-static char keyfunc_dc(f_09962_struct *a);
+static char keyfunc_fmt_dec(f_09962_struct *a);
+static char keyfunc_fmt_frac(f_09962_struct *a);
 static char keyfunc_dms(f_09962_struct *a);
 static char keyfunc_fact(f_09962_struct *a);
-static void f_0C72C(f_09962_struct *a);
+static char f_0C72C(f_09962_struct *a);
 static char keyfunc_eng(f_09962_struct *a);
 static char keyfunc_eng_r(f_09962_struct *a);
 static char keyfunc_del(f_09962_struct *a);
@@ -92,38 +104,39 @@ static char keyfunc_mode(f_09962_struct *a);
 static char keyfunc_setup(f_09962_struct *a);
 
 // DATA: GY454XE  Re 01FB6
+// DATA: GY455XE  Im 01FB8
 static char (* const keyfuncs[])(f_09962_struct *) = {
-	keyfunc_mov_y,	// K_UP
-	keyfunc_mov_y,	// K_DOWN
-	keyfunc_mov_x,	// K_RIGHT
-	keyfunc_mov_x,	// K_LEFT
-	keyfunc_mode,	// K_MODE
-	keyfunc_setup,	// K_SETUP
-	keyfunc_ac,		// K_AC
-	keyfunc_nop,	// K_OFF
-	keyfunc_nop,	// K_ALPHA
-	keyfunc_nop,	// K_SHIFT
-	keyfunc_rcl,	// K_RCL
-	keyfunc_sto,	// K_STO
-	keyfunc_nop,	// K_INS
-	keyfunc_exe,	// K_APPROX
-	keyfunc_sto,	// K_M_PLUS
-	keyfunc_sto,	// K_M_MINUS
-	keyfunc_exe,	// K_EXECUTE
-	keyfunc_fact,	// K_FACT
-	keyfunc_base,	// K_BASE_BIN
-	keyfunc_base,	// K_BASE_OCT
-	keyfunc_base,	// K_BASE_DEC
-	keyfunc_base,	// K_BASE_HEX
-	keyfunc_dms,	// K_DMS
-	keyfunc_dms,	// K_DMS_R
-	keyfunc_eng,	// K_ENG
-	keyfunc_eng_r,	// K_ENG_R
-	keyfunc_abc,	// K_FMT_DEC
-	keyfunc_dc,		// K_FMT_FRAC
-	keyfunc_nop,	// K_CALC
-	keyfunc_nop,	// K_SOLVE
-	keyfunc_del		// K_DEL
+	keyfunc_mov_y,		// K_UP
+	keyfunc_mov_y,		// K_DOWN
+	keyfunc_mov_x,		// K_RIGHT
+	keyfunc_mov_x,		// K_LEFT
+	keyfunc_mode,		// K_MODE
+	keyfunc_setup,		// K_SETUP
+	keyfunc_ac,			// K_AC
+	keyfunc_nop,		// K_OFF
+	keyfunc_nop,		// K_ALPHA
+	keyfunc_nop,		// K_SHIFT
+	keyfunc_rcl,		// K_RCL
+	keyfunc_sto,		// K_STO
+	keyfunc_nop,		// K_INS
+	keyfunc_exe,		// K_APPROX
+	keyfunc_sto,		// K_M_PLUS
+	keyfunc_sto,		// K_M_MINUS
+	keyfunc_exe,		// K_EXECUTE
+	keyfunc_fact,		// K_FACT
+	keyfunc_base,		// K_BASE_BIN
+	keyfunc_base,		// K_BASE_OCT
+	keyfunc_base,		// K_BASE_DEC
+	keyfunc_base,		// K_BASE_HEX
+	keyfunc_dms,		// K_DMS
+	keyfunc_dms,		// K_DMS_R
+	keyfunc_eng,		// K_ENG
+	keyfunc_eng_r,		// K_ENG_R
+	keyfunc_fmt_dec,	// K_FMT_DEC
+	keyfunc_fmt_frac,	// K_FMT_FRAC
+	keyfunc_nop,		// K_CALC
+	keyfunc_nop,		// K_SOLVE
+	keyfunc_del			// K_DEL
 };
 
 // As the emulator ROM's switch-case table for show_error and the error string table comes after the function table above,
@@ -138,13 +151,28 @@ extern const char keycodes_base_n[64];
 extern const char keycodes_shift_base_n[64];
 extern const menu menus[];
 
+// These tables are initialized into RAM.
+const char *init_unk_0[] = {
+	s_table_prompt_start,
+	s_table_prompt_end,
+	s_table_prompt_step,
+	s_ratio_optn_c,
+	s_ratio_optn_d,
+	s_verif_result_false,
+	s_verif_result_true,
+	s_ineq_allreal,
+	s_ineq_nosolution
+};
+
+const char **init_unk_1 = &d_080DC;
+
 // FUNCTION: GY454XE  Re 0995E
 static char keyfunc_nop(f_09962_struct *a) {
 	return 0;
 }
 
 // FUNCTION: GY454XE  Re 09962
-char f_09962(char a) {
+char f_09962(char no_keyfunc) {
 	f_09962_struct v0;
 	char v1;
 	char v2;
@@ -155,15 +183,15 @@ char f_09962(char a) {
 
 	memzero(&v0, 12);
 	v0.unk_0x04 = 1;
-	v0.input_area_ptr = input_area;
-	v0.result_ptr = result;
+	v0.input_area = input_area;
+	v0.result = result;
 	v0.mode = mode;
 	v0.unk_0x07 = f_0A564();
-	v0.unk_0x08 = is_mathi();
-	v0.unk_0x09 = is_matho();
+	v0.is_mathi = is_mathi();
+	v0.is_matho = is_matho();
 	v0.unk_0x0a = f_02CB6();
-	if (!(d_080FE & 0x60)) d_08125 = 0;
-	if (!a) {
+	if (!(d_080FE & 0x60)) arrow_state = 0;
+	if (!no_keyfunc) {
 		if (!is_char_keycode(last_key_keycode)) {
 			v1 = last_key_keycode - 0xe0;
 			if (is_rcl_keycode(last_key_keycode)) v1 = K_RCL - 0xe0;
@@ -175,9 +203,9 @@ char f_09962(char a) {
 				case 2: goto j_09b72;
 				case 3: goto j_09b76;
 			}
-		} else if (d_080F7 && 0xcf <= last_key_keycode) {
-			f_044E2(conv_func_token(last_key_keycode));
-			if (v0.unk_0x08) v0.unk_0x05 = 1;
+		} else if (force_nochar && 0xcf <= last_key_keycode) {
+			set_char_keycode(get_func_tok(last_key_keycode));
+			if (v0.is_mathi) v0.is_func = 1;
 		} else if (last_key_keycode == 0x7c) last_key_keycode = 0;
 		if (!(d_080FE & (1 << 6))) {
 			if (table_mode & (1 << 7) && d_080FD == 2 && (last_key_keycode == K_COLON || last_key_keycode == 0xa4)) last_key_keycode = 0;
@@ -192,7 +220,7 @@ char f_09962(char a) {
 			if (last_key_keycode) {
 				if (is_char_keycode(last_key_keycode)) f_0B736();
 				if (d_080FE == 1) {
-					f_07470(last_key_keycode, v0.unk_0x05);
+					insert_token(last_key_keycode, v0.is_func);
 					goto j_09b6c;
 				}
 			}
@@ -205,17 +233,85 @@ j_09b72:
 	f_0C0D0();
 j_09b76:
 	if (d_080FE != 1) {
-		if (f_0C1A0(&v0) != 1 && f_0C1D4(&v0) != 1) f_07B60(v0.result_ptr);
+		if (f_0C1A0(&v0) != 1 && f_0C1D4(&v0) != 1) print_result(v0.result);
 		else goto j_09b6c;
 	}
 j_09b9c:
-	if (!(d_080FE & (1 << 5)) && f_0BC34() > 0) d_08125 = 1;
+	if (!(d_080FE & (1 << 5)) && (char)get_num_replay_entries() > 0) arrow_state = 1;
 	return v0.unk_0x04;
 }
 
-// STUB: GY454XE  Re 09BDC
+// FUNCTION: GY454XE  Re 09BDC
 char f_09BDC(char a) {
-	return 0;
+	char v0;
+	char v1;
+	char *v2;
+	char tmp;
+	char *loc_m2;
+
+	v0 = 1;
+	if (last_key_keycode) {
+		if (is_meta_keycode()) f_09962(0);
+		else {
+			if ((last_key_keycode == K_APPROX || last_key_keycode == K_EXECUTE) && d_080FE == 4) {
+				++mode_ram[351];
+				f_044CE();
+			}
+			switch (d_080FD) {
+				case 1:
+					input_area_ptr = input_area;
+					if (!f_0BB42(&loc_m2)) {
+						v1 = 2;
+						goto j_09c7c;
+					} else if (v1 = f_15DE8()) {
+j_09c7c:
+						d_080FE = 0x80;
+						set_keycode(show_error(v1));
+						buffer_clear();
+						table_mode = TABLE_NONE;
+						v0 = 0;
+						break;
+					} else if (mode_ram[352] == 0xff) {
+						f_0AF16();
+						v0 = K_APPROX;
+						if (f_0B588()) v0 = K_EXECUTE;
+						set_keycode(v0);
+						v0 = 0;
+						break;
+					}
+				case 0x10:
+				case 0x20:
+					d_080FD = 2;
+					mode_ram[351] = 0;
+					f_0B8B8(1);
+					d_080FE = 4;
+				case 2:
+					v2 = &mode_ram[mode_ram[351] + 352];
+					if (*v2 != 0xff) {
+						if (table_mode == TABLE_SOLVE && *v2 == mode_ram[350]) copy_input_prompt(mode_ram[350], 1, 0);
+						else copy_input_prompt(*v2, 0, 0);
+					} else {
+						if (table_mode == TABLE_SOLVE) tmp = 4;
+						else tmp = 3;
+						d_080FD = tmp;
+						v0 = 0;
+					}
+					break;
+				case 4:
+					set_keycode(K_APPROX);
+				case 3:
+					smart_strcpy(input_area, cache_area);
+					d_080FE = 1;
+					v0 = 0;
+					break;
+				case 0x40:
+					d_080FD = 4;
+					v0 = 0;
+					break;
+			}
+		}
+	}
+	return v0;
 }
 
 // FUNCTION: GY454XE  Re 09D54
@@ -237,8 +333,35 @@ char f_09D84(void) {
 	return v0;
 }
 
-// STUB: GY454XE  Re 09DB6
-void f_09DB6(void) {
+// FUNCTION: GY454XE  Re 09DB6
+static void copy_input_prompt(char idx, char is_solve, char is_init_str) {
+	char v0;
+	char out[16];
+	char varstr[4];
+
+	v0 = 0;
+	if (!is_format_keycode(last_key_keycode)) v0 = 1;
+	if (is_init_str) {
+		strcpy(out, init_unk_0[idx-1]);
+		set_result(&mode_ram[(idx-1)*10]);
+	} else {
+		varstr[0] = vars_list[idx];
+		if (is_solve) {
+			strcpy(out, s_prompt_solve);
+			varstr[1] = '\0';
+		} else {
+			out[0] = '\0';
+			varstr[1] = '?';
+			varstr[2] = '\0';
+		}
+		l_var(idx, result);
+		strcat(out, varstr);
+	}
+	buffer_clear();
+	smart_strcpy(input_area, out);
+	font_size = 10;
+	d_080FE = 4;
+	f_09962(v0);
 	return;
 }
 
@@ -272,7 +395,7 @@ char display_menu(char *val, char *head) {
 		v0 = getkeycode(1);
 		if (v0) {
 			// Check for keys 1-8
-			if (0x31 <= v0 && v0 <= 0x38) {
+			if (K_1 <= v0 && v0 <= K_8) {
 				v3 = menus[idx2].values[v0 - 0x31];
 				v00 = 7 - (v0 - 0x31);
 				v0 = menus[idx2].ret_mode;
@@ -295,7 +418,7 @@ char display_menu(char *val, char *head) {
 				last_key_keycode = 0;
 				// Handles the Disp indicator (AC pressed)
 				set_disp_indicator(1);
-				delay(0x770);
+				delay(1904);
 				set_disp_indicator(0);
 				return 0;
 			} else if (menus[idx2].keycode == v0) {
@@ -310,7 +433,7 @@ char display_menu(char *val, char *head) {
 			} else if (v0 == K_UP) idx = menus[idx2].prev_page;
 			else if (v0 == K_DOWN) idx = menus[idx2].next_page;
 			else if (v0 == K_LEFT) {
-				idx = menus[idx2].next_page;
+				idx = menus[idx2].parent;
 				if (idx) head = NULL;
 			}
 			if (idx & (1 << 7)) {
@@ -321,19 +444,19 @@ char display_menu(char *val, char *head) {
 		if (!idx) {
 			// Handles the Disp indicator (invalid key pressed)
 			set_disp_indicator(1);
-			delay(0x770);
+			delay(1904);
 			set_disp_indicator(0);
 		} else continue;
 	}
 }
 
 // FUNCTION: GY454XE  Re 0A010
-char f_0A010(char m, char b) {
+char display_token_menu(char m, char menu_idx) {
 	char loc_m1;
 
 	if (m != NULL && mode != m) return 0;
 	else {
-		loc_m1 = b;
+		loc_m1 = menu_idx;
 		if (display_menu(&loc_m1, NULL) == 2) {
 			last_key_keycode = loc_m1;
 			return 1;
@@ -341,28 +464,135 @@ char f_0A010(char m, char b) {
 	}
 }
 
-// STUB: GY454XE  Re 0A050
-void f_0A050(char a) {
-	return;
+// FUNCTION: GY454XE  Re 0A050
+char f_0A050(char a) {
+	char v0;
+
+	v0 = 1;
+	if (is_format_keycode(last_key_keycode)) f_09962(0);
+	else {
+		if ((last_key_keycode == K_APPROX || last_key_keycode == K_EXECUTE) && d_080FE == 4) {
+			++d_080FD;
+			f_044CE();
+		}
+		switch (d_080FD) {
+			case 1: 
+			case 2: 
+			case 3:
+				copy_input_prompt(d_080FD, 0, 1);
+				break;
+			case 4:
+				set_keycode(K_APPROX);
+				d_080FE = 1;
+				v0 = 0;
+				break;
+		}
+	}
+	return v0;
 }
 
-// STUB: GY454XE  Re 0A0BC
-void f_0A0BC(void) {
+// FUNCTION: GY454XE  Re 0A0BC
+void draw_stat_table(void) {
+	char v0;
+	char v1;
+	char v2;
+	char v3;
+	char *loc_m18[3][3];
+	char *loc_m20;
+
+	memzero(loc_m18, 18);
+	v0 = d_080DE;
+	v1 = get_num_stat_table_cols();
+	if (is_mov_keycode(last_key_keycode)) {
+		f_046AE();
+		if (f_0A24E(0, last_key_keycode)) {
+			f_046C4();
+			goto j_0a242;
+		}
+	} else if (last_key_keycode == K_DEL) {
+		if (mode != MODE_TABLE) {
+			f_0AE14(table_viewport + table_y - 1);
+			f_044CE();
+			d_08126 = 0;
+		} else goto j_0a242;
+	}
+	v2 = 0;
+	v3 = 0;
+	while (v3 < v1 - 1) {
+		char tmp;
+		char tmp2;
+
+		tmp = 0;
+		tmp2 = table_viewport;
+		while (tmp2 < table_viewport + 3) {
+			f_043CE(v2, tmp, &loc_m20);
+			loc_m18[tmp][v3] = loc_m20;
+			++tmp;
+			++tmp2;
+		}
+		if (submode == SMODE_STAT_1VAR) ++v2;
+		++v2;
+		++v3;
+	}
+	loc_m20 = loc_m18[table_y][table_x];
+	set_result(loc_m20);
+	if (is_format_keycode(last_key_keycode)) {
+		if (loc_m20) f_09962(0);
+		else if (mode != MODE_TABLE && last_key_keycode == K_DMS) {
+			f_0B8B8(0);
+			f_09962(0);
+		}
+		goto j_0a242;
+	}
+	buffer_clear();
+	f_0336A(table_viewport);
+	f_0A3B4();
+	f_032A4(3, v1, table_y, table_x, loc_m18);
+	draw_stat_table_cols(v1);
+	font_size = 7;
+	if (table_x <= v0) num_output_print(loc_m20);
+	else num_output_print(NULL);
+j_0a242:
 	return;
 }
 
 // STUB: GY454XE  Re 0A24E
-void f_0A24E(void) {
+static char f_0A24E(char a, char keycode) {
+	return 0;
+}
+
+// FUNCTION: GY454XE  Re 0A372
+static void draw_stat_table_cols(char cols) {
+	draw_line_vert(10, 1, 24, 0);
+	draw_line_vert(38, 1, 24, 0);
+	if (cols >= 2) draw_line_vert(66, 1, 24, 0);
+	if (cols >= 3) draw_line_vert(94, 1, 24, 0);
 	return;
 }
 
-// STUB: GY454XE  Re 0A372
-void f_0A372(void) {
-	return;
-}
+// FUNCTION: GY454XE  Re 0A3B4
+static void f_0A3B4(void) {
+	char v0;
 
-// STUB: GY454XE  Re 0A3B4
-void f_0A3B4(void) {
+	v0 = 12;
+	font_size = 6;
+	// STRING: GY454XE  Re 00928
+	// STRING: GY455XE  Im 00928
+	line_print(12, 1, s_table_x);
+	if (mode == MODE_TABLE) line_print(40, 1, s_table_fx);
+	else {
+		if (submode != SMODE_STAT_1VAR) {
+			char tmp = 40;
+			v0 = 40;
+			line_print(tmp, 1, s_table_y);
+		}
+		if (setup_stat_freq) {
+			char tmp2;
+			v0 += 28;
+			tmp2 = v0;
+			line_print(tmp2, 1, s_table_freq);
+		}
+	}
 	return;
 }
 
@@ -377,7 +607,7 @@ char f_0A564(void) {
 	else return 0;
 }
 
-// STUB: GY454XE  Re 0A57A
+// FUNCTION: GY454XE  Re 0A57A
 char f_0A57A(void) {
 	if (table_mode & (1 << 4) && (d_080FE == 3 || d_080FE == 0)) return 1;
 	return 0;
@@ -474,13 +704,49 @@ void f_0AC44(void) {
 	return;
 }
 
-// STUB: GY454XE  Re 0AD08
-void f_0AD08(void) {
-	return;
+// FUNCTION: GY454XE  Re 0AD08
+char f_0AD08(char a) {
+	char v0;
+	char v1;
+	char *v2;
+	char *v3;
+	char *v4;
+	int tmp;
+	char *loc_m2;
+	char *loc_m4;
+	char loc_m14[10];
+
+	v0 = 0;
+	v1 = get_num_stat_table_cols();
+	if (50 - (d_080DE * v1 + d_080DF) < v1) {
+		v0 = 1;
+		goto j_0ae06;
+	}
+	if (a > d_080DE + 1 || !a) {
+		v0 = 2;
+		goto j_0ae06;
+	}
+	if (a > f_0441A(0, &loc_m2) + 1 || !a) {
+		v0 = 2;
+		goto j_0ae06;
+	}
+	v2 = f_0441A(3, &loc_m4) * 10 + loc_m4;
+	v3 = (a - 1) * v1 * 10 + loc_m2;
+	v4 = v1 * 10 + v3;
+	tmp = v2 - v3;
+	++d_080DE;
+	memmove(v4, v3, tmp);
+	memzero(v3, v1 * 10);
+	if (setup_stat_freq) {
+		num_fromdigit(&loc_m14, 1);
+		f_0AF30(2, a, &loc_m14);
+	}
+j_0ae06:
+	return v0;
 }
 
 // STUB: GY454XE  Re 0AE14
-void f_0AE14(void) {
+static void f_0AE14(char a) {
 	return;
 }
 
@@ -515,12 +781,31 @@ void f_0AF16(void) {
 	table_mode = TABLE_NONE;
 	d_080FD = 0;
 	d_080FE = 1;
-	d_080FF = 0;
+	result_template = 0;
 }
 
-// STUB: GY454XE  Re 0AF30
-void f_0AF30(void) {
-	return;
+// FUNCTION: GY454XE  Re 0AF30
+char f_0AF30(char a, char b, char *num) {
+	char v0;
+	char *loc_m2;
+
+	v0 = f_043CE(a, b, &loc_m2);
+	if (!v0) {
+		int *tmp;
+		int *tmp2;
+		int tmp3;
+
+		tmp = (int *)num;
+		tmp2 = (int *)loc_m2;
+		tmp3 = 8;
+		do {
+			tmp2[4] = tmp[4];
+			tmp -= 2;
+			tmp2 -= 2;
+			tmp3 -= 2;
+		} while (tmp3 >= 0);
+	}
+	return v0;
 }
 
 // FUNCTION: GY454XE  Re 0AFB0
@@ -552,7 +837,7 @@ void clear_setup(void) {
 void clear_mem(void) {
 	memzero(&vars_start, 100);
 	if (mode == MODE_CMPLX) memzero(&mode_ram[362], 100);
-	if (f_1B288(result) != 13) clear_result();
+	if (get_num_err_type(result) != ERROR_NULL) clear_result();
 	return;
 }
 
@@ -570,14 +855,22 @@ void clear_cache_area(void) {
 void f_0B05A(void) {
 	char m = mode;
 	
-	d_08125 = 0;
+	arrow_state = 0;
 	if (m == MODE_COMP || m == MODE_BASE_N || m == MODE_CMPLX || m == MODE_VERIF) memzero(mode_ram, 250);
 	clear_cache_area();
 	return;
 }
 
 // STUB: GY454XE  Re 0B08A
-void f_0B08A(void) {
+static void set_result(char *num) {
+	char num_tmp[10];
+
+	num_fromdigit(&result[10], 0);
+	if (!num) {
+		num = num_tmp;
+		init_num(num_tmp, RESULT_STANDARD);
+	}
+	num_cpy(result, num);
 	return;
 }
 
@@ -807,6 +1100,7 @@ char f_0B3EC(void) {
 }
 
 // FUNCTION: GY454XE  Re 0B410
+// FUNCTION: GY455XE  Im 0BCBE
 char scancode_to_int(scancode *a, char *keycodes) {
 	char v0;
 	char v1;
@@ -832,11 +1126,18 @@ char scancode_to_int(scancode *a, char *keycodes) {
 }
 
 // FUNCTION: GY454XE  Re 0B45E
+// FUNCTION: GY455XE  Im 0BD0C
 char getkeycode(char a) {
 	scancode v0;
 	char v1;
+#if REAL == 0
+	emu_kb kb;
+#endif
 	char *v2;
 
+#if REAL == 0
+	init_emu_kb(&kb);
+#endif
 	while (1) {
 		if (!screen_state) setup_status_bar();
 		getscancode(&v0);
@@ -850,10 +1151,18 @@ char getkeycode(char a) {
 		else v1 = scancode_to_int(&v0, mode != MODE_BASE_N ? keycodes_shift : keycodes_shift_base_n);
 
 		if (mode == MODE_CMPLX) {
-			if (v1 != K_NEGATIVE) if (v1 == K_ENG || v1 == K_ENG_R) v1 = 0x80;
-			else if (modifiers & (1 << 3)) v1 = 0xaf;
+			if (v1 != K_NEGATIVE) {
+				if (v1 == K_ENG || v1 == K_ENG_R) v1 = 0x80;
+			} else if (modifiers & (1 << 3)) v1 = 0xaf;
 		}
-		if (v1 == K_OFF) shutdown();
+		if (v1 == K_OFF) {
+#if REAL == 1
+			shutdown();
+#else
+			*kb.stop_type = ES_STOP_DOOFF;
+			delay(1);
+#endif
+		}
 		if (is_modifier_keycode(v1)) set_modifiers(v1);
 		else {
 			set_modifiers(0);
@@ -868,7 +1177,7 @@ char f_0B588(void) {
 	if (!setup_mathi) return 0;
 	if (setup_decimalo) return 0;
 	if (!(mode & (1 << 6))) return 0;
-	if (mode == MODE_EQN && d_080FE == 1 && submode <= 2) return 0;
+	if (mode == MODE_EQN && d_080FE == 1 && submode <= SMODE_EQN_SIMUL3) return 0;
 	return 1;
 }
 
@@ -894,7 +1203,7 @@ void set_modifiers(char keycode) {
 			if (!screen_state) mods += 0x80;
 			mods &= 0xf7;
 			modifiers = mods;
-			f_10FD2();
+			update_cursor_char();
 			break;
 		default:
 			mods &= 0xf0;
@@ -932,14 +1241,15 @@ void wait_shift(void) {
 
 // FUNCTION: GY454XE  Re 0B67E
 static void f_0B67E(void) {
-	if (d_080FE == 1 && d_080F7 == 1) {
+	if (d_080FE == 1 && force_nochar == 1) {
 		if (last_key_keycode == K_DMS) {
-			// Original version jumps to `f_044E2` with B. Currently there is no known way to replicate this in CCU8
-			f_044E2(0x5c); // Degs-Mins-Secs
+			// Original version jumps to set_char_keycode with B instruction. Currently there is no known way to replicate this in CCU8
+			set_char_keycode(0x5c); // Degs-Mins-Secs
 			return;
 		}
 		if ((K_DMS_R <= last_key_keycode && last_key_keycode <= K_FMT_FRAC) || last_key_keycode == K_FACT) last_key_keycode = 0;
 	}
+	return;
 }
 
 // FUNCTION: GY454XE  Re 0B6B6
@@ -950,30 +1260,45 @@ char f_0B6B6(void) {
 	return v0;
 }
 
-// STUB: GY454XE  Re 0B6F0
-void f_0B6F0(void) {
-	return;
+// FUNCTION: GY454XE  Re 0B6F0
+static char is_meta_keycode(void) {
+	char v0;
+
+	v0 = 1;
+	if (!is_format_keycode(last_key_keycode) && !is_mov_keycode(last_key_keycode) && !is_sto_keycode(last_key_keycode) && last_key_keycode != K_SETUP && last_key_keycode != K_M_PLUS && last_key_keycode != K_M_MINUS && last_key_keycode != K_DEL) v0 = 0;
+	return v0;
 }
 
-// STUB: GY454XE  Re 0B736
-void f_0B736(void) {
+// FUNCTION: GY454XE  Re 0B736
+static void f_0B736(void) {
+	char v0;
+	char tmp;
+	char loc_m1;
+
+	v0 = 0;
+	if (d_080FE != 1 && (tmp = f_035EC(&loc_m1))) {
+		if (tmp == 2) v0 = 2;
+		if (table_mode & (1 << 7) && d_080FD & 0xf0) f_0AF16();
+		f_0B8B8(v0);
+		f_0BA50(loc_m1);
+	}
 	return;
 }
 
 // FUNCTION: GY454XE  Re 0B782
 static char is_rcl_keycode(char keycode) {
-	if (d_080F7 && K_RCL_A <= keycode && keycode <= K_RCL_M) return 1;
+	if (force_nochar && K_RCL_A <= keycode && keycode <= K_RCL_M) return 1;
 	return 0;
 }
 
 // FUNCTION: GY454XE  Re 0B79C
 static char is_sto_keycode(char keycode) {
-	if (d_080F7 && K_STO_A <= keycode && keycode <= K_STO_M) return 1;
+	if (force_nochar && K_STO_A <= keycode && keycode <= K_STO_M) return 1;
 	return 0;
 }
 
 // FUNCTION: GY454XE  Re 0B7B6
-char f_0B7B6(void) {
+char is_eqn_result(void) {
 	if (mode == MODE_EQN && table_mode == TABLE_NONE) return 1;
 	return 0;
 }
@@ -1233,124 +1558,124 @@ static char log_error(unsigned int idx) {
 	return;
 }
 
-// FUNCTION: GY455XE  Im 0204C
+// DATA: GY455XE  Im 0204C
 const char s_err_emu_acbreak[] = "ACBREAK";
 
-// FUNCTION: GY455XE  Im 02054
+// DATA: GY455XE  Im 02054
 const char s_err_emu_syntax[] = "Syntax";
 
-// FUNCTION: GY455XE  Im 0205B
+// DATA: GY455XE  Im 0205B
 const char s_err_emu_math[] = "Ma";
 
-// FUNCTION: GY455XE  Im 0205E
+// DATA: GY455XE  Im 0205E
 const char s_err_emu_mem[] = "Memory";
 
-// FUNCTION: GY455XE  Im 02065
+// DATA: GY455XE  Im 02065
 const char s_err_emu_go[] = "Go";
 
-// FUNCTION: GY455XE  Im 02068
+// DATA: GY455XE  Im 02068
 const char s_err_emu_nesting[] = "Nesting";
 
-// FUNCTION: GY455XE  Im 02070
+// DATA: GY455XE  Im 02070
 const char s_err_emu_stack[] = "Stack";
 
-// FUNCTION: GY455XE  Im 02076
+// DATA: GY455XE  Im 02076
 const char s_err_emu_argument[] = "Argument";
 
-// FUNCTION: GY455XE  Im 0207F
+// DATA: GY455XE  Im 0207F
 const char s_err_emu_dimension[] = "Dimension";
 
-// FUNCTION: GY455XE  Im 02089
+// DATA: GY455XE  Im 02089
 const char s_err_emu_com[] = "Com";
 
-// FUNCTION: GY455XE  Im 0208D
+// DATA: GY455XE  Im 0208D
 const char s_err_emu_transmit[] = "Transmit";
 
-// FUNCTION: GY455XE  Im 02096
+// DATA: GY455XE  Im 02096
 const char s_err_emu_receive[] = "Receive";
 
-// FUNCTION: GY455XE  Im 0209E
+// DATA: GY455XE  Im 0209E
 const char s_err_emu_outofmem[] = "Memory Full";
 
-// FUNCTION: GY455XE  Im 020AA
+// DATA: GY455XE  Im 020AA
 const char s_err_emu_undefined[] = "Undefined";
 
-// FUNCTION: GY455XE  Im 020B4
+// DATA: GY455XE  Im 020B4
 const char s_err_emu_overflow[] = "Overflow";
 
-// FUNCTION: GY455XE  Im 020BD
+// DATA: GY455XE  Im 020BD
 const char s_err_emu_domain[] = "Domain";
 
-// FUNCTION: GY455XE  Im 020C4
+// DATA: GY455XE  Im 020C4
 const char s_err_emu_nonreal[] = "Non-Real";
 
-// FUNCTION: GY455XE  Im 020CD
+// DATA: GY455XE  Im 020CD
 const char s_err_emu_nosolution[] = "No Solution";
 
-// FUNCTION: GY455XE  Im 020D9
+// DATA: GY455XE  Im 020D9
 const char s_err_emu_mismatch[] = "Mismatch";
 
-// FUNCTION: GY455XE  Im 020E2
+// DATA: GY455XE  Im 020E2
 const char s_err_emu_novar[] = "No Variable";
 
-// FUNCTION: GY455XE  Im 020EE
+// DATA: GY455XE  Im 020EE
 const char s_err_emu_notfound[] = "Not Found";
 
-// FUNCTION: GY455XE  Im 020F8
+// DATA: GY455XE  Im 020F8
 const char s_err_emu_app[] = "Application";
 
-// FUNCTION: GY455XE  Im 02104
+// DATA: GY455XE  Im 02104
 const char s_err_emu_sys[] = "System";
 
-// FUNCTION: GY455XE  Im 0210B
+// DATA: GY455XE  Im 0210B
 const char s_err_emu_exists[] = "Already Exists";
 
-// FUNCTION: GY455XE  Im 0211A
+// DATA: GY455XE  Im 0211A
 const char s_err_emu_cmplx[] = "Complex Number In List";
 
-// FUNCTION: GY455XE  Im 02131
+// DATA: GY455XE  Im 02131
 const char s_err_emu_solve[] = "Can't Solve!";
 
-// FUNCTION: GY455XE  Im 0213E
+// DATA: GY455XE  Im 0213E
 const char s_err_emu_range[] = "Range";
 
-// FUNCTION: GY455XE  Im 02144
+// DATA: GY455XE  Im 02144
 const char s_err_emu_iter[] = "Iteration";
 
-// FUNCTION: GY455XE  Im 0214E
+// DATA: GY455XE  Im 0214E
 const char s_err_emu_cond[] = "Condition";
 
-// FUNCTION: GY455XE  Im 02158
+// DATA: GY455XE  Im 02158
 const char s_err_emu_blank[] = "";
 
-// FUNCTION: GY455XE  Im 02159
+// DATA: GY455XE  Im 02159
 const char s_err_emu_circular[] = "Circular";
 
-// FUNCTION: GY455XE  Im 02162
+// DATA: GY455XE  Im 02162
 const char s_err_emu_imroot[] = "No Real Roots";
 
-// FUNCTION: GY455XE  Im 02170
+// DATA: GY455XE  Im 02170
 const char s_err_emu_ver[] = "Version";
 
-// FUNCTION: GY455XE  Im 02178
+// DATA: GY455XE  Im 02178
 const char s_err_emu_sd[] = "SD Card";
 
-// FUNCTION: GY455XE  Im 02180
+// DATA: GY455XE  Im 02180
 const char s_err_emu_sdro[] = "SD Card is protected";
 
-// FUNCTION: GY455XE  Im 02195
+// DATA: GY455XE  Im 02195
 const char s_err_emu_sdinvalid[] = "invarid Card";
 
-// FUNCTION: GY455XE  Im 021A2
+// DATA: GY455XE  Im 021A2
 const char s_err_emu_nosd[] = "No Card";
 
-// FUNCTION: GY455XE  Im 021AA
+// DATA: GY455XE  Im 021AA
 const char s_err_emu_timeout[] = "Time out";
 
-// FUNCTION: GY455XE  Im 021B3
+// DATA: GY455XE  Im 021B3
 const char s_err_emu_template[] = "ERROR";
 
-// FUNCTION: GY455XE  Im 021B9
+// DATA: GY455XE  Im 021B9
 const char s_err_emu_unknown[] = "??? ERROR";
 
 #endif
@@ -1365,14 +1690,37 @@ static char show_error(char idx) {
 #endif
 	print_error(idx);
 	do keycode = getkeycode(1);
-	while (!is_ac_key(keycode));
+	while (!is_ac_keycode(keycode));
 	return keycode;
 }
 
 // ====== DEFINITIONS (declared above) ======
 
-// FUNCTION: GY454XE  Re 02044
-const char tokens_map[16] = {
+// DATA: GY454XE  Re 02032
+const char vars_map[] = {
+	0x41,	// A
+	0x42,	// B
+	0x43,	// C
+	0x44,	// D
+	0x45,	// E
+	0x46,	// F
+	0x58,	// X
+	0x59,	// Y
+	0x54,	// M
+	0x47,	// ->A
+	0x48,	// ->B
+	0x49,	// ->C
+	0x4a,	// ->D
+	0x83,	// ->E
+	0x84,	// ->F
+	0x4c,	// ->X
+	0x4d,	// ->Y
+	0x4b	// ->M
+};
+
+// DATA: GY454XE  Re 02044
+// DATA: GY455XE  Im 021D6
+const char tokens_map[] = {
 	0xAE,	// K_FRAC
 	0x7C,	// K_FRAC_ABC
 	0x5E,	// K_POW
@@ -1391,12 +1739,14 @@ const char tokens_map[16] = {
 	0x69	// K_SUM
 };
 
-// FUNCTION: GY454XE  Re 02054
+// DATA: GY454XE  Re 02054
+// DATA: GY455XE  Im 021E6
 const char s_colon[] = ":";
 
 // For keycode lists, every row is KI(1-8), every column is KO(1-8)
 
-// FUNCTION: GY454XE  Re 02056
+// DATA: GY454XE  Re 02056
+// DATA: GY455XE  Im 021E8
 const char keycodes[64] = {
 	K_1,		K_2,		K_3,		K_PLUS,		K_MINUS,	NULL,		K_EXECUTE,	NULL,
 	K_4,		K_5,		K_6,		K_MUL,		K_DIV,		NULL,		K_ANS,		NULL,
@@ -1408,7 +1758,8 @@ const char keycodes[64] = {
 	K_SHIFT,	K_ALPHA,	K_UP,		K_RIGHT,	K_MODE,		NULL,		NULL,		NULL
 };
 
-// FUNCTION: GY454XE  Re 02096
+// DATA: GY454XE  Re 02096
+// DATA: GY455XE  Im 02228
 const char keycodes_shift[64] = {
 	K_SD,		K_CMPLX,	K_BASE,		K_POL,		K_REC,		NULL,		K_APPROX,	NULL,
 	K_MATRIX,	K_VECTOR,	NULL,		K_PERMU,	K_COMBI,	NULL,		K_DRG,		NULL,
@@ -1420,7 +1771,8 @@ const char keycodes_shift[64] = {
 	K_SHIFT,	K_ALPHA,	K_UP,		K_RIGHT,	K_SETUP,	NULL,		NULL,		NULL
 };
 
-// FUNCTION: GY454XE  Re 020D6
+// DATA: GY454XE  Re 020D6
+// DATA: GY455XE  Im 02268
 const char keycodes_alpha[64] = {
 	NULL,		NULL,		NULL,		NULL,		NULL,		NULL,		K_EXECUTE,	K_APPROX,
 	NULL,		NULL,		NULL,		NULL,		NULL,		NULL,		NULL,		NULL,
@@ -1432,7 +1784,8 @@ const char keycodes_alpha[64] = {
 	K_SHIFT,	K_ALPHA,	K_UP,		K_RIGHT,	K_MODE,		K_COLON,	K_EQUALS,	NULL
 };
 
-// FUNCTION: GY454XE  Re 02116
+// DATA: GY454XE  Re 02116
+// DATA: GY455XE  Im 022A8
 const char keycodes_rcl[64] = {
 	NULL,		NULL,		NULL,		NULL,		NULL,		NULL,		K_EXECUTE,	K_APPROX,
 	NULL,		NULL,		NULL,		NULL,		NULL,		NULL,		NULL,		NULL,
@@ -1444,7 +1797,8 @@ const char keycodes_rcl[64] = {
 	K_SHIFT,	K_ALPHA,	K_UP,		K_RIGHT,	K_MODE,		NULL,		K_CALC,		NULL
 };
 
-// FUNCTION: GY454XE  Re 02156
+// DATA: GY454XE  Re 02156
+// DATA: GY455XE  Im 022E8
 const char keycodes_sto[64] = {
 	NULL,		NULL,		NULL,		NULL,		NULL,		NULL,		K_EXECUTE,	K_APPROX,
 	NULL,		NULL,		NULL,		NULL,		NULL,		NULL,		NULL,		NULL,
@@ -1456,7 +1810,8 @@ const char keycodes_sto[64] = {
 	K_SHIFT,	K_ALPHA,	K_UP,		K_RIGHT,	K_MODE,		NULL,		K_CALC,		NULL
 };
 
-// FUNCTION: GY454XE  Re 02196
+// DATA: GY454XE  Re 02196
+// DATA: GY455XE  Im 02328
 const char keycodes_base_n[64] = {
 	K_1,		K_2,		K_3,		K_PLUS,		K_MINUS,	NULL,		K_APPROX,	K_APPROX,
 	K_4,		K_5,		K_6,		K_MUL,		K_DIV,		NULL,		K_ANS,		NULL,
@@ -1468,7 +1823,8 @@ const char keycodes_base_n[64] = {
 	K_SHIFT,	K_ALPHA,	K_UP,		K_RIGHT,	K_MODE,		NULL,		NULL,		NULL
 };
 
-// FUNCTION: GY454XE  Re 021D6
+// DATA: GY454XE  Re 021D6
+// DATA: GY455XE  Im 02368
 const char keycodes_shift_base_n[64] = {
 	NULL,		NULL,		K_BASE,		NULL,		NULL,		NULL,		K_APPROX,	NULL,
 	NULL,		K_VECTOR,	NULL,		NULL,		NULL,		NULL,		NULL,		NULL,
@@ -1480,7 +1836,8 @@ const char keycodes_shift_base_n[64] = {
 	K_SHIFT,	K_ALPHA,	K_UP,		K_RIGHT,	K_SETUP,	NULL,		NULL,		NULL
 };
 
-// FUNCTION: GY454XE  Re 02216
+// DATA: GY454XE  Re 02216
+// DATA: GY455XE  Im 023A8
 const char menu_mode[] = {
 	"1:COMP  2:CMPLX \0"
 	"3:STAT  4:BASE-N\0"
@@ -1488,7 +1845,8 @@ const char menu_mode[] = {
 	"7:TABLE 8:VECTOR"
 };
 
-// FUNCTION: GY454XE  Re 0225A
+// DATA: GY454XE  Re 0225A
+// DATA: GY455XE  Im 023EC
 const char menu_setup_0[] = {
 	"1:MthIO 2:LineIO\0"
 	"3:Deg   4:Rad   \0"
@@ -1496,7 +1854,8 @@ const char menu_setup_0[] = {
 	"7:Sci   8:Norm  \0"
 };
 
-// FUNCTION: GY454XE  Re 0229F
+// DATA: GY454XE  Re 0229F
+// DATA: GY455XE  Im 02431
 const char menu_setup_1[] = {
 	"1:ab/c  2:d/c   \0"
 	"3:CMPLX 4:STAT  \0"
@@ -1504,7 +1863,8 @@ const char menu_setup_1[] = {
 	"\0"
 };
 
-// FUNCTION: GY454XE  Re 022D4
+// DATA: GY454XE  Re 022D4
+// DATA: GY455XE  Im 02466
 const char menu_stat_type[] = {
 	"1:1-VAR 2:" "\x9a" "+" "\x9b" "X\0"
 	"3:" "\x5f" "+" "\x9c" "X" "\xa2" " 4:ln X\0"
@@ -1512,7 +1872,8 @@ const char menu_stat_type[] = {
 	"7:" "\x9a" "*X^" "\x9b" " 8:1/X"
 };
 
-// FUNCTION: GY454XE  Re 02310
+// DATA: GY454XE  Re 02310
+// DATA: GY455XE  Im 024A2
 const char menu_stat_table[] = {
 	"1:Type  2:Data\0"
 	"3:Edit\0"
@@ -1520,7 +1881,8 @@ const char menu_stat_table[] = {
 	"\0"
 };
 
-// FUNCTION: GY454XE  Re 02329
+// DATA: GY454XE  Re 02329
+// DATA: GY455XE  Im 024BB
 const char menu_stat_1var[] = {
 	"1:Type  2:Data\0"
 	"3:Sum   4:Var\0"
@@ -1528,7 +1890,8 @@ const char menu_stat_1var[] = {
 	"\0"
 };
 
-// FUNCTION: GY454XE  Re 02359
+// DATA: GY454XE  Re 02359
+// DATA: GY455XE  Im 024EB
 const char menu_stat_2var[] = {
 	"1:Type  2:Data\0"
 	"3:Sum   4:Var\0"
@@ -1536,7 +1899,8 @@ const char menu_stat_2var[] = {
 	"\0"
 };
 
-// FUNCTION: GY454XE  Re 02389
+// DATA: GY454XE  Re 02389
+// DATA: GY455XE  Im 0251B
 const char menu_eqn[] = {
 	"1:a" "\x9d" "X+b" "\x9d" "Y=c" "\x9d" "\0"
 	"2:a" "\x9d" "X+b" "\x9d" "Y+c" "\x9d" "Z=d" "\x9d" "\0"
@@ -1544,7 +1908,8 @@ const char menu_eqn[] = {
 	"4:aX" "\xa3" "+bX" "\xa2" "+cX+d=0\0"
 };
 
-// FUNCTION: GY454XE  Re 023C6
+// DATA: GY454XE  Re 023C6
+// DATA: GY455XE  Im 02558
 const menu menus[] = {
 // n		 String						Return	Char	Option values/Menu indexes/Tokens (up to 8)			Up		Down	Left	Keycode
 // Placeholder
@@ -1682,7 +2047,7 @@ void f_0B8B8(char a) {
 	a &= 0xf;
 	d_08120 = 0;
 	d_080FE = 1;
-	d_080FF = 0;
+	result_template = 0;
 	if (v0) {
 		memzero(input_area, 100);
 		cursor_pos_byte = 0;
@@ -1699,32 +2064,34 @@ void f_0B8B8(char a) {
 	}
 	cursor_x = 0;
 	cursor_y = 1;
-	f_10FD2();
+	update_cursor_char();
 	d_08117 = font_size;
 	f_044CE();
 	d_08124 = 0;
 	use_output_charset = 0;
 	input_area_ptr = input_area;
-	if (a == 2) f_0B998();
+	if (a == 2) print_result_0();
 	return;
 }
 
-// STUB: GY454XE  Re 0B968
-void f_0B968(void) {
-	return;
+// FUNCTION: GY454XE  Re 0B968
+static char get_storcl_tok(char keycode) {
+	if (keycode == K_M_PLUS) return 0x99;  // M+
+	else if (keycode == K_M_MINUS) return 0xa9;  // M-
+	else return vars_map[keycode - K_RCL_A];
 }
 
 // FUNCTION: GY454XE  Re 0B984
-static char conv_func_token(char keycode) {
+static char get_func_tok(char keycode) {
 	if (keycode < K_FRAC || keycode > K_SUM) return 0;
-	else return tokens_map[keycode - 0xd0];
+	else return tokens_map[keycode - K_FRAC];
 }
 
 // FUNCTION: GY454XE  Re 0B998
-void f_0B998(void) {
+static void print_result_0(void) {
 	char num[10];
 
-	if (!f_08ADC() && !is_mathi()) {
+	if (!is_table_func_input() && !is_mathi()) {
 		num_fromdigit(&num, 0);
 		num_output_print(&num);
 	}
@@ -1736,13 +2103,13 @@ static char f_0B9C8(f_09962_struct *a) {
 	f_0B8B8(2);
 	if (a->unk_0x07) {
 		f_044B6();
-		num_output_print(a->result_ptr);
+		num_output_print(a->result);
 		a->unk_0x04 = 1;
 		return 0;
 	} else {
 		clear_result();
 		if (a->mode == MODE_TABLE) {
-			if (d_080FD) smart_strcpy(a->input_area_ptr, cache_area);
+			if (d_080FD) smart_strcpy(a->input_area, cache_area);
 			else memzero(cache_area, 100);
 			buffer_clear();
 		}
@@ -1757,31 +2124,44 @@ static void f_0BA28(f_09962_struct *a) {
 	f_0AF0A();
 	table_mode = TABLE_EQN;
 	last_key_keycode = NULL;
-	d_08125 = 0;
+	arrow_state = 0;
 	a->unk_0x04 = 0;
 	return;
 }
 
-// STUB: GY454XE  Re 0BA50
-void f_0BA50(void) {
+// FUNCTION: GY454XE  Re 0BA50
+static void f_0BA50(char m) {
+	char tok;
+
+	if (!f_02CB6() && table_mode == TABLE_NONE) {
+		tok = last_key_keycode;
+		// Fraction/nth root
+		if (is_mathi() && (tok == 0xae || tok == 0x9f)) tok = 0;
+		if (f_144F4(tok)) {
+			tok = K_ANS;
+			if (m == 6) tok = 0xcb;  // MatAns
+			else if (m == 7) tok = 0xcf;  // VctAns
+			insert_token(tok, 0);
+		}
+	}
 	return;
 }
 
 // FUNCTION: GY454XE  Re 0BAA8
-void f_0BAA8(char *a) {
-	if (table_mode == TABLE_NONE && smart_strlen(a) == 1 && f_14516(*a)) {
-		a[1] = 0x8b;  // Ans
-		a[2] = 0;
+static void f_0BAA8(char *input) {
+	if (table_mode == TABLE_NONE && smart_strlen(input) == 1 && f_14516(input[0])) {
+		input[1] = 0x8b;  // Ans
+		input[2] = '\0';
 	}
 	return;
 }
 
 // FUNCTION: GY454XE  Re 0BADA
-static char f_0BADA(void) {
-	if (!f_02CB6())
+static char is_mathi_mode(void) {
+	if (f_02CB6())
 j_0bae4:
 		return 0;
-	else if (!(mode & (1 << 7))) return 1;
+	else if (mode & (1 << 7)) return 1;
 	else goto j_0bae4;
 }
 
@@ -1815,39 +2195,42 @@ static char f_0BB42(char **a) {
 		smart_strcpy(*a, v1);
 		if (d_080FE & (1 << 6)) input_area_ptr += (char)(d_0812A - *a);
 	} else if (v0 = f_06B52(v1)) {
-		f_06C54(v1, *a, 0, 1);
+		math2line(v1, *a, 0, 1);
 	}
 	return v0;
 }
 
 // FUNCTION: GY454XE  Re 0BBDA
-static char *f_0BBDA(char *a) {
+static char *find_replay_entry(char *addr) {
 	char v0;
 	char *v1;
 
 	v0 = 10;
-	if (!(v1 = get_calc_history_addr())) return NULL;
-	if (*a++ & 0x80) v0 = 20;
-	a += 2;
-	a += v0;
-	a = strchr(a, ':');
-	if (a > v1 + 250) return NULL;
-	if (!a) return NULL;
-	return ++a;
+	if (!(v1 = get_replay_addr())) return NULL;
+	if (*addr++ & 0x80) v0 = 20;
+	addr += 2;
+	addr += v0;
+	addr = strchr(addr, ':');
+	if (addr > v1 + 250) return NULL;
+	if (!addr) return NULL;
+	++addr;
+	return addr;
 }
 
 // FUNCTION: GY454XE  Re 0BC34
-char f_0BC34(void) {
-	char v0;
-	char *v1;
+char get_num_replay_entries(void) {
+	char count;
+	char *addr;
 
-	v0 = 0;
-	if ((v1 = get_calc_history_addr()) && (mode == MODE_EQN || f_0B7B6())) {
-		v0 = 0;
-		do if (v1 = f_0BBDA(v1)) break;
-		while (1);
+	count = 0;
+	if ((addr = get_replay_addr()) && (mode != MODE_EQN || is_eqn_result())) {
+		count = 0;
+		do {
+			if (!(addr = find_replay_entry(addr))) break;
+			++count;
+		} while (1);
 	}
-	return v0;
+	return count;
 }
 
 // FUNCTION: GY454XE  Re 0BC6C
@@ -1858,13 +2241,13 @@ static char f_0BC6C(char *a) {
 	v0 = a;
 	do {
 		v1 = a;
-		if (!(a = f_0BBDA(a))) break;
+		if (!(a = find_replay_entry(a))) break;
 	} while (1);
 	return v1 - v0;
 }
 
 // FUNCTION: GY454XE  Re 0BC90
-void f_0BC90(void) {
+void write_replay_entry(void) {
 	char *v0;
 	char v1;
 	char v2;
@@ -1876,10 +2259,10 @@ void f_0BC90(void) {
 	char loc_m2;
 	char *loc_m4;
 
-	if (loc_m4 = get_calc_history_addr()) {
+	if (loc_m4 = get_replay_addr()) {
 		v0 = input_area_ptr;
 		v1 = 10;
-		loc_m1 = d_080FF;
+		loc_m1 = result_template;
 		if (num_invalid__(&result[10]) != 1) {
 			loc_m1 |= 0x80;
 			v1 = 20;
@@ -1890,9 +2273,9 @@ void f_0BC90(void) {
 			v3 = loc_m4;
 			v4 = f_0BC6C(loc_m4);
 			v5 = 0;
-			while (v4 + loc_m2 > v5 + 250) {
+			while ((unsigned int)(v4 + loc_m2) > (unsigned int)(v5 + 250)) {
 				v6 = v3;
-				v3 = f_0BBDA(v3);
+				v3 = find_replay_entry(v3);
 				v5 += v3 - v6;
 			}
 			v4 -= v5;
@@ -1901,13 +2284,14 @@ void f_0BC90(void) {
 			memzero(loc_m4, v5);
 			v3 = loc_m4++;
 			memmove(v3, &loc_m1, 1);
-			loc_m1 = d_08100;
+			loc_m1 = result_format;
 			v3 = loc_m4++;
 			memmove(v3, &loc_m1, 1);
 			loc_m1 = d_08101;
 			v3 = loc_m4++;
 			memmove(v3, &loc_m1, 1);
 			memcpy(loc_m4, result, v1);
+			loc_m4 += v1; 
 			memcpy(loc_m4, v0, v2);
 			loc_m4 += v2;
 			memcpy(loc_m4, s_colon, 1);
@@ -1916,31 +2300,67 @@ void f_0BC90(void) {
 	return;
 }
 
-// STUB: GY454XE  Re 0BDFA
-void f_0BDFA(void) {
+// FUNCTION: GY454XE  Re 0BDFA
+static void read_replay_entry(void) {
+	char v0;
+	char *v1;
+	char *v2;
+	char v3;
+	char v4;
+	char v5;
+
+	v0 = mode;
+	v1 = result;
+	v2 = get_replay_addr();
+	if (v2 && (v3 = replay_idx)) {
+		v4 = get_num_replay_entries();
+		v5 = 0;
+		if (v3 != 1 || (v4 <= 1 && v0 != MODE_EQN)) v5 = 1;
+		if (v3 < v4) v5 |= 2;
+		arrow_state = v5;
+		f_0AF16();
+		f_0B8B8(1);
+		--v3;
+		for (v4 = 1; v4 <= v3; v4++) v2 = find_replay_entry(v2);
+		v4 = *v2++;
+		v3 = 10;
+		if (v4 & (1 << 7)) v3 = 20;
+		v4 &= 0x7f;
+		set_result_fmt(*v2++);
+		d_08101 = *v2++;
+		memcpy(v1, v2, v3);
+		v2 += v3;
+		if (v3 == 10) num_fromdigit(&v1[10], 0);
+		d_080FE = 3;
+		result_template = v4;
+		d_080FE |= 1 << 5;
+		v1 = input_area;
+		v3 = strchr(v2, ':') - v2;
+		memcpy(v1, v2, v3);
+		v1[v3] = '\0';
+		if (v0 == MODE_EQN) f_085D2();
+	}
 	return;
 }
 
 // FUNCTION: GY454XE  Re 0BEEE
-static char f_0BEEE(f_09962_struct *a) {
+static char _keyfunc_mov_x(f_09962_struct *a) {
 	char v0;
 
-	if (!f_03698(last_key_keycode))
+	if (!is_mov_x_keycode(last_key_keycode))
 j_0bf04:
 		return 4;
 	v0 = table_mode;
 	if (d_080FE & (1 << 7)) {
-		if (!f_02CB6()) {
-			if (!(v0 & (1 << 7)) && v0 == 6) f_0AF16();
-		}
+		if (!f_02CB6() && (v0 & (1 << 7) || v0 == 6)) f_0AF16();
 		f_0B8B8(0x82);
 	} else if (a->mode != MODE_TABLE && a->mode != MODE_EQN) {
 		if (f_03660()) {
 			f_0AF16();
 			f_0B8B8(0x80);
-		} else if (!(char)*a->input_area_ptr && v0 == 1) smart_strcpy(a->input_area_ptr, cache_area);
+		} else if (!(char)*a->input_area && v0 == 1) smart_strcpy(a->input_area, cache_area);
 		else goto j_0bf04;
-		cursor_pos_byte = last_key_keycode == K_RIGHT ? 0 : smart_strlen(a->input_area_ptr);
+		cursor_pos_byte = last_key_keycode == K_RIGHT ? 0 : smart_strlen(a->input_area);
 	} else goto j_0bf04;
 	f_046AE();
 	return 1;
@@ -1948,7 +2368,7 @@ j_0bf04:
 
 // FUNCTION: GY454XE  Re 0BF8A
 static char f_0BF8A(void) {
-	if (f_03698(last_key_keycode) && is_matho() && d_0812C) {
+	if (is_mov_x_keycode(last_key_keycode) && is_matho() && d_0812C) {
 		f_046AE();
 		if (last_key_keycode == K_RIGHT) ++cursor_pos_byte;
 		else if (cursor_pos_byte) --cursor_pos_byte;
@@ -1958,13 +2378,41 @@ static char f_0BF8A(void) {
 	return 4;
 }
 
-// STUB: GY454XE  Re 0BFDC
-static char f_0BFDC(f_09962_struct *a) {
-	return 0;
+// FUNCTION: GY454XE  Re 0BFDC
+static char _keyfunc_mov_y(f_09962_struct *a) {
+	char v0;
+	char v1;
+
+	if (!is_mov_y_keycode(last_key_keycode))
+j_0bff2:
+		return 4;
+	if (a->unk_0x0a) goto j_0bff2;
+	v0 = f_03660();
+	if (!v0 && *a->input_area) goto j_0bff2;
+	v1 = get_num_replay_entries();
+	if (v1 >= 1) {
+		if (!(d_080FE & (1 << 5))) {
+			if (last_key_keycode == K_UP) {
+				replay_idx = v1;
+				if (v0 && v1 > 1) replay_idx = v1 - 1;
+			} else {
+				if (!v0) replay_idx = 1;
+				else goto j_0bff2;
+			}
+j_0c04a:
+			read_replay_entry();
+			return 2;
+		} else if (last_key_keycode == K_UP) {
+			if (--replay_idx < 1) replay_idx = 1;
+			else goto j_0c04a;
+		} else if (++replay_idx > v1) replay_idx = v1;
+		else goto j_0c04a;
+	}
+	goto j_0bff2;
 }
 
 // FUNCTION: GY454XE  Re 0C084
-void print_result(void) {
+static void print_result_basic(void) {
 	num_output_print(result);
 }
 
@@ -1972,10 +2420,10 @@ void print_result(void) {
 static void f_0C08C(f_09962_struct *a) {
 	char v0;
 
-	if (f_08ADC() && !a->unk_0x07) {
-		if (a->mode != MODE_CMPLX) num_fromdigit(&a->result_ptr[10], 0);
+	if (is_table_func_input() && !a->unk_0x07) {
+		if (a->mode != MODE_CMPLX) num_fromdigit(&a->result[10], 0);
 		v0 = cursor_pos_byte;
-		f_07B60(a->result_ptr);
+		print_result(a->result);
 		cursor_pos_byte = v0;
 	}
 
@@ -1986,12 +2434,13 @@ static void f_0C08C(f_09962_struct *a) {
 void f_0C0D0(void) {
 	char v0;
 
-	if (f_0B7B6()) f_10EF8();
+	if (is_eqn_result()) f_10EF8();
 	else if (table_mode == TABLE_SOLVE && d_080FD == 0x40) print_continue_prompt();
 	else {
 		v0 = f_02CB6();
 		if (d_080FE == 1) {
 			d_08122 = 1;
+j_0c10a:
 			if (!is_mathi()) input_print_linei();
 			else {
 				disable_ins();
@@ -2000,7 +2449,10 @@ void f_0C0D0(void) {
 		} else {
 			d_08122 = 0;
 			cursor_pos_byte = 0;
-			if (table_mode == TABLE_NONE || table_mode == TABLE_RANGE || (table_mode & (1 << 7))) if (v0) f_02BE8();
+			if (table_mode == TABLE_NONE || table_mode == TABLE_RANGE || (table_mode & (1 << 7))) {
+				if (v0) print_input_area();
+				else goto j_0c10a;
+			}
 		}
 	}
 	return;
@@ -2012,20 +2464,20 @@ static char f_0C148(f_09962_struct *a) {
 
 	v0 = d_080FE;
 	d_080FE = 0x80;
-	f_044D6(show_error(ERROR_MATH));
+	set_keycode(show_error(ERROR_MATH));
 	clear_result();
-	if (f_0BEEE(a) == 1) {
+	if (_keyfunc_mov_x(a) == 1) {
 		if (v0 == 4) {
 			f_0AF16();
-			smart_strcpy(a->input_area_ptr, cache_area);
-		} else cursor_pos_byte = smart_strlen(a->input_area_ptr);
+			smart_strcpy(a->input_area, cache_area);
+		} else cursor_pos_byte = smart_strlen(a->input_area);
 	} else f_0B9C8(a);
 }
 
 // FUNCTION: GY454XE  Re 0C1A0
 static char f_0C1A0(f_09962_struct *a) {
 	if (a->mode == MODE_BASE_N && submode == SMODE_BASE_N_BIN) {
-		if (f_149D8(a->result_ptr)) return 4;
+		if (f_149D8(a->result)) return 4;
 		else return f_0C148(a);
 	} else return 4;
 }
@@ -2034,24 +2486,61 @@ static char f_0C1A0(f_09962_struct *a) {
 static char f_0C1D4(f_09962_struct *a) {
 	char loc_m20[20];
 
-	if (f_02C76() || f_02AAA() || d_0812C) return 4;
-	num_cpy_im(loc_m20, a->result_ptr);
+	if (f_02C76() || get_result_disp_fmt() || d_0812C) return 4;
+	num_cpy_im(loc_m20, a->result);
 	if (num_invalid__(&loc_m20[10]) == 1 || !cmplx_abs(loc_m20)) return 4;
 	return f_0C148(a);
 }
 
 // FUNCTION: GY454XE  Re 0C22E
 static char keyfunc_ac(f_09962_struct *a) {
-	if (f_0B7B6()) {
+	if (is_eqn_result()) {
 		f_0BA28(a);
 		return 0;
 	} else if (!f_0B9C8(a)) return 0;
 	else return 1;
 }
 
-// STUB: GY454XE  Re 0C25A
+// FUNCTION: GY454XE  Re 0C25A
 static char keyfunc_sto_rcl(f_09962_struct *a) {
-	return 0;
+	char v0;
+	char v1;
+	char v2;
+	char v3;
+
+	v0 = 0;
+	v1 = last_key_keycode;
+	v2 = is_rcl_keycode(v2);
+	if (!v2) {
+		if (a->unk_0x07)
+j_0c27a:
+			return 0;
+		else if (a->mode != MODE_TABLE && a->unk_0x0a) {
+		} goto j_0c27a;
+	}
+	set_char_keycode(get_storcl_tok(v1));
+	f_0B736();
+	if (f_03664()) {
+		a->unk_0x07 = f_0A564();
+		v3 = smart_strlen(a->input_area);
+		if (v2) {
+			if (v3) v0 = 1;
+		} else if (v3 && v3 < 99) {
+			cursor_pos_byte = v3;
+		} else goto j_0c27a;
+		insert_token(last_key_keycode, a->is_func);
+		if (v2) {
+			if (v0 == 1)
+j_0c2e2:
+				return 1;
+			else if (a->mode != MODE_TABLE && !a->unk_0x07 && !a->unk_0x0a) {
+			} else goto j_0c2e2;
+		}
+		v0 = K_APPROX;
+		if (f_0B588()) v0 = K_EXECUTE;
+		set_keycode(v0);
+		return keyfunc_exe(a);
+	} else goto j_0c27a;
 }
 
 // FUNCTION: GY454XE  Re 0C316
@@ -2073,35 +2562,35 @@ static char keyfunc_exe(f_09962_struct *a) {
 	char loc_m22[20];
 
 	v0 = d_080FE & (1 << 6);
-	if (f_0B7B6()) {
-		v1 = f_0BC34();
-		if (++d_0810F > v1) {
+	if (is_eqn_result()) {
+		v1 = get_num_replay_entries();
+		if (++replay_idx > v1) {
 			f_0BA28(a);
 			goto j_0c396;
 		} else {
-			f_0BDFA();
-			f_085C0();
+			read_replay_entry();
+			set_default_result_fmt();
 		}
-	} else if (*a->input_area_ptr) {
-		if (f_08ADC()) {
+	} else if (*a->input_area) {
+		if (is_table_func_input()) {
 			table_mode = TABLE_RANGE;
 			d_080FD = 1;
 			d_080FE = 3;
-			smart_strcpy(cache_area, a->input_area_ptr);
+			smart_strcpy(cache_area, a->input_area);
 j_0c390:
 			a->unk_0x04 = 0;
 j_0c396:
 			return 0;
 		} else {
 			char v3;
-			input_area_ptr = a->input_area_ptr;
-			v1 = f_0BADA() ? f_0BB42(&loc_m2) : f_0BAF2(&loc_m2);
+			input_area_ptr = a->input_area;
+			v1 = is_mathi_mode() ? f_0BB42(&loc_m2) : f_0BAF2(&loc_m2);
 			v2 = loc_m2;
 			if (v0) loc_m2 = d_0812A;
-			num_cpy_im(loc_m22, a->result_ptr);
+			num_cpy_im(loc_m22, a->result);
 			if (v1) {	
 				f_04796();
-				if (table_mode == TABLE_SOLVE && d_080FD == 4) v1 = f_10000(&loc_m2, a->result_ptr);
+				if (table_mode == TABLE_SOLVE && d_080FD == 4) v1 = f_10000(&loc_m2, a->result);
 				else if (a->mode == MODE_TABLE && d_080FD == 4) {
 					v1 = f_042AA(&loc_m2);
 					if (!v1) {
@@ -2109,62 +2598,68 @@ j_0c396:
 						f_0AF0A();
 						goto j_0c390;
 					}
-				} else v1 = num_parse(&loc_m2, a->result_ptr);
+				} else v1 = num_parse(&loc_m2, a->result);
 				if (v1 > 0 && v1 < 32) {
 					char tmp = loc_m2 - v2;
-					if (a->unk_0x08) f_06C54(a->input_area_ptr, v2, tmp, 0);
+					if (a->is_mathi) math2line(a->input_area, v2, tmp, 0);
 					else cursor_pos_byte = tmp;
 				}
 			} else v1 = ERROR_SYNTAX;
 			if (v1 > 0 && v1 < 32) {
 				d_080FE = 0x80;
-				f_044D6(show_error(v1));
+				set_keycode(show_error(v1));
 				clear_result();
-				if (a->unk_0x07) num_cpy_im(a->result_ptr, loc_m22);
-				if (f_0BEEE(a) == 1)
+				if (a->unk_0x07) num_cpy_im(a->result, loc_m22);
+				if (_keyfunc_mov_x(a) == 1)
 j_0c4a6:
 					return 1;
 				else if (f_0B9C8(a)) goto j_0c4a6;
-				else return 0;
+				else goto j_0c396;
  			}
  			f_044B6();
- 			f_085C0();
+ 			set_default_result_fmt();
  			d_080FE = 3;
- 			v3 = get_numtype(a->result_ptr);
+ 			v3 = get_numtype(a->result);
  			// Matrix/Vector pointer
  			if (v3 == 0x60 || v3 == 0x90) {
- 				table_mode = v3 == 0x60 ? TABLE_MATRIX : TABLE_VECTOR;
- 				f_15486(a->result_ptr);
+ 				char tmp;
+ 				if (v3 == 0x60) tmp = TABLE_MATRIX;
+ 				else tmp = TABLE_VECTOR;
+ 				table_mode = tmp;
+ 				f_15486(a->result);
  				submode = SMODE_MATVCT_ANS;
  				table_home();
  				goto j_0c390;
  			} else {
  				if (!v1 || v1 == 36) {
 	 				if (table_mode == TABLE_SOLVE && !a->unk_0x0a) {
-	 					d_080FF = 19;
-	 					d_080FD = v1 == 36 ? (char)0x40 : (char)0x20;
-	 				} else if (a->mode != MODE_CMPLX) num_fromdigit(&a->result_ptr[10], 0);
+	 					char tmp;
+	 					result_template = 19;
+	 					if (v1 == 36) tmp = 0x40;
+	 					else tmp = 0x20;
+	 					d_080FD = tmp;
+	 				} else if (a->mode != MODE_CMPLX) num_fromdigit(&a->result[10], 0);
 	 			} else if (v1 == 34) {
-	 				if (a->mode != MODE_CMPLX) d_080FF = 18;
+	 				if (a->mode != MODE_CMPLX) result_template = 18;
 	 				else d_08101 = 2;
 	 			} else if (v1 == 35) {
-	 				if (a->mode != MODE_CMPLX) d_080FF = 17;
+	 				if (a->mode != MODE_CMPLX) result_template = 17;
 	 				else d_08101 = 1;
 	 			} else if (v1 == 37) {
-	 				if (a->result_ptr[10] == 0x70) num_fromdigit(&a->result_ptr[10], 0);
-	 				else d_080FF = 20;
+	 				if (a->result[10] == 0x70) num_fromdigit(&a->result[10], 0);
+	 				else result_template = 20;
 	 			}
 	 			if (a->unk_0x0a || (table_mode != 1 && !(table_mode & (1 << 7)))) {
-	 				if (d_080FF & (1 << 4)) num_fromdigit(&a->result_ptr[10], 0);
-	 				d_080FF = 0;
-	 				f_0A410(a->result_ptr);
+	 				if (result_template & (1 << 4)) num_fromdigit(&a->result[10], 0);
+	 				result_template = 0;
+	 				f_0A410(a->result);
  					goto j_0c390;
 	 			} else {
-	 				if (d_080FF & (1 << 4)) {
-	 					num_cpy(loc_m22, a->result_ptr);
+	 				if (result_template & (1 << 4)) {
+	 					num_cpy(loc_m22, a->result);
 	 					num_fromdigit(&loc_m22[10], 0);
 	 					st_var(VAR_ANS, loc_m22);
-	 				} else st_var(VAR_ANS, a->result_ptr);
+	 				} else st_var(VAR_ANS, a->result);
 	 				if (table_mode != TABLE_SOLVE) {
 	 					if (loc_m2[-1] == ':') {
 	 						v0 = 1;
@@ -2172,7 +2667,7 @@ j_0c4a6:
 	 						d_0812A = loc_m2;
 	 					} else if (v0) v0 = 0;
 	 					if (!v0 && table_mode & (1 << 7) && d_080FD == 3) d_080FD = 0x10;
-	 					f_0BC90();
+	 					write_replay_entry();
 	 				}
 	 			}
 	 		}
@@ -2181,19 +2676,65 @@ j_0c4a6:
 	return 2;
 }
 
-// STUB: GY454XE  Re 0C64A
-static char keyfunc_abc(f_09962_struct *a) {
-	return 0;
+// FUNCTION: GY454XE  Re 0C64A
+static char keyfunc_fmt_dec(f_09962_struct *a) {
+	char v0;
+	char v1;
+	char v2;
+
+	if (result_template & (1 << 4))
+j_0c658:
+		return 0;
+	v0 = get_result_disp_fmt();
+	v1 = RESULT_DECIMAL;
+	v2 = get_result_store_fmt();
+	if (v0 <= RESULT_ENG4) v1 = RESULT_STANDARD;
+	else if (v0 == RESULT_DECIMAL) {
+		if (v2 >= RESULT_STANDARD) {
+			if (!a->is_matho) goto j_0c658;
+		} else v1 = RESULT_STANDARD;
+	}
+	set_result_store_fmt(v1);
+	return 2;
 }
 
-// STUB: GY454XE  Re 0C692
-static char keyfunc_dc(f_09962_struct *a) {
-	return 0;
+// FUNCTION: GY454XE  Re 0C692
+static char keyfunc_fmt_frac(f_09962_struct *a) {
+	char v0;
+	char v1;
+	char v2;
+
+	v0 = get_result_disp_fmt();
+	v1 = get_result_store_fmt();
+	v2 = RESULT_FRAC_MIX;
+	if (v0 <= RESULT_DECIMAL) {
+		if (v0 != RESULT_DMS && v1 > RESULT_DECIMAL && v1 <= RESULT_STANDARD)
+j_0c6b4:
+			return 0;
+		else if (setup_frac_result) v2 = RESULT_FRAC;
+	} else if (v0 != RESULT_FRAC) {
+		if (v0 == RESULT_FRAC_MIX) v2 = RESULT_FRAC;
+		else if (v0 == RESULT_STANDARD) goto j_0c6b4;
+	}
+	set_result_store_fmt(v2);
+	return 2;
 }
 
 // STUB: GY454XE  Re 0C6DE
 static char keyfunc_dms(f_09962_struct *a) {
-	return 0;
+	if (result_template & (1 << 4))
+j_0c6ea:
+		return 0;
+	if (num_invalid__(&a->result[10]) == 1) {
+		char tmp;
+		char tmp2;
+		if (!f_02C76() && num_invalid__(a->result) == 2) goto j_0c6ea;
+		tmp = get_result_disp_fmt();
+		tmp2 = RESULT_DMS;
+		if (tmp == RESULT_DMS) tmp2 = RESULT_DECIMAL;
+		set_result_store_fmt(tmp2);
+		return 2;
+	} else goto j_0c6ea;
 }
 
 // FUNCTION: GY454XE  Re 0C728
@@ -2202,26 +2743,48 @@ static char keyfunc_fact(f_09962_struct *a) {
 	return 0;
 }
 
-// STUB: GY454XE  Re 0C72C
-static void f_0C72C(f_09962_struct *a) {
-	return;
+// FUNCTION: GY454XE  Re 0C72C
+static char f_0C72C(f_09962_struct *a) {
+	if (a->mode == MODE_CMPLX)
+j_0c736:
+		return 1;
+	if (!(result_template & (1 << 4)) && !is_eqn_result()) return 0;
+	else goto j_0c736;
 }
 
-// STUB: GY454XE  Re 0C74C
+// FUNCTION: GY454XE  Re 0C74C
 static char keyfunc_eng(f_09962_struct *a) {
-	return 0;
+	char v0;
+
+	if (f_0C72C(a)) return 0;
+	v0 = get_result_disp_fmt();
+	if (v0 >= RESULT_ENGM4 && v0 <= RESULT_ENG4) {
+		--v0;
+		if (v0 < RESULT_ENGM4) v0 = RESULT_ENGM4;
+	} else v0 = RESULT_ENGM1;
+	set_result_store_fmt(v0);
+	return 2;
 }
 
-// STUB: GY454XE  Re 0C77A
+// FUNCTION: GY454XE  Re 0C77A
 static char keyfunc_eng_r(f_09962_struct *a) {
-	return 0;
+	char v0;
+
+	if (f_0C72C(a)) return 0;
+	v0 = get_result_disp_fmt();
+	if (v0 >= RESULT_ENGM4 && v0 <= RESULT_ENG4) {
+		++v0;
+		if (v0 > RESULT_ENG4) v0 = RESULT_ENGM4;
+	} else v0 = RESULT_ENG1;
+	set_result_store_fmt(v0);
+	return 2;
 }
 
 // FUNCTION: GY454XE  Re 0C7A8
 static char keyfunc_del(f_09962_struct *a) {
 	if (!f_03664()) return 0;
 	else {
-		f_07488(last_key_keycode);
+		process_cursor_action(last_key_keycode);
 		return 1;
 	}
 }
@@ -2230,10 +2793,10 @@ static char keyfunc_del(f_09962_struct *a) {
 static char keyfunc_mov_x(f_09962_struct *a) {
 	if (f_0BF8A() == 3) return 3;
 	else if (d_080FE & (1 << 6)) return 0;
-	else if (f_0BEEE(a) == 1) return 1;
+	else if (_keyfunc_mov_x(a) == 1) return 1;
 	else if (!f_03664()) return 0;
 	else {
-		f_07488(last_key_keycode);
+		process_cursor_action(last_key_keycode);
 		return 1;
 	}
 }
@@ -2241,10 +2804,10 @@ static char keyfunc_mov_x(f_09962_struct *a) {
 // FUNCTION: GY454XE  Re 0C806
 static char keyfunc_mov_y(f_09962_struct *a) {
 	if (d_080FE & (1 << 6)) return 0;
-	else if (f_0BFDC(a) == 2) return 2;
+	else if (_keyfunc_mov_y(a) == 2) return 2;
 	else if (!f_03664()) return 0;
 	else {
-		f_07488(last_key_keycode);
+		process_cursor_action(last_key_keycode);
 		return 1;
 	}
 }
@@ -2254,14 +2817,14 @@ static char keyfunc_base(f_09962_struct *a) {
 	submode = base_n_submodes[last_key_keycode - K_BASE_BIN];
 	if (f_03664()) {
 		if (f_0C1A0(a) == 1) return 1;
-		else print_result();
+		else print_result_basic();
 	}
 	return 2;
 }
 
 // FUNCTION: GY454XE  Re 0C86A
 static char keyfunc_mode(f_09962_struct *a) {
-	f_0B998();
+	print_result_0();
 	return 2;
 }
 
@@ -2269,8 +2832,11 @@ static char keyfunc_mode(f_09962_struct *a) {
 static char keyfunc_setup(f_09962_struct *a) {
 	if (is_matho()) f_085D2();
 	if (f_03664()) {
-		if (a->unk_0x08 && f_0C1D4(a) != 1) f_0C08C(a);
-		else return 1;
+		if (a->is_mathi)
+j_0c894:
+			return 1;
+		else if (f_0C1D4(a) == 1) f_0C08C(a);
+		else goto j_0c894;
 	}
 	return 2;
 }

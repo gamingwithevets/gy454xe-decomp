@@ -4,96 +4,25 @@ MODEL LARGE
 ; NOTE:
 ; unk5 may be partially written in C (at least 1 C source and 1 ASM source), however full assembly will be used for now.
 
-_reg0				EQU 8000H
-_reg0_2				EQU 8002H
-_reg0_4				EQU 8004H
-_reg0_5				EQU 8005H
-_reg0_6				EQU 8006H
-_reg0_7				EQU 8007H
-_reg0_8				EQU 8008H
-_reg0_9				EQU 8009H
-_d_0800A			EQU 800AH
-_d_0800B			EQU 800BH
-_d_0800C			EQU 800CH
-_d_0800D			EQU 800DH
-_d_0800E			EQU 800EH
-_d_0800F			EQU 800FH
-_reg1				EQU 8010H
 _reg1_1				EQU 8011H
 _reg1_2				EQU 8012H
 _reg1_8				EQU 8018H
 _reg1_9				EQU 8019H
-_d_0801A			EQU 801AH
-_d_0801C			EQU 801CH
-_d_0801D			EQU 801DH
-_arith_op			EQU 801EH
-_d_0801F			EQU 801FH
-_reg2				EQU 8020H
 _reg2_2				EQU 8022H
 _reg2_9				EQU 8029H
-_d_0802A			EQU 802AH
-_d_0802B			EQU 802BH
-_d_0802C			EQU 802CH
-_d_0802D			EQU 802DH
-_d_0802E			EQU 802EH
-_d_0802F			EQU 802FH
-_reg3				EQU 8030H
 _reg3_2				EQU 8032H
 _reg3_9				EQU 8039H
-_d_0803A			EQU 803AH
-_d_0803B			EQU 803BH
-_d_0803C			EQU 803CH
-_reg4				EQU 803CH
 _reg4_8				EQU 8044H
 _reg4_9				EQU 8045H
-_reg5				EQU 8046H
 _reg5_6				EQU 804CH
-_reg6				EQU 8050H
 _reg6_2				EQU 8052H
 _reg6_9				EQU 8059H
-_d_0805A			EQU 805AH
-_d_0805B			EQU 805BH
-_arg0_ref			EQU 805CH
-_arg1_ref			EQU 805EH
-_d_0805F			EQU 805FH
-_d_08060			EQU 8060H
-_d_08078			EQU 8078H
-_d_080E0			EQU 80E0H
-_last_key_keycode	EQU 80F5H
-_modifiers			EQU 80F8H
-_mode				EQU 80F9H
-_submode			EQU 80FAH
-_table_mode			EQU 80FCH
-_d_080FF			EQU 80FFH
-_setup_start		EQU 8102H
-_setup_num_fmt		EQU 8102H
-_setup_num_fmt_n	EQU 8103H
-_setup_decimal_mark	EQU 8104H
-_setup_angle_unit	EQU 8105H
-_setup_mathi		EQU 8106H
-_setup_stat_freq	EQU 8109H
-_setup_rdec			EQU 810AH
-_setup_decimalo		EQU 810CH
-_d_0810F			EQU 810FH
-_cursor_pos_byte	EQU 8110H
-_formula_x			EQU 8112H
-_cursor_char		EQU 8116H
-_d_08120			EQU 8120H
-_d_08121			EQU 8121H
-_d_08122			EQU 8122H
-_use_output_charset	EQU 8123H
-_d_08124			EQU 8124H
-_d_08126			EQU 8126H
-_input_area_ptr		EQU 8128H
-_input_area			EQU 8154H
-_random_seed		EQU 821CH
 _d_0829E			EQU 829EH
 _d_08300			EQU 8300H
 _d_08398			EQU 8398H
 _d_083FC			EQU 83FCH
 _d_08406			EQU 8406H
 _d_08546			EQU 8546H
-_d_08640			EQU 8640H
 _setup_default		EQU 1:0FFD4H
 
 $$NTABunk5_0 SEGMENT TABLE 2H #0
@@ -106,6 +35,7 @@ $$NCODunk5 SEGMENT CODE 2H ANY
 RSEG $$NTABunk5_0
 
 ; DATA: GY454XE  Re 00F80
+; DATA: GY455XE  Im 00F80
 _unk_00f80:
 	DB 0, 83H, 51H, 32H, 90H, 81H, 44H, 29H, 34H, 04H
 	DB 0, 20H, 81H, 39H, 66H, 95H, 99H, 02H, 01H, 03H
@@ -128,10 +58,12 @@ _unk_00f80:
 	DB 0, 83H, 51H, 32H, 90H, 81H, 44H, 29H, 34H, 04H
 
 ; DATA: GY454XE  Re 0103E
+; DATA: GY455XE  Im 0103E
 _unk_0103e:
 	DB 99H, 00H, 51H, 32H, 90H, 81H, 44H, 29H, 34H, 04H
 
 ; DATA: GY454XE  Re 01048
+; DATA: GY455XE  Im 01048
 _unk_01048:
 	DB 00H, 00H, 00H, 00H, 00H, 00H, 00H, 00H, 00H, 05H
 	DB 00H, 39H, 71H, 10H, 61H, 48H, 03H, 51H, 34H, 06H
@@ -145,72 +77,88 @@ _unk_01048:
 	DB 00H, 34H, 81H, 75H, 36H, 72H, 97H, 61H, 36H, 06H
 
 ; DATA: GY454XE  Re 010AC
+; DATA: GY455XE  Im 010AC
 _s_result_error:
 	DB "ERROR", 0
 
 ; DATA: GY454XE  Re 010B2
+; DATA: GY455XE  Im 010B2
 _s_result_var:
 	DB "X=", 0
 	DB "Y=", 0
 	DB "Z=", 0
 
 ; DATA: GY454XE  Re 010BB
+; DATA: GY455XE  Im 010BB
 _s_result_x:
 	DB "X\xb1=", 0
 	DB "X\xb2=", 0
 	DB "X\xce=", 0
 
 ; DATA: GY454XE  Re 010C7
+; DATA: GY455XE  Im 010C7
 _s_continue_prompt:
 	DB "Continue:[=]", 0
 
 ; DATA: GY454XE  Re 010D4
+; DATA: GY455XE  Im 010D4
 _s_prompt_fx:
 	DB "f(X)=", 0
 
 ; DATA: GY454XE  Re 010DA
+; DATA: GY455XE  Im 010DA
 _s_mathi_l:
 	DB "\xb8", 0
 
 ; DATA: GY454XE  Re 010DC
+; DATA: GY455XE  Im 010DC
 _s_mathi_r:
 	DB "\xb9", 0
 
 ; DATA: GY454XE  Re 010DE
+; DATA: GY455XE  Im 010DE
 _s_mathi_rl:
 	DB "\xb9\xb8", 0
 
 ; DATA: GY454XE  Re 010E1
+; DATA: GY455XE  Im 010E1
 _s_mathi_rend:
 	DB "\xb9\xbc", 0
 
 ; DATA: GY454XE  Re 010E4
+; DATA: GY455XE  Im 010E4
 _s_mathi_frac_startl:
 	DB "\xae\xbb\xb8", 0
 
 ; DATA: GY454XE  Re 010E8
+; DATA: GY455XE  Im 010E8
 _s_10pow:
 	DB "\x93", 0
 
 ; DATA: GY454XE  Re 010EA
+; DATA: GY455XE  Im 010EA
 _s_plus:
 	DB "+", 0
 
 ; DATA: GY454XE  Re 010EC
+; DATA: GY455XE  Im 010EC
 _s_negative:
 	DB "`", 0
 
 ; DATA: GY454XE  Re 010EE
+; DATA: GY455XE  Im 010EE
 _s_argsep_comma:
 	DB ",", 0
 
 ; DATA: GY454XE  Re 010F0
+; DATA: GY455XE  Im 010F0
 _s_argsep_semicolon:
 	DB ";", 0
 
 RSEG $$NTABunk5_1
 
 ; DATA: GY454XE  Re 0160E
+; DATA: GY455XE  Im 0160E
 _const_tokens:
 	DB 1DH
 	DB 1EH
@@ -239,188 +187,341 @@ _const_tokens:
 	DB 0D6H
 	DB 0
 
-; DATA STUB: GY454XE  Re 01628
-_unk_01628:
-	DB 00000000B, 00001010B, 01100000B
-	DB 00000001B, 00100110B, 01100000B
-	DB 00000011B, 01000110B, 01100000B
-	DB 00000101B, 01100110B, 01100000B
-	DB 00000111B, 10000110B, 01100000B
-	DB 00001001B, 10100110B, 01100000B
-	DB 00001011B, 11000110B, 01100000B
-	DB 00001101B, 11100110B, 01100000B
-	DB 00101011B, 11000110B, 01100010B
-	DB 00101101B, 11100110B, 01100010B
-	DB 00101111B, 00000110B, 01100011B
-	DB 00110001B, 00100110B, 01100011B
-	DB 00110011B, 01000110B, 01100011B
-	DB 00110101B, 01100110B, 01100011B
-	DB 00110111B, 11110110B, 01100000B
-	DB 00010000B, 00010110B, 01100001B
-	DB 00000000B, 00001111B, 11110000B
-	DB 00010010B, 00110110B, 01100001B
-	DB 00010100B, 11100110B, 00110110B
-	DB 00010101B, 01100110B, 01100001B
-	DB 00000011B, 01110001B, 00110110B
-	DB 00010111B, 10110110B, 00100010B
-	DB 00000000B, 11001001B, 00100010B
-	DB 00010000B, 01010100B, 00100111B
-	DB 00000000B, 00010100B, 01000000B
-	DB 00000010B, 00110100B, 01000000B
-	DB 00000100B, 01010100B, 01000000B
-	DB 00000110B, 01110100B, 01000000B
-	DB 00001000B, 10010100B, 01000000B
-	DB 00000001B, 10001010B, 01100001B
-	DB 00000010B, 10101010B, 00100010B
-	DB 00000011B, 00001010B, 11110000B
-	DB 00011001B, 00100110B, 01010000B
-	DB 00000011B, 01000101B, 01010000B
-	DB 00000101B, 01100101B, 01010000B
-	DB 00000111B, 00100101B, 10000000B
-	DB 00000011B, 01001000B, 10000000B
-	DB 00000101B, 00001000B, 10000000B
-	DB 00001000B, 10011000B, 10000000B
-	DB 00101101B, 11100010B, 00100010B
-	DB 01100011B, 00100001B, 00010110B
-	DB 01100001B, 00000001B, 00010110B
-	DB 00000000B, 10010101B, 00110110B
-	DB 01101010B, 11110011B, 00110110B
-	DB 00001000B, 10010101B, 01010000B
-	DB 00000000B, 00001111B, 11110000B
-	DB 01110011B, 00000011B, 11110000B
-	DB 01100101B, 01000010B, 00100111B
-	DB 01011111B, 01110001B, 00010000B
-	DB 00001000B, 10110001B, 00010000B
-	DB 00110101B, 00110011B, 00110011B
-	DB 00110100B, 01100011B, 00110011B
-	DB 00100000B, 00000001B, 00000000B
-	DB 00000001B, 00100000B, 00000000B
-	DB 00100001B, 00100001B, 00010010B
-	DB 00101001B, 01100010B, 00100010B
-	DB 00001111B, 00000001B, 00010001B
-	DB 00010001B, 01010001B, 00010001B
-	DB 00010001B, 11000100B, 00110110B
-	DB 01101101B, 10110011B, 00110110B
-	DB 00011010B, 10110110B, 01100001B
-	DB 00011100B, 00000110B, 11110000B
-	DB 00000000B, 00001111B, 11110000B
-	DB 00100111B, 10000010B, 00100010B
-	DB 00101000B, 10010110B, 01100010B
-	DB 00101010B, 01100110B, 10000000B
-	DB 00000111B, 00001000B, 00110111B
-	DB 01110001B, 00100011B, 00110111B
-	DB 00001001B, 10000001B, 01100011B
-	DB 00111001B, 00010110B, 01010000B
-	DB 01000010B, 00000110B, 11110000B
-	DB 00000000B, 00001111B, 11110000B
-	DB 00010010B, 00110001B, 00010001B
-	DB 00010100B, 01100001B, 00010001B
-	DB 00000100B, 01011010B, 10100000B
-	DB 00000110B, 00001010B, 11110000B
-	DB 00010111B, 10100001B, 10000000B
-	DB 00111010B, 10110110B, 01100011B
-	DB 00111100B, 11010110B, 01100011B
-	DB 00101111B, 01100010B, 00100110B
-	DB 00011010B, 10110001B, 00010001B
-	DB 00011100B, 10000001B, 00010001B
-	DB 00010010B, 01100100B, 00110111B
-	DB 00001010B, 10110101B, 01010000B
-	DB 00011001B, 10110001B, 10000000B
-	DB 00111110B, 11110110B, 01100011B
-	DB 01000000B, 00010110B, 01100100B
-	DB 01100100B, 00000010B, 00100011B
-	DB 00011101B, 11100001B, 00010001B
-	DB 00011111B, 11000001B, 00010000B
-	DB 00011101B, 11100110B, 01100001B
-	DB 00011111B, 00000110B, 01100010B
-	DB 00001010B, 10110100B, 01000000B
-	DB 00001100B, 11010100B, 01000000B
-	DB 00001110B, 11110100B, 01000000B
-	DB 00110001B, 00100010B, 00100011B
-	DB 00001101B, 11100001B, 00010000B
-	DB 01110111B, 10100001B, 00010000B
-	DB 00100001B, 00100110B, 01100010B
-	DB 00100011B, 01000110B, 01100010B
-	DB 01100000B, 00010111B, 01110110B
-	DB 01100010B, 00110111B, 01110110B
-	DB 10010000B, 00010111B, 01111001B
-	DB 10010010B, 00110111B, 01111001B
-	DB 00000100B, 01010001B, 00010000B
-	DB 00000110B, 10000001B, 00110110B
-	DB 00100101B, 01100110B, 01100010B
-	DB 00100111B, 01110110B, 00110011B
-	DB 00111000B, 10010011B, 00110011B
-	DB 00111010B, 10110011B, 00110011B
-	DB 00111100B, 11010011B, 00110011B
-	DB 00111110B, 11110011B, 00110011B
-	DB 01000000B, 00010011B, 00110100B
-	DB 01000010B, 00110011B, 00110100B
-	DB 01000100B, 01010011B, 00110100B
-	DB 01000110B, 01110011B, 00110100B
-	DB 01001000B, 10100011B, 00110100B
-	DB 01001001B, 10110011B, 00110100B
-	DB 01001100B, 11010011B, 00110100B
-	DB 01001110B, 11110011B, 00110100B
-	DB 01010000B, 00010011B, 00110101B
-	DB 01010010B, 00110011B, 00110101B
-	DB 01010100B, 01010011B, 00110101B
-	DB 01010110B, 01110011B, 00110101B
-	DB 01011000B, 10010011B, 00110101B
-	DB 01011010B, 11000011B, 00110101B
-	DB 01011011B, 11100011B, 00110101B
-	DB 01011101B, 00000011B, 11110000B
+; DATA: GY454XE  Re 01628
+_num_parser_indices:
+	;            --00   --01    
+	DB  00H, 00001010B, 01100000B
+	;            --02   --03    
+	DB  01H, 00100110B, 01100000B
+	;            --04   --05    
+	DB  03H, 01000110B, 01100000B
+	;            --06   --07    
+	DB  05H, 01100110B, 01100000B
+	;            --08   --09    
+	DB  07H, 10000110B, 01100000B
+	;            --0A   --0B    
+	DB  09H, 10100110B, 01100000B
+	;            --0C   --0D    
+	DB  0BH, 11000110B, 01100000B
+	;            --0E   --0F    
+	DB  0DH, 11100110B, 01100000B
+	;            --10   --11    
+	DB  2BH, 11000110B, 01100010B
+	;            --12   --13    
+	DB  2DH, 11100110B, 01100010B
+	;            --14   --15    
+	DB  2FH, 00000110B, 01100011B
+	;            --16   --17    
+	DB  31H, 00100110B, 01100011B
+	;            --18   --19    
+	DB  33H, 01000110B, 01100011B
+	;            --1A   --1B    
+	DB  35H, 01100110B, 01100011B
+	;            --1C   --1D    
+	DB  37H, 11110110B, 01100000B
+	;            --1E   --1F    
+	DB  10H, 00010110B, 01100001B
+	;            --20   --21    
+	DB  00H, 00001111B, 11110000B
+	;            --22   --23    
+	DB  12H, 00110110B, 01100001B
+	;            --24   --25    
+	DB  14H, 11100110B, 00110110B
+	;            --26   --27    
+	DB  15H, 01100110B, 01100001B
+	;            --28   --29    
+	DB  03H, 01110001B, 00110110B
+	;            --2A   --2B    
+	DB  17H, 10110110B, 00100010B
+	;            --2C   --2D    
+	DB  00H, 11001001B, 00100010B
+	;            --2E   --2F    
+	DB  10H, 01010100B, 00100111B
+	;            --30   --31    
+	DB  00H, 00010100B, 01000000B
+	;            --32   --33    
+	DB  02H, 00110100B, 01000000B
+	;            --34   --35    
+	DB  04H, 01010100B, 01000000B
+	;            --36   --37    
+	DB  06H, 01110100B, 01000000B
+	;            --38   --39    
+	DB  08H, 10010100B, 01000000B
+	;            --3A   --3B    
+	DB  01H, 10001010B, 01100001B
+	;            --3C   --3D    
+	DB  02H, 10101010B, 00100010B
+	;            --3E   --3F    
+	DB  03H, 00001010B, 11110000B
+	;            --40   --41    
+	DB  19H, 00100110B, 01010000B
+	;            --42   --43    
+	DB  03H, 01000101B, 01010000B
+	;            --44   --45    
+	DB  05H, 01100101B, 01010000B
+	;            --46   --47    
+	DB  07H, 00100101B, 10000000B
+	;            --48   --49    
+	DB  03H, 01001000B, 10000000B
+	;            --4A   --4B    
+	DB  05H, 00001000B, 10000000B
+	;            --4C   --4D    
+	DB  08H, 10011000B, 10000000B
+	;            --4E   --4F    
+	DB  2DH, 11100010B, 00100010B
+	;            --50   --51    
+	DB  63H, 00100001B, 00010110B
+	;            --52   --53    
+	DB  61H, 00000001B, 00010110B
+	;            --54   --55    
+	DB  00H, 10010101B, 00110110B
+	;            --56   --57    
+	DB  6AH, 11110011B, 00110110B
+	;            --58   --59    
+	DB  08H, 10010101B, 01010000B
+	;            --5A   --5B    
+	DB  00H, 00001111B, 11110000B
+	;            --5C   --5D    
+	DB  73H, 00000011B, 11110000B
+	;            --5E   --5F    
+	DB  65H, 01000010B, 00100111B
+	;            --60   --61    
+	DB  5FH, 01110001B, 00010000B
+	;            --62   --63    
+	DB  08H, 10110001B, 00010000B
+	;            --64   --65    
+	DB  35H, 00110011B, 00110011B
+	;            --66   --67    
+	DB  34H, 01100011B, 00110011B
+	;            --68   --69    
+	DB  20H, 00000001B, 00000000B
+	;            --6A   --6B    
+	DB  01H, 00100000B, 00000000B
+	;            --6C   --6D    
+	DB  21H, 00100001B, 00010010B
+	;            --6E   --6F    
+	DB  29H, 01100010B, 00100010B
+	;            --70   --71    
+	DB  0FH, 00000001B, 00010001B
+	;            --72   --73    
+	DB  11H, 01010001B, 00010001B
+	;            --74   --75    
+	DB  11H, 11000100B, 00110110B
+	;            --76   --77    
+	DB  6DH, 10110011B, 00110110B
+	;            --78   --79    
+	DB  1AH, 10110110B, 01100001B
+	;            --7A   --7B    
+	DB  1CH, 00000110B, 11110000B
+	;            --7C   --7D    
+	DB  00H, 00001111B, 11110000B
+	;            --7E   --7F    
+	DB  27H, 10000010B, 00100010B
+	;            --80   --81    
+	DB  28H, 10010110B, 01100010B
+	;            --82   --83    
+	DB  2AH, 01100110B, 10000000B
+	;            --84   --85    
+	DB  07H, 00001000B, 00110111B
+	;            --86   --87    
+	DB  71H, 00100011B, 00110111B
+	;            --88   --89    
+	DB  09H, 10000001B, 01100011B
+	;            --8A   --8B    
+	DB  39H, 00010110B, 01010000B
+	;            --8C   --8D    
+	DB  42H, 00000110B, 11110000B
+	;            --8E   --8F    
+	DB  00H, 00001111B, 11110000B
+	;            --90   --91    
+	DB  12H, 00110001B, 00010001B
+	;            --92   --93    
+	DB  14H, 01100001B, 00010001B
+	;            --94   --95    
+	DB  04H, 01011010B, 10100000B
+	;            --96   --97    
+	DB  06H, 00001010B, 11110000B
+	;            --98   --99    
+	DB  17H, 10100001B, 10000000B
+	;            --9A   --9B    
+	DB  3AH, 10110110B, 01100011B
+	;            --9C   --9D    
+	DB  3CH, 11010110B, 01100011B
+	;            --9E   --9F    
+	DB  2FH, 01100010B, 00100110B
+	;            --A0   --A1    
+	DB  1AH, 10110001B, 00010001B
+	;            --A2   --A3    
+	DB  1CH, 10000001B, 00010001B
+	;            --A4   --A5    
+	DB  12H, 01100100B, 00110111B
+	;            --A6   --A7    
+	DB  0AH, 10110101B, 01010000B
+	;            --A8   --A9    
+	DB  19H, 10110001B, 10000000B
+	;            --AA   --AB    
+	DB  3EH, 11110110B, 01100011B
+	;            --AC   --AD    
+	DB  40H, 00010110B, 01100100B
+	;            --AE   --AF    
+	DB  64H, 00000010B, 00100011B
+	;            --B0   --B1    
+	DB  1DH, 11100001B, 00010001B
+	;            --B2   --B3    
+	DB  1FH, 11000001B, 00010000B
+	;            --B4   --B5    
+	DB  1DH, 11100110B, 01100001B
+	;            --B6   --B7    
+	DB  1FH, 00000110B, 01100010B
+	;            --B8   --B9    
+	DB  0AH, 10110100B, 01000000B
+	;            --BA   --BB    
+	DB  0CH, 11010100B, 01000000B
+	;            --BC   --BD    
+	DB  0EH, 11110100B, 01000000B
+	;            --BE   --BF    
+	DB  31H, 00100010B, 00100011B
+	;            --C0   --C1    
+	DB  0DH, 11100001B, 00010000B
+	;            --C2   --C3    
+	DB  77H, 10100001B, 00010000B
+	;            --C4   --C5    
+	DB  21H, 00100110B, 01100010B
+	;            --C6   --C7    
+	DB  23H, 01000110B, 01100010B
+	;            --C8   --C9    
+	DB  60H, 00010111B, 01110110B
+	;            --CA   --CB    
+	DB  62H, 00110111B, 01110110B
+	;            --CC   --CD    
+	DB  90H, 00010111B, 01111001B
+	;            --CE   --CF    
+	DB  92H, 00110111B, 01111001B
+	;            --D0   --D1    
+	DB  04H, 01010001B, 00010000B
+	;            --D2   --D3    
+	DB  06H, 10000001B, 00110110B
+	;            --D4   --D5    
+	DB  25H, 01100110B, 01100010B
+	;            --D6   --D7    
+	DB  27H, 01110110B, 00110011B
+	;            --D8   --D9    
+	DB  38H, 10010011B, 00110011B
+	;            --DA   --DB    
+	DB  3AH, 10110011B, 00110011B
+	;            --DC   --DD    
+	DB  3CH, 11010011B, 00110011B
+	;            --DE   --DF    
+	DB  3EH, 11110011B, 00110011B
+	;            --E0   --E1    
+	DB  40H, 00010011B, 00110100B
+	;            --E2   --E3    
+	DB  42H, 00110011B, 00110100B
+	;            --E4   --E5    
+	DB  44H, 01010011B, 00110100B
+	;            --E6   --E7    
+	DB  46H, 01110011B, 00110100B
+	;            --E8   --E9    
+	DB  48H, 10100011B, 00110100B
+	;            --EA   --EB    
+	DB  49H, 10110011B, 00110100B
+	;            --EC   --ED    
+	DB  4CH, 11010011B, 00110100B
+	;            --EE   --EF    
+	DB  4EH, 11110011B, 00110100B
+	;            --F0   --F1    
+	DB  50H, 00010011B, 00110101B
+	;            --F2   --F3    
+	DB  52H, 00110011B, 00110101B
+	;            --F4   --F5    
+	DB  54H, 01010011B, 00110101B
+	;            --F6   --F7    
+	DB  56H, 01110011B, 00110101B
+	;            --F8   --F9    
+	DB  58H, 10010011B, 00110101B
+	;            --FA   --FB    
+	DB  5AH, 11000011B, 00110101B
+	;            --FC   --FD    
+	DB  5BH, 11100011B, 00110101B
+	;            --FE   --FF    
+	DB  5DH, 00000011B, 11110000B
 
+; Parsers are mapped to tokens via the above table. The categorization is as follows:
+;  0  Sum, Integral, Derivative
+;  1  '(', Base-N symbols (h, d, b, o), negative, Not, Neg, Abs, log, Pol, Rec, sinh, cosh, tanh, eⁿ, Conjg, sinh⁻¹, cosh⁻¹, tanh⁻¹,
+;     10ⁿ, √, sin, cos, tan, ln, ³√, sin⁻¹, cos⁻¹, tan⁻¹, Rnd, det, Trn, RanInt#, arg, P, Q, R
+;  2  '+', '-', 0x2F, '=', '×', '÷', xⁿ, ÷R, and, or, xor, xnor, Dot Product, ⁿ√, fraction, angle, nPr, nCr
+;  3  '%', ')', >a+bi, >r∠θ, Factorial, DMS, x̂₁, x̂, ŷ, x̂₂, x², x³, x⁻¹, °, ʳ, ᵍ, >Conv, >t, All conversion characters
+;  4  '.', 0-9, x10, Recurring decimal, MathIO characters
+;  5  A, B, C, D, E, F, M, X, Y, Ans, 0xA6, 0xA7
+;  6  All constants, ∑x², ∑x, n, ∑y², ∑y, ∑xy, ∑x³, ∑x²y, ∑x⁴, minX, maxX, minY, maxY, i, e, pi, x̄, ȳ, Ran#, ᴀ, ʙ, ᴄ, r, σx, sx, σy, sy
+;  7  MatA, MatB, MatC, MatAns, VctA, VctB, VctC, VctAns
+;  8  ->A, ->B, ->C, ->D, ->M, ->X, ->Y, ->E, ->F, M+, M-
+;  9  ','
+; 10  (null), ':', '<', '>', ≤, ≠, ≥
+; 15  All remaining characters (invalid)
 ; DATA: GY454XE  Re 017A8
-_jmp_017a8:
-	DW _num_sum__
-	DW _f_15682
-	DW _f_15712
-	DW _f_157B0
-	DW _f_158C6
-	DW _f_15AA0
-	DW _f_15AFE
-	DW _f_15B64
-	DW _f_15B96
-	DW _f_15C30
+; DATA: GY455XE  Im 017A8
+_num_parsers:
+	DW _num_parse_int_ddx_sum
+	DW _num_parse_func
+	DW _num_parse_op
+	DW _num_parse_postfix
+	DW _num_parse_numlit
+	DW _num_parse_var
+	DW _num_parse_const
+	DW _num_parse_matvct
+	DW _num_parse_sto
+	DW _num_parse_sep
 	DW _num_calculate
 
 ; DATA: GY454XE  Re 017BE
+; DATA: GY455XE  Im 017BE
 _num_0:
 	DB 00H, 00H, 00H, 00H, 00H, 00H, 00H, 00H, 00H, 00H
 
 ; DATA: GY454XE  Re 017C8
+; DATA: GY455XE  Im 017C8
 _num_1:
 	DB 01H, 00H, 00H, 00H, 00H, 00H, 00H, 00H, 00H, 01H
 
 ; DATA: GY454XE  Re 017D2
+; DATA: GY455XE  Im 017D2
 _num_2:
 	DB 02H, 00H, 00H, 00H, 00H, 00H, 00H, 00H, 00H, 01H
 
 ; DATA: GY454XE  Re 017DC
+; DATA: GY455XE  Im 017DC
 _num_3:
 	DB 03H, 00H, 00H, 00H, 00H, 00H, 00H, 00H, 00H, 01H
 
 ; DATA: GY454XE  Re 017E6
+; DATA: GY455XE  Im 017E6
 _num_4:
 	DB 04H, 00H, 00H, 00H, 00H, 00H, 00H, 00H, 00H, 01H
 
 ; DATA: GY454XE  Re 017F0
+; DATA: GY455XE  Im 017F0
 _num_32:
 	DB 03H, 20H, 00H, 00H, 00H, 00H, 00H, 00H, 01H, 01H
 
 ; DATA: GY454XE  Re 017FA
+; DATA: GY455XE  Im 017FA
 _num_100:
 	DB 01H, 00H, 00H, 00H, 00H, 00H, 00H, 00H, 02H, 01H
 
 ; DATA: GY454XE  Re 01804
+; DATA: GY455XE  Im 01804
 _num_256:
 	DB 02H, 56H, 00H, 00H, 00H, 00H, 00H, 00H, 02H, 01H
 
 ; DATA: GY454XE  Re 0180E
+; DATA: GY455XE  Im 0180E
 _num_25200:
 	DB 02H, 52H, 00H, 00H, 00H, 00H, 00H, 00H, 04H, 01H
 
 ; DATA: GY454XE  Re 01818
+; DATA: GY455XE  Im 01818
 _num_consts:
 	DB 01H, 67H, 26H, 21H, 63H, 70H, 00H, 00H, 73H, 00H  ; mp  | 1.672621637E-27
 	DB 01H, 67H, 49H, 27H, 21H, 10H, 00H, 00H, 73H, 00H  ; mn  | 1.674927211E-27
@@ -466,6 +567,7 @@ _num_consts:
 RSEG $$NTABunk5_2
 
 ; DATA: GY454XE  Re 019A8
+; DATA: GY455XE  Im 019A8
 _jmp_019a8:
 	DW _f_1B4A0
  	DW _f_1B4B6
@@ -495,6 +597,7 @@ _jmp_019a8:
 	DW _num_random
 
 ; DATA: GY454XE  Re 019DC
+; DATA: GY455XE  Im 019DC
 _num_convs:
 	DB 02H, 54H, 00H, 00H, 00H, 00H, 00H, 00H, 00H, 01H  ; in>cm       | 2.54
 	DB 03H, 04H, 80H, 00H, 00H, 00H, 00H, 00H, 99H, 00H  ; ft>m        | 0.3048
@@ -518,14 +621,39 @@ _num_convs:
 	DB 04H, 18H, 58H, 00H, 00H, 00H, 00H, 00H, 00H, 01H  ; cal>J       | 4.1858
 
 ; DATA: GY454XE  Re 01AAE
+; DATA: GY455XE  Im 01AAE
 _num_2147483648:
 	DB 02H, 14H, 74H, 83H, 64H, 80H, 00H, 00H, 09H, 01H
 
 ; DATA: GY454XE  Re 01AB8
+; DATA: GY455XE  Im 01AB8
 _num_32768:
 	DB 03H, 27H, 68H, 00H, 00H, 00H, 00H, 00H, 04H, 01H
 
+; DATA: GY454XE  Re 01AC2
+; DATA: GY455XE  Im 01AC2
+_bcd_weights:
+	DW WORD1 1000000000
+	DW WORD2 1000000000
+	DW WORD1 100000000
+	DW WORD2 100000000
+	DW WORD1 10000000
+	DW WORD2 10000000
+	DW WORD1 1000000
+	DW WORD2 1000000
+	DW WORD1 100000
+	DW WORD2 100000
+	DW WORD1 10000
+	DW WORD2 10000
+	DW WORD1 1000
+	DW WORD2 1000
+	DW WORD1 100
+	DW WORD2 100
+	DW WORD1 10
+	DW WORD2 10
+
 ; DATA: GY454XE  Re 01AE6
+; DATA: GY455XE  Im 01AE6
 _jmp_01ae6:
 	DW _f_13B4A
 	DW _f_135C6
@@ -630,6 +758,7 @@ _jmp_01ae6:
 	DW _num_randint
 
 ; DATA: GY454XE  Re 01BB0
+; DATA: GY455XE  Im 01BB0
 _num_sin_consts:
 	DB 02H, 58H, 81H, 90H, 45H, 10H, 25H, 21H, 99H, 00H  ;  sin(15°) | (sqrt(6) - sqrt(2))/4
 	DB 05H, 00H, 00H, 00H, 00H, 00H, 00H, 00H, 99H, 00H  ;  sin(30°) | 1/2
@@ -643,6 +772,7 @@ _num_sin_consts:
 	DB 80H, 02H, 01H, 04H, 00H, 06H, 01H, 04H, 01H, 01H  ; -sin(75°) | -(sqrt(2) + sqrt(6))/4
 
 ; DATA: GY454XE  Re 01C14
+; DATA: GY455XE  Im 01C14
 _num_tan_consts:
 	DB 02H, 67H, 94H, 91H, 92H, 43H, 11H, 23H, 99H, 00H  ;  tan(15°) | 2 - sqrt(3)
 	DB 05H, 77H, 35H, 02H, 69H, 18H, 96H, 26H, 99H, 00H  ;  tan(30°) | sqrt(3)/3
@@ -655,9 +785,42 @@ _num_tan_consts:
 
 RSEG $$NTABunk5_3
 
+; DATA: GY454XE  Re 01D3E
+; DATA: GY455XE  Im 01D3E
+_jmp_01d3e:
+	DW _f_11E3C
+	DW _f_11E3C
+	DW _f_11F20
+	DW _f_11EEE
+	DW _f_11EA4
+	DW _f_11E0A
+	DW _f_11DE2
+	DW _f_11DBC
+	DW _f_11DBC
+	DW _f_11DB4
+	DW _f_11DAC
+	DW _f_11DA4
+	DW _f_11D9C
+	DW _f_11D94
+	DW _f_11D32
+	DW _f_11D32
+	DW _f_11CBA
+	DW _f_11C36
+	DW _f_11BA6
+	DW _f_11B18
+	DW _f_11A9C
+	DW _f_11CF8
+	DW _f_1195C
+	DW _f_11C7E
+	DW _f_11BFA
+	DW _f_11B68
+	DW _f_11AE2
+	DW _f_11A64
+
 ; Normal Cumulative Distribution Function (CDR) approximations
 
 ; DATA: GY454XE  Re 01D76
+; DATA: GY455XE  Im 01D76
 _num_normal_cdf:
 	DB 02H, 31H, 64H, 19H, 00H, 00H, 00H, 00H, 99H, 00H  ; p  =  0.2316419
 	DB 03H, 19H, 38H, 15H, 03H, 00H, 00H, 00H, 99H, 00H  ; a1 =  0.319381503
@@ -676,6 +839,7 @@ _num_4294967295:
 RSEG $$NCODunk5
 
 ; FUNCTION: GY454XE  Re 10000
+; FUNCTION: GY455XE  Im 10000
 _f_10000:
 	PUSH LR
 	PUSH FP
@@ -930,7 +1094,7 @@ _$j_1024e:
 	MOV R0, #60H
 	MOV R1, #0FFH
 	ADD ER0, FP
-	BL _f_1B288
+	BL _get_num_err_type
 	CMP R0, #0H
 	BEQ _$j_10268
 	CMP R0, #3H
@@ -1352,6 +1516,7 @@ _$j_105f8:
 	BAL _$j_1058e
 
 ; FUNCTION: GY454XE  Re 105FE
+; FUNCTION: GY455XE  Im 105FE
 _f_105FE:
 	PUSH LR
 	MOV R9, #6H
@@ -1367,7 +1532,7 @@ _$j_10602:
 	BL _f_1AFD8
 	MOV ER0, #-32H
 	ADD ER0, FP
-	BL _f_1B288
+	BL _get_num_err_type
 	CMP R0, #0H
 	BEQ _$j_10628
 	MOV R0, #1H
@@ -1408,6 +1573,7 @@ _$j_10664:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 10668
+; FUNCTION: GY455XE  Im 10668
 _f_10668:
 	PUSH LR
 	MOV R2, #1H
@@ -1419,6 +1585,7 @@ _f_10668:
 	BAL _$j_1068a
 
 ; FUNCTION: GY454XE  Re 1067A
+; FUNCTION: GY455XE  Im 1067A
 _f_1067A:
 	PUSH LR
 	MOV R2, #1H
@@ -1476,6 +1643,7 @@ _$j_106e8:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 106EC
+; FUNCTION: GY455XE  Im 106EC
 _f_106EC:
 	PUSH LR
 	MOV R2, #60H
@@ -1499,6 +1667,7 @@ _f_106EC:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 1071A
+; FUNCTION: GY455XE  Im 1071A
 _f_1071A:
 	PUSH LR
 	CMP R0, #0AH
@@ -1514,7 +1683,7 @@ _$j_1072a:
 	MOV R2, R0
 	MOV ER0, #-28H
 	ADD ER0, FP
-	BL _f_1B12C
+	BL _init_num
 	MOV R2, #0H
 	MOV ER0, ER10
 	BL _num_fromdigit
@@ -1526,12 +1695,13 @@ _$j_1072a:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 1074C
+; FUNCTION: GY455XE  Im 1074C
 _f_1074C:
 	PUSH LR
 	MOV R0, #0BAH
 	MOV R1, #0FFH
 	ADD ER0, FP
-	BL _f_1B288
+	BL _get_num_err_type
 	CMP R0, #0H
 	BNE _$j_1078c
 	MOV R2, #0BAH
@@ -1560,16 +1730,17 @@ _$j_1078c:
 	MOV R0, #60H
 	MOV R1, #0FFH
 	ADD ER0, FP
-	BL _f_1B12C
+	BL _init_num
 	MOV R2, R9
 	MOV R0, #6AH
 	MOV R1, #0FFH
 	ADD ER0, FP
-	BL _f_1B12C
+	BL _init_num
 	MOV R0, R9
 	POP PC
 
 ; FUNCTION: GY454XE  Re 107AA
+; FUNCTION: GY455XE  Im 107AA
 _f_107AA:
 	PUSH LR
 	MOV ER2, #-3CH
@@ -1701,7 +1872,7 @@ _$j_1081c:
 	MOV ER0, BP
 	BL _f_1A44C
 	MOV ER0, BP
-	BL _f_1B288
+	BL _get_num_err_type
 _$j_108e2:
 	POP PC
 _$j_108e4:
@@ -1720,7 +1891,7 @@ _$j_108fc:
 	MOV ER0, BP
 	BL _f_1A44C
 	MOV ER0, BP
-	BL _f_1B288
+	BL _get_num_err_type
 	POP PC
 _$j_1090c:
 	MOV ER2, #-3CH
@@ -1760,6 +1931,7 @@ _$j_1090c:
 	BAL _$j_108fc
 
 ; FUNCTION: GY454XE  Re 10962
+; FUNCTION: GY455XE  Im 10962
 _f_10962:
 	PUSH LR
 	PUSH R9
@@ -1994,6 +2166,7 @@ _$j_10b58:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 10B60
+; FUNCTION: GY455XE  Im 10B60
 _f_10B60:
 	PUSH LR
 	L R0, 7H[BP]
@@ -2011,6 +2184,7 @@ _$j_10b6c:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 10B7E
+; FUNCTION: GY455XE  Im 10B7E
 _f_10B7E:
 	PUSH LR
 	PUSH XR4
@@ -2096,6 +2270,7 @@ _$j_10c12:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 10C1E
+; FUNCTION: GY455XE  Im 10C1E
 _f_10C1E:
 	PUSH LR
 	BL _f_10B7E
@@ -2106,6 +2281,7 @@ _$j_10c2a:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 10C2C
+; FUNCTION: GY455XE  Im 10C2C
 _f_10C2C:
 	PUSH LR
 	PUSH QR8
@@ -2177,13 +2353,14 @@ _$j_10cbe:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 10CC2
+; FUNCTION: GY455XE  Im 10CC2
 _f_10CC2:
 	PUSH LR
 	PUSH QR8
 	MOV ER8, ER0
-	BL _f_02AAA
+	BL _get_result_disp_fmt
 	MOV R11, R0
-	BL _f_02AB2
+	BL _get_result_store_fmt
 	MOV R10, R0
 	CMP R0, #2H
 	BLT _$j_10da2
@@ -2281,7 +2458,7 @@ _$j_10d7c:
 	MOV FP, ER0
 _$j_10d86:
 	MOV R0, R10
-	BL _f_02ACA
+	BL _set_result_store_fmt
 	L ER0, 10H[ER8]
 	SUB R0, R14
 	SUBC R1, R15
@@ -2296,6 +2473,7 @@ _$j_10da2:
 	BAL _$j_10d9e
 
 ; FUNCTION: GY454XE  Re 10DA6
+; FUNCTION: GY455XE  Im 10DA6
 _f_10DA6:
 	PUSH XR8
 	MOV ER8, ER0
@@ -2315,6 +2493,7 @@ _$j_10dc2:
 	RT
 
 ; FUNCTION: GY454XE  Re 10DCA
+; FUNCTION: GY455XE  Im 10DCA
 _f_10DCA:
 	PUSH XR8
 	MOV ER8, ER0
@@ -2355,14 +2534,15 @@ _$j_10e0c:
 	RT
 
 ; FUNCTION: GY454XE  Re 10E14
-_f_10E14:
+; FUNCTION: GY455XE  Im 10E14
+_num_to_str_error:
 	PUSH LR
 	PUSH ER8
 	MOV ER8, ER2
 	MOV R2, #0H
 	ST R2, [ER8]
-	BL _f_1B288
-	CMP R0, #0DH
+	BL _get_num_err_type
+	CMP R0, #13  ; Don't do anything for NULL ERROR
 	BEQ _$j_10e30
 	MOV R2, #BYTE1 _s_result_error
 	MOV R3, #BYTE2 _s_result_error
@@ -2373,6 +2553,7 @@ _$j_10e30:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 10E34
+; FUNCTION: GY455XE  Im 10E34
 _f_10E34:
 	PUSH ER8
 	MOV ER8, ER0
@@ -2399,6 +2580,7 @@ _$j_10e58:
 	RT
 
 ; FUNCTION: GY454XE  Re 10E5C
+; FUNCTION: GY455XE  Im 10E5C
 _f_10E5C:
 	PUSH LR
 	L R1, _d_08124
@@ -2416,63 +2598,64 @@ _$j_10e72:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 10E7A
-_f_10E7A:
+; FUNCTION: GY455XE  Im 10E7A
+_concat_result_template:
 	PUSH LR
 	PUSH XR8
 	MOV R8, R0
 	MOV ER10, ER2
-	L R0, _d_080FF
+	L R0, _result_template
 	MOV R2, R0
 	AND R2, #00010000B
-	CMP R2, #0H
+	CMP R2, #0H    ; If result template & 0x10 = 0, return
 	BEQ _$j_10ef4
-	CMP R0, #11H
+	CMP R0, #11H   ; If not Rec display, skip
 	BNE _$j_10ea2
-	CMP R8, #0H
+	CMP R8, #0H    ; Top result = X, Bottom result = Y
 	BNE _$j_10e9a
-	MOV R2, #58H
+	MOV R2, #'X'
 	BAL _$j_10e9c
 _$j_10e9a:
-	MOV R2, #59H
+	MOV R2, #'Y'
 _$j_10e9c:
 	ST R2, [ER10]
 	MOV R0, #1H
 	BAL _$j_10ede
 _$j_10ea2:
-	CMP R0, #12H
+	CMP R0, #12H   ; If not Pol display, skip
 	BNE _$j_10ebc
-	CMP R8, #0H
+	CMP R8, #0H    ; Top result = r, bottom result = theta
 	BNE _$j_10eb8
 	L R0, _use_output_charset
 	BNE _$j_10eb4
-	MOV R2, #72H
+	MOV R2, #'r'
 	BAL _$j_10e9c
 _$j_10eb4:
-	MOV R2, #-63H
+	MOV R2, #9DH   ; r (STAT)
 	BAL _$j_10e9c
 _$j_10eb8:
-	MOV R2, #-3CH
+	MOV R2, #0C4H  ; Theta
 	BAL _$j_10e9c
 _$j_10ebc:
-	CMP R8, #0H
+	CMP R8, #0H    ; Top result = Variable solved, bottom result = L-R
 	BNE _$j_10ecc
 	L R0, _d_083FC
 	MOV R1, #0H
-	L R2, 844H[ER0]
+	L R2, _vars_list[ER0]
 	BAL _$j_10e9c
 _$j_10ecc:
-	MOV R2, #4CH
+	MOV R2, #'L'
 	ST R2, [ER10]
-	MOV R0, #2DH
+	MOV R0, #'-'
 	ST R0, 1H[ER10]
-	MOV R0, #52H
+	MOV R0, #'R'
 	ST R0, 2H[ER10]
 	MOV R0, #3H
 _$j_10ede:
 	MOV R1, #0H
 	ADD ER0, ER10
 	MOV ER8, ER0
-	MOV R2, #3DH
+	MOV R2, #'='
 	ST R2, [ER0]
 	ADD ER8, #1H
 _$j_10eea:
@@ -2486,6 +2669,7 @@ _$j_10ef4:
 	BAL _$j_10eea
 
 ; FUNCTION: GY454XE  Re 10EF8
+; FUNCTION: GY455XE  Im 10EF8
 _f_10EF8:
 	PUSH LR
 	PUSH FP
@@ -2493,13 +2677,13 @@ _f_10EF8:
 	ADD SP, #-6H
 	PUSH ER8
 	BL _buffer_clear
-	L R8, _d_0810F
+	L R8, _replay_idx
 	ADD R8, #-1H
 	MOV R9, #0H
 	L R0, _submode
 	CMP R0, #3H
 	BLT _$j_10f1e
-	BL _f_0BC34
+	BL _get_num_replay_entries
 	CMP R0, #1H
 	BNE _$j_10f2a
 _$j_10f1e:
@@ -2531,6 +2715,7 @@ _$j_10f34:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 10F52
+; FUNCTION: GY455XE  Im 10F52
 _f_10F52:
 	PUSH LR
 	PUSH FP
@@ -2551,6 +2736,7 @@ _$j_10f64:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 10F76
+; FUNCTION: GY455XE  Im 10F76
 _f_10F76:
 	PUSH LR
 	PUSH FP
@@ -2568,6 +2754,7 @@ _$j_10f8e:
 	BAL _$j_10f64
 
 ; FUNCTION: GY454XE  Re 10F92
+; FUNCTION: GY455XE  Im 10F92
 _f_10F92:
 	PUSH LR
 	PUSH FP
@@ -2579,6 +2766,7 @@ _f_10F92:
 	BAL _$j_10f64
 
 ; FUNCTION: GY454XE  Re 10FA2
+; FUNCTION: GY455XE  Im 10FA2
 _f_10FA2:
 	PUSH LR
 	PUSH FP
@@ -2591,6 +2779,7 @@ _f_10FA2:
 	BAL _$j_10f64
 
 ; FUNCTION: GY454XE  Re 10FB4
+; FUNCTION: GY455XE  Im 10FB4
 _table_prompt_print:
 	MOV R2, #BYTE1 _s_prompt_fx
 	MOV R3, #BYTE2 _s_prompt_fx
@@ -2599,6 +2788,7 @@ _table_prompt_print:
 	B _line_print
 
 ; FUNCTION: GY454XE  Re 10FC0
+; FUNCTION: GY455XE  Im 10FC0
 _disable_ins:
 	L R0, _modifiers
 	TB R0.7             ; If not in INS mode, return
@@ -2610,7 +2800,8 @@ _$j_10fd0:
 	RT
 
 ; FUNCTION: GY454XE  Re 10FD2
-_f_10FD2:
+; FUNCTION: GY455XE  Im 10FD2
+_update_cursor_char:
 	PUSH LR
 	PUSH ER8
 	BL _is_mathi
@@ -2657,6 +2848,7 @@ _$j_11028:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 11030
+; FUNCTION: GY455XE  Im 11030
 _f_11030:
 	L R0, _mode
 	CMP R0, #88H  ; TABLE mode
@@ -2678,7 +2870,8 @@ _$j_1104c:
 	RT
 
 ; FUNCTION: GY454XE  Re 11050
-_get_calc_history_addr:
+; FUNCTION: GY455XE  Im 11050
+_get_replay_addr:
 	PUSH ER8
 	L R0, _mode
 	CMP R0, #4AH  ; INEQ mode or EQN mode (LineI/MathO)
@@ -2709,6 +2902,7 @@ _$j_1107c:
 	BAL _$j_11078
 
 ; FUNCTION: GY454XE  Re 11080
+; FUNCTION: GY455XE  Im 11080
 _concat_mathi_l:
 	MOV R2, #BYTE1 _s_mathi_l
 	MOV R3, #BYTE2 _s_mathi_l
@@ -2716,48 +2910,56 @@ _$j_11084:
 	B _smart_strcat
 
 ; FUNCTION: GY454XE  Re 11088
+; FUNCTION: GY455XE  Im 11088
 _concat_mathi_r:
 	MOV R2, #BYTE1 _s_mathi_r
 	MOV R3, #BYTE2 _s_mathi_r
 	BAL _$j_11084
 
 ; FUNCTION: GY454XE  Re 1108E
+; FUNCTION: GY455XE  Im 1108E
 _concat_mathi_rl:
 	MOV R2, #BYTE1 _s_mathi_rl
 	MOV R3, #BYTE2 _s_mathi_rl
 	BAL _$j_11084
 
 ; FUNCTION: GY454XE  Re 11094
+; FUNCTION: GY455XE  Im 11094
 _concat_mathi_rend:
 	MOV R2, #BYTE1 _s_mathi_rend
 	MOV R3, #BYTE2 _s_mathi_rend
 	BAL _$j_11084
 
 ; FUNCTION: GY454XE  Re 1109A
+; FUNCTION: GY455XE  Im 1109A
 _concat_mathi_frac_startl:
 	MOV R2, #BYTE1 _s_mathi_frac_startl
 	MOV R3, #BYTE2 _s_mathi_frac_startl
 	BAL _$j_11084
 
 ; FUNCTION: GY454XE  Re 110A0
+; FUNCTION: GY455XE  Im 110A0
 _concat_10pow:
 	MOV R2, #BYTE1 _s_10pow
 	MOV R3, #BYTE2 _s_10pow
 	BAL _$j_11084
 
 ; FUNCTION: GY454XE  Re 110A6
+; FUNCTION: GY455XE  Im 110A6
 _concat_plus:
 	MOV R2, #BYTE1 _s_plus
 	MOV R3, #BYTE2 _s_plus
 	BAL _$j_11084
 
 ; FUNCTION: GY454XE  Re 110AC
+; FUNCTION: GY455XE  Im 110AC
 _concat_negative:
 	MOV R2, #BYTE1 _s_negative
 	MOV R3, #BYTE2 _s_negative
 	BAL _$j_11084
 
 ; FUNCTION: GY454XE  Re 110B2
+; FUNCTION: GY455XE  Im 110B2
 _concat_argsep:
 	L R2, _setup_decimal_mark
 	BEQ _$j_110be
@@ -2770,6 +2972,7 @@ _$j_110be:
 	BAL _$j_11084
 
 ; FUNCTION: GY454XE  Re 110C4
+; FUNCTION: GY455XE  Im 110C4
 _f_110C4:
 	PUSH LR
 	PUSH FP
@@ -2832,6 +3035,7 @@ _$j_1113e:
 	BAL _$j_11132
 
 ; FUNCTION: GY454XE  Re 11142
+; FUNCTION: GY455XE  Im 11142
 _f_11142:
 	PUSH LR
 	PUSH QR8
@@ -2892,7 +3096,7 @@ _$j_111ba:
 _$j_111c2:
 	MOV R2, #3H
 	MOV ER0, BP
-	BL _f_1B12C
+	BL _init_num
 	MOV R0, #30H
 	BAL _$j_111ae
 _$j_111ce:
@@ -2906,6 +3110,7 @@ _$j_111da:
 	BAL _$j_111ba
 
 ; FUNCTION: GY454XE  Re 111E0
+; FUNCTION: GY455XE  Im 111E0
 _num_nthroot:
 	PUSH LR
 	PUSH QR8
@@ -2945,6 +3150,7 @@ _$j_1122e:
 	BAL _$j_111ae
 
 ; FUNCTION: GY454XE  Re 11238
+; FUNCTION: GY455XE  Im 11238
 _f_11238:
 	PUSH LR
 	MOV ER4, ER0
@@ -2969,6 +3175,7 @@ _f_11238:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 1126A
+; FUNCTION: GY455XE  Im 1126A
 _f_1126A:
 	PUSH LR
 	MOV ER0, ER8
@@ -3000,6 +3207,7 @@ _$j_112a6:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 112AA
+; FUNCTION: GY455XE  Im 112AA
 _f_112AA:
 	PUSH XR12
 	MOV BP, #3H
@@ -3009,12 +3217,14 @@ _f_112AA:
 	BAL _$j_112c0
 
 ; FUNCTION: GY454XE  Re 112B6
+; FUNCTION: GY455XE  Im 112B6
 _f_112B6:
 	PUSH XR12
 	MOV BP, #1H
 	BAL _$j_112c0
 
 ; FUNCTION: GY454XE  Re 112BC
+; FUNCTION: GY455XE  Im 112BC
 _f_112BC:
 	PUSH XR12
 	MOV BP, #0H
@@ -3027,6 +3237,7 @@ _$j_112c0:
 	RT
 
 ; FUNCTION: GY454XE  Re 112CE
+; FUNCTION: GY455XE  Im 112CE
 _set_default_settings:
 	MOV R0, #BYTE1 _setup_start
 	MOV R1, #BYTE2 _setup_start
@@ -3044,16 +3255,19 @@ _$j_112da:
 	RT
 
 ; FUNCTION: GY454XE  Re 112EA
+; FUNCTION: GY455XE  Im 112EA
 _f_112EA:
 	MOV R0, #0H
 	ST R0, _setup_rdec
 	RT
 
 ; FUNCTION: GY454XE  Re 112F2
+; FUNCTION: GY455XE  Im 112F2
 _f_112F2:
 	RT
 
 ; FUNCTION: GY454XE  Re 112F4
+; FUNCTION: GY455XE  Im 112F4
 _f_112F4:
 	PUSH LR
 	MOV R0, #4CH
@@ -3063,6 +3277,7 @@ _f_112F4:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 11302
+; FUNCTION: GY455XE  Im 11302
 _f_11302:
 	PUSH LR
 	PUSH XR4
@@ -3075,6 +3290,7 @@ _f_11302:
 	BAL _$j_1132a
 
 ; FUNCTION: GY454XE  Re 11314
+; FUNCTION: GY455XE  Im 11314
 _f_11314:
 	PUSH LR
 	PUSH XR4
@@ -3103,6 +3319,7 @@ _$j_1132c:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 11344
+; FUNCTION: GY455XE  Im 11344
 _f_11344:
 	PUSH LR
 	MOV BP, FP
@@ -3215,10 +3432,11 @@ _$j_113ea:
 	MOV ER0, ER10
 	BL _f_1A44C
 	MOV ER0, ER10
-	BL _f_1B288
+	BL _get_num_err_type
 	POP PC
 
 ; FUNCTION: GY454XE  Re 11462
+; FUNCTION: GY455XE  Im 11462
 _f_11462:
 	PUSH LR
 	MOV ER2, #0AH
@@ -3232,6 +3450,7 @@ _f_11462:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 11478
+; FUNCTION: GY455XE  Im 11478
 _f_11478:
 	PUSH LR
 	BL _f_118D0
@@ -3273,17 +3492,17 @@ _$j_114c6:
 	MOV R1, #0FFH
 	ADD ER0, FP
 	MOV R2, #3H
-	BL _f_1B12C
+	BL _init_num
 	MOV R0, #42H
 	MOV R1, #0FFH
 	ADD ER0, FP
 	MOV R2, #3H
-	BL _f_1B12C
+	BL _init_num
 	MOV R0, #4CH
 	MOV R1, #0FFH
 	ADD ER0, FP
 	MOV R2, #3H
-	BL _f_1B12C
+	BL _init_num
 	MOV R0, #3H
 	BAL _$j_114c4
 _$j_114f2:
@@ -3291,21 +3510,22 @@ _$j_114f2:
 	MOV R1, #0FFH
 	ADD ER0, FP
 	MOV R2, #1H
-	BL _f_1B12C
+	BL _init_num
 	MOV R0, #42H
 	MOV R1, #0FFH
 	ADD ER0, FP
 	MOV R2, #1H
-	BL _f_1B12C
+	BL _init_num
 	MOV R0, #4CH
 	MOV R1, #0FFH
 	ADD ER0, FP
 	MOV R2, #1H
-	BL _f_1B12C
+	BL _init_num
 	MOV R0, #1H
 	BAL _$j_114c4
 
 ; FUNCTION: GY454XE  Re 1151A
+; FUNCTION: GY455XE  Im 1151A
 _f_1151A:
 	PUSH LR
 	MOV BP, FP
@@ -3356,10 +3576,11 @@ _f_1151A:
 	MOV ER2, BP
 	BL _num_cpy
 	MOV ER0, BP
-	BL _f_1B288
+	BL _get_num_err_type
 	POP PC
 
 ; FUNCTION: GY454XE  Re 11596
+; FUNCTION: GY455XE  Im 11596
 _f_11596:
 	PUSH LR
 	MOV BP, FP
@@ -3403,10 +3624,11 @@ _f_11596:
 	MOV ER2, BP
 	BL _num_cpy
 	MOV ER0, BP
-	BL _f_1B288
+	BL _get_num_err_type
 	POP PC
 
 ; FUNCTION: GY454XE  Re 11602
+; FUNCTION: GY455XE  Im 11602
 _f_11602:
 	PUSH LR
 	MOV R2, #4CH
@@ -3432,6 +3654,7 @@ _f_11602:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 11638
+; FUNCTION: GY455XE  Im 11638
 _f_11638:
 	PUSH LR
 	MOV BP, FP
@@ -3475,10 +3698,11 @@ _f_11638:
 	MOV ER2, BP
 	BL _num_cpy
 	MOV ER0, BP
-	BL _f_1B288
+	BL _get_num_err_type
 	POP PC
 
 ; FUNCTION: GY454XE  Re 116A4
+; FUNCTION: GY455XE  Im 116A4
 _f_116A4:
 	PUSH LR
 	MOV BP, FP
@@ -3511,7 +3735,7 @@ _f_116A4:
 	MOV ER2, ER10
 	BL _num_cpy
 	MOV ER0, ER10
-	BL _f_1B288
+	BL _get_num_err_type
 	CMP R0, #0H
 	BNE _$j_117f4
 	MOV R2, #9CH
@@ -3539,7 +3763,7 @@ _f_116A4:
 	MOV R0, #74H
 	MOV R1, #0FFH
 	ADD ER0, FP
-	BL _f_1B288
+	BL _get_num_err_type
 	CMP R0, #0H
 	BNE _$j_117f4
 	MOV R2, #9CH
@@ -3567,7 +3791,7 @@ _f_116A4:
 	MOV R0, #6AH
 	MOV R1, #0FFH
 	ADD ER0, FP
-	BL _f_1B288
+	BL _get_num_err_type
 	CMP R0, #0H
 	BNE _$j_117f4
 	MOV R2, #92H
@@ -3592,7 +3816,7 @@ _f_116A4:
 	MOV R0, #60H
 	MOV R1, #0FFH
 	ADD ER0, FP
-	BL _f_1B288
+	BL _get_num_err_type
 	CMP R0, #0H
 	BNE _$j_117f4
 	MOV R2, #92H
@@ -3620,11 +3844,12 @@ _f_116A4:
 	MOV R0, #56H
 	MOV R1, #0FFH
 	ADD ER0, FP
-	BL _f_1B288
+	BL _get_num_err_type
 _$j_117f4:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 117F6
+; FUNCTION: GY455XE  Im 117F6
 _f_117F6:
 	PUSH LR
 	MOV BP, FP
@@ -3660,10 +3885,11 @@ _f_117F6:
 	MOV ER2, BP
 	BL _num_cpy
 	MOV ER0, BP
-	BL _f_1B288
+	BL _get_num_err_type
 	POP PC
 
 ; FUNCTION: GY454XE  Re 1184E
+; FUNCTION: GY455XE  Im 1184E
 _f_1184E:
 	PUSH LR
 	MOV BP, FP
@@ -3716,10 +3942,11 @@ _f_1184E:
 	MOV ER2, ER10
 	BL _num_cpy
 	MOV ER0, ER10
-	BL _f_1B288
+	BL _get_num_err_type
 	POP PC
 
 ; FUNCTION: GY454XE  Re 118D0
+; FUNCTION: GY455XE  Im 118D0
 _f_118D0:
 	PUSH LR
 	MOV R12, #0H
@@ -3782,12 +4009,14 @@ _$j_1195a:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 1195C
+; FUNCTION: GY455XE  Im 1195C
 _f_1195C:
 	PUSH LR
 	BL _f_11478
 	MOV BP, #-14H
 
 ; FUNCTION: GY454XE  Re 11964
+; FUNCTION: GY455XE  Im 11964
 _f_11964:
 	ADD BP, FP
 	CMP R0, #0H
@@ -3821,12 +4050,13 @@ _f_11964:
 	MOV ER0, BP
 	BL _f_1A410
 	MOV ER0, BP
-	BL _f_1B288
+	BL _get_num_err_type
 	POP PC
 _$j_119b8:
 	B _$j_11d6c
 
 ; FUNCTION: GY454XE  Re 119BC
+; FUNCTION: GY455XE  Im 119BC
 _f_119BC:
 	PUSH LR
 	PUSH R4
@@ -3893,12 +4123,13 @@ _$j_11a30:
 	MOV ER0, BP
 	BL _f_1A44C
 	MOV ER0, BP
-	BL _f_1B288
+	BL _get_num_err_type
 	POP PC
 _$j_11a60:
 	B _$j_11d6c
 
 ; FUNCTION: GY454XE  Re 11A64
+; FUNCTION: GY455XE  Im 11A64
 _f_11A64:
 	PUSH LR
 	BL _f_11DE2
@@ -3921,10 +4152,11 @@ _f_11A64:
 	MOV ER0, BP
 	BL _num_cpy
 	MOV ER0, BP
-	BL _f_1B288
+	BL _get_num_err_type
 	POP PC
 
 ; FUNCTION: GY454XE  Re 11A9C
+; FUNCTION: GY455XE  Im 11A9C
 _f_11A9C:
 	PUSH LR
 	BL _f_11DE2
@@ -3951,12 +4183,13 @@ _f_11A9C:
 	MOV ER0, BP
 	BL _num_cpy
 	MOV ER0, BP
-	BL _f_1B288
+	BL _get_num_err_type
 	POP PC
 _$j_11ade:
 	B _$j_11d6c
 
 ; FUNCTION: GY454XE  Re 11AE2
+; FUNCTION: GY455XE  Im 11AE2
 _f_11AE2:
 	PUSH LR
 	BL _f_11E0A
@@ -3978,10 +4211,11 @@ _f_11AE2:
 	MOV ER0, BP
 	BL _f_1A438
 	MOV ER0, BP
-	BL _f_1B288
+	BL _get_num_err_type
 	POP PC
 
 ; FUNCTION: GY454XE  Re 11B18
+; FUNCTION: GY455XE  Im 11B18
 _f_11B18:
 	PUSH LR
 	BL _f_11E0A
@@ -4011,12 +4245,13 @@ _f_11B18:
 	MOV ER0, BP
 	BL _num_exp
 	MOV ER0, BP
-	BL _f_1B288
+	BL _get_num_err_type
 	POP PC
 _$j_11b64:
 	B _$j_11d6c
 
 ; FUNCTION: GY454XE  Re 11B68
+; FUNCTION: GY455XE  Im 11B68
 _f_11B68:
 	PUSH LR
 	BL _f_11EA4
@@ -4042,10 +4277,11 @@ _f_11B68:
 	MOV ER0, BP
 	BL _num_cpy
 	MOV ER0, BP
-	BL _f_1B288
+	BL _get_num_err_type
 	POP PC
 
 ; FUNCTION: GY454XE  Re 11BA6
+; FUNCTION: GY455XE  Im 11BA6
 _f_11BA6:
 	PUSH LR
 	BL _f_11EA4
@@ -4077,12 +4313,13 @@ _f_11BA6:
 	MOV ER0, BP
 	BL _f_1A44C
 	MOV ER0, BP
-	BL _f_1B288
+	BL _get_num_err_type
 	POP PC
 _$j_11bf6:
 	B _$j_11d6c
 
 ; FUNCTION: GY454XE  Re 11BFA
+; FUNCTION: GY455XE  Im 11BFA
 _f_11BFA:
 	PUSH LR
 	BL _f_11EEE
@@ -4106,10 +4343,11 @@ _f_11BFA:
 	MOV ER0, BP
 	BL _f_1A438
 	MOV ER0, BP
-	BL _f_1B288
+	BL _get_num_err_type
 	POP PC
 
 ; FUNCTION: GY454XE  Re 11C36
+; FUNCTION: GY455XE  Im 11C36
 _f_11C36:
 	PUSH LR
 	BL _f_11EEE
@@ -4137,12 +4375,13 @@ _f_11C36:
 	MOV ER0, BP
 	BL _f_1A44C
 	MOV ER0, BP
-	BL _f_1B288
+	BL _get_num_err_type
 	POP PC
 _$j_11c7c:
 	BAL _$j_11d6c
 
 ; FUNCTION: GY454XE  Re 11C7E
+; FUNCTION: GY455XE  Im 11C7E
 _f_11C7E:
 	PUSH LR
 	BL _f_11F20
@@ -4166,10 +4405,11 @@ _f_11C7E:
 	MOV ER0, BP
 	BL _f_1A410
 	MOV ER0, BP
-	BL _f_1B288
+	BL _get_num_err_type
 	POP PC
 
 ; FUNCTION: GY454XE  Re 11CBA
+; FUNCTION: GY455XE  Im 11CBA
 _f_11CBA:
 	PUSH LR
 	BL _f_11F20
@@ -4193,12 +4433,13 @@ _f_11CBA:
 	MOV ER0, BP
 	BL _num_exp
 	MOV ER0, BP
-	BL _f_1B288
+	BL _get_num_err_type
 	POP PC
 _$j_11cf6:
 	BAL _$j_11d6c
 
 ; FUNCTION: GY454XE  Re 11CF8
+; FUNCTION: GY455XE  Im 11CF8
 _f_11CF8:
 	PUSH LR
 	BL _f_11E3C
@@ -4221,10 +4462,11 @@ _f_11CF8:
 	MOV ER0, BP
 	BL _f_1A410
 	MOV ER0, BP
-	BL _f_1B288
+	BL _get_num_err_type
 	POP PC
 
 ; FUNCTION: GY454XE  Re 11D32
+; FUNCTION: GY455XE  Im 11D32
 _f_11D32:
 	PUSH LR
 	BL _f_11E3C
@@ -4248,7 +4490,7 @@ _f_11D32:
 	BL _f_1A44C
 _$j_11d64:
 	MOV ER0, BP
-	BL _f_1B288
+	BL _get_num_err_type
 	POP PC
 _$j_11d6c:
 	MOV R2, R0
@@ -4257,16 +4499,17 @@ _$j_11d6c:
 	MOV R2, #3H
 _$j_11d74:
 	MOV ER0, BP
-	BL _f_1B12C
+	BL _init_num
 	BAL _$j_11d64
 
 ; FUNCTION: GY454XE  Re 11D7C
+; FUNCTION: GY455XE  Im 11D7C
 _f_11D7C:
 	PUSH LR
 	L R0, _submode
 	ADD R0, #-2H
-	MOV R12, #3EH
-	MOV R13, #1DH
+	MOV R12, #BYTE1 _jmp_01d3e
+	MOV R13, #BYTE2 _jmp_01d3e
 	SLL R0, #1
 	ADD R12, R0
 	ADDC R13, #0H
@@ -4275,36 +4518,42 @@ _f_11D7C:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 11D94
+; FUNCTION: GY455XE  Im 11D94
 _f_11D94:
 	PUSH LR
 	BL _f_11F48
 	BAL _$j_11dc2
 
 ; FUNCTION: GY454XE  Re 11D9C
+; FUNCTION: GY455XE  Im 11D9C
 _f_11D9C:
 	PUSH LR
 	BL _f_11FB0
 	BAL _$j_11dc2
 
 ; FUNCTION: GY454XE  Re 11DA4
+; FUNCTION: GY455XE  Im 11DA4
 _f_11DA4:
 	PUSH LR
 	BL _f_12018
 	BAL _$j_11dc2
 
 ; FUNCTION: GY454XE  Re 11DAC
+; FUNCTION: GY455XE  Im 11DAC
 _f_11DAC:
 	PUSH LR
 	BL _f_12018
 	BAL _$j_11dc2
 
 ; FUNCTION: GY454XE  Re 11DB4
+; FUNCTION: GY455XE  Im 11DB4
 _f_11DB4:
 	PUSH LR
 	BL _f_12080
 	BAL _$j_11dc2
 
 ; FUNCTION: GY454XE  Re 11DBC
+; FUNCTION: GY455XE  Im 11DBC
 _f_11DBC:
 	PUSH LR
 	BL _f_120E8
@@ -4322,11 +4571,12 @@ _$j_11dd4:
 	MOV R0, #38H
 	MOV R1, #0FFH
 	ADD ER0, FP
-	BL _f_1B12C
+	BL _init_num
 	MOV R0, #-10H
 	POP PC
 
 ; FUNCTION: GY454XE  Re 11DE2
+; FUNCTION: GY455XE  Im 11DE2
 _f_11DE2:
 	PUSH LR
 	BL _f_11F48
@@ -4345,6 +4595,7 @@ _f_11DE2:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 11E0A
+; FUNCTION: GY455XE  Im 11E0A
 _f_11E0A:
 	PUSH LR
 	BL _f_11FB0
@@ -4367,6 +4618,7 @@ _f_11E0A:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 11E3C
+; FUNCTION: GY455XE  Im 11E3C
 _f_11E3C:
 	PUSH LR
 	BL _f_120E8
@@ -4392,12 +4644,12 @@ _$j_11e68:
 	MOV R1, #0FFH
 	ADD ER0, FP
 	MOV R2, #3H
-	BL _f_1B12C
+	BL _init_num
 	MOV R0, #4CH
 	MOV R1, #0FFH
 	ADD ER0, FP
 	MOV R2, #3H
-	BL _f_1B12C
+	BL _init_num
 	MOV R0, #3H
 	BAL _$j_11e66
 _$j_11e88:
@@ -4405,16 +4657,17 @@ _$j_11e88:
 	MOV R1, #0FFH
 	ADD ER0, FP
 	MOV R2, #1H
-	BL _f_1B12C
+	BL _init_num
 	MOV R0, #4CH
 	MOV R1, #0FFH
 	ADD ER0, FP
 	MOV R2, #1H
-	BL _f_1B12C
+	BL _init_num
 	MOV R0, #1H
 	BAL _$j_11e66
 
 ; FUNCTION: GY454XE  Re 11EA4
+; FUNCTION: GY455XE  Im 11EA4
 _f_11EA4:
 	PUSH LR
 	BL _f_12018
@@ -4447,6 +4700,7 @@ _f_11EA4:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 11EEE
+; FUNCTION: GY455XE  Im 11EEE
 _f_11EEE:
 	PUSH LR
 	BL _f_12018
@@ -4469,6 +4723,7 @@ _f_11EEE:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 11F20
+; FUNCTION: GY455XE  Im 11F20
 _f_11F20:
 	PUSH LR
 	BL _f_12080
@@ -4487,6 +4742,7 @@ _f_11F20:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 11F48
+; FUNCTION: GY455XE  Im 11F48
 _f_11F48:
 	PUSH LR
 	MOV R12, #20H
@@ -4535,6 +4791,7 @@ _$j_11fae:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 11FB0
+; FUNCTION: GY455XE  Im 11FB0
 _f_11FB0:
 	PUSH LR
 	MOV R12, #40H
@@ -4583,6 +4840,7 @@ _$j_12016:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 12018
+; FUNCTION: GY455XE  Im 12018
 _f_12018:
 	PUSH LR
 	MOV R12, #0H
@@ -4631,6 +4889,7 @@ _$j_1207e:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 12080
+; FUNCTION: GY455XE  Im 12080
 _f_12080:
 	PUSH LR
 	MOV R12, #40H
@@ -4679,6 +4938,7 @@ _$j_120e6:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 120E8
+; FUNCTION: GY455XE  Im 120E8
 _f_120E8:
 	PUSH LR
 	MOV R12, #0H
@@ -4727,6 +4987,7 @@ _$j_1214e:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 12150
+; FUNCTION: GY455XE  Im 12150
 _f_12150:
 	PUSH LR
 	MOV ER10, FP
@@ -4762,10 +5023,11 @@ _f_12150:
 	MOV ER2, BP
 	BL _num_cpy
 	MOV ER0, BP
-	BL _f_1B288
+	BL _get_num_err_type
 	POP PC
 
 ; FUNCTION: GY454XE  Re 121A6
+; FUNCTION: GY455XE  Im 121A6
 _f_121A6:
 	PUSH LR
 	MOV R0, #0BAH
@@ -4778,7 +5040,7 @@ _f_121A6:
 	MOV R0, #38H
 	MOV R1, #0FFH
 	ADD ER0, FP
-	BL _f_1B12C
+	BL _init_num
 	MOV R0, #3H
 	POP PC
 _$j_121c6:
@@ -4889,10 +5151,11 @@ _$j_122ba:
 	MOV ER2, BP
 	BL _num_cpy
 	MOV ER0, BP
-	BL _f_1B288
+	BL _get_num_err_type
 	POP PC
 
 ; FUNCTION: GY454XE  Re 122CE
+; FUNCTION: GY455XE  Im 122CE
 _f_122CE:
 	PUSH LR
 	MOV ER8, FP
@@ -4930,10 +5193,11 @@ _f_122CE:
 	MOV ER2, BP
 	BL _num_cpy
 	MOV ER0, BP
-	BL _f_1B288
+	BL _get_num_err_type
 	POP PC
 
 ; FUNCTION: GY454XE  Re 1232A
+; FUNCTION: GY455XE  Im 1232A
 _f_1232A:
 	PUSH LR
 	MOV R0, #0BAH
@@ -4946,7 +5210,7 @@ _f_1232A:
 	MOV R0, #42H
 	MOV R1, #0FFH
 	ADD ER0, FP
-	BL _f_1B12C
+	BL _init_num
 	MOV R0, #3H
 	POP PC
 _$j_1234a:
@@ -5010,10 +5274,11 @@ _$j_1234a:
 	MOV ER2, ER8
 	BL _num_cpy
 	MOV ER0, ER8
-	BL _f_1B288
+	BL _get_num_err_type
 	POP PC
 
 ; FUNCTION: GY454XE  Re 123E2
+; FUNCTION: GY455XE  Im 123E2
 _f_123E2:
 	PUSH LR
 	MOV ER0, #0H
@@ -5037,7 +5302,7 @@ _f_123E2:
 	BL _f_043CE
 	L ER8, -4H[FP]
 _$j_12414:
-	BL _f_04448
+	BL _get_num_stat_table_cols
 	MOV R1, #0AH
 	MUL ER0, R1
 	ST R0, -0AH[FP]
@@ -5046,6 +5311,7 @@ _$j_12414:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 12424
+; FUNCTION: GY455XE  Im 12424
 _f_12424:
 	PUSH LR
 	MOV ER0, #0H
@@ -5074,7 +5340,7 @@ _f_12424:
 	BL _f_043CE
 	L ER8, -4H[FP]
 _$j_12462:
-	BL _f_04448
+	BL _get_num_stat_table_cols
 	MOV R1, #0AH
 	MUL ER0, R1
 	ST R0, -0AH[FP]
@@ -5083,6 +5349,7 @@ _$j_12462:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 12472
+; FUNCTION: GY455XE  Im 12472
 _f_12472:
 	PUSH LR
 	BL _f_12424
@@ -5091,7 +5358,7 @@ _f_12472:
 	MOV R2, #3H
 	MOV ER0, FP
 	ADD ER0, #-28H
-	BL _f_1B12C
+	BL _init_num
 	BAL _$j_12534
 _$j_12488:
 	MOV R2, #0H
@@ -5158,7 +5425,7 @@ _$j_12502:
 	BL _f_1A410
 	MOV ER0, FP
 	ADD ER0, #-28H
-	BL _f_1B288
+	BL _get_num_err_type
 	CMP R0, #0H
 	BNE _$j_12534
 	MOV R0, R6
@@ -5177,10 +5444,11 @@ _$j_12534:
 	BL _num_cpy
 	MOV ER0, FP
 	ADD ER0, #-28H
-	BL _f_1B288
+	BL _get_num_err_type
 	POP PC
 
 ; FUNCTION: GY454XE  Re 1254C
+; FUNCTION: GY455XE  Im 1254C
 _f_1254C:
 	PUSH LR
 	BL _f_123E2
@@ -5189,11 +5457,11 @@ _f_1254C:
 	MOV R2, #3H
 	MOV ER0, FP
 	ADD ER0, #-32H
-	BL _f_1B12C
+	BL _init_num
 	MOV R2, #3H
 	MOV ER0, FP
 	ADD ER0, #-3CH
-	BL _f_1B12C
+	BL _init_num
 	BAL _$j_1263c
 _$j_1256c:
 	MOV R2, #0H
@@ -5271,12 +5539,12 @@ _$j_12600:
 	BL _f_1A410
 	MOV ER0, FP
 	ADD ER0, #-32H
-	BL _f_1B288
+	BL _get_num_err_type
 	CMP R0, #0H
 	BEQ _$j_12630
 	MOV ER0, FP
 	ADD ER0, #-3CH
-	BL _f_1B288
+	BL _get_num_err_type
 	CMP R0, #0H
 	BNE _$j_1263c
 _$j_12630:
@@ -5301,7 +5569,7 @@ _$j_1263c:
 	BL _num_cpy
 	MOV ER0, FP
 	ADD ER0, #-32H
-	BL _f_1B288
+	BL _get_num_err_type
 	CMP R0, #0H
 	BEQ _$j_12666
 	MOV R0, #0FH
@@ -5309,7 +5577,7 @@ _$j_12666:
 	PUSH R0
 	MOV ER0, FP
 	ADD ER0, #-3CH
-	BL _f_1B288
+	BL _get_num_err_type
 	POP R1
 	CMP R0, #0H
 	BEQ _$j_12678
@@ -5319,6 +5587,7 @@ _$j_12678:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 1267C
+; FUNCTION: GY455XE  Im 1267C
 _f_1267C:
 	PUSH LR
 	MOV ER0, #0H
@@ -5330,11 +5599,11 @@ _f_1267C:
 	MOV R2, #3H
 	MOV ER0, FP
 	ADD ER0, #-14H
-	BL _f_1B12C
+	BL _init_num
 	MOV R2, #3H
 	MOV ER0, FP
 	ADD ER0, #-28H
-	BL _f_1B12C
+	BL _init_num
 	BAL _$j_1279e
 _$j_126a2:
 	BL _f_127DE
@@ -5382,7 +5651,7 @@ _$j_12700:
 	BL _f_1A410
 	MOV ER0, FP
 	ADD ER0, #-28H
-	BL _f_1B288
+	BL _get_num_err_type
 	CMP R0, #0H
 	BNE _$j_1279e
 	MOV R0, R6
@@ -5457,7 +5726,7 @@ _$j_1279e:
 	BL _num_cpy
 	MOV ER0, FP
 	ADD ER0, #-14H
-	BL _f_1B288
+	BL _get_num_err_type
 	CMP R0, #0H
 	BEQ _$j_127c8
 	MOV R0, #0FH
@@ -5465,7 +5734,7 @@ _$j_127c8:
 	PUSH R0
 	MOV ER0, FP
 	ADD ER0, #-28H
-	BL _f_1B288
+	BL _get_num_err_type
 	POP R1
 	CMP R0, #0H
 	BEQ _$j_127da
@@ -5475,6 +5744,7 @@ _$j_127da:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 127DE
+; FUNCTION: GY455XE  Im 127DE
 _f_127DE:
 	PUSH LR
 	BL _f_12BA0
@@ -5484,7 +5754,7 @@ _f_127DE:
 	MOV R1, #0FFH
 	ADD ER0, FP
 	MOV R2, #3H
-	BL _f_1B12C
+	BL _init_num
 	BAL _$j_1282a
 _$j_127f6:
 	BL _f_12A32
@@ -5518,10 +5788,11 @@ _$j_1282a:
 	MOV R0, #0B0H
 	MOV R1, #0FFH
 	ADD ER0, FP
-	BL _f_1B288
+	BL _get_num_err_type
 	POP PC
 
 ; FUNCTION: GY454XE  Re 12836
+; FUNCTION: GY455XE  Im 12836
 _f_12836:
 	PUSH LR
 	BL _f_12424
@@ -5530,7 +5801,7 @@ _f_12836:
 	MOV R2, #3H
 	MOV ER0, FP
 	ADD ER0, #-28H
-	BL _f_1B12C
+	BL _init_num
 	BAL _$j_12920
 _$j_1284c:
 	MOV R2, #0H
@@ -5612,7 +5883,7 @@ _$j_128e2:
 	BL _f_1A410
 	MOV ER0, FP
 	ADD ER0, #-28H
-	BL _f_1B288
+	BL _get_num_err_type
 	CMP R0, #0H
 	BNE _$j_12920
 	TB R12.1
@@ -5637,16 +5908,17 @@ _$j_12920:
 	BL _num_cpy
 	MOV ER0, FP
 	ADD ER0, #-28H
-	BL _f_1B288
+	BL _get_num_err_type
 	POP PC
 _$j_12938:
 	MOV R2, #1H
 	MOV ER0, FP
 	ADD ER0, #-28H
-	BL _f_1B12C
+	BL _init_num
 	BAL _$j_12920
 
 ; FUNCTION: GY454XE  Re 12944
+; FUNCTION: GY455XE  Im 12944
 _f_12944:
 	PUSH LR
 	MOV ER0, #0H
@@ -5661,7 +5933,7 @@ _f_12944:
 	ADD ER2, #-4H
 	BL _f_043CE
 	L ER4, -4H[FP]
-	BL _f_04448
+	BL _get_num_stat_table_cols
 	MOV R1, #0AH
 	MUL ER0, R1
 	ST R0, -0AH[FP]
@@ -5671,7 +5943,7 @@ _f_12944:
 	MOV R2, #3H
 	MOV ER0, FP
 	ADD ER0, #-1EH
-	BL _f_1B12C
+	BL _init_num
 	BAL _$j_12a00
 _$j_1297e:
 	MOV ER0, FP
@@ -5752,7 +6024,7 @@ _$j_12a14:
 _$j_12a22:
 	MOV ER0, FP
 	ADD ER0, #-1EH
-	BL _f_1B288
+	BL _get_num_err_type
 	POP PC
 _$j_12a2c:
 	CMP R0, #2H
@@ -5760,6 +6032,7 @@ _$j_12a2c:
 	BAL _$j_129de
 
 ; FUNCTION: GY454XE  Re 12A32
+; FUNCTION: GY455XE  Im 12A32
 _f_12A32:
 	PUSH LR
 	BL _f_123E2
@@ -5768,11 +6041,11 @@ _f_12A32:
 	MOV R2, #3H
 	MOV ER0, FP
 	ADD ER0, #-32H
-	BL _f_1B12C
+	BL _init_num
 	MOV R2, #3H
 	MOV ER0, FP
 	ADD ER0, #-3CH
-	BL _f_1B12C
+	BL _init_num
 	BAL _$j_12b36
 _$j_12a52:
 	MOV R2, #0H
@@ -5858,12 +6131,12 @@ _$j_12aee:
 	BL _f_1A410
 	MOV ER0, FP
 	ADD ER0, #-32H
-	BL _f_1B288
+	BL _get_num_err_type
 	CMP R0, #0H
 	BEQ _$j_12b1e
 	MOV ER0, FP
 	ADD ER0, #-3CH
-	BL _f_1B288
+	BL _get_num_err_type
 	CMP R0, #0H
 	BNE _$j_12b36
 _$j_12b1e:
@@ -5906,7 +6179,7 @@ _$j_12b56:
 	BL _num_cpy
 	MOV ER0, FP
 	ADD ER0, #-32H
-	BL _f_1B288
+	BL _get_num_err_type
 	CMP R0, #0H
 	BEQ _$j_12b74
 	CMP R0, #1H
@@ -5916,7 +6189,7 @@ _$j_12b74:
 	PUSH R0
 	MOV ER0, FP
 	ADD ER0, #-3CH
-	BL _f_1B288
+	BL _get_num_err_type
 	POP R1
 	CMP R0, #0H
 	BEQ _$j_12b86
@@ -5929,14 +6202,15 @@ _$j_12b8a:
 	MOV R2, #1H
 	MOV ER0, FP
 	ADD ER0, #-32H
-	BL _f_1B12C
+	BL _init_num
 	MOV R2, #1H
 	MOV ER0, FP
 	ADD ER0, #-3CH
-	BL _f_1B12C
+	BL _init_num
 	BAL _$j_12b36
 
 ; FUNCTION: GY454XE  Re 12BA0
+; FUNCTION: GY455XE  Im 12BA0
 _f_12BA0:
 	PUSH LR
 	MOV ER0, #0H
@@ -5962,7 +6236,7 @@ _$j_12bca:
 	MOV ER2, FP
 	ADD ER2, #-4H
 	BL _f_043CE
-	BL _f_04448
+	BL _get_num_stat_table_cols
 	MOV R1, #0AH
 	MUL ER0, R1
 	ST R0, -0AH[FP]
@@ -6005,11 +6279,12 @@ _$j_12c2a:
 	MOV R1, #0FFH
 	ADD ER0, FP
 	MOV R2, #3H
-	BL _f_1B12C
+	BL _init_num
 	MOV R0, #-10H
 	BAL _$j_12c28
 
 ; FUNCTION: GY454XE  Re 12C3A
+; FUNCTION: GY455XE  Im 12C3A
 _f_12C3A:
 	PUSH LR
 	PUSH QR8
@@ -6022,6 +6297,7 @@ _f_12C3A:
 	BAL _$j_12c5c
 
 ; FUNCTION: GY454XE  Re 12C4C
+; FUNCTION: GY455XE  Im 12C4C
 _f_12C4C:
 	PUSH LR
 	PUSH QR8
@@ -6039,6 +6315,7 @@ _$j_12c5c:
 	BAL _$j_12c90
 
 ; FUNCTION: GY454XE  Re 12C68
+; FUNCTION: GY455XE  Im 12C68
 _f_12C68:
 	PUSH LR
 	PUSH QR8
@@ -6076,10 +6353,11 @@ _$j_12ca6:
 	POP PC
 _$j_12cae:
 	L ER0, -2H[FP]
-	BL _f_1B288
+	BL _get_num_err_type
 	BAL _$j_12ca6
 
 ; FUNCTION: GY454XE  Re 12CB6
+; FUNCTION: GY455XE  Im 12CB6
 _f_12CB6:
 	PUSH LR
 	PUSH QR8
@@ -6103,6 +6381,7 @@ _f_12CB6:
 	BAL _$j_12c90
 
 ; FUNCTION: GY454XE  Re 12CE0
+; FUNCTION: GY455XE  Im 12CE0
 _f_12CE0:
 	PUSH LR
 	PUSH QR8
@@ -6134,6 +6413,7 @@ _f_12CE0:
 	BAL _$j_12d98
 
 ; FUNCTION: GY454XE  Re 12D1E
+; FUNCTION: GY455XE  Im 12D1E
 _f_12D1E:
 	PUSH LR
 	PUSH QR8
@@ -6164,6 +6444,7 @@ _$j_12d3e:
 	BAL _$j_12d98
 
 ; FUNCTION: GY454XE  Re 12D5A
+; FUNCTION: GY455XE  Im 12D5A
 _f_12D5A:
 	PUSH LR
 	PUSH QR8
@@ -6199,6 +6480,7 @@ _$j_12d98:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 12DA0
+; FUNCTION: GY455XE  Im 12DA0
 _f_12DA0:
 	PUSH LR
 	PUSH QR8
@@ -6223,6 +6505,7 @@ _f_12DA0:
 	BAL _$j_12d98
 
 ; FUNCTION: GY454XE  Re 12DD2
+; FUNCTION: GY455XE  Im 12DD2
 _f_12DD2:
 	PUSH LR
 	PUSH QR8
@@ -6247,6 +6530,7 @@ _f_12DD2:
 	BAL _$j_12e60
 
 ; FUNCTION: GY454XE  Re 12E02
+; FUNCTION: GY455XE  Im 12E02
 _f_12E02:
 	PUSH LR
 	PUSH QR8
@@ -6271,6 +6555,7 @@ _f_12E02:
 	BAL _$j_12e60
 
 ; FUNCTION: GY454XE  Re 12E32
+; FUNCTION: GY455XE  Im 12E32
 _f_12E32:
 	PUSH LR
 	PUSH QR8
@@ -6299,6 +6584,7 @@ _$j_12e60:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 12E68
+; FUNCTION: GY455XE  Im 12E68
 _f_12E68:
 	PUSH LR
 	PUSH QR8
@@ -6323,6 +6609,7 @@ _f_12E68:
 	BAL _$j_12e60
 
 ; FUNCTION: GY454XE  Re 12E98
+; FUNCTION: GY455XE  Im 12E98
 _f_12E98:
 	PUSH LR
 	PUSH QR8
@@ -6336,6 +6623,7 @@ _f_12E98:
 	BAL _$j_12ec2
 
 ; FUNCTION: GY454XE  Re 12EAE
+; FUNCTION: GY455XE  Im 12EAE
 _f_12EAE:
 	PUSH LR
 	PUSH QR8
@@ -6364,6 +6652,7 @@ _$j_12ec2:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 12EE4
+; FUNCTION: GY455XE  Im 12EE4
 _f_12EE4:
 	PUSH LR
 	PUSH QR8
@@ -6390,6 +6679,7 @@ _f_12EE4:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 12F18
+; FUNCTION: GY455XE  Im 12F18
 _f_12F18:
 	PUSH LR
 	PUSH QR8
@@ -6403,6 +6693,7 @@ _f_12F18:
 	BAL _$j_12f42
 
 ; FUNCTION: GY454XE  Re 12F2E
+; FUNCTION: GY455XE  Im 12F2E
 _f_12F2E:
 	PUSH LR
 	PUSH QR8
@@ -6422,6 +6713,7 @@ _$j_12f42:
 	BAL _$j_12f86
 
 ; FUNCTION: GY454XE  Re 12F50
+; FUNCTION: GY455XE  Im 12F50
 _f_12F50:
 	PUSH LR
 	PUSH QR8
@@ -6435,6 +6727,7 @@ _f_12F50:
 	BAL _$j_12f7a
 
 ; FUNCTION: GY454XE  Re 12F66
+; FUNCTION: GY455XE  Im 12F66
 _f_12F66:
 	PUSH LR
 	PUSH QR8
@@ -6453,13 +6746,14 @@ _$j_12f7a:
 	BL _num_cpy
 _$j_12f86:
 	L ER0, -2H[FP]
-	BL _f_1B288
+	BL _get_num_err_type
 	POP XR4
 	MOV SP, FP
 	POP QR8
 	POP PC
 
 ; FUNCTION: GY454XE  Re 12F94
+; FUNCTION: GY455XE  Im 12F94
 _f_12F94:
 	PUSH LR
 	PUSH QR8
@@ -6484,6 +6778,7 @@ _f_12F94:
 	BAL _$j_13052
 
 ; FUNCTION: GY454XE  Re 12FC4
+; FUNCTION: GY455XE  Im 12FC4
 _f_12FC4:
 	PUSH LR
 	PUSH QR8
@@ -6508,6 +6803,7 @@ _f_12FC4:
 	BAL _$j_13052
 
 ; FUNCTION: GY454XE  Re 12FF4
+; FUNCTION: GY455XE  Im 12FF4
 _f_12FF4:
 	PUSH LR
 	PUSH QR8
@@ -6533,6 +6829,7 @@ _$j_13008:
 	BAL _$j_13052
 
 ; FUNCTION: GY454XE  Re 13024
+; FUNCTION: GY455XE  Im 13024
 _f_13024:
 	PUSH LR
 	PUSH QR8
@@ -6562,6 +6859,7 @@ _$j_13052:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 1305A
+; FUNCTION: GY455XE  Im 1305A
 _f_1305A:
 	PUSH LR
 	PUSH QR8
@@ -6575,6 +6873,7 @@ _f_1305A:
 	BAL _$j_13008
 
 ; FUNCTION: GY454XE  Re 13070
+; FUNCTION: GY455XE  Im 13070
 _f_13070:
 	PUSH LR
 	PUSH QR8
@@ -6588,6 +6887,7 @@ _f_13070:
 	BAL _$j_13038
 
 ; FUNCTION: GY454XE  Re 13086
+; FUNCTION: GY455XE  Im 13086
 _f_13086:
 	PUSH LR
 	PUSH QR8
@@ -6601,6 +6901,7 @@ _f_13086:
 	BAL _$j_13008
 
 ; FUNCTION: GY454XE  Re 1309C
+; FUNCTION: GY455XE  Im 1309C
 _f_1309C:
 	PUSH LR
 	PUSH QR8
@@ -6614,6 +6915,7 @@ _f_1309C:
 	BAL _$j_13038
 
 ; FUNCTION: GY454XE  Re 130B2
+; FUNCTION: GY455XE  Im 130B2
 _num_stat_P:
 	PUSH LR
 	PUSH QR8
@@ -6675,7 +6977,7 @@ _$j_13126:
 	L ER0, -2H[FP]
 	BL _num_cpy
 	L ER0, -2H[FP]
-	BL _f_1B288
+	BL _get_num_err_type
 _$j_13136:
 	POP XR4
 	MOV SP, FP
@@ -6683,7 +6985,7 @@ _$j_13136:
 	POP PC
 _$j_1313e:
 	L ER0, -2H[FP]
-	BL _f_1B288
+	BL _get_num_err_type
 	BAL _$j_13136
 _$j_13146:
 	MOV R2, #0H
@@ -6693,6 +6995,7 @@ _$j_13146:
 	BAL _$j_13126
 
 ; FUNCTION: GY454XE  Re 13152
+; FUNCTION: GY455XE  Im 13152
 _num_stat_Q:
 	PUSH LR
 	PUSH QR8
@@ -6708,6 +7011,7 @@ _num_stat_Q:
 	BAL _$j_130fa
 
 ; FUNCTION: GY454XE  Re 1316C
+; FUNCTION: GY455XE  Im 1316C
 _num_stat_R:
 	PUSH LR
 	PUSH QR8
@@ -6727,6 +7031,7 @@ _num_stat_R:
 	BAL _$j_130ec
 
 ; FUNCTION: GY454XE  Re 13190
+; FUNCTION: GY455XE  Im 13190
 _num_stat_to_t:
 	PUSH LR
 	PUSH QR8
@@ -6770,22 +7075,27 @@ _num_stat_to_t:
 ; Possibly dummied out functions
 
 ; FUNCTION: GY454XE  Re 131E8
+; FUNCTION: GY455XE  Im 131E8
 _f_131E8:
 	RT
 
 ; FUNCTION: GY454XE  Re 131Ea
+; FUNCTION: GY455XE  Im 131Ea
 _f_131EA:
 	RT
 
 ; FUNCTION: GY454XE  Re 131EC
+; FUNCTION: GY455XE  Im 131EC
 _f_131EC:
 	RT
 
 ; FUNCTION: GY454XE  Re 131EE
+; FUNCTION: GY455XE  Im 131EE
 _f_131EE:
 	RT
 
 ; FUNCTION: GY454XE  Re 131F0
+; FUNCTION: GY455XE  Im 131F0
 _f_131F0:
 	PUSH LR
 	PUSH XR8
@@ -6813,6 +7123,7 @@ _f_131F0:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 13226
+; FUNCTION: GY455XE  Im 13226
 _f_13226:
 	XOR R0, R8
 	XOR R1, R9
@@ -6823,6 +7134,7 @@ _f_13226:
 	RT
 
 ; FUNCTION: GY454XE  Re 13234
+; FUNCTION: GY455XE  Im 13234
 _num_random:
 	PUSH LR
 	PUSH QR8
@@ -6893,6 +7205,7 @@ _$j_1325c:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 132DC
+; FUNCTION: GY455XE  Im 132DC
 _mv_n4_1d10:
 	MOV ER0, ER4
 	MOV R2, #1H
@@ -6902,6 +7215,7 @@ _mv_n4_1d10:
 	BAL _$j_1325c
 
 ; FUNCTION: GY454XE  Re 132EC
+; FUNCTION: GY455XE  Im 132EC
 _num_normalize:
 	ADD ER0, #8H
 	MOV R3, #0H
@@ -6910,6 +7224,7 @@ _num_normalize:
 	RT
 
 ; FUNCTION: GY454XE  Re 132F6
+; FUNCTION: GY455XE  Im 132F6
 _f_132F6:
 	PUSH LR
 	PUSH QR8
@@ -6943,6 +7258,7 @@ _$j_13332:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 1333A
+; FUNCTION: GY455XE  Im 1333A
 _num_randint:
 	PUSH LR
 	PUSH ER6
@@ -6955,12 +7271,12 @@ _num_randint:
 	MOV BP, ER0
 	BL _num_cpy
 	MOV ER0, ER8
-	BL _f_14800
+	BL _num_to_str_std_lineo
 	MOV ER0, ER8
 	BL _f_1ADF0
 	BNE _$j_133bc
 	MOV ER0, BP
-	BL _f_14800
+	BL _num_to_str_std_lineo
 	MOV ER0, BP
 	BL _f_1ADF0
 	BNE _$j_133bc
@@ -6998,7 +7314,7 @@ _num_randint:
 _$j_133bc:
 	MOV R2, #8H
 	MOV ER0, ER8
-	BL _f_1B12C
+	BL _init_num
 	MOV R0, #8H
 _$j_133c6:
 	MOV SP, FP
@@ -7007,6 +7323,7 @@ _$j_133c6:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 133CE
+; FUNCTION: GY455XE  Im 133CE
 _f_133CE:
 	PUSH LR
 	MOV ER2, ER6
@@ -7015,6 +7332,7 @@ _$j_133d2:
 	BAL _$j_133dc
 
 ; FUNCTION: GY454XE  Re 133D6
+; FUNCTION: GY455XE  Im 133D6
 _f_133D6:
 	PUSH LR
 	MOV ER2, BP
@@ -7025,35 +7343,42 @@ _$j_133dc:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 133E2
+; FUNCTION: GY455XE  Im 133E2
 _num_mul_2__:
 	PUSH LR
 	BAL _$j_133d2
 
 ; FUNCTION: GY454XE  Re 133E6
+; FUNCTION: GY455XE  Im 133E6
 _mv_n8_n4:
 	PUSH LR
 	MOV ER0, ER8
 
 ; FUNCTION: GY454XE  Re 133EA
+; FUNCTION: GY455XE  Im 133EA
 _mv_n0_n4:
 	MOV ER2, ER4
 	BAL _mv_n0_n2
 
 ; FUNCTION: GY454XE  Re 133EE
+; FUNCTION: GY455XE  Im 133EE
 _mv_n10_n4:
 	PUSH LR
 	MOV ER2, ER4
 
 ; FUNCTION: GY454XE  Re 133F2
+; FUNCTION: GY455XE  Im 133F2
 _mv_n10_n2:
 	MOV ER0, ER10
 
 ; FUNCTION: GY454XE  Re 133F4
+; FUNCTION: GY455XE  Im 133F4
 _mv_n0_n2:
 	BL _num_cpy
 	POP PC
 
 ; FUNCTION: GY454XE  Re 133FA
+; FUNCTION: GY455XE  Im 133FA
 _num_invalid_zf__:
 	PUSH LR
 	BL _num_invalid__
@@ -7061,6 +7386,7 @@ _num_invalid_zf__:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 13404
+; FUNCTION: GY455XE  Im 13404
 _mat_add:
 	PUSH LR
 	PUSH QR8
@@ -7121,6 +7447,7 @@ _$j_1346e:
 	B _$j_136b2
 
 ; FUNCTION: GY454XE  Re 13474
+; FUNCTION: GY455XE  Im 13474
 _f_13474:
 	AND R4, #00001111B
 	AND R6, #00001111B
@@ -7134,6 +7461,7 @@ _f_13474:
 	RT
 
 ; FUNCTION: GY454XE  Re 13488
+; FUNCTION: GY455XE  Im 13488
 _f_13488:
 	MOV R2, #9H
 	CMP R8, #0H
@@ -7150,6 +7478,7 @@ _$j_1349e:
 	RT
 
 ; FUNCTION: GY454XE  Re 134A0
+; FUNCTION: GY455XE  Im 134A0
 _f_134A0:
 	MOV R0, #3H
 	MUL ER0, R12
@@ -7161,6 +7490,7 @@ _f_134A0:
 	RT
 
 ; FUNCTION: GY454XE  Re 134B0
+; FUNCTION: GY455XE  Im 134B0
 _f_134B0:
 	MOV R0, R6
 	MOV R1, #0H
@@ -7171,6 +7501,7 @@ _f_134B0:
 	RT
 
 ; FUNCTION: GY454XE  Re 134BE
+; FUNCTION: GY455XE  Im 134BE
 _mat_sub:
 	PUSH LR
 	PUSH QR8
@@ -7178,6 +7509,7 @@ _mat_sub:
 	BAL _$j_1340a
 
 ; FUNCTION: GY454XE  Re 134C6
+; FUNCTION: GY455XE  Im 134C6
 _mat_mul_num:
 	PUSH LR
 	PUSH QR8
@@ -7235,6 +7567,7 @@ _$j_13518:
 	BAL _$j_13466
 
 ; FUNCTION: GY454XE  Re 13532
+; FUNCTION: GY455XE  Im 13532
 _mat_div:
 	PUSH LR
 	PUSH QR8
@@ -7242,6 +7575,7 @@ _mat_div:
 	BAL _$j_134cc
 
 ; FUNCTION: GY454XE  Re 1353A
+; FUNCTION: GY455XE  Im 1353A
 _f_1353A:
 	PUSH LR
 	PUSH QR8
@@ -7249,6 +7583,7 @@ _f_1353A:
 	BAL _$j_134cc
 
 ; FUNCTION: GY454XE  Re 13542
+; FUNCTION: GY455XE  Im 13542
 _f_13542:
 	PUSH LR
 	PUSH QR8
@@ -7317,6 +7652,7 @@ _$j_135b4:
 	B _$j_13466
 
 ; FUNCTION: GY454XE  Re 135C6
+; FUNCTION: GY455XE  Im 135C6
 _f_135C6:
 	PUSH LR
 	PUSH QR8
@@ -7324,6 +7660,7 @@ _f_135C6:
 	BAL _$j_13548
 
 ; FUNCTION: GY454XE  Re 135CE
+; FUNCTION: GY455XE  Im 135CE
 _f_135CE:
 	PUSH LR
 	PUSH QR8
@@ -7331,6 +7668,7 @@ _f_135CE:
 	BAL _$j_13548
 
 ; FUNCTION: GY454XE  Re 135D6
+; FUNCTION: GY455XE  Im 135D6
 _f_135D6:
 	PUSH LR
 	PUSH QR8
@@ -7338,6 +7676,7 @@ _f_135D6:
 	BAL _$j_13548
 
 ; FUNCTION: GY454XE  Re 135DE
+; FUNCTION: GY455XE  Im 135DE
 _mat_mul:
 	PUSH LR
 	PUSH QR8
@@ -7442,11 +7781,12 @@ _$j_136b0:
 _$j_136b2:
 	MOV ER0, ER10
 	PUSH R2
-	BL _f_1B12C
+	BL _init_num
 	POP R0
 	BAL _$j_136a8
 
 ; FUNCTION: GY454XE  Re 136BE
+; FUNCTION: GY455XE  Im 136BE
 _f_136BE:
 	PUSH LR
 	PUSH QR8
@@ -7511,6 +7851,7 @@ _$j_13732:
 	BAL _$j_136a8
 
 ; FUNCTION: GY454XE  Re 1373C
+; FUNCTION: GY455XE  Im 1373C
 _mat_det:
 	PUSH LR
 	PUSH QR8
@@ -7639,6 +7980,7 @@ _$j_13850:
 	B _$j_136a8
 
 ; FUNCTION: GY454XE  Re 13860
+; FUNCTION: GY455XE  Im 13860
 _f_13860:
 	PUSH LR
 	PUSH QR8
@@ -7682,6 +8024,7 @@ _$j_138ba:
 	BAL _$j_1396c
 
 ; FUNCTION: GY454XE  Re 138BC
+; FUNCTION: GY455XE  Im 138BC
 _f_138BC:
 	PUSH LR
 	MOV ER0, ER6
@@ -7769,6 +8112,7 @@ _$j_1397c:
 	B _$j_136a8
 
 ; FUNCTION: GY454XE  Re 13982
+; FUNCTION: GY455XE  Im 13982
 _f_13982:
 	PUSH LR
 	MOV ER0, BP
@@ -7785,6 +8129,7 @@ _f_13982:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 139A2
+; FUNCTION: GY455XE  Im 139A2
 _f_139A2:
 	PUSH LR
 	MOV ER2, ER4
@@ -7793,6 +8138,7 @@ _f_139A2:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 139AE
+; FUNCTION: GY455XE  Im 139AE
 _f_139AE:
 	PUSH LR
 	ADD ER6, #0AH
@@ -7818,6 +8164,7 @@ _f_139AE:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 139E4
+; FUNCTION: GY455XE  Im 139E4
 _f_139E4:
 	PUSH LR
 	PUSH QR8
@@ -7885,6 +8232,7 @@ _$j_13a64:
 	B _$j_136a8
 
 ; FUNCTION: GY454XE  Re 13A72
+; FUNCTION: GY455XE  Im 13A72
 _f_13A72:
 	PUSH LR
 	PUSH QR8
@@ -7951,6 +8299,7 @@ _$j_13ad6:
 	B _$j_136a8
 
 ; FUNCTION: GY454XE  Re 13AFE
+; FUNCTION: GY455XE  Im 13AFE
 _f_13AFE:
 	PUSH LR
 	ADD ER0, FP
@@ -7977,6 +8326,7 @@ _f_13AFE:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 13B36
+; FUNCTION: GY455XE  Im 13B36
 _f_13B36:
 	PUSH LR
 	MOV R3, #0H
@@ -7985,6 +8335,7 @@ _f_13B36:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 13B42
+; FUNCTION: GY455XE  Im 13B42
 _f_13B42:
 	MOV R5, R4
 	SRL R5, #4
@@ -7992,6 +8343,7 @@ _f_13B42:
 	RT
 
 ; FUNCTION: GY454XE  Re 13B4A
+; FUNCTION: GY455XE  Im 13B4A
 _f_13B4A:
 	PUSH LR
 	PUSH QR8
@@ -8034,58 +8386,68 @@ _$j_13b96:
 	B _$j_136a8
 
 ; FUNCTION: GY454XE  Re 13BA6
+; FUNCTION: GY455XE  Im 13BA6
 _f_13BA6:
 	PUSH LR
 	MOV ER0, ER6
 	B _$j_133dc
 
 ; FUNCTION: GY454XE  Re 13BAE
+; FUNCTION: GY455XE  Im 13BAE
 _f_13BAE:
 	PUSH LR
 	B _$j_133da
 
 ; FUNCTION: GY454XE  Re 13BB4
+; FUNCTION: GY455XE  Im 13BB4
 _f_13BB4:
 	PUSH LR
 	MOV ER0, BP
 	B _$j_133dc
 
 ; FUNCTION: GY454XE  Re 13BBC
+; FUNCTION: GY455XE  Im 13BBC
 _f_13BBC:
 	PUSH LR
 	MOV ER2, ER6
 	B _mv_n10_n2
 
 ; FUNCTION: GY454XE  Re 13BC4
+; FUNCTION: GY455XE  Im 13BC4
 _f_13BC4:
 	PUSH LR
 	MOV ER0, ER6
 	B _mv_n0_n4
 
 ; FUNCTION: GY454XE  Re 13BCC
+; FUNCTION: GY455XE  Im 13BCC
 _f_13BCC:
 	PUSH LR
 	MOV ER0, ER6
 	B _mv_n0_n2
 
 ; FUNCTION: GY454XE  Re 13BD4
+; FUNCTION: GY455XE  Im 13BD4
 _f_13BD4:
 	PUSH LR
 	MOV ER0, ER8
 	B _mv_n0_n2
 
 ; FUNCTION: GY454XE  Re 13BDC
+; FUNCTION: GY455XE  Im 13BDC
 _f_13BDC:
 	PUSH LR
 	B _mv_n10_n2
 
 ; FUNCTION: GY454XE  Re 13BE2
+; FUNCTION: GY455XE  Im 13BE2
 _f_13BE2:
 	PUSH LR
 	MOV ER2, ER4
 	B _mv_n0_n2
 
 ; FUNCTION: GY454XE  Re 13BEA
+; FUNCTION: GY455XE  Im 13BEA
 _f_13BEA:
 	PUSH LR
 	PUSH QR8
@@ -8364,6 +8726,7 @@ _$j_13e50:
 	B _$j_14312
 
 ; FUNCTION: GY454XE  Re 13E54
+; FUNCTION: GY455XE  Im 13E54
 _f_13E54:
 	MOV R0, R12
 	MOV R2, #0AH
@@ -8661,6 +9024,7 @@ _$j_14144:
 	B _$j_14312
 
 ; FUNCTION: GY454XE  Re 14158
+; FUNCTION: GY455XE  Im 14158
 _f_14158:
 	PUSH LR
 	MOV ER0, ER4
@@ -8672,6 +9036,7 @@ _f_14158:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 1416C
+; FUNCTION: GY455XE  Im 1416C
 _f_1416C:
 	PUSH LR
 	MOV ER0, ER8
@@ -8684,6 +9049,7 @@ _f_1416C:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 14182
+; FUNCTION: GY455XE  Im 14182
 _f_14182:
 	PUSH LR
 	MOV R2, #BYTE1 _num_2
@@ -8692,6 +9058,7 @@ _f_14182:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 1418E
+; FUNCTION: GY455XE  Im 1418E
 _f_1418E:
 	PUSH LR
 	MOV ER0, ER8
@@ -8701,6 +9068,7 @@ _f_1418E:
 	B _$j_133d2
 
 ; FUNCTION: GY454XE  Re 1419E
+; FUNCTION: GY455XE  Im 1419E
 _f_1419E:
 	PUSH LR
 	MOV ER0, BP
@@ -8709,6 +9077,7 @@ _f_1419E:
 	B _$j_133dc
 
 ; FUNCTION: GY454XE  Re 141AA
+; FUNCTION: GY455XE  Im 141AA
 _f_141AA:
 	PUSH LR
 	MOV ER2, ER6
@@ -8716,12 +9085,14 @@ _f_141AA:
 	B _$j_133da
 
 ; FUNCTION: GY454XE  Re 141B4
+; FUNCTION: GY455XE  Im 141B4
 _f_141B4:
 	PUSH LR
 	MOV ER0, ER10
 	B _$j_133dc
 
 ; FUNCTION: GY454XE  Re 141BC
+; FUNCTION: GY455XE  Im 141BC
 _f_141BC:
 	PUSH LR
 	MOV ER0, ER10
@@ -8729,6 +9100,7 @@ _f_141BC:
 	B _mv_n0_n2
 
 ; FUNCTION: GY454XE  Re 141C6
+; FUNCTION: GY455XE  Im 141C6
 _f_141C6:
 	PUSH LR
 	MOV ER2, ER6
@@ -8736,6 +9108,7 @@ _f_141C6:
 	B _mv_n0_n2
 
 ; FUNCTION: GY454XE  Re 141D0
+; FUNCTION: GY455XE  Im 141D0
 _f_141D0:
 	PUSH LR
 	MOV ER0, ER4
@@ -8743,6 +9116,7 @@ _f_141D0:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 141DA
+; FUNCTION: GY455XE  Im 141DA
 _f_141DA:
 	PUSH LR
 	MOV ER2, ER6
@@ -8877,7 +9251,7 @@ _$j_14312:
 	MOV R1, #BYTE2 _input_area_ptr
 	ST ER10, [ER0]
 	MOV R2, #0H
-	ST R2, _d_0810F
+	ST R2, _replay_idx
 	MOV R10, #40H
 	MOV R11, #81H
 	MOV R0, #3H
@@ -8912,7 +9286,7 @@ _$j_14360:
 	BL _f_17202
 	CMP R0, #0H
 	BNE _$j_1438a
-	BL _f_0BC90
+	BL _write_replay_entry
 	ADD R12, #1H
 	CMP R12, R8
 	BLT _$j_14360
@@ -8922,6 +9296,7 @@ _$j_1438a:
 	B _$j_136a8
 
 ; FUNCTION: GY454XE  Re 1438E
+; FUNCTION: GY455XE  Im 1438E
 _f_1438E:
 	PUSH LR
 	MOV ER0, ER10
@@ -8938,6 +9313,7 @@ _f_1438E:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 143B0
+; FUNCTION: GY455XE  Im 143B0
 _f_143B0:
 	PUSH LR
 	ADD ER10, #1EH
@@ -8948,6 +9324,7 @@ _f_143B0:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 143C2
+; FUNCTION: GY455XE  Im 143C2
 _f_143C2:
 	PUSH LR
 	MOV ER0, ER10
@@ -8957,6 +9334,7 @@ _f_143C2:
 	BAL _$j_143dc
 
 ; FUNCTION: GY454XE  Re 143D0
+; FUNCTION: GY455XE  Im 143D0
 _f_143D0:
 	PUSH LR
 	MOV ER0, ER10
@@ -8972,6 +9350,7 @@ _$j_143dc:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 143EA
+; FUNCTION: GY455XE  Im 143EA
 _f_143EA:
 	PUSH LR
 	L R1, [ER0]
@@ -8990,6 +9369,7 @@ _$j_14402:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 14404
+; FUNCTION: GY455XE  Im 14404
 _get_const_token:
 	PUSH LR
 	BL _get_conv_token	; Call get_conv_token to check if number is valid
@@ -9007,6 +9387,7 @@ _$j_1441e:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 14420
+; FUNCTION: GY455XE  Im 14420
 _get_conv_token:
 	CMP R0, #40		; Return 0 if number is higher than 40...
 	BGT _$j_1442c
@@ -9020,6 +9401,7 @@ _$j_1442e:
 	RT
 
 ; FUNCTION: GY454XE  Re 14430
+; FUNCTION: GY455XE  Im 14430
 _f_14430:
 	PUSH LR
 	PUSH ER0
@@ -9035,7 +9417,8 @@ _f_14430:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 1444C
-_f_1444C:
+; FUNCTION: GY455XE  Im 1444C
+_num_to_str_base_n:
 	PUSH LR
 	PUSH XR4
 	PUSH QR8
@@ -9129,12 +9512,13 @@ _$j_144e6:
 	BAL _$j_144aa
 
 ; FUNCTION: GY454XE  Re 144F4
+; FUNCTION: GY455XE  Im 144F4
 _f_144F4:
 	PUSH LR
 	PUSH R4
 	PUSH FP
 	MOV R2, R0
-	BL _f_14562
+	BL _get_num_parser_idx
 	MOV R0, #1H
 	CMP R2, #2H
 	BEQ _$j_14510
@@ -9150,12 +9534,13 @@ _$j_14510:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 14516
+; FUNCTION: GY455XE  Im 14516
 _f_14516:
 	PUSH LR
 	PUSH R4
 	PUSH FP
 	MOV R2, R0
-	BL _f_14562
+	BL _get_num_parser_idx
 	CMP R2, #1H
 	BNE _$j_1450e
 	CMP R0, #5FH
@@ -9167,12 +9552,13 @@ _$j_1452e:
 	BAL _$j_14510
 
 ; FUNCTION: GY454XE  Re 14532
+; FUNCTION: GY455XE  Im 14532
 _f_14532:
 	PUSH LR
 	PUSH R4
 	PUSH FP
 	MOV R2, R0
-	BL _f_14562
+	BL _get_num_parser_idx
 	MOV R0, #1H
 	CMP R2, #3H
 	BEQ _$j_1455a
@@ -9193,33 +9579,36 @@ _$j_1455a:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 14560
-_f_14560:
+; FUNCTION: GY455XE  Im 14560
+_get_num_parser_idx_fp:
 	L R2, [FP]
 
 ; FUNCTION: GY454XE  Re 14562
-_f_14562:
+; FUNCTION: GY455XE  Im 14562
+_get_num_parser_idx:
 	MOV R4, #0H
-	MOV R3, #0H
-	MOV ER0, ER2
+	MOV R3, #0H   ; Sign-extend R2 (force unsigned)
+	MOV ER0, ER2  ; Multiply ER2 by 3
 	ADD ER2, ER2
 	ADD ER2, ER0
-	MOV R0, #BYTE1 _unk_01628
-	MOV R1, #BYTE2 _unk_01628
-	SRLC R2, #1
-	ADDC R4, R4
+	MOV R0, #BYTE1 _num_parser_indices
+	MOV R1, #BYTE2 _num_parser_indices
+	SRLC R2, #1   ; Shift ER2 by 1 (//2). We also retrieve the LSB that's shifted out...
+	ADDC R4, R4   ; ...and add it to R4
 	SRL R3, #1
-	SLL R4, #2
+	SLL R4, #2    ; Shift R4 by 2 (×4)
 	ADD ER2, ER0
-	L R0, [ER2]
+	L R0, [ER2]   ; Now we load in the index
 	L R1, 1H[ER2]
-	SRLC R0, R4
+	SRLC R0, R4   ; Shift it by 4
 	SRL R1, R4
 	AND R1, #00001111B
-	MOV R2, R1
+	MOV R2, R1    ; Return the low nibble of the high byte
 	ADD FP, #1H
 	RT
 
 ; FUNCTION: GY454XE  Re 1458C
+; FUNCTION: GY455XE  Im 1458C
 _f_1458C:
 	XOR R0, #11111111B
 	XOR R1, #11111111B
@@ -9231,6 +9620,7 @@ _f_1458C:
 	RT
 
 ; FUNCTION: GY454XE  Re 1459C
+; FUNCTION: GY455XE  Im 1459C
 _f_1459C:
 	PUSH LR
 	BL _num_invalid__
@@ -9265,6 +9655,7 @@ _$j_145bc:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 145E2
+; FUNCTION: GY455XE  Im 145E2
 _f_145E2:
 	ST R9, 9H[FP]
 	MOV ER0, #0H
@@ -9294,12 +9685,13 @@ _$j_14600:
 	RT
 
 ; FUNCTION: GY454XE  Re 14612
+; FUNCTION: GY455XE  Im 14612
 _f_14612:
 	PUSH LR
 	PUSH R10
 	PUSH FP
-	MOV R14, #0C2H
-	MOV R15, #1AH
+	MOV R14, #BYTE1 _bcd_weights
+	MOV R15, #BYTE2 _bcd_weights
 	MOV R9, #9H
 	MOV ER0, #0H
 	MOV ER2, #0H
@@ -9336,7 +9728,7 @@ _$j_14644:
 	BNE _$j_1466e
 	MOV ER2, ER2
 	BNE _$j_1467a
-	CMP R1, #-80H
+	CMP R1, #80H
 	BEQ _$j_14666
 	BGE _$j_1467a
 	BAL _$j_1466e
@@ -9357,6 +9749,7 @@ _$j_1467a:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 1467E
+; FUNCTION: GY455XE  Im 1467E
 _f_1467E:
 	PUSH LR
 	MOV ER4, #0H
@@ -9437,11 +9830,13 @@ _$j_1470c:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 1470E
+; FUNCTION: GY455XE  Im 1470E
 _f_1470E:
 	MOV R1, R9
 	BAL _$j_14714
 
 ; FUNCTION: GY454XE  Re 14712
+; FUNCTION: GY455XE  Im 14712
 _f_14712:
 	MOV R1, #0FH
 _$j_14714:
@@ -9456,6 +9851,7 @@ _$j_14724:
 	RT
 
 ; FUNCTION: GY454XE  Re 14726
+; FUNCTION: GY455XE  Im 14726
 _f_14726:
 	MOV R4, #0H
 	CMP R0, #-8H
@@ -9471,6 +9867,7 @@ _$j_14736:
 	RT
 
 ; FUNCTION: GY454XE  Re 1473A
+; FUNCTION: GY455XE  Im 1473A
 _f_1473A:
 	PUSH R4
 	MOV R5, #-80H
@@ -9481,6 +9878,7 @@ _f_1473A:
 	RT
 
 ; FUNCTION: GY454XE  Re 14748
+; FUNCTION: GY455XE  Im 14748
 _f_14748:
 	PUSH R4
 	MOV R5, #-80H
@@ -9492,6 +9890,7 @@ _f_14748:
 	RT
 
 ; FUNCTION: GY454XE  Re 14758
+; FUNCTION: GY455XE  Im 14758
 _f_14758:
 	PUSH LR
 	PUSH XR0
@@ -9507,11 +9906,13 @@ _f_14758:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 14776
+; FUNCTION: GY455XE  Im 14776
 _f_14776:
 	MOV R4, #1H
 	BAL _$j_1477c
 
 ; FUNCTION: GY454XE  Re 1477A
+; FUNCTION: GY455XE  Im 1477A
 _f_1477A:
 	MOV R4, #2H
 _$j_1477c:
@@ -9529,16 +9930,19 @@ _$j_14790:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 14792
+; FUNCTION: GY455XE  Im 14792
 _f_14792:
 	MOV R0, #2H
 	RT
 
 ; FUNCTION: GY454XE  Re 14796
+; FUNCTION: GY455XE  Im 14796
 _f_14796:
 	MOV R0, #0H
 	RT
 
 ; FUNCTION: GY454XE  Re 1479A
+; FUNCTION: GY455XE  Im 1479A
 _f_1479A:
 	PUSH LR
 	PUSH ER6
@@ -9559,6 +9963,7 @@ _f_1479A:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 147C4
+; FUNCTION: GY455XE  Im 147C4
 _f_147C4:
 	PUSH LR
 	PUSH ER6
@@ -9591,7 +9996,8 @@ _$j_147fa:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 14800
-_f_14800:
+; FUNCTION: GY455XE  Im 14800
+_num_to_str_std_lineo:
 	PUSH LR
 	PUSH XR0
 	BL _f_15EE4
@@ -9607,6 +10013,7 @@ _$j_14818:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 1481C
+; FUNCTION: GY455XE  Im 1481C
 _f_1481C:
 	PUSH LR
 	ADD SP, #-0AH
@@ -9623,9 +10030,10 @@ _f_1481C:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 1483C
+; FUNCTION: GY455XE  Im 1483C
 _num_rnd:
 	PUSH LR
-	BL _f_14800
+	BL _num_to_str_std_lineo
 	BEQ _$j_14848
 	MOV R0, #3H
 	POP PC
@@ -9679,6 +10087,7 @@ _$j_14868:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 148B4
+; FUNCTION: GY455XE  Im 148B4
 _cmplx_rnd:
 	PUSH LR
 	ADD BP, #0AH
@@ -9693,6 +10102,7 @@ _$j_148ca:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 148CC
+; FUNCTION: GY455XE  Im 148CC
 _cmplx_negate:
 	PUSH LR
 	ADD ER0, #0AH
@@ -9705,6 +10115,7 @@ _$j_148de:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 148E0
+; FUNCTION: GY455XE  Im 148E0
 _f_148E0:
 	PUSH LR
 	PUSH ER6
@@ -9732,6 +10143,7 @@ _f_148E0:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 1491C
+; FUNCTION: GY455XE  Im 1491C
 _f_1491C:
 	PUSH LR
 	PUSH ER6
@@ -9759,6 +10171,7 @@ _f_1491C:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 14958
+; FUNCTION: GY455XE  Im 14958
 _f_14958:
 	PUSH LR
 	PUSH ER6
@@ -9790,6 +10203,7 @@ _f_14958:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 1499C
+; FUNCTION: GY455XE  Im 1499C
 _f_1499C:
 	PUSH LR
 	PUSH ER6
@@ -9817,6 +10231,7 @@ _f_1499C:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 149D8
+; FUNCTION: GY455XE  Im 149D8
 _f_149D8:
 	PUSH LR
 	PUSH BP
@@ -9839,6 +10254,7 @@ _$j_149f8:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 14A00
+; FUNCTION: GY455XE  Im 14A00
 _f_14A00:
 	PUSH LR
 	CMP R0, #0H
@@ -9883,6 +10299,7 @@ _$j_14a52:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 14A54
+; FUNCTION: GY455XE  Im 14A54
 _f_14A54:
 	PUSH LR
 	PUSH BP
@@ -9904,6 +10321,7 @@ _$j_14a76:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 14A7E
+; FUNCTION: GY455XE  Im 14A7E
 _num_cmplx_pow:
 	PUSH LR
 	CMP R6, #-3CH
@@ -9932,6 +10350,7 @@ _$j_14aac:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 14AB2
+; FUNCTION: GY455XE  Im 14AB2
 _num_add:
 	PUSH LR
 	BL _num_add_1
@@ -9939,6 +10358,7 @@ _num_add:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 14ABE
+; FUNCTION: GY455XE  Im 14ABE
 _num_sub:
 	PUSH LR
 	BL _num_sub_1
@@ -9946,6 +10366,7 @@ _num_sub:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 14ACA
+; FUNCTION: GY455XE  Im 14ACA
 _num_mul:
 	PUSH LR
 	BL _num_mul_1
@@ -9953,6 +10374,7 @@ _num_mul:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 14AD6
+; FUNCTION: GY455XE  Im 14AD6
 _num_div:
 	PUSH LR
 	BL _num_div_1
@@ -9966,6 +10388,7 @@ _$j_14aea:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 14AEC
+; FUNCTION: GY455XE  Im 14AEC
 _f_14AEC:
 	PUSH LR
 	PUSH XR0
@@ -9982,6 +10405,7 @@ _$j_14b04:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 14B08
+; FUNCTION: GY455XE  Im 14B08
 _cmplx_inverse:
 	PUSH LR
 	L R3, 0AH[ER0]
@@ -9993,6 +10417,7 @@ _$j_14b16:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 14B1C
+; FUNCTION: GY455XE  Im 14B1C
 _cmplx_add:
 	PUSH LR
 	BL _f_14AEC
@@ -10004,6 +10429,7 @@ _$j_14b2a:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 14B30
+; FUNCTION: GY455XE  Im 14B30
 _cmplx_sub:
 	PUSH LR
 	BL _f_14AEC
@@ -10015,6 +10441,7 @@ _$j_14b3e:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 14B44
+; FUNCTION: GY455XE  Im 14B44
 _cmplx_mul:
 	PUSH LR
 	BL _f_14AEC
@@ -10061,6 +10488,7 @@ _$j_14ba0:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 14BA8
+; FUNCTION: GY455XE  Im 14BA8
 _cmplx_div:
 	PUSH LR
 	BL _f_14AEC
@@ -10072,6 +10500,7 @@ _$j_14bb6:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 14BBC
+; FUNCTION: GY455XE  Im 14BBC
 _f_14BBC:
 	PUSH LR
 	PUSH ER2
@@ -10087,6 +10516,7 @@ _$j_14bd4:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 14BD6
+; FUNCTION: GY455XE  Im 14BD6
 _num_frac:
 	PUSH LR
 	PUSH ER8
@@ -10212,12 +10642,14 @@ _$j_14cd2:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 14CD8
+; FUNCTION: GY455XE  Im 14CD8
 _num_pol:
 	PUSH LR
 	BL _f_16E44
 	BAL _$j_14ce6
 
 ; FUNCTION: GY454XE  Re 14CE0
+; FUNCTION: GY455XE  Im 14CE0
 _num_rec:
 	PUSH LR
 	BL _f_16DCA
@@ -10236,6 +10668,7 @@ _$j_14cfe:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 14D00
+; FUNCTION: GY455XE  Im 14D00
 _num_percent:
 	PUSH LR
 	L R2, [ER0]
@@ -10247,16 +10680,19 @@ _num_percent:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 14D12
+; FUNCTION: GY455XE  Im 14D12
 _num_deg:
 	MOV R2, #4H
 	BAL _$j_14d1c
 
 ; FUNCTION: GY454XE  Re 14D16
+; FUNCTION: GY455XE  Im 14D16
 _num_rad:
 	MOV R2, #5H
 	BAL _$j_14d1c
 
 ; FUNCTION: GY454XE  Re 14D1A
+; FUNCTION: GY455XE  Im 14D1A
 _num_grad:
 	MOV R2, #6H
 _$j_14d1c:
@@ -10265,6 +10701,7 @@ _$j_14d1c:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 14D24
+; FUNCTION: GY455XE  Im 14D24
 _f_14D24:
 	PUSH LR
 	CMP R1, #76H
@@ -10272,7 +10709,7 @@ _f_14D24:
 _$j_14d2a:
 	MOV ER4, ER0
 	MOV ER0, BP
-	BL _f_14800
+	BL _num_to_str_std_lineo
 	CMP R5, #25H
 	BNE _$j_14d3e
 	MOV R2, #BYTE1 _num_32
@@ -10305,20 +10742,20 @@ _$j_14d68:
 	POP PC
 _$j_14d70:
 	PUSH XR4
-	BL _f_14560
+	BL _get_num_parser_idx_fp
 	CMP R2, #4H
 	BNE _$j_14de0
 	CMP R0, #0AH
 	BGE _$j_14de0
 	MOV R7, R0
-	BL _f_14560
+	BL _get_num_parser_idx_fp
 	CMP R2, #4H
 	BNE _$j_14de0
 	CMP R0, #0AH
 	BGE _$j_14de0
 	MOV R6, R0
 	SLL R6, #4
-	BL _f_14560
+	BL _get_num_parser_idx_fp
 	CMP R2, #4H
 	BNE _$j_14de0
 	CMP R0, #0AH
@@ -10364,6 +10801,7 @@ _$j_14de0:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 14DE6
+; FUNCTION: GY455XE  Im 14DE6
 _num_sin:
 	PUSH LR
 	PUSH ER0
@@ -10371,6 +10809,7 @@ _num_sin:
 	BAL _$j_14df8
 
 ; FUNCTION: GY454XE  Re 14DF0
+; FUNCTION: GY455XE  Im 14DF0
 _num_cos:
 	PUSH LR
 	PUSH ER0
@@ -10452,6 +10891,7 @@ _$j_14e82:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 14E86
+; FUNCTION: GY455XE  Im 14E86
 _num_tan:
 	PUSH LR
 	PUSH ER0
@@ -10480,6 +10920,7 @@ _$j_14eaa:
 	BAL _$j_14e16
 
 ; FUNCTION: GY454XE  Re 14EB4
+; FUNCTION: GY455XE  Im 14EB4
 _f_14EB4:
 	PUSH LR
 	CMP R1, #75H
@@ -10846,6 +11287,7 @@ _$j_1515c:
 	BAL _$j_15152
 
 ; FUNCTION: GY454XE  Re 15160
+; FUNCTION: GY455XE  Im 15160
 _f_15160:
 	CMP R4, #77H
 	BGE _$j_15170
@@ -10861,16 +11303,19 @@ _$j_15170:
 	RT
 
 ; FUNCTION: GY454XE  Re 15174
+; FUNCTION: GY455XE  Im 15174
 _f_15174:
 	MOV R2, #0H
 	BAL _$j_1517e
 
 ; FUNCTION: GY454XE  Re 15178
+; FUNCTION: GY455XE  Im 15178
 _f_15178:
 	MOV R2, #1H
 	BAL _$j_1517e
 
 ; FUNCTION: GY454XE  Re 1517C
+; FUNCTION: GY455XE  Im 1517C
 _f_1517C:
 	MOV R2, #2H
 _$j_1517e:
@@ -10922,6 +11367,7 @@ _$j_151d2:
 	BAL _$j_151ce
 
 ; FUNCTION: GY454XE  Re 151D6
+; FUNCTION: GY455XE  Im 151D6
 _f_151D6:
 	PUSH LR
 	CMP R11, #0AH
@@ -10948,6 +11394,7 @@ _$j_151fa:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 15204
+; FUNCTION: GY455XE  Im 15204
 _f_15204:
 	PUSH LR
 	CMP R11, #0H
@@ -10970,10 +11417,11 @@ _$j_1521c:
 	BAL _$j_151fa
 
 ; FUNCTION: GY454XE  Re 15228
+; FUNCTION: GY455XE  Im 15228
 _f_15228:
 	PUSH ER8
-	MOV R8, #BYTE1 _d_0805F
-	MOV R9, #BYTE2 _d_0805F
+	MOV R8, #BYTE1 (_arg1_ref+1)
+	MOV R9, #BYTE2 (_arg1_ref+1)
 	ADD R8, R10
 	ADDC R9, #0H
 	L R4, [ER8]
@@ -10981,6 +11429,7 @@ _f_15228:
 	RT
 
 ; FUNCTION: GY454XE  Re 15238
+; FUNCTION: GY455XE  Im 15238
 _f_15238:
 	CMP R10, #18H
 	BLT _$j_15240
@@ -10997,6 +11446,7 @@ _$j_15240:
 	RT
 
 ; FUNCTION: GY454XE  Re 15250
+; FUNCTION: GY455XE  Im 15250
 _f_15250:
 	CMP R4, #75H
 	BEQ _$j_1528a
@@ -11052,6 +11502,7 @@ _$j_152a2:
 	RT
 
 ; FUNCTION: GY454XE  Re 152A4
+; FUNCTION: GY455XE  Im 152A4
 _f_152A4:
 	PUSH LR
 	CMP R0, R4
@@ -11081,6 +11532,7 @@ _$j_152d4:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 152D8
+; FUNCTION: GY455XE  Im 152D8
 _f_152D8:
 	PUSH LR
 _$j_152da:
@@ -11116,14 +11568,15 @@ _$j_15310:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 15314
+; FUNCTION: GY455XE  Im 15314
 _f_15314:
 	PUSH LR
 	CMP R1, #0H
 	BNE _$j_1531c
 	POP PC
 _$j_1531c:
-	MOV R2, #BYTE1 _d_0805F
-	MOV R3, #BYTE2 _d_0805F
+	MOV R2, #BYTE1 (_arg1_ref+1)
+	MOV R3, #BYTE2 (_arg1_ref+1)
 	ADD R2, R1
 	ADDC R3, #0H
 _$j_15324:
@@ -11141,6 +11594,7 @@ _$j_15338:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 1533A
+; FUNCTION: GY455XE  Im 1533A
 _f_1533A:
 	PUSH BP
 	L R0, [EA+]
@@ -11162,6 +11616,7 @@ _$j_15356:
 	RT
 
 ; FUNCTION: GY454XE  Re 1535A
+; FUNCTION: GY455XE  Im 1535A
 _f_1535A:
 	PUSH LR
 	PUSH XR8
@@ -11182,7 +11637,7 @@ _$j_15376:
 	ADD R8, #6H
 	ADD R9, #-5H
 _$j_1537a:
-	BL _f_14560
+	BL _get_num_parser_idx_fp
 	CMP R2, #0AH
 	BLE _$j_15388
 _$j_15382:
@@ -11321,6 +11776,7 @@ _$j_15474:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 1547E
+; FUNCTION: GY455XE  Im 1547E
 _f_1547E:
 	PUSH QR0
 	MOV R4, R1
@@ -11328,6 +11784,7 @@ _f_1547E:
 	BAL _$j_15494
 
 ; FUNCTION: GY454XE  Re 15486
+; FUNCTION: GY455XE  Im 15486
 _f_15486:
 	PUSH QR0
 	L R4, [ER0]
@@ -11335,6 +11792,7 @@ _f_15486:
 	BAL _$j_15490
 
 ; FUNCTION: GY454XE  Re 1548E
+; FUNCTION: GY455XE  Im 1548E
 _f_1548E:
 	PUSH QR0
 _$j_15490:
@@ -11373,6 +11831,7 @@ _$j_154be:
 	RT
 
 ; FUNCTION: GY454XE  Re 154CE
+; FUNCTION: GY455XE  Im 154CE
 _f_154CE:
 	PUSH LR
 	PUSH XR0
@@ -11380,6 +11839,7 @@ _f_154CE:
 	BAL _$j_154ea
 
 ; FUNCTION: GY454XE  Re 154D6
+; FUNCTION: GY455XE  Im 154D6
 _f_154D6:
 	PUSH LR
 	PUSH XR0
@@ -11388,6 +11848,7 @@ _f_154D6:
 	BAL _$j_154ea
 
 ; FUNCTION: GY454XE  Re 154E0
+; FUNCTION: GY455XE  Im 154E0
 _f_154E0:
 	PUSH LR
 	PUSH XR0
@@ -11400,6 +11861,7 @@ _$j_154ea:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 154F2
+; FUNCTION: GY455XE  Im 154F2
 _f_154F2:
 	PUSH QR0
 	PUSH XR8
@@ -11428,6 +11890,7 @@ _$j_15520:
 	RT
 
 ; FUNCTION: GY454XE  Re 15526
+; FUNCTION: GY455XE  Im 15526
 _f_15526:
 	PUSH QR0
 	PUSH XR8
@@ -11438,6 +11901,7 @@ _$j_1552c:
 	BAL _$j_154fc
 
 ; FUNCTION: GY454XE  Re 15532
+; FUNCTION: GY455XE  Im 15532
 _f_15532:
 	PUSH QR0
 	PUSH XR8
@@ -11446,6 +11910,7 @@ _f_15532:
 	BAL _$j_1552c
 
 ; FUNCTION: GY454XE  Re 1553C
+; FUNCTION: GY455XE  Im 1553C
 _f_1553C:
 	PUSH QR0
 	PUSH XR8
@@ -11453,10 +11918,12 @@ _f_1553C:
 	BAL _$j_1552c
 
 ; FUNCTION: GY454XE  Re 15544
+; FUNCTION: GY455XE  Im 15544
 _f_15544:
 	MOV R0, #7H
 
 ; FUNCTION: GY454XE  Re 15546
+; FUNCTION: GY455XE  Im 15546
 _f_15546:
 	MOV R2, #0H
 	L R3, [BP]
@@ -11507,6 +11974,7 @@ _$j_15592:
 	RT
 
 ; FUNCTION: GY454XE  Re 15596
+; FUNCTION: GY455XE  Im 15596
 _f_15596:
 	PUSH LR
 	CMP R6, #-1H
@@ -11521,6 +11989,7 @@ _$j_155aa:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 155AC
+; FUNCTION: GY455XE  Im 155AC
 _f_155AC:
 	PUSH LR
 	PUSH ER8
@@ -11550,7 +12019,7 @@ _f_155AC:
 	ST R4, 1CH[BP]
 	MOV ER0, BP
 	MOV ER2, ER8
-	BL _f_14800
+	BL _num_to_str_std_lineo
 	BL _num_div_1
 	MOV ER0, FP
 	BL _f_154F2
@@ -11562,7 +12031,7 @@ _$j_15600:
 	BL _num_frombyte
 	MOV ER0, BP
 	MOV ER2, ER8
-	BL _f_14800
+	BL _num_to_str_std_lineo
 	BL _num_div_1
 	MOV ER0, BP
 	MOV ER2, FP
@@ -11574,7 +12043,7 @@ _$j_15600:
 _$j_15628:
 	MOV ER0, BP
 	MOV ER2, FP
-	BL _f_14800
+	BL _num_to_str_std_lineo
 	BL _num_add_1
 	CMP R0, #0H
 	BNE _$j_15656
@@ -11601,17 +12070,19 @@ _$j_15656:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 15662
+; FUNCTION: GY455XE  Im 15662
 _f_15662:
 	PUSH LR
 	PUSH R0
 	MOV R0, #75H
-	BL _f_15712
+	BL _num_parse_op
 	CMP R2, #0H
 	POP R0
 	POP PC
 
 ; FUNCTION: GY454XE  Re 15672
-_num_sum__:
+; FUNCTION: GY455XE  Im 15672
+_num_parse_int_ddx_sum:
 	PUSH LR
 	TB _table_mode.6
 	BNE _$j_1567e
@@ -11622,7 +12093,8 @@ _$j_1567e:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 15682
-_f_15682:
+; FUNCTION: GY455XE  Im 15682
+_num_parse_func:
 	PUSH LR
 	TB _table_mode.6
 	BNE _$j_15692
@@ -11700,7 +12172,8 @@ _$j_1570c:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 15712
-_f_15712:
+; FUNCTION: GY455XE  Im 15712
+_num_parse_op:
 	PUSH LR
 	L R1, _mode
 	CMP R1, #88H  ; TABLE mode
@@ -11732,7 +12205,7 @@ _$j_15746:
 	POP PC
 _$j_1574a:
 	MOV R0, #5FH
-	BL _f_15682
+	BL _num_parse_func
 	POP PC
 _$j_15752:
 	MOV R7, #1H
@@ -11783,7 +12256,8 @@ _$j_157ae:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 157B0
-_f_157B0:
+; FUNCTION: GY455XE  Im 157B0
+_num_parse_postfix:
 	PUSH LR
 	CMP R7, #3H
 	BGE _$j_157ba
@@ -11800,7 +12274,7 @@ _$j_157ba:
 	MOV R2, #3H
 	POP PC
 _$j_157cc:
-	BL _f_14560
+	BL _get_num_parser_idx_fp
 	ADD FP, #-1H
 	CMP R2, #4H
 	BEQ _$j_1581c
@@ -11829,6 +12303,7 @@ _$j_15800:
 	POP XR0
 
 ; FUNCTION: GY454XE  Re 15802
+; FUNCTION: GY455XE  Im 15802
 _f_15802:
 	MOV R7, #3H
 	CMP R2, #2H
@@ -11906,7 +12381,7 @@ _$j_15882:
 	BNE _$j_158b2
 _$j_15892:
 	MOV R7, R0
-	BL _f_14560
+	BL _get_num_parser_idx_fp
 	CMP R2, #0AH
 	BNE _$j_157b6
 	PUSH R7
@@ -11932,7 +12407,8 @@ _$j_158c2:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 158C6
-_f_158C6:
+; FUNCTION: GY455XE  Im 158C6
+_num_parse_numlit:
 	PUSH LR
 	CMP R7, #3H
 	BLT _$j_158d0
@@ -11955,15 +12431,15 @@ _$j_158ea:
 	MOV ER10, #0H
 	BAL _$j_15904
 _$j_158f2:
-	BL _f_14560
-	CMP R2, #0AH
+	BL _get_num_parser_idx_fp
+	CMP R2, #10
 	BLE _$j_15900
 _$j_158fa:
 	MOV R2, #2H
 	POP XR8
 	POP PC
 _$j_15900:
-	CMP R2, #4H
+	CMP R2, #4
 	BNE _$j_1599c
 _$j_15904:
 	CMP R0, #12H
@@ -11987,10 +12463,10 @@ _$j_15924:
 	CMP R11, #1H
 	ADDC R11, #0H
 _$j_15928:
-	BL _f_14560
-	CMP R2, #0AH
+	BL _get_num_parser_idx_fp
+	CMP R2, #10
 	BGT _$j_158fa
-	CMP R2, #4H
+	CMP R2, #4
 	BNE _$j_1599c
 	CMP R0, #12H
 	BNE _$j_1593c
@@ -12018,7 +12494,7 @@ _$j_15956:
 	MOV R0, #1H
 	BL _f_14712
 _$j_15964:
-	BL _f_14560
+	BL _get_num_parser_idx_fp
 	CMP R2, #0AH
 	BGT _$j_158fa
 	CMP R2, #4H
@@ -12143,7 +12619,7 @@ _$j_15a3a:
 	MOV R2, #0H
 	POP PC
 _$j_15a42:
-	BL _f_14560
+	BL _get_num_parser_idx_fp
 	CMP R2, #4H
 	BNE _$j_15a9a
 	ADD FP, #-1H
@@ -12152,7 +12628,7 @@ _$j_15a4c:
 	CMP R10, #0FH
 	BGE _$j_15a82
 _$j_15a52:
-	BL _f_14560
+	BL _get_num_parser_idx_fp
 	CMP R2, #0AH
 	BGT _$j_15a98
 	CMP R2, #4H
@@ -12178,7 +12654,7 @@ _$j_15a78:
 	BLT _$j_15a52
 	OR R11, #00000100B
 _$j_15a82:
-	BL _f_14560
+	BL _get_num_parser_idx_fp
 	CMP R2, #0AH
 	BGT _$j_15a98
 	CMP R2, #4H
@@ -12197,7 +12673,8 @@ _$j_15a9a:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 15AA0
-_f_15AA0:
+; FUNCTION: GY455XE  Im 15AA0
+_num_parse_var:
 	PUSH LR
 	TB _table_mode.5
 	BEQ _$j_15ad8
@@ -12206,7 +12683,7 @@ _f_15AA0:
 	CMP R0, #1H
 	BEQ _$j_15ad8
 	PUSH XR0
-	BL _f_14560
+	BL _get_num_parser_idx_fp
 	CMP R2, #2H
 	BNE _$j_15ad4
 	CMP R0, #2AH
@@ -12248,7 +12725,8 @@ _$j_15af8:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 15AFE
-_f_15AFE:
+; FUNCTION: GY455XE  Im 15AFE
+_num_parse_const:
 	PUSH LR
 	CMP R7, #3H
 	BLT _$j_15b0a
@@ -12305,7 +12783,8 @@ _$j_15b60:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 15B64
-_f_15B64:
+; FUNCTION: GY455XE  Im 15B64
+_num_parse_matvct:
 	PUSH LR
 	CMP R7, #3H
 	BLT _$j_15b70
@@ -12334,7 +12813,8 @@ _$j_15b94:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 15B96
-_f_15B96:
+; FUNCTION: GY455XE  Im 15B96
+_num_parse_sto:
 	PUSH LR
 	TB _table_mode.7
 	BNE _$j_15ba2
@@ -12345,7 +12825,7 @@ _$j_15ba2:
 	POP PC
 _$j_15ba6:
 	PUSH R0
-	BL _f_14560
+	BL _get_num_parser_idx_fp
 	CMP R2, #0AH
 	BEQ _$j_15bb6
 _$j_15bb0:
@@ -12403,7 +12883,7 @@ _$j_15c14:
 	MOV R7, #1H
 	MOV R2, #10H
 	PUSH R3
-	BL _f_15AA0
+	BL _num_parse_var
 	POP R3
 	CMP R3, #0H
 	BEQ _$j_15c2c
@@ -12415,7 +12895,8 @@ _$j_15c2c:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 15C30
-_f_15C30:
+; FUNCTION: GY455XE  Im 15C30
+_num_parse_sep:
 	PUSH LR
 	CMP R7, #2H
 	BGT _$j_15c3a
@@ -12426,12 +12907,12 @@ _$j_15c38:
 _$j_15c3a:
 	TB _table_mode.6
 	BEQ _$j_15c64
-	BL _f_14560
+	BL _get_num_parser_idx_fp
 	CMP R2, #5H
 	BNE _$j_15c62
 	CMP R0, #1H
 	BEQ _$j_15c62
-	BL _f_14560
+	BL _get_num_parser_idx_fp
 	ADD FP, #-2H
 	CMP R2, #0AH
 	BNE _$j_15c64
@@ -12471,7 +12952,7 @@ _$j_15c94:
 _$j_15c9a:
 	MOV R7, #4H
 	MOV R0, #67H
-	BL _f_157B0
+	BL _num_parse_postfix
 	CMP R2, #0H
 	BNE _$j_15c38
 	BAL _$j_15c64
@@ -12480,6 +12961,7 @@ _$j_15ca8:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 15CAC
+; FUNCTION: GY455XE  Im 15CAC
 _num_calculate:
 	PUSH LR
 	TB _table_mode.6
@@ -12512,6 +12994,7 @@ _$j_15ce2:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 15CE4
+; FUNCTION: GY455XE  Im 15CE4
 _num_eval__:
 	PUSH LR
 	SB _d_08120.0
@@ -12519,6 +13002,7 @@ _num_eval__:
 	BAL _$j_15d1c
 
 ; FUNCTION: GY454XE  Re 15CEE
+; FUNCTION: GY455XE  Im 15CEE
 _num_parse:
 	PUSH LR
 	PUSH QR8
@@ -12542,12 +13026,12 @@ _$j_15d02:
 	BL _f_15238
 	MOV ER10, #0H
 _$j_15d1c:
-	BL _f_14560
-	CMP R2, #0AH
+	BL _get_num_parser_idx_fp
+	CMP R2, #10
 	BGT _$j_15dc4
 	SLL R2, #1
-	MOV R4, #BYTE1 _jmp_017a8
-	MOV R5, #BYTE2 _jmp_017a8
+	MOV R4, #BYTE1 _num_parsers
+	MOV R5, #BYTE2 _num_parsers
 	ADD R4, R2
 	ADDC R5, #0H
 	L ER4, [ER4]
@@ -12567,7 +13051,7 @@ _$j_15d44:
 _$j_15d46:
 	MOV ER0, ER8
 	PUSH R2
-	BL _f_1B12C
+	BL _init_num
 	POP R0
 	BAL _$j_15dae
 _$j_15d52:
@@ -12650,6 +13134,7 @@ _$j_15dd6:
 	BAL _$j_15db2
 
 ; FUNCTION: GY454XE  Re 15DE8
+; FUNCTION: GY455XE  Im 15DE8
 _f_15DE8:
 	PUSH LR
 	PUSH R4
@@ -12669,7 +13154,7 @@ _f_15DE8:
 	MOV R14, #98H
 	MOV R15, #83H
 _$j_15e0c:
-	BL _f_14560
+	BL _get_num_parser_idx_fp
 	CMP R2, #5H
 	BEQ _$j_15e70
 	MOV R9, #1H
@@ -12679,7 +13164,7 @@ _$j_15e0c:
 	BNE _$j_15e0c
 	TB R8.6
 	BEQ _$j_15e0c
-	BL _f_14560
+	BL _get_num_parser_idx_fp
 	CMP R2, #0AH
 	BEQ _$j_15e4a
 	CMP R2, #5H
@@ -12687,7 +13172,7 @@ _$j_15e0c:
 	CMP R0, #1H
 	BEQ _$j_15e0c
 	PUSH R0
-	BL _f_14560
+	BL _get_num_parser_idx_fp
 	POP R1
 	CMP R2, #0AH
 	BNE _$j_15e6c
@@ -12732,7 +13217,7 @@ _$j_15e78:
 	SB R9.0
 	BNE _$j_15e98
 	PUSH R0
-	BL _f_14560
+	BL _get_num_parser_idx_fp
 	MOV R1, R0
 	POP R0
 	CMP R2, #2H
@@ -12791,6 +13276,7 @@ _$j_15edc:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 15EE4
+; FUNCTION: GY455XE  Im 15EE4
 _f_15EE4:
 	PUSH LR
 	LEA _arg0_ref
@@ -12800,6 +13286,7 @@ _f_15EE4:
 	BAL _$j_15f02
 
 ; FUNCTION: GY454XE  Re 15EF4
+; FUNCTION: GY455XE  Im 15EF4
 _f_15EF4:
 	PUSH LR
 	LEA _arg0_ref
@@ -12811,16 +13298,17 @@ _$j_15f02:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 15F06
+; FUNCTION: GY455XE  Im 15F06
 _f_15F06:
 	PUSH LR
 	PUSH XR4
 	PUSH QR8
 	BL _l_reg0
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BGE _$j_15f1e
 	AND R0, #10111111B
-	ST R0, _reg0_9
+	ST R0, _mathi_enable_draw
 _$j_15f1e:
 	BL _mv_reg1_reg0
 	BL _f_1726A
@@ -12829,6 +13317,7 @@ _$j_15f1e:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 15F2C
+; FUNCTION: GY455XE  Im 15F2C
 _f_15F2C:
 	PUSH LR
 	PUSH QR0
@@ -12849,6 +13338,7 @@ _f_15F2C:
 	BAL _$j_15f5e
 
 ; FUNCTION: GY454XE  Re 15F5A
+; FUNCTION: GY455XE  Im 15F5A
 _f_15F5A:
 	PUSH LR
 	PUSH QR0
@@ -12872,6 +13362,7 @@ _$j_15f86:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 15F8A
+; FUNCTION: GY455XE  Im 15F8A
 _f_15F8A:
 	PUSH LR
 	PUSH XR4
@@ -12948,6 +13439,7 @@ _$j_16036:
 	BAL _$j_16030
 
 ; FUNCTION: GY454XE  Re 16052
+; FUNCTION: GY455XE  Im 16052
 _f_16052:
 	LEA [FP]
 	L QR0, [EA+]
@@ -12958,6 +13450,7 @@ _f_16052:
 	RT
 
 ; FUNCTION: GY454XE  Re 16060
+; FUNCTION: GY455XE  Im 16060
 _f_16060:
 	PUSH LR
 	PUSH XR4
@@ -13010,6 +13503,7 @@ _$j_160d8:
 	BAL _$j_1609c
 
 ; FUNCTION: GY454XE  Re 160E8
+; FUNCTION: GY455XE  Im 160E8
 _f_160E8:
 	PUSH LR
 	BL _f_19A12
@@ -13020,6 +13514,7 @@ _f_160E8:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 16100
+; FUNCTION: GY455XE  Im 16100
 _f_16100:
 	PUSH LR
 	PUSH XR4
@@ -13125,6 +13620,7 @@ _$j_161ea:
 	BAL _$j_161a4
 
 ; FUNCTION: GY454XE  Re 161F6
+; FUNCTION: GY455XE  Im 161F6
 _f_161F6:
 	PUSH LR
 	L R11, [BP]
@@ -13136,6 +13632,7 @@ _$j_16206:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 16208
+; FUNCTION: GY455XE  Im 16208
 _f_16208:
 	PUSH LR
 	L R11, [BP]
@@ -13154,6 +13651,7 @@ _$j_16222:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 16224
+; FUNCTION: GY455XE  Im 16224
 _f_16224:
 	PUSH LR
 	PUSH XR4
@@ -13173,18 +13671,18 @@ _f_16224:
 	BNE _$j_16264
 	MOV R1, #1H
 	ST ER0, _reg1
-	L ER0, _reg0
+	L ER0, _d_08000
 	BEQ _$j_16264
 	ADD R1, #5H
 	DAA R1
 	AND R1, #00001111B
-	ST ER0, _reg0
+	ST ER0, _d_08000
 _$j_16264:
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	BEQ _$j_162ac
 	CMP R0, #1H
 	BNE _$j_16274
-	L R0, _reg0
+	L R0, _d_08000
 	BEQ _$j_162ac
 _$j_16274:
 	L R0, _reg1_9
@@ -13222,6 +13720,7 @@ _$j_162ac:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 162D6
+; FUNCTION: GY455XE  Im 162D6
 _f_162D6:
 	PUSH LR
 	PUSH XR4
@@ -13243,6 +13742,7 @@ _f_162D6:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 162FE
+; FUNCTION: GY455XE  Im 162FE
 _f_162FE:
 	PUSH LR
 	PUSH XR4
@@ -13301,6 +13801,7 @@ _$j_1637c:
 	BAL _$j_16348
 
 ; FUNCTION: GY454XE  Re 16382
+; FUNCTION: GY455XE  Im 16382
 _f_16382:
 	PUSH LR
 	BL _f_16474
@@ -13314,6 +13815,7 @@ _f_16382:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 16398
+; FUNCTION: GY455XE  Im 16398
 ; 16398
 _f_16398:
 	PUSH LR
@@ -13367,6 +13869,7 @@ _$j_1641e:
 	BAL _$j_163e0
 
 ; FUNCTION: GY454XE  Re 16424
+; FUNCTION: GY455XE  Im 16424
 _f_16424:
 	PUSH LR
 	AND R11, #00001111B
@@ -13394,6 +13897,7 @@ _$j_16452:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 16454
+; FUNCTION: GY455XE  Im 16454
 _f_16454:
 	PUSH LR
 	CMP R10, #0AH
@@ -13413,6 +13917,7 @@ _$j_16472:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 16474
+; FUNCTION: GY455XE  Im 16474
 _f_16474:
 	MOV ER0, #0H
 	MOV ER2, #0H
@@ -13423,6 +13928,7 @@ _f_16474:
 	RT
 
 ; FUNCTION: GY454XE  Re 16482
+; FUNCTION: GY455XE  Im 16482
 _f_16482:
 	PUSH LR
 	PUSH XR4
@@ -13431,6 +13937,7 @@ _f_16482:
 	BAL _$j_1649e
 
 ; FUNCTION: GY454XE  Re 1648C
+; FUNCTION: GY455XE  Im 1648C
 _f_1648C:
 	PUSH LR
 	PUSH XR4
@@ -13439,6 +13946,7 @@ _f_1648C:
 	BAL _$j_1649e
 
 ; FUNCTION: GY454XE  Re 16496
+; FUNCTION: GY455XE  Im 16496
 _f_16496:
 	PUSH LR
 	PUSH XR4
@@ -13475,12 +13983,12 @@ _$j_1649e:
 	L ER0, _reg1
 	CMP R1, #1H
 	BEQ _$j_16510
-	L ER0, _reg0
+	L ER0, _d_08000
 	BEQ _$j_16510
 	ADD R1, #5H
 	DAA R1
 	AND R1, #00001111B
-	ST ER0, _reg0
+	ST ER0, _d_08000
 	BAL _$j_16510
 _$j_16500:
 	BL _num_mul_r
@@ -13501,6 +14009,7 @@ _$j_1651e:
 	BAL _$j_16510
 
 ; FUNCTION: GY454XE  Re 16524
+; FUNCTION: GY455XE  Im 16524
 _f_16524:
 	PUSH LR
 	PUSH XR4
@@ -13616,6 +14125,7 @@ _$j_1660a:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 16612
+; FUNCTION: GY455XE  Im 16612
 _f_16612:
 	PUSH LR
 	BL _f_16CE4
@@ -13623,6 +14133,7 @@ _f_16612:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 1661C
+; FUNCTION: GY455XE  Im 1661C
 _f_1661C:
 	PUSH LR
 	PUSH R1
@@ -13638,6 +14149,7 @@ _f_1661C:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 1663A
+; FUNCTION: GY455XE  Im 1663A
 _f_1663A:
 	PUSH LR
 	BL _f_16CE4
@@ -13645,6 +14157,7 @@ _f_1663A:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 16646
+; FUNCTION: GY455XE  Im 16646
 _f_16646:
 	PUSH LR
 	PUSH ER2
@@ -13660,6 +14173,7 @@ _f_16646:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 16666
+; FUNCTION: GY455XE  Im 16666
 _f_16666:
 	PUSH LR
 	PUSH XR8
@@ -13690,6 +14204,7 @@ _$j_1669c:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 166A2
+; FUNCTION: GY455XE  Im 166A2
 _f_166A2:
 	PUSH LR
 	PUSH QR8
@@ -13737,6 +14252,7 @@ _$j_166fa:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 16700
+; FUNCTION: GY455XE  Im 16700
 _f_16700:
 	PUSH LR
 	PUSH ER0
@@ -13755,6 +14271,7 @@ _f_16700:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 16728
+; FUNCTION: GY455XE  Im 16728
 _f_16728:
 	PUSH LR
 	PUSH XR8
@@ -13774,6 +14291,7 @@ _f_16728:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 1674E
+; FUNCTION: GY455XE  Im 1674E
 _f_1674E:
 	PUSH LR
 	PUSH ER8
@@ -13790,6 +14308,7 @@ _f_1674E:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 1676E
+; FUNCTION: GY455XE  Im 1676E
 _f_1676E:
 	PUSH LR
 	PUSH ER4
@@ -13806,6 +14325,7 @@ _$j_16786:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 1678A
+; FUNCTION: GY455XE  Im 1678A
 _f_1678A:
 	PUSH LR
 	PUSH XR8
@@ -13838,6 +14358,7 @@ _$j_16792:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 167C2
+; FUNCTION: GY455XE  Im 167C2
 _f_167C2:
 	PUSH LR
 	PUSH R8
@@ -13859,6 +14380,7 @@ _f_167C2:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 167F2
+; FUNCTION: GY455XE  Im 167F2
 _f_167F2:
 	PUSH LR
 	PUSH R8
@@ -13873,6 +14395,7 @@ _$j_16806:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 1680A
+; FUNCTION: GY455XE  Im 1680A
 _f_1680A:
 	PUSH LR
 	PUSH XR8
@@ -13898,6 +14421,7 @@ _f_1680A:
 	BAL _$j_16880
 
 ; FUNCTION: GY454XE  Re 1683E
+; FUNCTION: GY455XE  Im 1683E
 _f_1683E:
 	PUSH LR
 	PUSH XR8
@@ -13955,6 +14479,7 @@ _$j_168b4:
 	BAL _$j_168ae
 
 ; FUNCTION: GY454XE  Re 168B8
+; FUNCTION: GY455XE  Im 168B8
 _f_168B8:
 	PUSH LR
 	PUSH XR8
@@ -13974,6 +14499,7 @@ _f_168B8:
 	BAL _$j_1688e
 
 ; FUNCTION: GY454XE  Re 168DE
+; FUNCTION: GY455XE  Im 168DE
 _f_168DE:
 	PUSH LR
 	PUSH XR8
@@ -13988,6 +14514,7 @@ _f_168DE:
 	BAL _$j_16880
 
 ; FUNCTION: GY454XE  Re 168F8
+; FUNCTION: GY455XE  Im 168F8
 _f_168F8:
 	PUSH LR
 	MOV ER0, #6H
@@ -14007,6 +14534,7 @@ _f_168F8:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 16920
+; FUNCTION: GY455XE  Im 16920
 _f_16920:
 	PUSH LR
 	MOV R0, #1EH
@@ -14020,6 +14548,7 @@ _f_16920:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 16938
+; FUNCTION: GY455XE  Im 16938
 _f_16938:
 	PUSH LR
 	MOV R0, #8H
@@ -14065,6 +14594,7 @@ _f_16938:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 169A0
+; FUNCTION: GY455XE  Im 169A0
 _f_169A0:
 	PUSH LR
 	MOV R0, #0H
@@ -14084,6 +14614,7 @@ _$j_169bc:
 	BAL _$j_169b8
 
 ; FUNCTION: GY454XE  Re 169C0
+; FUNCTION: GY455XE  Im 169C0
 _f_169C0:
 	PUSH LR
 	MOV R0, #0BH
@@ -14110,6 +14641,7 @@ _f_169C0:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 169FC
+; FUNCTION: GY455XE  Im 169FC
 _f_169FC:
 	PUSH LR
 	MOV R0, #0H
@@ -14130,6 +14662,7 @@ _$j_16a22:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 16A24
+; FUNCTION: GY455XE  Im 16A24
 _f_16A24:
 	PUSH LR
 	BL _f_1678A
@@ -14272,6 +14805,7 @@ _$j_16b62:
 	BC AL, _$j_16b5e
 
 ; FUNCTION: GY454XE  Re 16B66
+; FUNCTION: GY455XE  Im 16B66
 _f_16B66:
 	PUSH LR
 	PUSH R8
@@ -14306,6 +14840,7 @@ _$j_16b98:
 	BAL _$j_16b94
 
 ; FUNCTION: GY454XE  Re 16BAA
+; FUNCTION: GY455XE  Im 16BAA
 _f_16BAA:
 	PUSH LR
 	PUSH R8
@@ -14313,6 +14848,7 @@ _f_16BAA:
 	BAL _$j_16b6c
 
 ; FUNCTION: GY454XE  Re 16BB2
+; FUNCTION: GY455XE  Im 16BB2
 _f_16BB2:
 	PUSH LR
 	PUSH ER0
@@ -14345,6 +14881,7 @@ _$j_16be4:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 16BF6
+; FUNCTION: GY455XE  Im 16BF6
 _f_16BF6:
 	PUSH LR
 	PUSH ER0
@@ -14385,6 +14922,7 @@ _$j_16c42:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 16C54
+; FUNCTION: GY455XE  Im 16C54
 _f_16C54:
 	PUSH LR
 	PUSH ER4
@@ -14447,6 +14985,7 @@ _$j_16cbc:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 16CE4
+; FUNCTION: GY455XE  Im 16CE4
 _f_16CE4:
 	MOV R2, #0AH
 	MUL ER0, R2
@@ -14456,6 +14995,7 @@ _f_16CE4:
 	RT
 
 ; FUNCTION: GY454XE  Re 16CF0
+; FUNCTION: GY455XE  Im 16CF0
 _f_16CF0:
 	PUSH LR
 	L R0, _last_key_keycode
@@ -14484,11 +15024,13 @@ _$j_16d28:
 
 ; Not used in any function
 ; FUNCTION: GY454XE  Re 16D2C
+; FUNCTION: GY455XE  Im 16D2C
 _reset:
 	MOV PSW, #2
 	BRK
 
 ; FUNCTION: GY454XE  Re 16D30
+; FUNCTION: GY455XE  Im 16D30
 _num_cube:
 	PUSH LR
 	PUSH QR8
@@ -14520,6 +15062,7 @@ _$j_16d66:
 	BAL _$j_16d60
 
 ; FUNCTION: GY454XE  Re 16D6C
+; FUNCTION: GY455XE  Im 16D6C
 _num_square:
 	PUSH LR
 	PUSH QR8
@@ -14539,6 +15082,7 @@ _$j_16d88:
 	BAL _$j_16d60
 
 ; FUNCTION: GY454XE  Re 16D8E
+; FUNCTION: GY455XE  Im 16D8E
 _num_inverse:
 	PUSH LR
 	PUSH QR8
@@ -14569,6 +15113,7 @@ _$j_16dc4:
 	BAL _$j_16d60
 
 ; FUNCTION: GY454XE  Re 16DCA
+; FUNCTION: GY455XE  Im 16DCA
 _f_16DCA:
 	PUSH LR
 	PUSH QR8
@@ -14619,14 +15164,15 @@ _$j_16e28:
 _$j_16e30:
 	MOV R2, #3H
 	MOV ER0, BP
-	BL _f_1B12C
+	BL _init_num
 	MOV R2, #3H
 	MOV ER0, ER10
-	BL _f_1B12C
+	BL _init_num
 	MOV R0, #3H
 	BAL _$j_16e28
 
 ; FUNCTION: GY454XE  Re 16E44
+; FUNCTION: GY455XE  Im 16E44
 _f_16E44:
 	PUSH LR
 	PUSH QR8
@@ -14671,6 +15217,7 @@ _f_16E44:
 	BAL _$j_16e28
 
 ; FUNCTION: GY454XE  Re 16EA2
+; FUNCTION: GY455XE  Im 16EA2
 _cmplx_square_1:
 	PUSH LR
 	PUSH QR8
@@ -14699,6 +15246,7 @@ _cmplx_square_1:
 	BAL _$j_16f12
 
 ; FUNCTION: GY454XE  Re 16EE2
+; FUNCTION: GY455XE  Im 16EE2
 _f_16EE2:
 	PUSH LR
 	PUSH QR8
@@ -14732,7 +15280,7 @@ _$j_16f1a:
 	BL _num_cpy_im
 	MOV ER0, #-3CH
 	ADD ER0, FP
-	BL _f_1B288
+	BL _get_num_err_type
 	POP XR4
 	MOV SP, FP
 	POP QR8
@@ -14742,6 +15290,7 @@ _$j_16f34:
 	BAL _$j_16f1a
 
 ; FUNCTION: GY454XE  Re 16F3A
+; FUNCTION: GY455XE  Im 16F3A
 _f_16F3A:
 	PUSH LR
 	PUSH QR8
@@ -14760,6 +15309,7 @@ _f_16F3A:
 	BAL _$j_16ef4
 
 ; FUNCTION: GY454XE  Re 16F5E
+; FUNCTION: GY455XE  Im 16F5E
 _f_16F5E:
 	PUSH LR
 	PUSH QR8
@@ -14869,6 +15419,7 @@ _$j_1703e:
 	BAL _$j_17028
 
 ; FUNCTION: GY454XE  Re 17052
+; FUNCTION: GY455XE  Im 17052
 _f_17052:
 	PUSH LR
 	MOV R12, #0A6H
@@ -14909,6 +15460,7 @@ _$j_1709a:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 1709E
+; FUNCTION: GY455XE  Im 1709E
 _f_1709E:
 	PUSH LR
 	MOV ER2, #-3CH
@@ -14926,12 +15478,13 @@ _$j_170b6:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 170B8
+; FUNCTION: GY455XE  Im 170B8
 _f_170B8:
 	PUSH LR
 	MOV R2, #3H
 	MOV ER0, #-3CH
 	ADD ER0, FP
-	BL _f_1B12C
+	BL _init_num
 	MOV R2, #0H
 	MOV ER0, #-32H
 	ADD ER0, FP
@@ -14939,6 +15492,7 @@ _f_170B8:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 170D0
+; FUNCTION: GY455XE  Im 170D0
 _f_170D0:
 	PUSH LR
 	MOV ER2, ER8
@@ -14955,6 +15509,7 @@ _f_170D0:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 170F0
+; FUNCTION: GY455XE  Im 170F0
 _f_170F0:
 	PUSH LR
 	MOV ER2, ER8
@@ -14971,6 +15526,7 @@ _f_170F0:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 17110
+; FUNCTION: GY455XE  Im 17110
 _f_17110:
 	PUSH LR
 	PUSH FP
@@ -15003,6 +15559,7 @@ _$j_17148:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 17150
+; FUNCTION: GY455XE  Im 17150
 _cmplx_cube:
 	PUSH LR
 	PUSH FP
@@ -15025,6 +15582,7 @@ _cmplx_cube:
 	BAL _$j_17148
 
 ; FUNCTION: GY454XE  Re 1717C
+; FUNCTION: GY455XE  Im 1717C
 _cmplx_square:
 	PUSH LR
 	MOV ER2, ER0
@@ -15032,6 +15590,7 @@ _cmplx_square:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 17186
+; FUNCTION: GY455XE  Im 17186
 _f_17186:
 	PUSH LR
 	PUSH FP
@@ -15051,7 +15610,7 @@ _f_17186:
 _$j_171a8:
 	MOV R2, #3H
 	MOV ER0, FP
-	BL _f_1B12C
+	BL _init_num
 	MOV R2, #0H
 	MOV ER0, FP
 	ADD ER0, #0AH
@@ -15071,6 +15630,7 @@ _$j_171cc:
 	BAL _$j_171bc
 
 ; FUNCTION: GY454XE  Re 171D2
+; FUNCTION: GY455XE  Im 171D2
 _f_171D2:
 	PUSH LR
 	PUSH XR4
@@ -15083,20 +15643,22 @@ _f_171D2:
 	BAL _$j_1723c
 
 ; FUNCTION: GY454XE  Re 171E6
+; FUNCTION: GY455XE  Im 171E6
 _f_171E6:
 	PUSH LR
 	PUSH XR4
 	MOV ER4, ER0
-	BL _f_14800
+	BL _num_to_str_std_lineo
 	BNE _$j_17240
 	ADD ER0, #0AH
-	BL _f_14800
+	BL _num_to_str_std_lineo
 	MOV ER2, ER0
 	MOV ER0, ER4
 	BL _f_1A960
 	BAL _$j_1722e
 
 ; FUNCTION: GY454XE  Re 17202
+; FUNCTION: GY455XE  Im 17202
 _f_17202:
 	PUSH LR
 	PUSH XR4
@@ -15132,11 +15694,12 @@ _$j_1723c:
 	POP PC
 _$j_17240:
 	MOV R2, #3H
-	BL _f_1B12C
+	BL _init_num
 	MOV R0, #3H
 	BAL _$j_1722e
 
 ; FUNCTION: GY454XE  Re 1724A
+; FUNCTION: GY455XE  Im 1724A
 _f_1724A:
 	PUSH LR
 	PUSH ER4
@@ -15156,22 +15719,24 @@ _$j_17264:
 
 ; Possibly a dummied out function
 ; FUNCTION: GY454XE  Re 17268
+; FUNCTION: GY455XE  Im 17268
 _f_17268:
 	RT
 
 ; FUNCTION: GY454XE  Re 1726A
+; FUNCTION: GY455XE  Im 1726A
 _f_1726A:
 	PUSH LR
 	BL _f_18BA4
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #0AH
 	BGE _$j_1729e
 	BL _f_1798C
 	CMP R0, #0EH
 	BNE _$j_1729e
-	L ER2, _reg0
+	L ER2, _d_08000
 	MOV ER4, #0H
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #1H
 	BEQ _$j_172a6
 	MOV R5, #1H
@@ -15194,9 +15759,10 @@ _$j_172a6:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 172B4
+; FUNCTION: GY455XE  Im 172B4
 _f_172B4:
 	PUSH LR
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BGE _$j_172ca
 	L R0, _reg1_9
@@ -15214,7 +15780,7 @@ _$j_172d8:
 	LEA _reg1
 	L ER10, [EA+]
 	L QR0, [EA]
-	LEA _reg0
+	LEA _d_08000
 	L ER8, [EA+]
 	SUB R8, R10
 	DAS R8
@@ -15247,19 +15813,19 @@ _$j_1731a:
 	MOV ER8, #0H
 	BAL _$j_1730e
 _$j_17322:
-	L ER0, _reg0
+	L ER0, _d_08000
 	PUSH ER0
 	MOV ER0, #0H
-	ST ER0, _reg0
+	ST ER0, _d_08000
 	BL _f_1970A
 	L ER2, _reg1
-	L ER0, _reg0
+	L ER0, _d_08000
 	ADD R1, R3
 	DAA R1
 	ST ER0, _reg1
 	LEA _reg1_2
 	L QR8, [EA]
-	LEA _reg0_2
+	LEA _d_08002
 	L QR0, [EA]
 	ADDC R0, R8
 	DAA R0
@@ -15277,7 +15843,7 @@ _$j_17322:
 	DAA R6
 	ADDC R7, R15
 	DAA R7
-	LEA _reg0_2
+	LEA _d_08002
 	ST QR0, [EA]
 	AND R7, #11110000B
 	BEQ _$j_17384
@@ -15287,7 +15853,7 @@ _$j_17322:
 	ST ER0, _reg1
 _$j_17384:
 	POP ER0
-	ST ER0, _reg0
+	ST ER0, _d_08000
 _$j_1738a:
 	BL _f_1A23C
 	POP PC
@@ -15297,6 +15863,7 @@ _$j_17390:
 	BAL _$j_1738a
 
 ; FUNCTION: GY454XE  Re 17398
+; FUNCTION: GY455XE  Im 17398
 _f_17398:
 	PUSH LR
 	BL _mv_reg6_reg0
@@ -15313,6 +15880,7 @@ _f_17398:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 173C0
+; FUNCTION: GY455XE  Im 173C0
 _set_reg1_10:
 	MOV R0, #0H
 	MOV R1, #1H
@@ -15326,6 +15894,7 @@ _set_reg1_10:
 	RT
 
 ; FUNCTION: GY454XE  Re 173D6
+; FUNCTION: GY455XE  Im 173D6
 _set_reg1_100d9:
 	MOV R0, #0H
 	MOV R1, #1H
@@ -15341,6 +15910,7 @@ _set_reg1_100d9:
 	RT
 
 ; FUNCTION: GY454XE  Re 173F0
+; FUNCTION: GY455XE  Im 173F0
 _set_reg1_1d10:
 	MOV R0, #99H
 	MOV R1, #0H
@@ -15356,6 +15926,7 @@ _set_reg1_1d10:
 	RT
 
 ; FUNCTION: GY454XE  Re 1740A
+; FUNCTION: GY455XE  Im 1740A
 _set_reg1_200:
 	MOV R0, #2H
 	MOV R1, #1H
@@ -15371,6 +15942,7 @@ _set_reg1_200:
 	RT
 
 ; FUNCTION: GY454XE  Re 17424
+; FUNCTION: GY455XE  Im 17424
 _set_reg1_180:
 	MOV R0, #2H
 	MOV R1, #1H
@@ -15385,15 +15957,16 @@ _set_reg1_180:
 	RT
 
 ; FUNCTION: GY454XE  Re 1743C
+; FUNCTION: GY455XE  Im 1743C
 _num_cmp_reg01:
 	PUSH LR
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #10H
 	BGE _$num_cmp_reg01_ret_f0
 	L R0, _reg1_9
 	CMP R0, #10H
 	BGE _$num_cmp_reg01_ret_f0
-	L ER0, _reg0
+	L ER0, _d_08000
 	L ER2, _reg1
 	CMP R1, #5H
 	BLT _$j_17460
@@ -15414,10 +15987,10 @@ _$j_17468:
 _$j_17474:
 	BL _num_sub_r
 _$j_17478:
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #0H
 	BEQ _$num_cmp_reg01_ret_01
-	L ER0, _reg0
+	L ER0, _d_08000
 	CMP R1, #5H
 	BGE _$num_cmp_reg01_ret_02
 _$num_cmp_reg01_ret_04:
@@ -15435,6 +16008,7 @@ _$num_cmp_reg01_ret_f0:
 	BAL _$num_cmp_reg01_ret
 
 ; FUNCTION: GY454XE  Re 17498
+; FUNCTION: GY455XE  Im 17498
 _byte_to_bcd:
 	MOV R1, R0
 	SRL R1, #4
@@ -15462,6 +16036,7 @@ _$j_174b8:
 	RT
 
 ; FUNCTION: GY454XE  Re 174C2
+; FUNCTION: GY455XE  Im 174C2
 _bcd_to_byte:
 	MOV ER2, #16H
 	MOV R4, #0H
@@ -15485,6 +16060,7 @@ _$j_174de:
 	RT
 
 ; FUNCTION: GY454XE  Re 174E4
+; FUNCTION: GY455XE  Im 174E4
 _f_174E4:
 	PUSH LR
 	BL _mv_reg3_reg0
@@ -15495,15 +16071,16 @@ _f_174E4:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 174FC
+; FUNCTION: GY455XE  Im 174FC
 _f_174FC:
 	PUSH LR
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BGE _$j_1751e
 	L R0, _reg1_9
 	CMP R0, #-10H
 	BGE _$j_1751e
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #0H
 	BNE _$j_17524
 	L R0, _reg1_9
@@ -15531,7 +16108,7 @@ _$j_17540:
 	MOV ER2, #0H
 	MOV R1, #1H
 	MOV R0, #2H
-	LEA _reg0
+	LEA _d_08000
 	ST QR0, [EA+]
 	ST ER8, [EA+]
 	BAL _$j_17558
@@ -15551,7 +16128,7 @@ _$j_17558:
 _$j_17576:
 	MOV ER0, #0H
 	MOV ER2, #0H
-	LEA _reg0
+	LEA _d_08000
 	ST XR0, [EA+]
 	ST XR0, [EA+]
 	ST ER0, [EA+]
@@ -15560,7 +16137,7 @@ _$j_17586:
 	MOV R0, #0H
 	MOV R1, #1H
 	MOV ER2, #0H
-	LEA _reg0
+	LEA _d_08000
 	ST ER0, [EA+]
 	ST ER2, [EA+]
 	ST ER2, [EA+]
@@ -15577,18 +16154,18 @@ _$j_175b0:
 	L ER0, _reg6
 	CMP R1, #5H
 	BLT _$j_175c6
-	L ER0, _reg0
+	L ER0, _d_08000
 	ADD R1, #5H
 	DAA R1
 	AND R1, #00001111B
-	ST ER0, _reg0
+	ST ER0, _d_08000
 _$j_175c6:
 	BAL _$j_17624
 _$j_175c8:
 	BL _mv_reg0_reg6
 	BL _mv_reg1_reg3
 	BL _num_div_r
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BLT _$j_175e2
 	BL _mv_reg0_reg4
@@ -15622,6 +16199,7 @@ _$j_17624:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 17626
+; FUNCTION: GY455XE  Im 17626
 _f_17626:
 	MOV R9, #2H
 	MOV R8, #71H
@@ -15633,12 +16211,13 @@ _f_17626:
 	MOV R2, #4H
 	MOV R1, #1H
 	MOV R0, #0H
-	LEA _reg0
+	LEA _d_08000
 	ST QR0, [EA+]
 	ST ER8, [EA+]
 	RT
 
 ; FUNCTION: GY454XE  Re 17644
+; FUNCTION: GY455XE  Im 17644
 _f_17644:
 	MOV R9, #3H
 	MOV R8, #14H
@@ -15650,12 +16229,13 @@ _f_17644:
 	MOV R2, #80H
 	MOV R1, #1H
 	MOV R0, #0H
-	LEA _reg0
+	LEA _d_08000
 	ST QR0, [EA+]
 	ST ER8, [EA+]
 	RT
 
 ; FUNCTION: GY454XE  Re 17662
+; FUNCTION: GY455XE  Im 17662
 _f_17662:
 	PUSH LR
 	BL _mv_reg6_reg1
@@ -15672,6 +16252,7 @@ _f_17662:
 
 ; Unused.
 ; FUNCTION: GY454XE  Re 1768A
+; FUNCTION: GY455XE  Im 1768A
 _f_1768A:
 	MOV R2, #10H
 	MOV R3, #1H
@@ -15682,6 +16263,7 @@ _f_1768A:
 	RT
 
 ; FUNCTION: GY454XE  Re 17698
+; FUNCTION: GY455XE  Im 17698
 _f_17698:
 	PUSH LR
 	BL _mv_reg6_reg0
@@ -15693,6 +16275,7 @@ _f_17698:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 176B4
+; FUNCTION: GY455XE  Im 176B4
 _f_176B4:
 	PUSH LR
 	MOV R0, #0CH
@@ -15723,7 +16306,7 @@ _f_176B4:
 	CMP R1, #1H
 	BNE _$j_17764
 _$j_1770a:
-	LEA _reg0
+	LEA _d_08000
 	L QR0, [EA+]
 	L ER8, [EA+]
 	LEA _reg2
@@ -15744,7 +16327,7 @@ _$j_1773a:
 	LEA _reg2
 	L QR0, [EA+]
 	L ER8, [EA+]
-	LEA _reg0
+	LEA _d_08000
 	ST QR0, [EA+]
 	ST ER8, [EA+]
 	BAL _$j_17784
@@ -15762,6 +16345,7 @@ _$j_17764:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 1776A
+; FUNCTION: GY455XE  Im 1776A
 _f_1776A:
 	PUSH LR
 	MOV R0, #0AH
@@ -15780,7 +16364,7 @@ _$j_17784:
 	BNE _$j_17826
 	BL _set_reg1_10
 _$j_17790:
-	L ER0, _reg0
+	L ER0, _d_08000
 	CMP R1, #5H
 	BGE _$j_17826
 	BL _f_18BA4
@@ -15802,7 +16386,7 @@ _$j_17790:
 	BGE _$j_17802
 _$j_177cc:
 	BL _num_mul_r
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BGE _$j_17826
 	BL _f_18BA4
@@ -15840,6 +16424,7 @@ _$j_17826:
 	BAL _$j_17824
 
 ; FUNCTION: GY454XE  Re 1782C
+; FUNCTION: GY455XE  Im 1782C
 _mv_reg1_reg5:
 	LEA _reg5
 	L QR0, [EA+]
@@ -15850,6 +16435,7 @@ _mv_reg1_reg5:
 	RT
 
 ; FUNCTION: GY454XE  Re 1783E
+; FUNCTION: GY455XE  Im 1783E
 _mv_reg5_reg1:
 	LEA _reg1
 	L QR0, [EA+]
@@ -15860,8 +16446,9 @@ _mv_reg5_reg1:
 	RT
 
 ; FUNCTION: GY454XE  Re 17850
+; FUNCTION: GY455XE  Im 17850
 _mv_reg5_reg0:
-	LEA _reg0
+	LEA _d_08000
 	L QR0, [EA+]
 	L ER8, [EA+]
 	LEA _reg5
@@ -15870,16 +16457,18 @@ _mv_reg5_reg0:
 	RT
 
 ; FUNCTION: GY454XE  Re 17862
+; FUNCTION: GY455XE  Im 17862
 _mv_reg0_reg4:
 	LEA _reg4
 	L QR0, [EA+]
 	L ER8, [EA+]
-	LEA _reg0
+	LEA _d_08000
 	ST QR0, [EA+]
 	ST ER8, [EA+]
 	RT
 
 ; FUNCTION: GY454XE  Re 17874
+; FUNCTION: GY455XE  Im 17874
 _mv_reg1_reg4:
 	LEA _reg4
 	L QR0, [EA+]
@@ -15890,8 +16479,9 @@ _mv_reg1_reg4:
 	RT
 
 ; FUNCTION: GY454XE  Re 17886
+; FUNCTION: GY455XE  Im 17886
 _mv_reg4_reg0:
-	LEA _reg0
+	LEA _d_08000
 	L QR0, [EA+]
 	L ER8, [EA+]
 	LEA _reg4
@@ -15900,6 +16490,7 @@ _mv_reg4_reg0:
 	RT
 
 ; FUNCTION: GY454XE  Re 17898
+; FUNCTION: GY455XE  Im 17898
 _mv_reg1_reg6:
 	LEA _reg6
 	L QR0, [EA+]
@@ -15910,8 +16501,9 @@ _mv_reg1_reg6:
 	RT
 
 ; FUNCTION: GY454XE  Re 178AA
+; FUNCTION: GY455XE  Im 178AA
 _mv_reg6_reg0:
-	LEA _reg0
+	LEA _d_08000
 	L QR0, [EA+]
 	L ER8, [EA+]
 	LEA _reg6
@@ -15920,6 +16512,7 @@ _mv_reg6_reg0:
 	RT
 
 ; FUNCTION: GY454XE  Re 178BC
+; FUNCTION: GY455XE  Im 178BC
 _mv_reg1_reg3:
 	LEA _reg3
 	L QR0, [EA+]
@@ -15930,8 +16523,9 @@ _mv_reg1_reg3:
 	RT
 
 ; FUNCTION: GY454XE  Re 178CE
+; FUNCTION: GY455XE  Im 178CE
 _mv_reg3_reg0:
-	LEA _reg0
+	LEA _d_08000
 	L QR0, [EA+]
 	L ER8, [EA+]
 	LEA _reg3
@@ -15940,8 +16534,9 @@ _mv_reg3_reg0:
 	RT
 
 ; FUNCTION: GY454XE  Re 178E0
+; FUNCTION: GY455XE  Im 178E0
 _mv_reg1_reg0:
-	LEA _reg0
+	LEA _d_08000
 	L QR0, [EA+]
 	L ER8, [EA+]
 	LEA _reg1
@@ -15950,16 +16545,18 @@ _mv_reg1_reg0:
 	RT
 
 ; FUNCTION: GY454XE  Re 178F2
+; FUNCTION: GY455XE  Im 178F2
 _mv_reg0_reg1:
 	LEA _reg1
 	L QR0, [EA+]
 	L ER8, [EA+]
-	LEA _reg0
+	LEA _d_08000
 	ST QR0, [EA+]
 	ST ER8, [EA+]
 	RT
 
 ; FUNCTION: GY454XE  Re 17904
+; FUNCTION: GY455XE  Im 17904
 _mv_reg6_reg1:
 	LEA _reg1
 	L QR0, [EA+]
@@ -15970,26 +16567,29 @@ _mv_reg6_reg1:
 	RT
 
 ; FUNCTION: GY454XE  Re 17916
+; FUNCTION: GY455XE  Im 17916
 _mv_reg0_reg6:
 	LEA _reg6
 	L QR0, [EA+]
 	L ER8, [EA+]
-	LEA _reg0
+	LEA _d_08000
 	ST QR0, [EA+]
 	ST ER8, [EA+]
 	RT
 
 ; FUNCTION: GY454XE  Re 17928
+; FUNCTION: GY455XE  Im 17928
 _mv_reg0_reg3:
 	LEA _reg3
 	L QR0, [EA+]
 	L ER8, [EA+]
-	LEA _reg0
+	LEA _d_08000
 	ST QR0, [EA+]
 	ST ER8, [EA+]
 	RT
 
 ; FUNCTION: GY454XE  Re 1793A
+; FUNCTION: GY455XE  Im 1793A
 _mv_reg3_reg1:
 	LEA _reg1
 	L QR0, [EA+]
@@ -16000,6 +16600,7 @@ _mv_reg3_reg1:
 	RT
 
 ; FUNCTION: GY454XE  Re 1794C
+; FUNCTION: GY455XE  Im 1794C
 _f_1794C:
 	PUSH LR
 	MOV R0, #6H
@@ -16007,6 +16608,7 @@ _f_1794C:
 	BAL _$j_17986
 
 ; FUNCTION: GY454XE  Re 17956
+; FUNCTION: GY455XE  Im 17956
 _f_17956:
 	PUSH LR
 	MOV R0, #6H
@@ -16014,6 +16616,7 @@ _f_17956:
 	BAL _$j_17986
 
 ; FUNCTION: GY454XE  Re 17960
+; FUNCTION: GY455XE  Im 17960
 _f_17960:
 	PUSH LR
 	MOV R0, #9H
@@ -16021,6 +16624,7 @@ _f_17960:
 	BAL _$j_17986
 
 ; FUNCTION: GY454XE  Re 1796A
+; FUNCTION: GY455XE  Im 1796A
 _f_1796A:
 	PUSH LR
 	MOV R0, #8H
@@ -16028,6 +16632,7 @@ _f_1796A:
 	BAL _$j_17986
 
 ; FUNCTION: GY454XE  Re 17974
+; FUNCTION: GY455XE  Im 17974
 _f_17974:
 	PUSH LR
 	MOV R0, #5H
@@ -16035,6 +16640,7 @@ _f_17974:
 	BAL _$j_17986
 
 ; FUNCTION: GY454XE  Re 1797E
+; FUNCTION: GY455XE  Im 1797E
 _f_1797E:
 	PUSH LR
 	MOV R0, #4H
@@ -16044,6 +16650,7 @@ _$j_17986:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 1798C
+; FUNCTION: GY455XE  Im 1798C
 _f_1798C:
 	PUSH LR
 	MOV R2, #0H
@@ -16067,6 +16674,7 @@ _$j_179ac:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 179B0
+; FUNCTION: GY455XE  Im 179B0
 _f_179B0:
 	PUSH LR
 	PUSH XR4
@@ -16074,12 +16682,13 @@ _f_179B0:
 	BAL _$j_179be
 
 ; FUNCTION: GY454XE  Re 179B8
+; FUNCTION: GY455XE  Im 179B8
 _f_179B8:
 	PUSH LR
 	PUSH XR4
 	MOV R6, #14H
 _$j_179be:
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #0H
 	BEQ _$j_17a10
 	CMP R0, #0AH
@@ -16106,7 +16715,7 @@ _$j_179ea:
 	BLT _$j_179f0
 	ADD R2, #6H
 _$j_179f0:
-	LEA _reg0
+	LEA _d_08000
 	L ER0, [EA]
 	CMP R1, #5H
 	BLT _$j_179fc
@@ -16130,15 +16739,16 @@ _$j_17a14:
 	BAL _$j_17a10
 
 ; FUNCTION: GY454XE  Re 17A18
+; FUNCTION: GY455XE  Im 17A18
 _f_17A18:
 	PUSH LR
-	LEA _reg0
+	LEA _d_08000
 	L QR0, [EA+]
 	L ER8, [EA+]
 	PUSH QR0
 	PUSH ER8
 	BL _mv_reg6_reg1
-	L ER0, _reg0
+	L ER0, _d_08000
 	CMP R1, #5H
 	BLT _$j_17a9e
 	L R0, _reg1_9
@@ -16175,7 +16785,7 @@ _$j_17a84:
 	BL _mv_reg1_reg0
 	POP ER8
 	POP QR0
-	LEA _reg0
+	LEA _d_08000
 	ST QR0, [EA+]
 	ST ER8, [EA+]
 	BL _f_18B90
@@ -16183,7 +16793,7 @@ _$j_17a84:
 _$j_17a9e:
 	POP ER8
 	POP QR0
-	LEA _reg0
+	LEA _d_08000
 	ST QR0, [EA+]
 	ST ER8, [EA+]
 _$j_17aaa:
@@ -16195,6 +16805,7 @@ _$j_17aac:
 	BAL _$j_17aaa
 
 ; FUNCTION: GY454XE  Re 17AB6
+; FUNCTION: GY455XE  Im 17AB6
 _f_17AB6:
 	PUSH LR
 	L ER0, _reg3
@@ -16209,6 +16820,7 @@ _$j_17ac2:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 17AD2
+; FUNCTION: GY455XE  Im 17AD2
 _f_17AD2:
 	PUSH LR
 	BL _mv_reg1_reg0
@@ -16216,6 +16828,7 @@ _f_17AD2:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 17ADE
+; FUNCTION: GY455XE  Im 17ADE
 _f_17ADE:
 	PUSH LR
 	MOV R0, #0BH
@@ -16223,12 +16836,13 @@ _f_17ADE:
 	BAL _$j_17af0
 
 ; FUNCTION: GY454XE  Re 17AE8
+; FUNCTION: GY455XE  Im 17AE8
 _f_17AE8:
 	PUSH LR
 	MOV R0, #0DH
 	ST R0, _arith_op
 _$j_17af0:
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	AND R0, #11110000B
 	CMP R0, #20H
 	BNE _$j_17b5a
@@ -16245,9 +16859,9 @@ _$j_17af0:
 	BLT _$j_17b2c
 	ADD R1, #-5H
 	ST ER0, _reg1
-	L ER0, _reg0
+	L ER0, _d_08000
 	ADD R1, #5H
-	ST ER0, _reg0
+	ST ER0, _d_08000
 _$j_17b2c:
 	BAL _$j_17b46
 _$j_17b2e:
@@ -16278,6 +16892,7 @@ _$j_17b68:
 	BAL _$j_17b58
 
 ; FUNCTION: GY454XE  Re 17B6E
+; FUNCTION: GY455XE  Im 17B6E
 _f_17B6E:
 	PUSH LR
 	MOV R0, #0EH
@@ -16285,6 +16900,7 @@ _f_17B6E:
 	BAL _$j_17b80
 
 ; FUNCTION: GY454XE  Re 17B78
+; FUNCTION: GY455XE  Im 17B78
 _f_17B78:
 	PUSH LR
 	MOV R0, #0FH
@@ -16293,7 +16909,7 @@ _$j_17b80:
 	L R0, _arith_op
 	CMP R0, #0EH
 	BEQ _$j_17baa
-	LEA _reg0
+	LEA _d_08000
 	L QR0, [EA+]
 	L ER8, [EA+]
 	PUSH QR0
@@ -16315,9 +16931,10 @@ _$j_17bb8:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 17BBA
+; FUNCTION: GY455XE  Im 17BBA
 _f_17BBA:
 	PUSH LR
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #0AH
 	BGE _$j_17bf0
 	L R0, _reg1_9
@@ -16344,6 +16961,7 @@ _$j_17bf0:
 	BAL _$j_17bee
 
 ; FUNCTION: GY454XE  Re 17BF4
+; FUNCTION: GY455XE  Im 17BF4
 _f_17BF4:
 	PUSH LR
 	MOV R0, #0EH
@@ -16353,6 +16971,7 @@ _f_17BF4:
 	BAL _$j_17c12
 
 ; FUNCTION: GY454XE  Re 17C04
+; FUNCTION: GY455XE  Im 17C04
 _f_17C04:
 	PUSH LR
 	MOV R0, #0FH
@@ -16361,12 +16980,12 @@ _f_17C04:
 	ST R0, _d_0805B
 _$j_17c12:
 	BL _f_17A18
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	AND R0, #11110000B
 	CMP R0, #20H
 	BNE _$j_17d1a
 	BL _f_18BA4
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	AND R0, #11110000B
 	CMP R0, #20H
 	BEQ _$j_17d16
@@ -16385,16 +17004,16 @@ _$j_17c12:
 	BLT _$j_17c82
 	ADD R1, #-5H
 	ST ER0, _reg6
-	LEA _reg0_2
+	LEA _d_08002
 	L QR0, [EA]
 	LEA _reg1_2
 	L QR8, [EA]
 	ST QR0, [EA]
-	LEA _reg0_2
+	LEA _d_08002
 	ST QR8, [EA]
-	L R0, _reg0
+	L R0, _d_08000
 	L R1, _reg1
-	ST R1, _reg0
+	ST R1, _d_08000
 	ST R0, _reg1
 _$j_17c82:
 	LEA _reg6
@@ -16402,7 +17021,7 @@ _$j_17c82:
 	L ER8, [EA+]
 	PUSH QR0
 	PUSH ER8
-	LEA _reg0
+	LEA _d_08000
 	L QR0, [EA+]
 	L ER8, [EA+]
 	PUSH QR0
@@ -16420,7 +17039,7 @@ _$j_17c82:
 	ST ER8, [EA+]
 	POP ER8
 	POP QR0
-	LEA _reg0
+	LEA _d_08000
 	ST QR0, [EA+]
 	ST ER8, [EA+]
 	LEA _reg6
@@ -16437,7 +17056,7 @@ _$j_17c82:
 	LEA _reg1
 	ST QR0, [EA+]
 	ST ER8, [EA+]
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BGE _$j_17d4c
 	L R0, _reg1_9
@@ -16447,7 +17066,7 @@ _$j_17c82:
 	CMP R0, #0H
 	BNE _$j_17d4c
 	BL _f_17DC4
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	AND R0, #11110000B
 	CMP R0, #20H
 	BNE _$j_17d4c
@@ -16465,11 +17084,11 @@ _$j_17d1a:
 	ST R0, _d_0801D
 	BL _f_18C88
 	L R2, _d_0805B
-	L ER0, _reg0
+	L ER0, _d_08000
 	ADD R1, R2
 	DAA R1
 	AND R1, #00001111B
-	ST ER0, _reg0
+	ST ER0, _d_08000
 	BAL _$j_17d14
 _$j_17d4c:
 	BL _mv_reg0_reg4
@@ -16477,6 +17096,7 @@ _$j_17d4c:
 	BAL _$j_17d1a
 
 ; FUNCTION: GY454XE  Re 17D56
+; FUNCTION: GY455XE  Im 17D56
 _num_arith_r:
 	PUSH LR
 	BL _f_182E6
@@ -16527,9 +17147,10 @@ _$j_17dc2:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 17DC4
+; FUNCTION: GY455XE  Im 17DC4
 _f_17DC4:
 	PUSH LR
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BLT _$j_17dd0
 	POP PC
@@ -16568,14 +17189,15 @@ _$j_17e24:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 17E26
+; FUNCTION: GY455XE  Im 17E26
 _f_17E26:
 	PUSH LR
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BLT _$j_17e32
 	POP PC
 _$j_17e32:
-	L R0, _reg0
+	L R0, _d_08000
 	L R2, _reg1
 	ADD R0, R2
 	DAA R0
@@ -16598,13 +17220,13 @@ _$j_17e56:
 	L R0, _reg2
 	ADD R0, #2H
 	DAA R0
-	L R2, _reg0
+	L R2, _d_08000
 	ADD R2, #1H
 	DAA R2
 	ADD R2, R0
 	DAA R2
 	ST R2, _reg2
-	LEA _reg0_2
+	LEA _d_08002
 	L QR8, [EA]
 	OR R15, #10100000B
 	LEA _reg3_2
@@ -16623,11 +17245,11 @@ _$j_17e8e:
 	ST QR0, [EA]
 	BAL _$j_17ec2
 _$j_17eaa:
-	LEA _reg0_2
+	LEA _d_08002
 	L QR0, [EA]
 	LEA _reg2_2
 	ST QR0, [EA]
-	L R0, _reg0
+	L R0, _d_08000
 	ADD R0, #1H
 	DAA R0
 	ST R0, _reg2
@@ -16640,9 +17262,9 @@ _$j_17ec2:
 	DAA R2
 	ADD R2, R0
 	DAA R2
-	L ER4, _reg0
+	L ER4, _d_08000
 	MOV R4, R2
-	ST ER4, _reg0
+	ST ER4, _d_08000
 	LEA _reg1_2
 	L QR8, [EA]
 	OR R15, #10100000B
@@ -16660,7 +17282,7 @@ _$j_17ef4:
 	L QR0, [EA]
 	BL _f_17F4A
 	OR R7, #00100000B
-	LEA _reg0_2
+	LEA _d_08002
 	ST QR0, [EA]
 _$j_17f14:
 	POP PC
@@ -16688,6 +17310,7 @@ _$j_17f44:
 	BAL _$j_17f3e
 
 ; FUNCTION: GY454XE  Re 17F4A
+; FUNCTION: GY455XE  Im 17F4A
 _f_17F4A:
 	PUSH LR
 	OR R0, R8
@@ -16701,14 +17324,15 @@ _f_17F4A:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 17F5E
+; FUNCTION: GY455XE  Im 17F5E
 _num_unk_1_r__:
 	PUSH LR
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BLT _$j_17f6a
 	POP PC
 _$j_17f6a:
-	L ER0, _reg0
+	L ER0, _d_08000
 	MOV R2, #5H
 _$j_17f70:
 	ADD R1, #5H
@@ -16722,7 +17346,7 @@ _$j_17f70:
 _$j_17f80:
 	AND R1, #00001111B
 	ST R2, _d_0801D
-	ST ER0, _reg0
+	ST ER0, _d_08000
 	MOV R0, #14H
 	MOV R1, #1H
 	MOV ER4, #0H
@@ -16732,7 +17356,7 @@ _$j_17f80:
 	ST XR4, [EA+]
 	ST XR4, [EA+]
 _$j_17f9c:
-	L ER0, _reg0
+	L ER0, _d_08000
 	L ER2, _reg1
 	SUB R0, R2
 	DAS R0
@@ -16757,7 +17381,7 @@ _$j_17fcc:
 	L QR0, [EA]
 	BL _f_19458
 	ST QR0, [EA]
-	LEA _reg0_2
+	LEA _d_08002
 	L QR0, [EA]
 	LEA _reg1_2
 	L QR8, [EA]
@@ -16773,25 +17397,25 @@ _$j_17fe4:
 _$j_17ffa:
 	BL _f_19ED8
 	BL _f_19458
-	L ER8, _reg0
+	L ER8, _d_08000
 	MOV ER10, #1H
 	SUB R8, R10
 	DAS R8
 	SUBC R9, R11
 	DAS R9
 	AND R9, #00001111B
-	LEA _reg0
+	LEA _d_08000
 	ST ER8, [EA+]
 	ST QR0, [EA+]
 	BAL _$j_17f9c
 _$j_1801c:
 	BL _f_1A23C
-	L ER0, _reg0
+	L ER0, _d_08000
 	L R2, _d_0801D
 	ADD R1, R2
 	DAA R1
 	AND R1, #00001111B
-	ST ER0, _reg0
+	ST ER0, _d_08000
 	BL _f_18C16
 	BL _f_1A23C
 	BL _f_18C16
@@ -16808,9 +17432,10 @@ _$j_18058:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 1805A
+; FUNCTION: GY455XE  Im 1805A
 _f_1805A:
 	PUSH LR
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BLT _$j_18066
 	POP PC
@@ -16821,14 +17446,14 @@ _$j_18066:
 	BL _set_reg0_error
 	POP PC
 _$j_18074:
-	L R0, _reg0
+	L R0, _d_08000
 	L R1, _reg1
 	CMP R0, R1
 	BGE _$j_18084
 _$j_18080:
 	BL _f_18BA4
 _$j_18084:
-	LEA _reg0_2
+	LEA _d_08002
 	L QR0, [EA+]
 _$j_1808a:
 	LEA _reg1_2
@@ -16837,11 +17462,11 @@ _$j_18090:
 	BL _f_19F04
 	BGE _$j_18090
 	BL _f_19ED8
-	LEA _reg0_2
+	LEA _d_08002
 	ST QR0, [EA+]
 	LEA _reg1_2
 	ST QR8, [EA+]
-	L ER8, _reg0
+	L ER8, _d_08000
 	L ER10, _reg1
 	CMP R8, R10
 	BEQ _$j_180c6
@@ -16851,11 +17476,11 @@ _$j_18090:
 	DAS R8
 	SUBC R9, R11
 	DAS R9
-	ST ER8, _reg0
+	ST ER8, _d_08000
 	BAL _$j_1808a
 _$j_180c6:
 	BL _f_1A23C
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #0H
 	BNE _$j_18080
 	L ER0, _reg1
@@ -16871,9 +17496,10 @@ _$j_180e2:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 180EA
+; FUNCTION: GY455XE  Im 180EA
 _f_180EA:
 	PUSH LR
-	LEA _reg0
+	LEA _d_08000
 	L QR0, [EA+]
 	L ER8, [EA+]
 	MOV R10, R9
@@ -16898,7 +17524,7 @@ _$j_18112:
 	L R0, _d_0805A
 	CMP R0, #2H
 	BNE _$j_1815e
-	BL _f_1850C
+	BL _reg3_has_frac
 	MOV R1, #10H
 	SUB R1, R0
 	ST R1, _d_0800B
@@ -16917,17 +17543,17 @@ _$j_18140:
 	L XR4, [EA+]
 	L ER8, [EA+]
 	AND R9, #00001111B
-	LEA _reg0
+	LEA _d_08000
 	ST QR0, [EA+]
 	ST ER8, [EA+]
 	BAL _$j_181d8
 _$j_1815e:
-	BL _f_1850C
+	BL _reg3_has_frac
 	ST R0, _d_0800B
 	BL _f_195E8
 	MOV ER0, #0H
 	ST ER0, _reg3
-	BL _f_1850C
+	BL _reg3_has_frac
 	CMP R0, #0H
 	BEQ _$j_181da
 	L R1, _d_0805A
@@ -16942,7 +17568,7 @@ _$j_1815e:
 	BLT _$j_18196
 	ADD R2, #6H
 _$j_18196:
-	L ER0, _reg0
+	L ER0, _d_08000
 	MOV R0, #14H
 	SUB R0, R2
 	DAS R0
@@ -16951,7 +17577,7 @@ _$j_18196:
 	L XR4, [EA+]
 	L ER8, [EA+]
 	AND R9, #00001111B
-	LEA _reg0
+	LEA _d_08000
 	ST QR0, [EA+]
 	ST ER8, [EA+]
 	BAL _$j_181d8
@@ -16961,9 +17587,9 @@ _$j_181b6:
 	LEA _reg3
 	L QR0, [EA+]
 	L ER8, [EA+]
-	L ER0, _reg0
+	L ER0, _d_08000
 	MOV R0, #14H
-	LEA _reg0
+	LEA _d_08000
 	ST QR0, [EA+]
 	ST ER8, [EA+]
 	BL _f_1A23C
@@ -16976,9 +17602,9 @@ _$j_181da:
 	LEA _reg3
 	L QR0, [EA+]
 	L ER8, [EA+]
-	L ER0, _reg0
+	L ER0, _d_08000
 	MOV R0, #14H
-	LEA _reg0
+	LEA _d_08000
 	ST QR0, [EA+]
 	ST ER8, [EA+]
 	BL _f_1A23C
@@ -16986,13 +17612,14 @@ _$j_181da:
 _$j_181fe:
 	MOV ER0, #0H
 	MOV ER2, #0H
-	LEA _reg0
+	LEA _d_08000
 	ST XR0, [EA+]
 	ST XR0, [EA+]
 	ST ER0, [EA+]
 	BAL _$j_181d8
 
 ; FUNCTION: GY454XE  Re 1820E
+; FUNCTION: GY455XE  Im 1820E
 _f_1820E:
 	PUSH LR
 	L R0, _arith_op
@@ -17039,14 +17666,14 @@ _$j_18276:
 	LEA _reg3
 	L QR0, [EA+]
 	L ER8, [EA+]
-	L ER10, _reg0
+	L ER10, _d_08000
 	CMP R1, #1H
 	BEQ _$j_182aa
 	MOV R1, #1H
 	ADD R11, #5H
 	DAA R11
 	AND R11, #00001111B
-	ST ER10, _reg0
+	ST ER10, _d_08000
 _$j_182aa:
 	LEA _reg1
 	ST QR0, [EA+]
@@ -17055,6 +17682,7 @@ _$j_182b2:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 182B4
+; FUNCTION: GY455XE  Im 182B4
 _f_182B4:
 	PUSH LR
 	MOV R0, #7H
@@ -17073,6 +17701,7 @@ _$j_182da:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 182DC
+; FUNCTION: GY455XE  Im 182DC
 _f_182DC:
 	PUSH LR
 	MOV R0, #5H
@@ -17080,18 +17709,19 @@ _f_182DC:
 	BAL _$j_182fe
 
 ; FUNCTION: GY454XE  Re 182E6
+; FUNCTION: GY455XE  Im 182E6
 _f_182E6:
 	PUSH LR
 	MOV R0, #5H
 	ST R0, _d_0805A
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #0AH
 	BGE _$j_182fe
 	L R0, _reg1_9
 	CMP R0, #0AH
 	BLT _$j_18380
 _$j_182fe:
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	AND R0, #11110000B
 	CMP R0, #20H
 	BEQ _$j_1831c
@@ -17108,7 +17738,7 @@ _$j_1831c:
 	ST R0, _d_0805A
 _$j_18326:
 	BL _f_18BA4
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	AND R0, #11110000B
 	CMP R0, #20H
 	BEQ _$j_18348
@@ -17126,7 +17756,7 @@ _$j_18348:
 _$j_18352:
 	BL _mv_reg6_reg1
 	BL _f_18390
-	LEA _reg0
+	LEA _d_08000
 	L QR0, [EA+]
 	L ER8, [EA+]
 	PUSH QR0
@@ -17146,6 +17776,7 @@ _$j_18380:
 	BAL _$j_1837e
 
 ; FUNCTION: GY454XE  Re 18386
+; FUNCTION: GY455XE  Im 18386
 _f_18386:
 	PUSH LR
 	MOV R0, #0H
@@ -17153,21 +17784,22 @@ _f_18386:
 	BAL _$j_18392
 
 ; FUNCTION: GY454XE  Re 18390
+; FUNCTION: GY455XE  Im 18390
 _f_18390:
 	PUSH LR
 _$j_18392:
-	LEA _reg0
+	LEA _d_08000     ; Grab contents of number @ 8000H
 	L QR0, [EA+]
 	L ER8, [EA+]
 	MOV R10, R9
 	AND R10, #11110000B
-	BEQ _$j_183aa
+	BEQ _$j_183aa    ; Switch: type 0 (floating point) / 2 (fraction)
 	CMP R10, #20H
 	BEQ _$j_183c0
 	BL _set_reg0_error
 _$j_183a8:
 	POP PC
-_$j_183aa:
+_$j_183aa:           ; Store 0.01 into reg1
 	MOV R0, #0H
 	MOV R1, #1H
 	MOV ER2, #0H
@@ -17180,28 +17812,28 @@ _$j_183aa:
 	BAL _$j_183a8
 _$j_183c0:
 	AND R9, #00001111B
-	LEA _reg3
+	LEA _reg3        ; Force type 0 and copy to reg3
 	ST QR0, [EA+]
 	ST ER8, [EA+]
-	L R0, _reg3
+	L R0, _reg3      ; If Area 4 < 0x10 (16), subtract 6 (BCD adjustment)
 	CMP R0, #10H
 	BLT _$j_183d4
 	ADD R0, #-6H
 _$j_183d4:
-	MOV R1, #0FH
+	MOV R1, #0FH     ; Set d_0800B to 15 - Area 4
 	SUB R1, R0
 	ST R1, _d_0800B
 	BL _f_195E8
-	LEA _reg3_2
+	LEA _reg3_2      ; Copy byte 2-9 of reg3 to reg0
 	L QR0, [EA+]
-	LEA _reg0_2
+	LEA _d_08002
 	ST QR0, [EA+]
-	BL _f_1850C
-	MOV R1, #10H
+	BL _reg3_has_frac
+	MOV R1, #10H     ; Set d_0800B to 16 - result of reg3_has_frac
 	SUB R1, R0
 	ST R1, _d_0800B
 	BL _f_19672
-	L R2, _d_0800B
+	L R2, _d_0800B   ; If d_0800B < 0xA (10), add 6 (BCD adjustment)
 	CMP R2, #0AH
 	BLT _$j_18406
 	ADD R2, #6H
@@ -17219,17 +17851,17 @@ _$j_18406:
 	ST QR0, [EA+]
 	ST ER8, [EA+]
 	BL _mv_reg3_reg0
-	BL _f_1850C
+	BL _reg3_has_frac
 	ST R0, _d_0800B
 	BL _f_195E8
 	MOV ER0, #0H
 	ST ER0, _reg3
-	BL _f_1850C
+	BL _reg3_has_frac
 	CMP R0, #0H
 	BEQ _$j_184f0
 	LEA _reg3_2
 	L QR8, [EA+]
-	LEA _reg0_2
+	LEA _d_08002
 	ST QR8, [EA+]
 	MOV R1, #10H
 	SUB R1, R0
@@ -17240,7 +17872,7 @@ _$j_18406:
 	BLT _$j_18462
 	ADD R2, #6H
 _$j_18462:
-	L ER0, _reg0
+	L ER0, _d_08000
 	MOV R0, #14H
 	SUB R0, R2
 	DAS R0
@@ -17253,15 +17885,15 @@ _$j_18462:
 	ST QR0, [EA+]
 	ST ER8, [EA+]
 	BL _mv_reg3_reg0
-	BL _f_1850C
+	BL _reg3_has_frac
 	ST R0, _d_0800B
 	BL _f_195E8
 	LEA _reg3
 	L QR0, [EA+]
 	L ER8, [EA+]
-	L ER0, _reg0
+	L ER0, _d_08000
 	MOV R0, #14H
-	LEA _reg0
+	LEA _d_08000
 	ST QR0, [EA+]
 	ST ER8, [EA+]
 	BL _f_1A23C
@@ -17296,16 +17928,17 @@ _$j_184f0:
 	LEA _reg3
 	L QR0, [EA+]
 	L ER8, [EA+]
-	L ER0, _reg0
+	L ER0, _d_08000
 	MOV R0, #14H
-	LEA _reg0
+	LEA _d_08000
 	ST QR0, [EA+]
 	ST ER8, [EA+]
 	BL _f_1A23C
 	BAL _$j_184ca
 
 ; FUNCTION: GY454XE  Re 1850C
-_f_1850C:
+; FUNCTION: GY455XE  Im 1850C
+_reg3_has_frac:
 	PUSH LR
 	MOV R2, #0H
 	MOV R3, #8H
@@ -17319,7 +17952,7 @@ _$j_18516:
 	CMP R4, #0AH
 	BEQ _$j_18534
 	ADD R2, #1H
-	CMP R5, #-60H
+	CMP R5, #0A0H
 	BGE _$j_18534
 	ADD R2, #1H
 	ADD ER0, #1H
@@ -17338,6 +17971,7 @@ _$j_1853c:
 	BAL _$j_18532
 
 ; FUNCTION: GY454XE  Re 18540
+; FUNCTION: GY455XE  Im 18540
 _f_18540:
 	PUSH LR
 	MOV R0, #0EH
@@ -17352,6 +17986,7 @@ _f_18540:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 18562
+; FUNCTION: GY455XE  Im 18562
 _f_18562:
 	PUSH LR
 	BL _mv_reg3_reg0
@@ -17361,6 +17996,7 @@ _f_18562:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 18576
+; FUNCTION: GY455XE  Im 18576
 _f_18576:
 	PUSH LR
 	MOV R0, #0H
@@ -17457,7 +18093,7 @@ _$j_1866c:
 	L R0, _d_0801F
 	CMP R0, #0AH
 	BNE _$j_186f2
-	L ER0, _reg0
+	L ER0, _d_08000
 	MOV R2, #5H
 _$j_1867a:
 	ADD R1, #5H
@@ -17471,7 +18107,7 @@ _$j_1867a:
 _$j_1868a:
 	AND R1, #00001111B
 	ST R2, _d_0801D
-	ST ER0, _reg0
+	ST ER0, _d_08000
 	BL _f_18DD4
 	BL _f_19BB4
 	L R0, _arith_op
@@ -17482,11 +18118,11 @@ _$j_1868a:
 	ST R0, _d_0801D
 	BAL _$j_186cc
 _$j_186ae:
-	L ER0, _reg0
+	L ER0, _d_08000
 	ADD R1, #5H
 	DAA R1
 	AND R1, #00001111B
-	ST ER0, _reg0
+	ST ER0, _d_08000
 	BAL _$j_186cc
 _$j_186be:
 	BL _mv_reg3_reg1
@@ -17500,12 +18136,12 @@ _$j_186cc:
 	ST R0, _reg1_9
 _$j_186da:
 	BL _num_div_r
-	L ER0, _reg0
+	L ER0, _d_08000
 	L R2, _d_0801D
 	ADD R1, R2
 	DAA R1
 	AND R1, #00001111B
-	ST ER0, _reg0
+	ST ER0, _d_08000
 	BAL _$j_1866a
 _$j_186f2:
 	BL _set_reg1_10
@@ -17520,7 +18156,7 @@ _$j_1870c:
 	BL _f_19012
 	BAL _$j_1866a
 _$j_18712:
-	L ER0, _reg0
+	L ER0, _d_08000
 	MOV R2, #5H
 _$j_18718:
 	ADD R1, #5H
@@ -17534,7 +18170,7 @@ _$j_18718:
 _$j_18728:
 	AND R1, #00001111B
 	ST R2, _d_0801D
-	ST ER0, _reg0
+	ST ER0, _d_08000
 	BL _mv_reg3_reg0
 _$j_18736:
 	BL _f_188FE
@@ -17542,10 +18178,11 @@ _$j_18736:
 	BAL _$j_1870c
 
 ; FUNCTION: GY454XE  Re 18740
+; FUNCTION: GY455XE  Im 18740
 _f_18740:
 	PUSH LR
 	MOV R2, #0H
-	L ER0, _reg0
+	L ER0, _d_08000
 _$j_18748:
 	ADD R2, #5H
 	DAA R2
@@ -17555,7 +18192,7 @@ _$j_18748:
 	CMP R1, #10H
 	BLT _$j_18748
 	AND R1, #00001111B
-	ST ER0, _reg0
+	ST ER0, _d_08000
 	ST R2, _d_0802C
 	BL _f_18B00
 	BL _mv_reg6_reg0
@@ -17568,7 +18205,7 @@ _$j_18748:
 	ST ER0, _reg1
 	BL _num_mul_r
 	BL _f_18B46
-	L ER0, _reg0
+	L ER0, _d_08000
 	CMP R0, #8H
 	BLT _$j_18794
 	CMP R1, #1H
@@ -17609,12 +18246,12 @@ _$j_187dc:
 _$j_187f2:
 	BL _f_19BD6
 _$j_187f6:
-	L ER0, _reg0
+	L ER0, _d_08000
 	L R2, _d_0802C
 	ADD R1, R2
 	DAA R1
 	AND R1, #00001111B
-	ST ER0, _reg0
+	ST ER0, _d_08000
 _$j_18808:
 	POP PC
 _$j_1880a:
@@ -17624,6 +18261,7 @@ _$j_1880a:
 	BAL _$j_187f6
 
 ; FUNCTION: GY454XE  Re 18818
+; FUNCTION: GY455XE  Im 18818
 _f_18818:
 	PUSH LR
 	BL _mv_reg3_reg0
@@ -17642,7 +18280,7 @@ _f_18818:
 	BL _f_18A0E
 	BL _f_18BA4
 _$j_18842:
-	L ER0, _reg0
+	L ER0, _d_08000
 	MOV R2, #5H
 _$j_18848:
 	ADD R1, #5H
@@ -17655,7 +18293,7 @@ _$j_18848:
 	BAL _$j_18848
 _$j_18858:
 	AND R1, #00001111B
-	ST ER0, _reg0
+	ST ER0, _d_08000
 	ST R2, _d_0801D
 	BL _reg0_lt_reg1_abs
 	CMP R0, #0H
@@ -17702,11 +18340,11 @@ _$j_188ca:
 	ADD R0, #-80H
 	ST R0, _d_0802E
 	BLT _$j_188ee
-	L ER0, _reg0
+	L ER0, _d_08000
 	L R2, _d_0801D
 	ADD R1, R2
 	DAA R1
-	ST ER0, _reg0
+	ST ER0, _d_08000
 	L R0, _arith_op
 	CMP R0, #2H
 	BEQ _$j_188b2
@@ -17714,9 +18352,10 @@ _$j_188ee:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 188F0
+; FUNCTION: GY455XE  Im 188F0
 _f_188F0:
 	PUSH LR
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BLT _$j_188fc
 	POP PC
@@ -17724,9 +18363,10 @@ _$j_188fc:
 	BAL _$j_1891a
 
 ; FUNCTION: GY454XE  Re 188FE
+; FUNCTION: GY455XE  Im 188FE
 _f_188FE:
 	PUSH LR
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BLT _$j_1890a
 	POP PC
@@ -17783,7 +18423,7 @@ _$j_1895a:
 	ST R0, _d_0802A
 	ST R0, _d_0802B
 	MOV R2, #0H
-	L ER0, _reg0
+	L ER0, _d_08000
 _$j_18996:
 	ADD R2, #5H
 	DAA R2
@@ -17794,27 +18434,27 @@ _$j_18996:
 	BLT _$j_18996
 	AND R1, #00001111B
 	ST R2, _d_0802C
-	ST ER0, _reg0
+	ST ER0, _d_08000
 _$j_189ae:
 	POP PC
 _$j_189b0:
 	L R2, _d_0802D
-	L ER0, _reg0
+	L ER0, _d_08000
 	ADD R1, R2
 	DAA R1
 	AND R1, #00001111B
-	ST ER0, _reg0
+	ST ER0, _d_08000
 _$j_189c2:
-	LEA _reg0_2
+	LEA _d_08002
 	L QR0, [EA]
 	LEA _reg6_2
 	L QR8, [EA]
 	ST QR0, [EA]
-	LEA _reg0_2
+	LEA _d_08002
 	ST QR8, [EA]
-	L ER2, _reg0
+	L ER2, _d_08000
 	L ER0, _reg6
-	ST ER0, _reg0
+	ST ER0, _d_08000
 	ST ER2, _reg6
 	L R0, _d_0801F
 	CMP R0, #0AH
@@ -17833,9 +18473,10 @@ _$j_189fc:
 	BAL _$j_1895a
 
 ; FUNCTION: GY454XE  Re 18A0E
+; FUNCTION: GY455XE  Im 18A0E
 _f_18A0E:
 	PUSH LR
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BLT _$j_18a1a
 	POP PC
@@ -17847,9 +18488,10 @@ _$j_18a1a:
 	BAL _$j_189c2
 
 ; FUNCTION: GY454XE  Re 18A2A
+; FUNCTION: GY455XE  Im 18A2A
 _f_18A2A:
 	PUSH LR
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BLT _$j_18a36
 	POP PC
@@ -17857,7 +18499,7 @@ _$j_18a36:
 	L R0, _d_0802A
 	L R1, _d_0802B
 	L R2, _d_0802C
-	L ER4, _reg0
+	L ER4, _d_08000
 	CMP R5, #5H
 	BLT _$j_18a4e
 	ADD R0, #-1H
@@ -17899,7 +18541,7 @@ _$j_18a74:
 	SUBC R5, R7
 	DAS R5
 	AND R5, #00001111B
-	ST ER4, _reg0
+	ST ER4, _d_08000
 	ST R0, _d_0802A
 	ST R1, _d_0802B
 	ST R2, _d_0802C
@@ -17912,6 +18554,7 @@ _$j_18aa6:
 	BAL _$j_18a74
 
 ; FUNCTION: GY454XE  Re 18AAE
+; FUNCTION: GY455XE  Im 18AAE
 _f_18AAE:
 	PUSH LR
 	L R0, _d_0802F
@@ -17957,6 +18600,7 @@ _$j_18ae2:
 	BAL _$j_18ad2
 
 ; FUNCTION: GY454XE  Re 18B00
+; FUNCTION: GY455XE  Im 18B00
 _f_18B00:
 	PUSH LR
 	L R0, _d_0802F
@@ -17994,20 +18638,21 @@ _$j_18b28:
 	BAL _$j_18b26
 
 ; FUNCTION: GY454XE  Re 18B46
+; FUNCTION: GY455XE  Im 18B46
 _f_18B46:
 	PUSH LR
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BLT _$j_18b52
 	POP PC
 _$j_18b52:
-	LEA _reg0_2
+	LEA _d_08002
 	L ER0, [EA]
 	MOV R2, #91H
 	MOV R3, #99H
 	CMP ER0, ER2
 	BLT _$j_18b76
-	LEA _reg0_2
+	LEA _d_08002
 	L QR0, [EA]
 	MOV R8, #0H
 	MOV R9, #0H
@@ -18020,89 +18665,95 @@ _$j_18b76:
 	MOV ER2, #10H
 	CMP ER0, ER2
 	BGE _$j_18b8a
-	LEA _reg0_2
+	LEA _d_08002
 	L QR0, [EA]
 _$j_18b82:
 	MOV ER0, #0H
-	LEA _reg0_2
+	LEA _d_08002
 	ST QR0, [EA]
 _$j_18b8a:
 	BL _f_1A23C
 	POP PC
 
 ; FUNCTION: GY454XE  Re 18B90
+; FUNCTION: GY455XE  Im 18B90
 _f_18B90:
-	L ER0, _reg0
+	L ER0, _d_08000
 	CMP R1, #5H
 	BLT _$j_18ba2
 	ADD R1, #5H
 	DAA R1
 	AND R1, #00001111B
-	ST ER0, _reg0
+	ST ER0, _d_08000
 _$j_18ba2:
 	RT
 
 ; FUNCTION: GY454XE  Re 18BA4
+; FUNCTION: GY455XE  Im 18BA4
 _f_18BA4:
-	LEA _reg0_2
+	LEA _d_08002
 	L QR0, [EA]
 	LEA _reg1_2
 	L QR8, [EA]
 	ST QR0, [EA]
-	LEA _reg0_2
+	LEA _d_08002
 	ST QR8, [EA]
-	L ER2, _reg0
+	L ER2, _d_08000
 	L ER0, _reg1
-	ST ER0, _reg0
+	ST ER0, _d_08000
 	ST ER2, _reg1
 	RT
 
 ; FUNCTION: GY454XE  Re 18BCA
+; FUNCTION: GY455XE  Im 18BCA
 _f_18BCA:
-	LEA _reg0_2
+	LEA _d_08002
 	L QR0, [EA]
 	LEA _reg3_2
 	L QR8, [EA]
 	ST QR0, [EA]
-	LEA _reg0_2
+	LEA _d_08002
 	ST QR8, [EA]
-	L ER2, _reg0
+	L ER2, _d_08000
 	L ER0, _reg3
-	ST ER0, _reg0
+	ST ER0, _d_08000
 	ST ER2, _reg3
 	RT
 
 ; FUNCTION: GY454XE  Re 18BF0
+; FUNCTION: GY455XE  Im 18BF0
 _f_18BF0:
-	LEA _reg0_2
+	LEA _d_08002
 	L QR0, [EA]
 	LEA _reg6_2
 	L QR8, [EA]
 	ST QR0, [EA]
-	LEA _reg0_2
+	LEA _d_08002
 	ST QR8, [EA]
-	L ER2, _reg0
+	L ER2, _d_08000
 	L ER0, _reg6
-	ST ER0, _reg0
+	ST ER0, _d_08000
 	ST ER2, _reg6
 	RT
 
 ; FUNCTION: GY454XE  Re 18C16
+; FUNCTION: GY455XE  Im 18C16
 _f_18C16:
-	LEA _reg0_2
+	LEA _d_08002
 	L QR0, [EA]
 	LEA _reg2_2
 	L QR8, [EA]
 	ST QR0, [EA]
-	LEA _reg0_2
+	LEA _d_08002
 	ST QR8, [EA]
-	L ER2, _reg0
+	L ER2, _d_08000
 	L ER0, _reg2
-	ST ER0, _reg0
+	ST ER0, _d_08000
 	ST ER2, _reg2
 	RT
 
 ; FUNCTION: GY454XE  Re 18C3C
+; FUNCTION: GY455XE  Im 18C3C
 _f_18C3C:
 	LEA _reg3_2
 	L QR0, [EA]
@@ -18118,6 +18769,7 @@ _f_18C3C:
 	RT
 
 ; FUNCTION: GY454XE  Re 18C62
+; FUNCTION: GY455XE  Im 18C62
 _f_18C62:
 	LEA _reg6_2
 	L QR0, [EA]
@@ -18133,9 +18785,10 @@ _f_18C62:
 	RT
 
 ; FUNCTION: GY454XE  Re 18C88
+; FUNCTION: GY455XE  Im 18C88
 _f_18C88:
 	PUSH LR
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BGE _$j_18c9e
 	L R0, _reg1_9
@@ -18157,16 +18810,16 @@ _$j_18cb2:
 	MOV R0, #1H
 	ST R0, _d_0801C
 	BL _mv_reg6_reg0
-	LEA _reg0_2
+	LEA _d_08002
 	L QR0, [EA]
 	LEA _reg3_2
 	L QR8, [EA]
 	ST QR0, [EA]
-	LEA _reg0_2
+	LEA _d_08002
 	ST QR8, [EA]
-	L ER2, _reg0
+	L ER2, _d_08000
 	L ER0, _reg3
-	ST ER0, _reg0
+	ST ER0, _d_08000
 	ST ER2, _reg3
 	CMP R1, #5H
 	BLT _$j_18d42
@@ -18179,7 +18832,7 @@ _$j_18cfa:
 	ADD R1, #5H
 	DAA R1
 	AND R1, #00001111B
-	ST ER0, _reg0
+	ST ER0, _d_08000
 	BAL _$j_18d42
 _$j_18d06:
 	L R2, _arith_op
@@ -18206,7 +18859,7 @@ _$j_18d2e:
 	ST QR0, [EA+]
 	ST ER8, [EA+]
 _$j_18d42:
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	AND R0, #00001111B
 	BNE _$j_18d5c
 	L ER0, _reg3
@@ -18239,20 +18892,21 @@ _$j_18d7a:
 	ST ER8, [EA+]
 	BL _f_18DA8
 _$j_18d92:
-	L ER0, _reg0
+	L ER0, _d_08000
 	L R2, _d_0801D
 	ADD R1, R2
 	DAA R1
 	AND R1, #00001111B
-	ST ER0, _reg0
+	ST ER0, _d_08000
 	POP PC
 _$j_18da6:
 	BAL _$j_18d92
 
 ; FUNCTION: GY454XE  Re 18DA8
+; FUNCTION: GY455XE  Im 18DA8
 _f_18DA8:
 	PUSH LR
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BLT _$j_18db4
 	POP PC
@@ -18260,9 +18914,10 @@ _$j_18db4:
 	BAL _$j_18e00
 
 ; FUNCTION: GY454XE  Re 18DB6
+; FUNCTION: GY455XE  Im 18DB6
 _f_18DB6:
 	PUSH LR
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BLT _$j_18dc2
 	POP PC
@@ -18275,9 +18930,10 @@ _$j_18dc2:
 	BAL _$j_18e26
 
 ; FUNCTION: GY454XE  Re 18DD4
+; FUNCTION: GY455XE  Im 18DD4
 _f_18DD4:
 	PUSH LR
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BLT _$j_18de0
 	POP PC
@@ -18304,18 +18960,18 @@ _$j_18e00:
 _$j_18e18:
 	BL _f_19BF4
 _$j_18e1c:
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BLT _$j_18e26
 	POP PC
 _$j_18e26:
-	LEA _reg0_2
+	LEA _d_08002
 	L QR0, [EA]
 	LEA _reg2_2
 	ST QR0, [EA]
 	MOV ER2, #0H
 	ST ER2, _d_0801A
-	L ER0, _reg0
+	L ER0, _d_08000
 	MOV R4, #5H
 _$j_18e3e:
 	AND R1, #00001111B
@@ -18326,9 +18982,9 @@ _$j_18e3e:
 	DAS R1
 	BLT _$j_18e3e
 	AND R1, #00001111B
-	ST ER0, _reg0
+	ST ER0, _d_08000
 	ST ER2, _d_0801A
-	L R4, _reg0_9
+	L R4, _mathi_enable_draw
 	AND R4, #00001111B
 	CMP R4, #1H
 	BLT _$j_18ea4
@@ -18336,7 +18992,7 @@ _$j_18e3e:
 	LEA _reg2
 	L QR0, [EA+]
 	L ER8, [EA+]
-	L ER10, _reg0
+	L ER10, _d_08000
 	L R13, _d_0801A
 	MOV FP, #1H
 _$j_18e74:
@@ -18360,17 +19016,17 @@ _$j_18e92:
 	AND R1, #11110000B
 	MOV R0, R10
 	AND R9, #00001111B
-	LEA _reg0
+	LEA _d_08000
 	ST QR0, [EA+]
 	ST ER8, [EA+]
 _$j_18ea4:
 	BL _f_19144
 	BL _f_19FD6
-	L R0, _reg0
+	L R0, _d_08000
 	L R1, _d_0801A
 	ADD R0, R1
 	DAA R0
-	ST R0, _reg0
+	ST R0, _d_08000
 	BGE _$j_18eea
 	L R0, _d_0801F
 	CMP R0, #0AH
@@ -18381,7 +19037,7 @@ _$j_18ea4:
 _$j_18ece:
 	MOV ER0, #0H
 	MOV ER2, #0H
-	LEA _reg0
+	LEA _d_08000
 	ST XR0, [EA+]
 	ST XR0, [EA+]
 	ST ER0, [EA+]
@@ -18405,14 +19061,14 @@ _$j_18ef6:
 	CMP R1, #0H
 	BNE _$j_18f20
 	BL _f_19BB4
-	L ER0, _reg0
+	L ER0, _d_08000
 	L ER2, _d_0801A
 	ADD R1, R3
 	DAA R1
 	AND R1, #00001111B
-	ST ER0, _reg0
+	ST ER0, _d_08000
 _$j_18f20:
-	L ER0, _reg0
+	L ER0, _d_08000
 	CMP R0, #-60H
 	BLT _$j_18f2c
 	BL _set_reg0_error
@@ -18420,10 +19076,11 @@ _$j_18f2c:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 18F2E
+; FUNCTION: GY455XE  Im 18F2E
 _f_18F2E:
 	PUSH LR
 	BL _f_19850
-	LEA _reg0_2
+	LEA _d_08002
 	L QR0, [EA]
 	MOV R8, R0
 	AND R0, #11110000B
@@ -18433,10 +19090,11 @@ _f_18F2E:
 	BAL _$j_18f5c
 
 ; FUNCTION: GY454XE  Re 18F46
+; FUNCTION: GY455XE  Im 18F46
 _f_18F46:
 	PUSH LR
 	BL _f_19850
-	LEA _reg0_2
+	LEA _d_08002
 	L QR0, [EA]
 	MOV R8, R0
 	AND R0, #11110000B
@@ -18450,16 +19108,17 @@ _$j_18f5c:
 	MOV FP, #0H
 	BL _f_19ED8
 _$j_18f68:
-	LEA _reg0_2
+	LEA _d_08002
 	ST QR0, [EA]
 	BL _f_1A23C
 	POP PC
 
 ; FUNCTION: GY454XE  Re 18F74
+; FUNCTION: GY455XE  Im 18F74
 _f_18F74:
 	PUSH LR
 	BL _f_19850
-	LEA _reg0_2
+	LEA _d_08002
 	L QR0, [EA]
 	MOV R0, #0H
 	BAL _$j_18f68
@@ -18468,9 +19127,10 @@ _f_18F74:
 	BAL _$j_18f92
 
 ; FUNCTION: GY454XE  Re 18F8C
-_f_18F8C:
+; FUNCTION: GY455XE  Im 18F8C
+_num_is_not_frac:
 	PUSH LR
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 _$j_18f92:
 	AND R0, #11110000B
 	BEQ _$j_18f9e
@@ -18484,15 +19144,17 @@ _$j_18fa0:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 18FA2
+; FUNCTION: GY455XE  Im 18FA2
 _invalid_reg1:
 	PUSH LR
 	L R0, _reg1_9
 	BAL _$j_18fb0
 
 ; FUNCTION: GY454XE  Re 18FAA
+; FUNCTION: GY455XE  Im 18FAA
 _invalid_reg0:
 	PUSH LR
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 _$j_18fb0:
 	CMP R0, #0AH
 	BGE _$j_18fb8
@@ -18504,17 +19166,19 @@ _$j_18fba:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 18FBC
+; FUNCTION: GY455XE  Im 18FBC
 _f_18FBC:
 	PUSH LR
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BGE _$j_19000
 	AND R0, #10111111B
-	ST R0, _reg0_9
+	ST R0, _mathi_enable_draw
 	MOV R0, #0H
 	BAL _$j_18ffe
 
 ; FUNCTION: GY454XE  Re 18FD0
+; FUNCTION: GY455XE  Im 18FD0
 _f_18FD0:
 	PUSH LR
 	MOV R1, #0H
@@ -18526,14 +19190,14 @@ _f_18FD0:
 	ADD R1, R2
 	AND R0, #10111111B
 	ST R0, _reg1_9
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BGE _$j_19000
 	MOV R2, R0
 	AND R2, #01000000B
 	ADD R1, R2
 	AND R0, #10111111B
-	ST R0, _reg0_9
+	ST R0, _mathi_enable_draw
 	MOV R0, #0H
 _$j_18ffe:
 	POP PC
@@ -18542,9 +19206,10 @@ _$j_19000:
 	BAL _$j_18ffe
 
 ; FUNCTION: GY454XE  Re 19004
+; FUNCTION: GY455XE  Im 19004
 _f_19004:
 	PUSH LR
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BLT _$j_19010
 	POP PC
@@ -18552,9 +19217,10 @@ _$j_19010:
 	BAL _$j_19038
 
 ; FUNCTION: GY454XE  Re 19012
+; FUNCTION: GY455XE  Im 19012
 _f_19012:
 	PUSH LR
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BLT _$j_1901e
 	POP PC
@@ -18564,9 +19230,10 @@ _$j_1901e:
 	BAL _$j_19038
 
 ; FUNCTION: GY454XE  Re 19026
+; FUNCTION: GY455XE  Im 19026
 _f_19026:
 	PUSH LR
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BLT _$j_19032
 	POP PC
@@ -18574,7 +19241,7 @@ _$j_19032:
 	MOV R0, #3H
 	ST R0, _d_0801C
 _$j_19038:
-	L ER0, _reg0
+	L ER0, _d_08000
 	CMP R1, #5H
 	BLT _$j_19046
 _$j_19040:
@@ -18590,10 +19257,10 @@ _$j_19046:
 	ST XR4, [EA+]
 	ST ER2, [EA+]
 	SUB R1, R3
-	ST ER0, _reg0
+	ST ER0, _d_08000
 	BGE _$j_19086
-	L ER8, _reg0
-	LEA _reg0_2
+	L ER8, _d_08000
+	LEA _d_08002
 	L QR0, [EA]
 	ST R8, _reg1
 	LEA _reg1_2
@@ -18602,7 +19269,7 @@ _$j_19046:
 	MOV R0, #99H
 	MOV ER4, #0H
 	MOV ER6, #0H
-	LEA _reg0
+	LEA _d_08000
 	ST ER0, [EA+]
 	ST XR4, [EA+]
 	ST XR4, [EA+]
@@ -18610,15 +19277,15 @@ _$j_19086:
 	L R0, _reg1_9
 	CMP R0, #0H
 	BEQ _$j_19040
-	LEA _reg0_2
+	LEA _d_08002
 	L QR0, [EA]
 	LEA _reg1_2
 	L QR8, [EA]
 	BL _f_19F04
 	AND R7, #00001111B
-	LEA _reg0_2
+	LEA _d_08002
 	ST QR0, [EA]
-	L ER0, _reg0
+	L ER0, _d_08000
 	L ER2, _reg1
 	SUB R0, R2
 	DAS R0
@@ -18627,29 +19294,29 @@ _$j_19086:
 	AND R1, #00001111B
 	ST ER0, _d_0801A
 	MOV ER0, #0H
-	ST ER0, _reg0
+	ST ER0, _d_08000
 	BL _f_19122
 	BL _f_172B4
 	L ER0, _reg1
 	ST ER0, _reg2
-	L ER0, _reg0
+	L ER0, _d_08000
 	L ER2, _d_0801A
 	ADD R1, R3
 	DAA R1
 	AND R1, #00001111B
-	ST ER0, _reg0
+	ST ER0, _d_08000
 	L R0, _d_0801C
 	CMP R0, #2H
 	BLT _$j_1910c
 	BNE _$j_1910a
 	MOV R2, #1FH
 	BL _f_19586
-	L ER0, _reg0
+	L ER0, _d_08000
 	L R2, _d_0801D
 	ADD R1, R2
 	DAA R1
 	AND R1, #00001111B
-	ST ER0, _reg0
+	ST ER0, _d_08000
 	BL _f_19BF4
 _$j_1910a:
 	POP PC
@@ -18657,9 +19324,10 @@ _$j_1910c:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 1910E
+; FUNCTION: GY455XE  Im 1910E
 _f_1910E:
 	PUSH LR
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BLT _$j_1911a
 	POP PC
@@ -18669,9 +19337,10 @@ _$j_1911a:
 	BAL _$j_19134
 
 ; FUNCTION: GY454XE  Re 19122
+; FUNCTION: GY455XE  Im 19122
 _f_19122:
 	PUSH LR
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BLT _$j_1912e
 	POP PC
@@ -18679,17 +19348,18 @@ _$j_1912e:
 	MOV R0, #0H
 	ST R0, _d_0800D
 _$j_19134:
-	L R0, _reg0
+	L R0, _d_08000
 	MOV R1, #1H
 	SUB R0, R1
 	DAS R0
-	ST R0, _reg0
+	ST R0, _d_08000
 	BAL _$j_1916a
 
 ; FUNCTION: GY454XE  Re 19144
+; FUNCTION: GY455XE  Im 19144
 _f_19144:
 	PUSH LR
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BLT _$j_19150
 	POP PC
@@ -18699,9 +19369,10 @@ _$j_19150:
 	BAL _$j_1916a
 
 ; FUNCTION: GY454XE  Re 19158
+; FUNCTION: GY455XE  Im 19158
 _f_19158:
 	PUSH LR
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BLT _$j_19164
 	POP PC
@@ -18719,7 +19390,7 @@ _$j_1916a:
 	ST ER2, [EA+]
 	MOV R0, #0H
 	ST R0, _d_0800E
-	LEA _reg0
+	LEA _d_08000
 	L QR0, [EA+]
 	L ER8, [EA+]
 	MOV ER10, #1H
@@ -18786,7 +19457,7 @@ _$j_1920c:
 	ST ER8, [EA+]
 	BAL _$j_191c6
 _$j_1921e:
-	LEA _reg0
+	LEA _d_08000
 	L QR0, [EA+]
 	L ER8, [EA+]
 	LEA _reg3
@@ -18798,11 +19469,11 @@ _$j_19230:
 	L R0, _reg2_9
 	CMP R0, #0H
 	BNE _$j_1927c
-	LEA _reg0
+	LEA _d_08000
 	L QR0, [EA+]
 	L ER8, [EA+]
 	BL _f_1946A
-	LEA _reg0
+	LEA _d_08000
 	ST QR0, [EA+]
 	ST ER8, [EA+]
 	LEA _reg2
@@ -18812,11 +19483,11 @@ _$j_19230:
 	LEA _reg2
 	ST QR0, [EA+]
 	ST ER8, [EA+]
-	L R0, _reg0
+	L R0, _d_08000
 	MOV R1, #1H
 	SUB R0, R1
 	DAS R0
-	ST R0, _reg0
+	ST R0, _d_08000
 	BGE _$j_1927a
 	MOV R0, #8H
 	ST R0, _d_0800E
@@ -18881,7 +19552,7 @@ _$j_192f0:
 _$j_19302:
 	BL _f_1947E
 _$j_19306:
-	LEA _reg0
+	LEA _d_08000
 	L QR0, [EA+]
 	L ER8, [EA+]
 	LEA _reg3
@@ -18894,13 +19565,13 @@ _$j_19318:
 	SUB R0, R1
 	ST R0, _reg2
 	BLT _$j_19354
-	LEA _reg0
+	LEA _d_08000
 	L QR0, [EA+]
 	L ER8, [EA+]
 	BL _f_19444
 	ADD R0, #1H
 	DAA R0
-	LEA _reg0
+	LEA _d_08000
 	ST QR0, [EA+]
 	ST ER8, [EA+]
 	LEA _reg2
@@ -18912,14 +19583,14 @@ _$j_19318:
 	ST ER8, [EA+]
 	BAL _$j_1929a
 _$j_19354:
-	LEA _reg0_2
+	LEA _d_08002
 	L QR0, [EA]
 	BNE _$j_19364
-	L ER0, _reg0
+	L ER0, _d_08000
 	CMP R1, #0H
 	BEQ _$j_193c8
 _$j_19364:
-	LEA _reg0
+	LEA _d_08000
 	L QR0, [EA+]
 	L ER8, [EA+]
 	MOV R10, R0
@@ -18965,7 +19636,7 @@ _$j_1939a:
 	ADDC R9, #0H
 	DAA R9
 	MOV ER0, ER10
-	LEA _reg0
+	LEA _d_08000
 	ST QR0, [EA+]
 	ST ER8, [EA+]
 _$j_193c8:
@@ -18974,7 +19645,7 @@ _$j_193c8:
 	CMP R0, #8H
 	BLT _$j_19408
 	BNE _$j_19406
-	LEA _reg0
+	LEA _d_08000
 	L QR0, [EA+]
 	L ER8, [EA+]
 	LEA _reg1
@@ -18989,7 +19660,7 @@ _$j_193c8:
 	MOV ER6, #0H
 	MOV R8, #0H
 	MOV R9, R10
-	LEA _reg0
+	LEA _d_08000
 	ST QR0, [EA+]
 	ST ER8, [EA+]
 _$j_19402:
@@ -18999,21 +19670,22 @@ _$j_19406:
 _$j_19408:
 	CMP R0, #0H
 	BEQ _$j_19406
-	LEA _reg0_2
+	LEA _d_08002
 	L QR0, [EA]
 	LEA _reg1_2
 	L QR8, [EA]
 	ST QR0, [EA]
-	LEA _reg0_2
+	LEA _d_08002
 	ST QR8, [EA]
-	L ER0, _reg0
+	L ER0, _d_08000
 	ST ER0, _reg1
 	MOV R0, #99H
 	MOV R1, #0H
-	ST ER0, _reg0
+	ST ER0, _d_08000
 	BAL _$j_19402
 
 ; FUNCTION: GY454XE  Re 19432
+; FUNCTION: GY455XE  Im 19432
 _f_19432:
 	SRLC R0, #4
 	SRLC R1, #4
@@ -19026,6 +19698,7 @@ _f_19432:
 	RT
 
 ; FUNCTION: GY454XE  Re 19444
+; FUNCTION: GY455XE  Im 19444
 _f_19444:
 	SRLC R1, #4
 	SRLC R2, #4
@@ -19039,6 +19712,7 @@ _f_19444:
 	RT
 
 ; FUNCTION: GY454XE  Re 19458
+; FUNCTION: GY455XE  Im 19458
 _f_19458:
 	SLLC R7, #4
 	SLLC R6, #4
@@ -19051,6 +19725,7 @@ _f_19458:
 	RT
 
 ; FUNCTION: GY454XE  Re 1946A
+; FUNCTION: GY455XE  Im 1946A
 _f_1946A:
 	SLLC R9, #4
 	SLLC R8, #4
@@ -19064,6 +19739,7 @@ _f_1946A:
 	RT
 
 ; FUNCTION: GY454XE  Re 1947E
+; FUNCTION: GY455XE  Im 1947E
 _f_1947E:
 	PUSH LR
 	L ER0, _reg1
@@ -19081,23 +19757,25 @@ _f_1947E:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 194A8
+; FUNCTION: GY455XE  Im 194A8
 _f_194A8:
 	PUSH LR
-	L ER0, _reg0
+	L ER0, _d_08000
 	L ER2, _reg1
 	SUB R1, R3
 	DAS R1
-	ST ER0, _reg0
-	LEA _reg0_2
+	ST ER0, _d_08000
+	LEA _d_08002
 	L QR0, [EA]
 	LEA _reg1_2
 	L QR8, [EA]
 	BL _f_19EFC
-	LEA _reg0_2
+	LEA _d_08002
 	ST QR0, [EA]
 	POP PC
 
 ; FUNCTION: GY454XE  Re 194D2
+; FUNCTION: GY455XE  Im 194D2
 _f_194D2:
 	PUSH LR
 	L ER0, _reg1
@@ -19115,26 +19793,28 @@ _f_194D2:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 194FC
+; FUNCTION: GY455XE  Im 194FC
 _f_194FC:
 	PUSH LR
-	L ER0, _reg0
+	L ER0, _d_08000
 	L ER2, _reg1
 	ADD R1, R3
 	DAA R1
-	ST ER0, _reg0
-	LEA _reg0_2
+	ST ER0, _d_08000
+	LEA _d_08002
 	L QR0, [EA]
 	LEA _reg1_2
 	L QR8, [EA]
 	BL _f_19ED0
-	LEA _reg0_2
+	LEA _d_08002
 	ST QR0, [EA]
 	POP PC
 
 ; FUNCTION: GY454XE  Re 19526
+; FUNCTION: GY455XE  Im 19526
 _f_19526:
 	PUSH LR
-	L R0, _reg0
+	L R0, _d_08000
 	MOV R1, R0
 	AND R0, #00001111B
 	SRL R1, #4
@@ -19168,7 +19848,7 @@ _$j_19562:
 _$j_19566:
 	CMP R3, #0AH
 	BLT _$j_19570
-	BL _f_195BC
+	BL _lval_reg1
 	BAL _$j_19574
 _$j_19570:
 	BL _f_19586
@@ -19185,6 +19865,7 @@ _$j_1957c:
 	BAL _$j_1954a
 
 ; FUNCTION: GY454XE  Re 19586
+; FUNCTION: GY455XE  Im 19586
 _f_19586:
 	CMP R2, #1FH
 	BEQ _$j_195ae
@@ -19216,7 +19897,8 @@ _$j_195ae:
 	BAL _$j_195a4
 
 ; FUNCTION: GY454XE  Re 195BC
-_f_195BC:
+; FUNCTION: GY455XE  Im 195BC
+_lval_reg1:
 	PUSH LR
 	CMP R2, #0H
 	BEQ _$j_195c6
@@ -19241,6 +19923,7 @@ _$j_195c8:
 	RT
 
 ; FUNCTION: GY454XE  Re 195E8
+; FUNCTION: GY455XE  Im 195E8
 _f_195E8:
 	PUSH LR
 	LEA _reg4
@@ -19279,8 +19962,8 @@ _$j_1960c:
 	ST XR0, [EA+]
 	L R2, _d_0800B
 	SRL R2, #1
-	MOV R1, #BYTE2 _d_0803C
-	MOV R0, #BYTE1 _d_0803C
+	MOV R1, #BYTE2 _reg4
+	MOV R0, #BYTE1 _reg4
 	ADD R0, R2
 	ADDC R1, #0H
 	LEA [ER0]
@@ -19306,6 +19989,7 @@ _$j_19670:
 	BAL _$j_196f0
 
 ; FUNCTION: GY454XE  Re 19672
+; FUNCTION: GY455XE  Im 19672
 _f_19672:
 	PUSH LR
 	LEA _reg4
@@ -19375,6 +20059,7 @@ _$j_196f0:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 1970A
+; FUNCTION: GY455XE  Im 1970A
 _f_1970A:
 	PUSH LR
 	LEA _reg4
@@ -19413,8 +20098,8 @@ _$j_1972e:
 	ST XR0, [EA+]
 	L R2, _d_0800B
 	SRL R2, #1
-	MOV R1, #BYTE2 _d_0803C
-	MOV R0, #BYTE1 _d_0803C
+	MOV R1, #BYTE2 _reg4
+	MOV R0, #BYTE1 _reg4
 	ADD R0, R2
 	ADDC R1, #0H
 	LEA [ER0]
@@ -19440,6 +20125,7 @@ _$j_19792:
 	BAL _$j_196f0
 
 ; FUNCTION: GY454XE  Re 19794
+; FUNCTION: GY455XE  Im 19794
 _f_19794:
 	PUSH LR
 	MOV R0, #1H
@@ -19447,17 +20133,18 @@ _f_19794:
 	BAL _$j_197a6
 
 ; FUNCTION: GY454XE  Re 1979E
+; FUNCTION: GY455XE  Im 1979E
 _f_1979E:
 	PUSH LR
 	MOV R0, #0H
 	ST R0, _d_0803A
 _$j_197a6:
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BLT _$j_197b0
 	POP PC
 _$j_197b0:
-	LEA _reg0
+	LEA _d_08000
 	L QR0, [EA+]
 	L ER8, [EA]
 	MOV R10, #13H
@@ -19503,7 +20190,7 @@ _$j_197d4:
 	DAA R9
 _$j_19806:
 	AND R2, #11110000B
-	LEA _reg0
+	LEA _d_08000
 	ST QR0, [EA+]
 	ST ER8, [EA+]
 	ST ER2, _reg1_2
@@ -19529,7 +20216,7 @@ _$j_1982e:
 _$j_19834:
 	ST R14, _d_0800B
 	BL _f_19850
-	LEA _reg0
+	LEA _d_08000
 	L QR0, [EA+]
 	L ER8, [EA]
 	BAL _$j_197d4
@@ -19540,6 +20227,7 @@ _$j_19846:
 	BAL _$j_19814
 
 ; FUNCTION: GY454XE  Re 19850
+; FUNCTION: GY455XE  Im 19850
 _f_19850:
 	PUSH LR
 	LEA _reg4
@@ -19557,7 +20245,7 @@ _f_19850:
 	MOV R0, #10H
 	ST R0, _d_0800B
 _$j_19874:
-	LEA _reg0_2
+	LEA _d_08002
 	L QR0, [EA]
 	LEA _reg4
 	ST QR0, [EA]
@@ -19569,8 +20257,8 @@ _$j_19874:
 	ST ER0, [EA+]
 	L R2, _d_0800B
 	SRL R2, #1
-	MOV R1, #BYTE2 _d_0803C
-	MOV R0, #BYTE1 _d_0803C
+	MOV R1, #BYTE2 _reg4
+	MOV R0, #BYTE1 _reg4
 	ADD R0, R2
 	ADDC R1, #0H
 	LEA [ER0]
@@ -19587,19 +20275,19 @@ _$j_19874:
 	BEQ _$j_198ba
 	BL _f_19432
 _$j_198ba:
-	LEA _reg0_2
+	LEA _d_08002
 	ST QR0, [EA]
 	L R2, _d_0800B
 	CMP R2, #0AH
 	BLT _$j_198ca
 	ADD R2, #6H
 _$j_198ca:
-	L ER0, _reg0
+	L ER0, _d_08000
 	ADD R0, R2
 	DAA R0
 	ADDC R1, #0H
 	DAA R1
-	ST ER0, _reg0
+	ST ER0, _d_08000
 _$j_198da:
 	POP XR0
 	LEA _reg5_6
@@ -19613,14 +20301,15 @@ _$j_198da:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 198F4
+; FUNCTION: GY455XE  Im 198F4
 _f_198F4:
 	PUSH LR
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BLT _$j_19900
 	POP PC
 _$j_19900:
-	LEA _reg0
+	LEA _d_08000
 	L QR0, [EA+]
 	L ER8, [EA]
 	MOV R10, #12H
@@ -19650,7 +20339,7 @@ _$j_1991c:
 	AND R13, #00001111B
 	ST R13, _d_0800C
 _$j_1993c:
-	ST ER0, _reg0
+	ST ER0, _d_08000
 	MOV R14, R2
 	SRL R14, #4
 	CMP R14, #5H
@@ -19672,7 +20361,7 @@ _$j_1993c:
 	DAA R9
 _$j_19966:
 	MOV R2, #0H
-	LEA _reg0_2
+	LEA _d_08002
 	ST ER2, [EA+]
 	ST ER4, [EA+]
 	ST ER6, [EA+]
@@ -19699,7 +20388,7 @@ _$j_1997c:
 	AND R1, #00001111B
 	BAL _$j_1991c
 _$j_1999e:
-	LEA _reg0
+	LEA _d_08000
 	ST QR0, [EA+]
 	ST ER8, [EA]
 	BL _f_1A23C
@@ -19708,16 +20397,17 @@ _$j_199ac:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 199AE
+; FUNCTION: GY455XE  Im 199AE
 _f_199AE:
 	PUSH LR
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BLT _$j_199ba
 	POP PC
 _$j_199ba:
 	MOV R0, #0H
 	ST R0, _d_0800C
-	LEA _reg0
+	LEA _d_08000
 	L QR0, [EA+]
 	L ER8, [EA+]
 	CMP R9, #0H
@@ -19762,14 +20452,15 @@ _$j_19a10:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 19A12
+; FUNCTION: GY455XE  Im 19A12
 _f_19A12:
 	PUSH LR
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BLT _$j_19a1e
 	POP PC
 _$j_19a1e:
-	L ER0, _reg0
+	L ER0, _d_08000
 	CMP R1, #5H
 	BGE _$j_19acc
 	MOV ER0, #0H
@@ -19782,10 +20473,10 @@ _$j_19a1e:
 	ST XR0, [EA+]
 	ST XR0, [EA+]
 	ST ER0, [EA+]
-	L ER0, _reg0
+	L ER0, _d_08000
 	ST ER0, _reg2
-	L ER0, _reg0
-	L ER2, _reg0
+	L ER0, _d_08000
+	L ER2, _d_08000
 	MOV R4, #4H
 _$j_19a50:
 	ADD R0, R2
@@ -19794,8 +20485,8 @@ _$j_19a50:
 	DAA R1
 	ADD R4, #-1H
 	BNE _$j_19a50
-	ST ER0, _reg0
-	LEA _reg0_2
+	ST ER0, _d_08000
+	LEA _d_08002
 	L QR0, [EA]
 	L QR8, [EA]
 	BL _f_19ED8
@@ -19803,22 +20494,22 @@ _$j_19a50:
 	ST QR0, [EA]
 	L QR8, [EA]
 	BL _f_19ED8
-	LEA _reg0_2
+	LEA _d_08002
 	L QR8, [EA]
 	BL _f_19ED8
 	BEQ _$j_19a92
-	L ER8, _reg0
+	L ER8, _d_08000
 	ADD R9, #5H
 	DAA R9
 	AND R9, #00001111B
-	ST ER8, _reg0
+	ST ER8, _d_08000
 _$j_19a92:
-	LEA _reg0_2
+	LEA _d_08002
 	ST QR0, [EA]
-	L R0, _reg0
+	L R0, _d_08000
 	AND R0, #00000001B
 	BNE _$j_19ad2
-	LEA _reg0
+	LEA _d_08000
 	L QR0, [EA+]
 	L ER8, [EA]
 	SLLC R1, #4
@@ -19833,7 +20524,7 @@ _$j_19a92:
 	SRLC R7, #4
 	SRLC R8, #4
 	SRL R9, #4
-	LEA _reg0
+	LEA _d_08000
 	ST QR0, [EA+]
 	ST ER8, [EA]
 	SRLC R0, #4
@@ -19842,10 +20533,10 @@ _$j_19acc:
 	BL _set_reg0_error
 	BAL _$j_19bb2
 _$j_19ad2:
-	L ER0, _reg0
+	L ER0, _d_08000
 	SRLC R0, #4
 	SRL R1, #4
-	ST ER0, _reg0
+	ST ER0, _d_08000
 _$j_19ade:
 	ST R0, _reg2
 	MOV R0, #0EH
@@ -19882,17 +20573,17 @@ _$j_19b12:
 	ST R3, [EA]
 _$j_19b1c:
 	PUSH QR0
-	L ER0, _reg0
+	L ER0, _d_08000
 	L ER2, _reg3
 	SUB R1, R3
 	DAS R1
-	ST ER0, _reg0
-	LEA _reg0_2
+	ST ER0, _d_08000
+	LEA _d_08002
 	L QR0, [EA]
 	LEA _reg3_2
 	L QR8, [EA]
 	BL _f_19EFC
-	LEA _reg0_2
+	LEA _d_08002
 	ST QR0, [EA+]
 	POP QR0
 	BLT _$j_19b4c
@@ -19900,17 +20591,17 @@ _$j_19b1c:
 	BAL _$j_19aee
 _$j_19b4c:
 	PUSH QR0
-	L ER0, _reg0
+	L ER0, _d_08000
 	L ER2, _reg3
 	ADD R1, R3
 	DAA R1
-	ST ER0, _reg0
-	LEA _reg0_2
+	ST ER0, _d_08000
+	LEA _d_08002
 	L QR0, [EA]
 	LEA _reg3_2
 	L QR8, [EA]
 	BL _f_19ED0
-	LEA _reg0_2
+	LEA _d_08002
 	ST QR0, [EA+]
 	POP QR0
 	CMP R0, #0H
@@ -19922,29 +20613,30 @@ _$j_19b4c:
 	ADD ER6, #-1H
 _$j_19b84:
 	PUSH QR0
-	LEA _reg0
+	LEA _d_08000
 	L QR0, [EA+]
 	L ER8, [EA]
 	BL _f_1946A
-	LEA _reg0
+	LEA _d_08000
 	ST QR0, [EA+]
 	ST ER8, [EA]
 	POP QR0
 	BAL _$j_19aec
 _$j_19b9e:
 	L ER0, _reg2
-	ST ER0, _reg0
+	ST ER0, _d_08000
 	LEA _reg3_2
 	L QR0, [EA]
-	LEA _reg0_2
+	LEA _d_08002
 	ST QR0, [EA]
 _$j_19bb2:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 19BB4
+; FUNCTION: GY455XE  Im 19BB4
 _f_19BB4:
 	PUSH LR
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BLT _$j_19bc0
 	POP PC
@@ -19961,9 +20653,10 @@ _$j_19bc0:
 	BAL _$j_19bee
 
 ; FUNCTION: GY454XE  Re 19BD6
+; FUNCTION: GY455XE  Im 19BD6
 _f_19BD6:
 	PUSH LR
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BGE _$j_19bec
 	L R0, _reg1_9
@@ -19977,9 +20670,10 @@ _$j_19bee:
 	BAL _$j_19c26
 
 ; FUNCTION: GY454XE  Re 19BF4
+; FUNCTION: GY455XE  Im 19BF4
 _f_19BF4:
 	PUSH LR
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BGE _$j_19c0a
 	L R0, _reg1_9
@@ -19992,9 +20686,10 @@ _$j_19c0c:
 	BAL _$j_19c2c
 
 ; FUNCTION: GY454XE  Re 19C0E
+; FUNCTION: GY455XE  Im 19C0E
 _num_div_r:
 	PUSH LR
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BGE _$j_19c24
 	L R0, _reg1_9
@@ -20015,7 +20710,7 @@ _$j_19c2c:
 	L R0, _reg1_9
 	CMP R0, #0H
 	BEQ _$j_19d0c
-	L ER2, _reg0
+	L ER2, _d_08000
 	L ER4, _reg1
 	SUB R2, R4
 	DAS R2
@@ -20039,7 +20734,7 @@ _$j_19c2c:
 	LEA _reg3_2
 	ST QR0, [EA]
 	L ER0, _reg2
-	ST ER0, _reg0
+	ST ER0, _d_08000
 	MOV R0, #12H
 	MOV R1, #0H
 	LEA _reg2
@@ -20047,7 +20742,7 @@ _$j_19c2c:
 	ST ER8, [EA]
 _$j_19c90:
 	MOV R10, #2H
-	LEA _reg0_2
+	LEA _d_08002
 	L QR0, [EA]
 _$j_19c98:
 	PUSH R10
@@ -20068,7 +20763,7 @@ _$j_19cac:
 	ADD R10, #-1H
 	BAL _$j_19cac
 _$j_19cc0:
-	LEA _reg0_2
+	LEA _d_08002
 	ST QR0, [EA+]
 	LEA _reg2
 	L QR0, [EA+]
@@ -20081,16 +20776,16 @@ _$j_19cc0:
 	LEA _reg2
 	ST QR0, [EA+]
 	ST ER8, [EA]
-	LEA _reg0
+	LEA _d_08000
 	L QR0, [EA+]
 	L ER8, [EA]
 	BL _f_1946A
-	LEA _reg0
+	LEA _d_08000
 	ST QR0, [EA+]
 	ST ER8, [EA]
 	BAL _$j_19c90
 _$j_19cf8:
-	LEA _reg0
+	LEA _d_08000
 	ST QR0, [EA+]
 	ST ER8, [EA]
 	LEA _reg2
@@ -20107,14 +20802,15 @@ _$j_19d0c:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 19D1E
+; FUNCTION: GY455XE  Im 19D1E
 _f_19D1E:
 	PUSH LR
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BLT _$j_19d2a
 	POP PC
 _$j_19d2a:
-	LEA _reg0
+	LEA _d_08000
 	L QR0, [EA+]
 	L ER8, [EA+]
 	LEA _reg1
@@ -20123,9 +20819,10 @@ _$j_19d2a:
 	BAL _$j_19d70
 
 ; FUNCTION: GY454XE  Re 19D3C
+; FUNCTION: GY455XE  Im 19D3C
 _f_19D3C:
 	PUSH LR
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BGE _$j_19d52
 	L R0, _reg1_9
@@ -20139,9 +20836,10 @@ _$j_19d54:
 	BAL _$j_19d72
 
 ; FUNCTION: GY454XE  Re 19D58
+; FUNCTION: GY455XE  Im 19D58
 _num_mul_r:
 	PUSH LR
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BGE _$j_19d6e
 	L R0, _reg1_9
@@ -20160,7 +20858,7 @@ _$j_19d72:
 	PUSH QR0
 	PUSH ER8
 	MOV R0, R15
-	L ER2, _reg0
+	L ER2, _d_08000
 	L ER4, _reg1
 	ADD R2, R4
 	DAA R2
@@ -20179,7 +20877,7 @@ _$j_19d72:
 	BL _f_19ED8
 	LEA _reg3_2
 	ST QR0, [EA]
-	LEA _reg0_2
+	LEA _d_08002
 	L QR0, [EA]
 	LEA _reg2_2
 	ST QR0, [EA]
@@ -20191,7 +20889,7 @@ _$j_19d72:
 	ADD ER4, #-1H
 _$j_19dce:
 	MOV R1, #0H
-	LEA _reg0_2
+	LEA _d_08002
 	MOV ER2, #0H
 	ST ER2, [EA+]
 	ST ER2, [EA+]
@@ -20218,23 +20916,23 @@ _$j_19df8:
 	BEQ _$j_19e1c
 	BLT _$j_19e38
 	PUSH QR0
-	LEA _reg0_2
+	LEA _d_08002
 	L QR0, [EA]
 	LEA _reg3_2
 	L QR8, [EA]
 	BL _f_19ED8
-	LEA _reg0_2
+	LEA _d_08002
 	ST QR0, [EA]
 	POP QR0
 	BAL _$j_19df8
 _$j_19e1c:
 	PUSH QR0
-	LEA _reg0_2
+	LEA _d_08002
 	L QR0, [EA]
 	LEA _reg3_2
 	L QR8, [EA]
 	BL _f_19ED8
-	LEA _reg0_2
+	LEA _d_08002
 	ST QR0, [EA]
 	POP QR0
 	BAL _$j_19e78
@@ -20243,31 +20941,31 @@ _$j_19e38:
 	BEQ _$j_19e5e
 	BLT _$j_19e78
 	PUSH QR0
-	LEA _reg0_2
+	LEA _d_08002
 	L QR0, [EA]
 	LEA _reg1_2
 	L QR8, [EA]
 	BL _f_19ED8
 	BL _f_19ED8
-	LEA _reg0_2
+	LEA _d_08002
 	ST QR0, [EA]
 	POP QR0
 	BAL _$j_19e78
 _$j_19e5e:
 	PUSH QR0
-	LEA _reg0_2
+	LEA _d_08002
 	L QR0, [EA]
 	LEA _reg1_2
 	L QR8, [EA]
 	BL _f_19ED8
-	LEA _reg0_2
+	LEA _d_08002
 	ST QR0, [EA]
 	POP QR0
 _$j_19e78:
 	MOV R6, #1H
 	SUB R0, R6
 	BEQ _$j_19ea2
-	LEA _reg0
+	LEA _d_08000
 	L ER6, [EA+]
 	L QR8, [EA]
 	SRLC R7, #4
@@ -20279,12 +20977,12 @@ _$j_19e78:
 	SRLC R13, #4
 	SRLC R14, #4
 	SRL R15, #4
-	LEA _reg0
+	LEA _d_08000
 	ST ER6, [EA+]
 	ST QR8, [EA]
 	BAL _$j_19dde
 _$j_19ea2:
-	LEA _reg0
+	LEA _d_08000
 	L QR0, [EA+]
 	L ER8, [EA]
 	CMP R9, #10H
@@ -20294,7 +20992,7 @@ _$j_19ea2:
 _$j_19eb2:
 	ST ER0, _reg2
 	L ER0, _reg3
-	ST ER0, _reg0
+	ST ER0, _d_08000
 	POP ER8
 	POP QR0
 	LEA _reg3
@@ -20304,6 +21002,7 @@ _$j_19eb2:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 19ED0
+; FUNCTION: GY455XE  Im 19ED0
 _f_19ED0:
 	PUSH LR
 	ADDC R0, R8
@@ -20311,6 +21010,7 @@ _f_19ED0:
 	BAL _$j_19ede
 
 ; FUNCTION: GY454XE  Re 19ED8
+; FUNCTION: GY455XE  Im 19ED8
 _f_19ED8:
 	PUSH LR
 	ADD R0, R8
@@ -20333,6 +21033,7 @@ _$j_19ede:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 19EFC
+; FUNCTION: GY455XE  Im 19EFC
 _f_19EFC:
 	PUSH LR
 	SUBC R0, R8
@@ -20340,6 +21041,7 @@ _f_19EFC:
 	BAL _$j_19f0a
 
 ; FUNCTION: GY454XE  Re 19F04
+; FUNCTION: GY455XE  Im 19F04
 _f_19F04:
 	PUSH LR
 	SUB R0, R8
@@ -20362,19 +21064,21 @@ _$j_19f0a:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 19F28
+; FUNCTION: GY455XE  Im 19F28
 _l_regs:
 	PUSH LR
 	BL _l_reg1
 	BAL _$j_19f32
 
 ; FUNCTION: GY454XE  Re 19F30
+; FUNCTION: GY455XE  Im 19F30
 _l_reg0:
 	PUSH LR
 _$j_19f32:
 	LEA [ER0]
 	L ER6, [EA+]
 	L QR8, [EA+]
-	LEA _reg0
+	LEA _d_08000
 _$j_19f3c:
 	ST FP, [EA+]
 	ST R13, [EA+]
@@ -20388,6 +21092,7 @@ _$j_19f3c:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 19F50
+; FUNCTION: GY455XE  Im 19F50
 _l_reg1:
 	PUSH LR
 	LEA [ER2]
@@ -20397,9 +21102,10 @@ _l_reg1:
 	BAL _$j_19f3c
 
 ; FUNCTION: GY454XE  Re 19F5E
+; FUNCTION: GY455XE  Im 19F5E
 _st_reg0:
 	PUSH LR
-	LEA _reg0
+	LEA _d_08000
 	L QR0, [EA+]
 	L ER8, [EA+]
 	LEA _arg0_ref
@@ -20418,6 +21124,7 @@ _$j_19f6c:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 19F84
+; FUNCTION: GY455XE  Im 19F84
 _st_reg1:
 	PUSH LR
 	LEA _reg1
@@ -20427,9 +21134,10 @@ _st_reg1:
 	BAL _$j_19f6c
 
 ; FUNCTION: GY454XE  Re 19F94
+; FUNCTION: GY455XE  Im 19F94
 _f_19F94:
 	PUSH LR
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BLT _$j_19fa2
 	AND R0, #00001111B
@@ -20440,9 +21148,10 @@ _$j_19fa4:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 19FA6
+; FUNCTION: GY455XE  Im 19FA6
 _f_19FA6:
 	PUSH LR
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BGE _$j_19fbc
 	L R0, _reg1_9
@@ -20452,19 +21161,20 @@ _f_19FA6:
 _$j_19fbc:
 	POP PC
 _$j_19fbe:
-	L ER0, _reg0
+	L ER0, _d_08000
 	ADD R1, #5H
 	DAA R1
 	AND R1, #00001111B
-	ST ER0, _reg0
+	ST ER0, _d_08000
 	MOV R0, #1H
 	ST R0, _d_0803B
 	B _$j_1a0d8
 
 ; FUNCTION: GY454XE  Re 19FD6
+; FUNCTION: GY455XE  Im 19FD6
 _f_19FD6:
 	PUSH LR
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BLT _$j_19fe2
 	POP PC
@@ -20481,9 +21191,10 @@ _$j_19fe2:
 	BAL _$j_1a0d2
 
 ; FUNCTION: GY454XE  Re 19FF8
+; FUNCTION: GY455XE  Im 19FF8
 _f_19FF8:
 	PUSH LR
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BLT _$j_1a004
 	POP PC
@@ -20501,9 +21212,10 @@ _$j_1a004:
 	BAL _$j_1a0d2
 
 ; FUNCTION: GY454XE  Re 1A01C
+; FUNCTION: GY455XE  Im 1A01C
 _f_1A01C:
 	PUSH LR
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BGE _$j_1a032
 	L R0, _reg1_9
@@ -20513,17 +21225,18 @@ _f_1A01C:
 _$j_1a032:
 	POP PC
 _$j_1a034:
-	L ER0, _reg0
+	L ER0, _d_08000
 	ADD R1, #5H
 	DAA R1
 	AND R1, #00001111B
-	ST ER0, _reg0
+	ST ER0, _d_08000
 	BAL _$j_1a0d2
 
 ; FUNCTION: GY454XE  Re 1A044
+; FUNCTION: GY455XE  Im 1A044
 _num_sub_r:
 	PUSH LR
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BGE _$j_1a05a
 	L R0, _reg1_9
@@ -20543,9 +21256,10 @@ _$j_1a05c:
 	BAL _$j_1a0d8
 
 ; FUNCTION: GY454XE  Re 1A072
+; FUNCTION: GY455XE  Im 1A072
 _num_add_r:
 	PUSH LR
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BGE _$j_1a088
 	L R0, _reg1_9
@@ -20560,9 +21274,10 @@ _$j_1a08a:
 	BAL _$j_1a0d8
 
 ; FUNCTION: GY454XE  Re 1A092
+; FUNCTION: GY455XE  Im 1A092
 _num_sub1_r__:
 	PUSH LR
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BGE _$j_1a0a8
 	L R0, _reg1_9
@@ -20580,9 +21295,10 @@ _$j_1a0aa:
 	BAL _$j_1a0d2
 
 ; FUNCTION: GY454XE  Re 1A0BA
+; FUNCTION: GY455XE  Im 1A0BA
 _num_add1_r__:
 	PUSH LR
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BGE _$j_1a0d0
 	L R0, _reg1_9
@@ -20598,32 +21314,32 @@ _$j_1a0d8:
 	BL _reg0_lt_reg1_abs
 	CMP R0, #0H
 	BEQ _$j_1a120
-	L ER0, _reg0
+	L ER0, _d_08000
 	L ER2, _reg1
-	ST ER2, _reg0
+	ST ER2, _d_08000
 	ST ER0, _reg1
-	LEA _reg0_2
+	LEA _d_08002
 	L QR0, [EA]
 	LEA _reg1_2
 	L QR8, [EA]
-	LEA _reg0_2
+	LEA _d_08002
 	ST QR8, [EA]
 	LEA _reg1_2
 	ST QR0, [EA]
 	L R0, _d_0800A
 	CMP R0, #0H
 	BEQ _$j_1a0d8
-	L ER0, _reg0
+	L ER0, _d_08000
 	ADD R1, #5H
 	DAA R1
 	AND R1, #00001111B
-	ST ER0, _reg0
+	ST ER0, _d_08000
 	BAL _$j_1a0d8
 _$j_1a120:
 	L R0, _d_0800A
 	CMP R0, #0H
 	BEQ _$j_1a148
-	LEA _reg0
+	LEA _d_08000
 	L ER8, [EA+]
 	L QR0, [EA]
 	MOV ER10, #1H
@@ -20633,14 +21349,14 @@ _$j_1a120:
 	DAS R9
 	AND R9, #00001111B
 	BL _f_19458
-	LEA _reg0
+	LEA _d_08000
 	ST ER8, [EA+]
 	ST QR0, [EA]
 _$j_1a148:
 	LEA _reg1
 	L ER10, [EA+]
 	L QR0, [EA]
-	LEA _reg0
+	LEA _d_08000
 	L ER8, [EA+]
 	SUB R8, R10
 	DAS R8
@@ -20679,7 +21395,7 @@ _$j_1a192:
 	L R0, _d_0800A
 	CMP R0, #0H
 	BNE _$j_1a1d6
-	LEA _reg0_2
+	LEA _d_08002
 	L QR0, [EA]
 	ADD R0, R8
 	DAA R0
@@ -20697,14 +21413,14 @@ _$j_1a192:
 	DAA R6
 	ADDC R7, R15
 	DAA R7
-	LEA _reg0_2
+	LEA _d_08002
 	ST QR0, [EA]
 _$j_1a1d0:
 	BL _f_1A23C
 _$j_1a1d4:
 	POP PC
 _$j_1a1d6:
-	LEA _reg0_2
+	LEA _d_08002
 	L QR0, [EA]
 	SUB R0, R8
 	DAS R0
@@ -20722,7 +21438,7 @@ _$j_1a1d6:
 	DAS R6
 	SUBC R7, R15
 	DAS R7
-	LEA _reg0_2
+	LEA _d_08002
 	ST QR0, [EA]
 	L R8, _d_0803B
 	CMP R8, #1H
@@ -20751,14 +21467,15 @@ _$j_1a22c:
 	CMP R10, #0DH
 	BLT _$j_1a1d0
 	MOV ER0, #0H
-	ST ER0, _reg0_2
+	ST ER0, _d_08002
 	BL _f_1A23C
 	BAL _$j_1a1d4
 
 ; FUNCTION: GY454XE  Re 1A23C
+; FUNCTION: GY455XE  Im 1A23C
 _f_1A23C:
 	PUSH LR
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BLT _$j_1a248
 	POP PC
@@ -20770,12 +21487,12 @@ _$j_1a248:
 	PUSH QR0
 	L XR0, [EA+]
 	PUSH XR0
-	LEA _reg0_2
+	LEA _d_08002
 	L QR0, [EA]
 	CMP R7, #10H
 	BLT _$j_1a27c
 	BL _f_19432
-	LEA _reg0
+	LEA _d_08000
 	L ER8, [EA]
 	MOV ER10, #1H
 	ADD R8, R10
@@ -20843,7 +21560,7 @@ _$j_1a2aa:
 	BEQ _$j_1a2f2
 	BL _f_19458
 _$j_1a2f2:
-	LEA _reg0_2
+	LEA _d_08002
 	ST QR0, [EA]
 	L R2, _d_0800B
 	CMP R2, #0AH
@@ -20851,14 +21568,14 @@ _$j_1a2f2:
 	ADD R2, #6H
 _$j_1a302:
 	MOV R3, #0H
-	L ER0, _reg0
+	L ER0, _d_08000
 	SUB R0, R2
 	DAS R0
 	SUBC R1, R3
 	DAS R1
-	ST ER0, _reg0
+	ST ER0, _d_08000
 _$j_1a314:
-	L ER0, _reg0
+	L ER0, _d_08000
 	MOV R2, #5H
 _$j_1a31a:
 	AND R1, #00001111B
@@ -20871,7 +21588,7 @@ _$j_1a31a:
 	BLT _$j_1a33a
 _$j_1a32a:
 	MOV ER0, #0H
-	LEA _reg0
+	LEA _d_08000
 	ST ER0, [EA+]
 	ST ER0, [EA+]
 	ST ER0, [EA+]
@@ -20898,9 +21615,10 @@ _$j_1a35c:
 	BAL _$j_1a33a
 
 ; FUNCTION: GY454XE  Re 1A362
+; FUNCTION: GY455XE  Im 1A362
 _reg0_lt_reg1_abs:
 	PUSH LR
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BGE _$reg0_lt_reg1_abs_ret_0
 	L R0, _reg1_9
@@ -20910,7 +21628,7 @@ _$reg0_lt_reg1_abs_ret_0:
 	MOV R0, #0H
 	POP PC
 _$j_1a378:
-	L ER0, _reg0
+	L ER0, _d_08000
 	L ER2, _reg1
 	CMP R1, #5H
 	BGE _$reg0_lt_reg1_abs_reg0_neg
@@ -20932,7 +21650,7 @@ _$j_1a394:
 	BNE _$reg0_lt_reg1_abs_ret_0_
 	CMP R0, #0H
 	BNE _$reg0_lt_reg1_abs_ret_0_
-	LEA _reg0_2
+	LEA _d_08002
 	L QR0, [EA]
 	LEA _reg1_2
 	L QR8, [EA]
@@ -20968,10 +21686,11 @@ _$reg0_lt_reg1_abs_reg01_samesign:
 	BAL _$j_1a394
 
 ; FUNCTION: GY454XE  Re 1A3E6
+; FUNCTION: GY455XE  Im 1A3E6
 _set_reg0_error:
 	MOV ER0, #0H
 	MOV R2, #-0DH
-	LEA _reg0
+	LEA _d_08000
 	ST ER0, [EA+]
 	ST ER0, [EA+]
 	ST ER0, [EA+]
@@ -20981,6 +21700,7 @@ _set_reg0_error:
 	RT
 
 ; FUNCTION: GY454XE  Re 1A3FC
+; FUNCTION: GY455XE  Im 1A3FC
 _f_1A3FC:
 	PUSH LR
 	LEA _arg0_ref
@@ -20992,6 +21712,7 @@ _f_1A3FC:
 	BAL _$j_1a472
 
 ; FUNCTION: GY454XE  Re 1A410
+; FUNCTION: GY455XE  Im 1A410
 _f_1A410:
 	PUSH LR
 	LEA _arg0_ref
@@ -21003,6 +21724,7 @@ _f_1A410:
 	BAL _$j_1a472
 
 ; FUNCTION: GY454XE  Re 1A424
+; FUNCTION: GY455XE  Im 1A424
 _f_1A424:
 	PUSH LR
 	LEA _arg0_ref
@@ -21014,6 +21736,7 @@ _f_1A424:
 	BAL _$j_1a472
 
 ; FUNCTION: GY454XE  Re 1A438
+; FUNCTION: GY455XE  Im 1A438
 _f_1A438:
 	PUSH LR
 	LEA _arg0_ref
@@ -21025,6 +21748,7 @@ _f_1A438:
 	BAL _$j_1a472
 
 ; FUNCTION: GY454XE  Re 1A44C
+; FUNCTION: GY455XE  Im 1A44C
 _f_1A44C:
 	PUSH LR
 	LEA _arg0_ref
@@ -21036,6 +21760,7 @@ _f_1A44C:
 	BAL _$j_1a472
 
 ; FUNCTION: GY454XE  Re 1A460
+; FUNCTION: GY455XE  Im 1A460
 _f_1A460:
 	PUSH LR
 	LEA _arg0_ref
@@ -21090,9 +21815,9 @@ _$j_1a4c8:
 	BL _f_17398
 	CMP R0, #2H
 	BNE _$j_1a4da
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	OR R0, #01000000B
-	ST R0, _reg0_9
+	ST R0, _mathi_enable_draw
 _$j_1a4da:
 	BL _st_reg0
 	BL _f_19F94
@@ -21104,6 +21829,7 @@ _$j_1a4e8:
 	BAL _$j_1a4da
 
 ; FUNCTION: GY454XE  Re 1A4EE
+; FUNCTION: GY455XE  Im 1A4EE
 _num_log:
 	PUSH LR
 	LEA _arg0_ref
@@ -21115,6 +21841,7 @@ _num_log:
 	BAL _$j_1a552
 
 ; FUNCTION: GY454XE  Re 1A502
+; FUNCTION: GY455XE  Im 1A502
 _num_combi:
 	PUSH LR
 	LEA _arg0_ref
@@ -21126,6 +21853,7 @@ _num_combi:
 	BAL _$j_1a552
 
 ; FUNCTION: GY454XE  Re 1A516
+; FUNCTION: GY455XE  Im 1A516
 _num_permu:
 	PUSH LR
 	LEA _arg0_ref
@@ -21137,6 +21865,7 @@ _num_permu:
 	BAL _$j_1a552
 
 ; FUNCTION: GY454XE  Re 1A52A
+; FUNCTION: GY455XE  Im 1A52A
 _f_1A52A:
 	PUSH LR
 	LEA _arg0_ref
@@ -21191,10 +21920,12 @@ _$j_1a59e:
 	BAL _$j_1a590
 
 ; FUNCTION: GY454XE  Re 1A5A4
+; FUNCTION: GY455XE  Im 1A5A4
 _f_1A5A4:
 	RT
 
 ; FUNCTION: GY454XE  Re 1A5A6
+; FUNCTION: GY455XE  Im 1A5A6
 _num_factorial:
 	PUSH LR
 	LEA _arg0_ref
@@ -21222,6 +21953,7 @@ _num_factorial:
 	BAL _$j_1a670
 
 ; FUNCTION: GY454XE  Re 1A5E2
+; FUNCTION: GY455XE  Im 1A5E2
 _f_1A5E2:
 	PUSH LR
 	LEA _arg0_ref
@@ -21233,6 +21965,7 @@ _f_1A5E2:
 	BAL _$j_1a670
 
 ; FUNCTION: GY454XE  Re 1A5F6
+; FUNCTION: GY455XE  Im 1A5F6
 _f_1A5F6:
 	PUSH LR
 	LEA _arg0_ref
@@ -21244,6 +21977,7 @@ _f_1A5F6:
 	BAL _$j_1a670
 
 ; FUNCTION: GY454XE  Re 1A60A
+; FUNCTION: GY455XE  Im 1A60A
 _f_1A60A:
 	PUSH LR
 	LEA _arg0_ref
@@ -21255,6 +21989,7 @@ _f_1A60A:
 	BAL _$j_1a670
 
 ; FUNCTION: GY454XE  Re 1A61E
+; FUNCTION: GY455XE  Im 1A61E
 _num_10xp:
 	PUSH LR
 	LEA _arg0_ref
@@ -21266,6 +22001,7 @@ _num_10xp:
 	BAL _$j_1a66c
 
 ; FUNCTION: GY454XE  Re 1A632
+; FUNCTION: GY455XE  Im 1A632
 _num_exp:
 	PUSH LR
 	LEA _arg0_ref
@@ -21277,6 +22013,7 @@ _num_exp:
 	BAL _$j_1a66c
 
 ; FUNCTION: GY454XE  Re 1A646
+; FUNCTION: GY455XE  Im 1A646
 _num_ln:
 	PUSH LR
 	LEA _arg0_ref
@@ -21288,6 +22025,7 @@ _num_ln:
 	BAL _$j_1a66c
 
 ; FUNCTION: GY454XE  Re 1A65A
+; FUNCTION: GY455XE  Im 1A65A
 _num_log10:
 	PUSH LR
 	LEA _arg0_ref
@@ -21374,6 +22112,7 @@ _$j_1a710:
 	BAL _$j_1a702
 
 ; FUNCTION: GY454XE  Re 1A716
+; FUNCTION: GY455XE  Im 1A716
 _num_abs:
 	PUSH LR
 	PUSH ER0
@@ -21394,11 +22133,12 @@ _$j_1a734:
 _$j_1a738:
 	POP ER0
 	MOV R2, #3H
-	BL _f_1B12C
+	BL _init_num
 	MOV R0, #3H
 	POP PC
 
 ; FUNCTION: GY454XE  Re 1A744
+; FUNCTION: GY455XE  Im 1A744
 _f_1A744:
 	PUSH LR
 	LEA _arg0_ref
@@ -21476,6 +22216,7 @@ _$j_1a7fa:
 	BAL _$j_1a7ee
 
 ; FUNCTION: GY454XE  Re 1A7FE
+; FUNCTION: GY455XE  Im 1A7FE
 _num_unk_1_1__:
 	PUSH LR
 	LEA _arg0_ref
@@ -21498,6 +22239,7 @@ _num_unk_1_1__:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 1A834
+; FUNCTION: GY455XE  Im 1A834
 _num_atanh:
 	PUSH LR
 	LEA _arg0_ref
@@ -21509,6 +22251,7 @@ _num_atanh:
 	BAL _$j_1a90a
 
 ; FUNCTION: GY454XE  Re 1A846
+; FUNCTION: GY455XE  Im 1A846
 _num_acosh:
 	PUSH LR
 	LEA _arg0_ref
@@ -21520,6 +22263,7 @@ _num_acosh:
 	BAL _$j_1a90a
 
 ; FUNCTION: GY454XE  Re 1A858
+; FUNCTION: GY455XE  Im 1A858
 _num_asinh:
 	PUSH LR
 	LEA _arg0_ref
@@ -21531,6 +22275,7 @@ _num_asinh:
 	BAL _$j_1a90a
 
 ; FUNCTION: GY454XE  Re 1A86A
+; FUNCTION: GY455XE  Im 1A86A
 _num_tanh:
 	PUSH LR
 	LEA _arg0_ref
@@ -21542,6 +22287,7 @@ _num_tanh:
 	BAL _$j_1a90a
 
 ; FUNCTION: GY454XE  Re 1A87C
+; FUNCTION: GY455XE  Im 1A87C
 _num_cosh:
 	PUSH LR
 	LEA _arg0_ref
@@ -21553,6 +22299,7 @@ _num_cosh:
 	BAL _$j_1a90a
 
 ; FUNCTION: GY454XE  Re 1A88E
+; FUNCTION: GY455XE  Im 1A88E
 _num_sinh:
 	PUSH LR
 	LEA _arg0_ref
@@ -21564,6 +22311,7 @@ _num_sinh:
 	BAL _$j_1a90a
 
 ; FUNCTION: GY454XE  Re 1A8A0
+; FUNCTION: GY455XE  Im 1A8A0
 _num_atan:
 	PUSH LR
 	LEA _arg0_ref
@@ -21575,6 +22323,7 @@ _num_atan:
 	BAL _$j_1a90a
 
 ; FUNCTION: GY454XE  Re 1A8B2
+; FUNCTION: GY455XE  Im 1A8B2
 _num_acos:
 	PUSH LR
 	LEA _arg0_ref
@@ -21586,6 +22335,7 @@ _num_acos:
 	BAL _$j_1a90a
 
 ; FUNCTION: GY454XE  Re 1A8C4
+; FUNCTION: GY455XE  Im 1A8C4
 _num_asin:
 	PUSH LR
 	LEA _arg0_ref
@@ -21597,6 +22347,7 @@ _num_asin:
 	BAL _$j_1a90a
 
 ; FUNCTION: GY454XE  Re 1A8D6
+; FUNCTION: GY455XE  Im 1A8D6
 _f_1A8D6:
 	PUSH LR
 	LEA _arg0_ref
@@ -21608,6 +22359,7 @@ _f_1A8D6:
 	BAL _$j_1a90a
 
 ; FUNCTION: GY454XE  Re 1A8E8
+; FUNCTION: GY455XE  Im 1A8E8
 _f_1A8E8:
 	PUSH LR
 	LEA _arg0_ref
@@ -21619,6 +22371,7 @@ _f_1A8E8:
 	BAL _$j_1a90a
 
 ; FUNCTION: GY454XE  Re 1A8FA
+; FUNCTION: GY455XE  Im 1A8FA
 _f_1A8FA:
 	PUSH LR
 	LEA _arg0_ref
@@ -21664,6 +22417,7 @@ _$j_1a95a:
 	BAL _$j_1a94c
 
 ; FUNCTION: GY454XE  Re 1A960
+; FUNCTION: GY455XE  Im 1A960
 _f_1A960:
 	PUSH LR
 	LEA _arg0_ref
@@ -21691,6 +22445,7 @@ _$j_1a99e:
 	BAL _$j_1a990
 
 ; FUNCTION: GY454XE  Re 1A9A4
+; FUNCTION: GY455XE  Im 1A9A4
 _f_1A9A4:
 	PUSH LR
 	LEA _arg0_ref
@@ -21704,6 +22459,7 @@ _f_1A9A4:
 	BAL _$j_1a9de
 
 ; FUNCTION: GY454XE  Re 1A9C0
+; FUNCTION: GY455XE  Im 1A9C0
 _f_1A9C0:
 	PUSH LR
 	LEA _arg0_ref
@@ -21723,6 +22479,7 @@ _$j_1a9de:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 1A9EC
+; FUNCTION: GY455XE  Im 1A9EC
 _num_sub_1:
 	PUSH LR
 	LEA _arg0_ref
@@ -21734,6 +22491,7 @@ _num_sub_1:
 	BAL _$j_1aa3c
 
 ; FUNCTION: GY454XE  Re 1AA00
+; FUNCTION: GY455XE  Im 1AA00
 _num_add_1:
 	PUSH LR
 	LEA _arg0_ref
@@ -21745,6 +22503,7 @@ _num_add_1:
 	BAL _$j_1aa3c
 
 ; FUNCTION: GY454XE  Re 1AA14
+; FUNCTION: GY455XE  Im 1AA14
 _num_div_1:
 	PUSH LR
 	LEA _arg0_ref
@@ -21756,6 +22515,7 @@ _num_div_1:
 	BAL _$j_1aa3c
 
 ; FUNCTION: GY454XE  Re 1AA28
+; FUNCTION: GY455XE  Im 1AA28
 _num_mul_1:
 	PUSH LR
 	LEA _arg0_ref
@@ -21799,9 +22559,9 @@ _$j_1aa7e:
 	BL _f_17398
 	CMP R0, #2H
 	BNE _$j_1aa90
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	OR R0, #01000000B
-	ST R0, _reg0_9
+	ST R0, _mathi_enable_draw
 _$j_1aa90:
 	BL _st_reg0
 	BL _f_19F94
@@ -21831,6 +22591,7 @@ _$j_1aac0:
 	BAL _$j_1aa98
 
 ; FUNCTION: GY454XE  Re 1AAC6
+; FUNCTION: GY455XE  Im 1AAC6
 _f_1AAC6:
 	PUSH LR
 _$j_1aac8:
@@ -21843,6 +22604,7 @@ _$j_1aac8:
 	B _$j_1ac0e
 
 ; FUNCTION: GY454XE  Re 1AADC
+; FUNCTION: GY455XE  Im 1AADC
 _num_sqrt:
 	PUSH LR
 	PUSH ER0
@@ -21952,6 +22714,7 @@ _$j_1abbc:
 	B _$j_1aac8
 
 ; FUNCTION: GY454XE  Re 1ABCC
+; FUNCTION: GY455XE  Im 1ABCC
 _num_cbrt:
 	PUSH LR
 	LEA _arg0_ref
@@ -21963,6 +22726,7 @@ _num_cbrt:
 	BAL _$j_1ac0e
 
 ; FUNCTION: GY454XE  Re 1ABE0
+; FUNCTION: GY455XE  Im 1ABE0
 _f_1ABE0:
 	PUSH LR
 	LEA _arg0_ref
@@ -21973,6 +22737,7 @@ _f_1ABE0:
 	BAL _$j_1ac0e
 
 ; FUNCTION: GY454XE  Re 1ABF0
+; FUNCTION: GY455XE  Im 1ABF0
 _f_1ABF0:
 	PUSH LR
 	LEA _arg0_ref
@@ -21983,6 +22748,7 @@ _f_1ABF0:
 	BAL _$j_1ac0e
 
 ; FUNCTION: GY454XE  Re 1AC00
+; FUNCTION: GY455XE  Im 1AC00
 _f_1AC00:
 	PUSH LR
 	LEA _arg0_ref
@@ -22025,6 +22791,7 @@ _$j_1ac50:
 	BAL _$j_1ac42
 
 ; FUNCTION: GY454XE  Re 1AC56
+; FUNCTION: GY455XE  Im 1AC56
 _f_1AC56:
 	PUSH LR
 	LEA _arg0_ref
@@ -22036,6 +22803,7 @@ _f_1AC56:
 	BAL _$j_1aca4
 
 ; FUNCTION: GY454XE  Re 1AC6A
+; FUNCTION: GY455XE  Im 1AC6A
 _f_1AC6A:
 	PUSH LR
 	LEA _arg0_ref
@@ -22047,6 +22815,7 @@ _f_1AC6A:
 	BAL _$j_1aca4
 
 ; FUNCTION: GY454XE  Re 1AC7E
+; FUNCTION: GY455XE  Im 1AC7E
 _f_1AC7E:
 	PUSH LR
 	LEA _arg0_ref
@@ -22058,6 +22827,7 @@ _f_1AC7E:
 	BAL _$j_1aca4
 
 ; FUNCTION: GY454XE  Re 1AC92
+; FUNCTION: GY455XE  Im 1AC92
 _f_1AC92:
 	PUSH LR
 	LEA _arg0_ref
@@ -22068,7 +22838,7 @@ _f_1AC92:
 	ST R4, _d_0805A
 _$j_1aca4:
 	BL _l_reg0
-	BL _f_18F8C
+	BL _num_is_not_frac
 	CMP R0, #0H
 	BNE _$j_1acd0
 	CMP R4, #3H
@@ -22091,6 +22861,7 @@ _$j_1acd0:
 	BAL _$j_1acc2
 
 ; FUNCTION: GY454XE  Re 1ACD6
+; FUNCTION: GY455XE  Im 1ACD6
 _f_1ACD6:
 	PUSH LR
 	LEA _arg0_ref
@@ -22102,6 +22873,7 @@ _f_1ACD6:
 	BAL _$j_1ad10
 
 ; FUNCTION: GY454XE  Re 1ACEA
+; FUNCTION: GY455XE  Im 1ACEA
 _f_1ACEA:
 	PUSH LR
 	LEA _arg0_ref
@@ -22113,6 +22885,7 @@ _f_1ACEA:
 	BAL _$j_1ad10
 
 ; FUNCTION: GY454XE  Re 1ACFE
+; FUNCTION: GY455XE  Im 1ACFE
 _f_1ACFE:
 	PUSH LR
 	LEA _arg0_ref
@@ -22129,7 +22902,7 @@ _$j_1ad10:
 	OR R1, R0
 	CMP R1, #0H
 	BNE _$j_1ad80
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #0H
 	BEQ _$j_1ad80
 	L R0, _reg1_9
@@ -22170,6 +22943,7 @@ _$j_1ad80:
 	BAL _$j_1ad72
 
 ; FUNCTION: GY454XE  Re 1AD86
+; FUNCTION: GY455XE  Im 1AD86
 _f_1AD86:
 	PUSH LR
 	LEA _arg0_ref
@@ -22219,6 +22993,7 @@ _$j_1adec:
 	BAL _$j_1ade6
 
 ; FUNCTION: GY454XE  Re 1ADF0
+; FUNCTION: GY455XE  Im 1ADF0
 _f_1ADF0:
 	PUSH LR
 	LEA _arg0_ref
@@ -22230,6 +23005,7 @@ _f_1ADF0:
 	BAL _$j_1ae1a
 
 ; FUNCTION: GY454XE  Re 1AE06
+; FUNCTION: GY455XE  Im 1AE06
 _f_1AE06:
 	PUSH LR
 	LEA _arg0_ref
@@ -22248,6 +23024,7 @@ _$j_1ae20:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 1AE26
+; FUNCTION: GY455XE  Im 1AE26
 _cmplx_abs:
 	PUSH LR
 	L R2, [ER0]
@@ -22258,7 +23035,7 @@ _cmplx_abs:
 	BLT _$j_1ae40
 _$j_1ae36:
 	MOV R2, #3H
-	BL _f_1B12C
+	BL _init_num
 	MOV R0, #0H
 	POP PC
 _$j_1ae40:
@@ -22289,9 +23066,9 @@ _$j_1ae6c:
 	ADD ER2, #0AH
 	BL _f_154E0
 	MOV ER0, BP
-	BL _f_14800
+	BL _num_to_str_std_lineo
 	ADD ER0, #0AH
-	BL _f_14800
+	BL _num_to_str_std_lineo
 	L ER2, 8H[BP]
 	CMP R3, #1H
 	BNE _$j_1ae94
@@ -22382,6 +23159,7 @@ _$j_1af32:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 1AF44
+; FUNCTION: GY455XE  Im 1AF44
 _f_1AF44:
 	PUSH LR
 	PUSH XR12
@@ -22400,7 +23178,7 @@ _$j_1af56:
 _$j_1af62:
 	MOV ER0, BP
 	MOV R2, #3H
-	BL _f_1B12C
+	BL _init_num
 	MOV R0, #3H
 	POP XR12
 	POP PC
@@ -22440,6 +23218,7 @@ _$j_1afb2:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 1AFB8
+; FUNCTION: GY455XE  Im 1AFB8
 _f_1AFB8:
 	PUSH LR
 	LEA _arg0_ref
@@ -22450,6 +23229,7 @@ _f_1AFB8:
 	BAL _$j_1afe6
 
 ; FUNCTION: GY454XE  Re 1AFC8
+; FUNCTION: GY455XE  Im 1AFC8
 _f_1AFC8:
 	PUSH LR
 	LEA _arg0_ref
@@ -22460,6 +23240,7 @@ _f_1AFC8:
 	BAL _$j_1afe6
 
 ; FUNCTION: GY454XE  Re 1AFD8
+; FUNCTION: GY455XE  Im 1AFD8
 _f_1AFD8:
 	PUSH LR
 	LEA _arg0_ref
@@ -22490,7 +23271,7 @@ _$j_1b004:
 _$j_1b012:
 	BL _f_18F46
 _$j_1b016:
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BLT _$j_1b02a
 	L ER0, _arg0_ref
@@ -22507,6 +23288,7 @@ _$j_1b038:
 	BAL _$j_1b02a
 
 ; FUNCTION: GY454XE  Re 1B03E
+; FUNCTION: GY455XE  Im 1B03E
 _num_invalid__:
 	PUSH LR
 	LEA _arg0_ref
@@ -22514,19 +23296,19 @@ _num_invalid__:
 	PUSH XR4
 	PUSH QR8
 	BL _l_reg0
-	L R0, _reg0_9  ; If first 2 nibbles are 0, return 1
+	L R0, _mathi_enable_draw   ; If first 2 nibbles are 0, return 1
 	BEQ _$j_1b06c
 	AND R0, #11110000B
-	CMP R0, #80H   ; Radical format...
+	CMP R0, #80H     ; Radical format...
 	BEQ _$j_1b078
-	CMP R0, #50H   ; If type 5 or higher, return 0xF0
+	CMP R0, #50H     ; If type 5 or higher, return 0xF0
 	BGE _$j_1b070
-	L ER0, _reg0   ; If Area 3 and 4 are both 0, return 1
+	L ER0, _d_08000  ; If Area 3 and 4 are both 0, return 1
 	BEQ _$j_1b06c
 _$j_1b064:
-	CMP R1, #4H    ; If Area 3 >= 4, return 2
+	CMP R1, #4H      ; If Area 3 >= 4, return 2
 	BGE _$j_1b074
-	MOV R0, #4H    ; If not, return 4
+	MOV R0, #4H      ; If not, return 4
 	BAL _$j_1b0d2
 _$j_1b06c:
 	MOV R0, #1H
@@ -22538,13 +23320,13 @@ _$j_1b074:
 	MOV R0, #2H
 	BAL _$j_1b0d2
 _$j_1b078:
-	L ER0, _reg0
-	CMP R1, #0H    ; If Area 3 is non-zero, jump below
+	L ER0, _d_08000
+	CMP R1, #0H      ; If Area 3 is non-zero, jump below
 	BNE _$j_1b084
 	MOV R1, R0
-	BAL _$j_1b064  ; If not, copy Area 4 to Area 3 and jump above...
+	BAL _$j_1b064    ; If not, copy Area 4 to Area 3 and jump above...
 _$j_1b084:
-	ADD R1, R0     ; If Area 4 + Area 3 != 7, jump above...
+	ADD R1, R0       ; If Area 4 + Area 3 != 7, jump above...
 	CMP R1, #7H
 	BNE _$j_1b064
 	L ER0, _arg0_ref
@@ -22555,10 +23337,11 @@ _$j_1b084:
 	MOV ER2, ER0
 	MOV R0, #0H
 	BL _f_16060
-	L ER0, _reg0
+	L ER0, _d_08000
 	BAL _$j_1b064  ; Jump above
 
 ; FUNCTION: GY454XE  Re 1B0A8
+; FUNCTION: GY455XE  Im 1B0A8
 _num_cmp:
 	PUSH LR
 	LEA _arg0_ref
@@ -22585,6 +23368,7 @@ _$j_1b0d8:
 	BAL _$j_1b0d2
 
 ; FUNCTION: GY454XE  Re 1B0DC
+; FUNCTION: GY455XE  Im 1B0DC
 _f_1B0DC:
 	PUSH LR
 	LEA _arg0_ref
@@ -22596,12 +23380,14 @@ _f_1B0DC:
 	BAL _$j_1b0ba
 
 ; FUNCTION: GY454XE  Re 1B0F0
+; FUNCTION: GY455XE  Im 1B0F0
 _get_numtype:
 	L R0, [ER0]
 	AND R0, #11110000B
 	RT
 
 ; FUNCTION: GY454XE  Re 1B0F6
+; FUNCTION: GY455XE  Im 1B0F6
 _num_fromdigit:
 	PUSH XR4
 	CMP R2, #0AH
@@ -22635,7 +23421,8 @@ _$j_1b11c:
 	BAL _$j_1b118
 
 ; FUNCTION: GY454XE  Re 1B12C
-_f_1B12C:
+; FUNCTION: GY455XE  Im 1B12C
+_init_num:
 	PUSH XR4
 	MOV R3, #0H
 	MOV ER4, #0H
@@ -22655,10 +23442,11 @@ _$j_1b13c:
 	POP XR4
 	RT
 _$j_1b14e:
-	MOV R2, #-0DH
+	MOV R2, #0F3H  ; Math ERROR
 	BAL _$j_1b13c
 
 ; FUNCTION: GY454XE  Re 1B152
+; FUNCTION: GY455XE  Im 1B152
 _f_1B152:
 	PUSH LR
 	LEA _arg0_ref
@@ -22666,7 +23454,7 @@ _f_1B152:
 	PUSH XR4
 	PUSH QR8
 	BL _l_regs
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #-10H
 	BGE _$j_1b1a8
 	L R0, _reg1_9
@@ -22677,19 +23465,19 @@ _f_1B152:
 	L ER0, _reg1
 	CMP R1, #5H
 	BLT _$j_1b1a8
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #0H
 	BEQ _$j_1b1a8
-	L ER0, _reg0
+	L ER0, _d_08000
 	ADD R1, #5H
 	DAA R1
 	AND R1, #00001111B
-	ST ER0, _reg0
+	ST ER0, _d_08000
 	BAL _$j_1b1a4
 _$j_1b196:
 	MOV ER0, #0H
 	MOV ER2, #0H
-	LEA _reg0
+	LEA _d_08000
 	ST XR0, [EA+]
 	ST XR0, [EA+]
 	ST ER0, [EA+]
@@ -22705,6 +23493,7 @@ _$j_1b1b2:
 	BAL _$j_1b1a4
 
 ; FUNCTION: GY454XE  Re 1B1B8
+; FUNCTION: GY455XE  Im 1B1B8
 _num_negate:
 	PUSH LR
 	LEA _arg0_ref
@@ -22712,7 +23501,7 @@ _num_negate:
 	PUSH XR4
 	PUSH QR8
 	BL _l_reg0
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	BEQ _$j_1b1ee
 	CMP R0, #-10H
 	BGE _$j_1b1ee
@@ -22721,13 +23510,13 @@ _num_negate:
 	AND R0, #11110000B
 	CMP R0, #-80H
 	BEQ _$j_1b1f8
-	L ER0, _reg0
+	L ER0, _d_08000
 _$j_1b1e0:
 	ADD R1, #5H
 	DAA R1
 	AND R1, #00001111B
 _$j_1b1e6:
-	ST ER0, _reg0
+	ST ER0, _d_08000
 	BL _st_reg0
 _$j_1b1ee:
 	BL _f_19F94
@@ -22735,7 +23524,7 @@ _$j_1b1ee:
 	POP XR4
 	POP PC
 _$j_1b1f8:
-	L ER0, _reg0
+	L ER0, _d_08000
 	ADD R0, #5H
 	DAA R0
 	AND R0, #00001111B
@@ -22744,6 +23533,7 @@ _$j_1b1f8:
 	BAL _$j_1b1e0
 
 ; FUNCTION: GY454XE  Re 1B208
+; FUNCTION: GY455XE  Im 1B208
 _f_1B208:
 	PUSH LR
 	LEA _arg0_ref
@@ -22751,13 +23541,13 @@ _f_1B208:
 	PUSH XR4
 	PUSH QR8
 	BL _l_reg0
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	MOV R1, R0
 	AND R1, #11110000B
 	CMP R1, #40H
 	BNE _$j_1b22e
 	AND R0, #10111111B
-	ST R0, _reg0_9
+	ST R0, _mathi_enable_draw
 	BL _st_reg0
 _$j_1b22e:
 	BL _f_19F94
@@ -22766,6 +23556,7 @@ _$j_1b22e:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 1B238
+; FUNCTION: GY455XE  Im 1B238
 _f_1B238:
 	PUSH LR
 	LEA _arg0_ref
@@ -22773,21 +23564,21 @@ _f_1B238:
 	PUSH XR4
 	PUSH QR8
 	BL _l_reg0
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	AND R0, #11110000B
 	BEQ _$j_1b276
 	CMP R0, #40H
 	BNE _$j_1b27e
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	AND R0, #00001111B
-	ST R0, _reg0_9
+	ST R0, _mathi_enable_draw
 	BL _f_18B46
 	BL _f_17398
 	CMP R0, #2H
 	BNE _$j_1b27a
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	OR R0, #01000000B
-	ST R0, _reg0_9
+	ST R0, _mathi_enable_draw
 	BAL _$j_1b27a
 _$j_1b276:
 	BL _f_18B46
@@ -22800,9 +23591,10 @@ _$j_1b27e:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 1B288
-_f_1B288:
+; FUNCTION: GY455XE  Im 1B288
+_get_num_err_type:
 	L R0, [ER0]
-	CMP R0, #-10H
+	CMP R0, #0F0H
 	BLT _$j_1b292
 	AND R0, #00001111B
 _$j_1b290:
@@ -22812,6 +23604,7 @@ _$j_1b292:
 	BAL _$j_1b290
 
 ; FUNCTION: GY454XE  Re 1B296
+; FUNCTION: GY455XE  Im 1B296
 _num_mulxp__:
 	PUSH LR
 	LEA _arg0_ref
@@ -22819,7 +23612,7 @@ _num_mulxp__:
 	PUSH XR4
 	PUSH QR8
 	BL _l_reg0
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	BEQ _$j_1b302
 	CMP R0, #0AH
 	BGE _$j_1b310
@@ -22827,7 +23620,7 @@ _num_mulxp__:
 	AND R3, #10000000B
 	BNE _$j_1b2d6
 	BL _byte_to_bcd
-	L ER2, _reg0
+	L ER2, _d_08000
 	ADD R0, R2
 	DAA R0
 	ADDC R1, R3
@@ -22846,7 +23639,7 @@ _$j_1b2d6:
 	SUBC R3, R1
 	MOV ER0, ER2
 	BL _byte_to_bcd
-	L ER2, _reg0
+	L ER2, _d_08000
 	SUB R2, R0
 	DAS R2
 	SUBC R3, R1
@@ -22860,7 +23653,7 @@ _$j_1b2d6:
 	CMP R1, #6H
 	BNE _$j_1b316
 _$j_1b2fe:
-	ST ER0, _reg0
+	ST ER0, _d_08000
 _$j_1b302:
 	BL _st_reg0
 	BL _f_19F94
@@ -22873,13 +23666,14 @@ _$j_1b310:
 _$j_1b316:
 	MOV ER0, #0H
 	MOV ER2, #0H
-	LEA _reg0
+	LEA _d_08000
 	ST XR0, [EA+]
 	ST XR0, [EA+]
 	ST ER0, [EA+]
 	BAL _$j_1b302
 
 ; FUNCTION: GY454XE  Re 1B326
+; FUNCTION: GY455XE  Im 1B326
 _num_get_exp:
 	PUSH LR
 	LEA _arg0_ref
@@ -22887,10 +23681,10 @@ _num_get_exp:
 	PUSH XR4
 	PUSH QR8
 	BL _l_reg0
-	L R0, _reg0_9
+	L R0, _mathi_enable_draw
 	CMP R0, #0AH
 	BGE _$num_get_exp_ret_5000
-	L ER0, _reg0
+	L ER0, _d_08000
 	CMP R1, #1H
 	BEQ _$num_get_exp_nonneg_exp
 	CMP R1, #6H
@@ -22921,6 +23715,7 @@ _$num_get_exp_ret_5000:
 	BAL _$num_get_exp_ret
 
 ; FUNCTION: GY454XE  Re 1B378
+; FUNCTION: GY455XE  Im 1B378
 _f_1B378:
 	PUSH LR
 	LEA _arg0_ref
@@ -22931,6 +23726,7 @@ _f_1B378:
 	BAL _$j_1b396
 
 ; FUNCTION: GY454XE  Re 1B388
+; FUNCTION: GY455XE  Im 1B388
 _num_trunc__:
 	PUSH LR
 	LEA _arg0_ref
@@ -22964,6 +23760,7 @@ _$j_1b3ce:
 	BAL _$j_1b3c0
 
 ; FUNCTION: GY454XE  Re 1B3D4
+; FUNCTION: GY455XE  Im 1B3D4
 _num_frombyte:
 	PUSH LR
 	LEA _arg0_ref
@@ -22993,7 +23790,7 @@ _$j_1b404:
 	MOV R3, #1H
 	MOV ER4, #0H
 	MOV ER6, #0H
-	LEA _reg0
+	LEA _d_08000
 	ST ER2, [EA+]
 	ST XR4, [EA+]
 	ST ER4, [EA+]
@@ -23006,13 +23803,14 @@ _$j_1b416:
 _$j_1b420:
 	MOV ER0, #0H
 	MOV ER2, #0H
-	LEA _reg0
+	LEA _d_08000
 	ST XR0, [EA+]
 	ST XR0, [EA+]
 	ST ER0, [EA+]
 	BAL _$j_1b416
 
 ; FUNCTION: GY454XE  Re 1B430
+; FUNCTION: GY455XE  Im 1B430
 _num_to_byte:
 	PUSH LR
 	LEA _arg0_ref
@@ -23020,7 +23818,7 @@ _num_to_byte:
 	PUSH XR4
 	PUSH QR8
 	BL _l_reg0
-	LEA _reg0
+	LEA _d_08000
 	L QR0, [EA+]
 	L ER8, [EA+]
 	CMP R9, #0AH
@@ -23050,6 +23848,7 @@ _$num_to_byte_invalid:
 	BAL _$j_1b46a
 
 ; FUNCTION: GY454XE  Re 1B474
+; FUNCTION: GY455XE  Im 1B474
 _num_cpy_im:
 	PUSH ER6
 	PUSH QR8
@@ -23062,6 +23861,7 @@ _num_cpy_im:
 	BAL _$j_1b48e
 
 ; FUNCTION: GY454XE  Re 1B48A
+; FUNCTION: GY455XE  Im 1B48A
 _num_cpy:
 	PUSH ER6
 	PUSH QR8
@@ -23077,6 +23877,7 @@ _$j_1b48e:
 	RT
 
 ; FUNCTION: GY454XE  Re 1B4A0
+; FUNCTION: GY455XE  Im 1B4A0
 _f_1B4A0:
 	PUSH LR
 	LEA _arg0_ref
@@ -23088,6 +23889,7 @@ _f_1B4A0:
 	BAL _$j_1b4ca
 
 ; FUNCTION: GY454XE  Re 1B4B6
+; FUNCTION: GY455XE  Im 1B4B6
 _f_1B4B6:
 	PUSH LR
 	LEA _arg0_ref
@@ -23102,6 +23904,7 @@ _$j_1b4ca:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 1B4D0
+; FUNCTION: GY455XE  Im 1B4D0
 _f_1B4D0:
 	PUSH LR
 	LEA _arg0_ref
@@ -23114,6 +23917,7 @@ _f_1B4D0:
 	BAL _$j_1b4ca
 
 ; FUNCTION: GY454XE  Re 1B4EA
+; FUNCTION: GY455XE  Im 1B4EA
 _invalid_var:
 	L R2, [ER0]
 	AND R2, #00001111B
@@ -23137,25 +23941,15 @@ PUBLIC _num_4
 PUBLIC _num_256
 
 PUBLIC _f_10000
-PUBLIC _f_105FE
-PUBLIC _f_10668
-PUBLIC _f_1067A
-PUBLIC _f_106EC
-PUBLIC _f_1071A
-PUBLIC _f_1074C
-PUBLIC _f_107AA
-PUBLIC _f_10962
-PUBLIC _f_10B60
-PUBLIC _f_10B7E
 PUBLIC _f_10C1E
 PUBLIC _f_10C2C
 PUBLIC _f_10CC2
 PUBLIC _f_10DA6
 PUBLIC _f_10DCA
-PUBLIC _f_10E14
+PUBLIC _num_to_str_error
 PUBLIC _f_10E34
 PUBLIC _f_10E5C
-PUBLIC _f_10E7A
+PUBLIC _concat_result_template
 PUBLIC _f_10EF8
 PUBLIC _f_10F52
 PUBLIC _f_10F76
@@ -23163,9 +23957,9 @@ PUBLIC _f_10F92
 PUBLIC _f_10FA2
 PUBLIC _table_prompt_print
 PUBLIC _disable_ins
-PUBLIC _f_10FD2
+PUBLIC _update_cursor_char
 PUBLIC _f_11030
-PUBLIC _get_calc_history_addr
+PUBLIC _get_replay_addr
 PUBLIC _concat_mathi_l
 PUBLIC _concat_mathi_r
 PUBLIC _concat_mathi_rl
@@ -23175,559 +23969,45 @@ PUBLIC _concat_10pow
 PUBLIC _concat_plus
 PUBLIC _concat_negative
 PUBLIC _concat_argsep
-PUBLIC _f_110C4
-PUBLIC _f_11142
-PUBLIC _num_nthroot
-PUBLIC _f_11238
-PUBLIC _f_1126A
-PUBLIC _f_112AA
 PUBLIC _f_112B6
-PUBLIC _f_112BC
 PUBLIC _set_default_settings
 PUBLIC _f_112EA
-PUBLIC _f_112F2
-PUBLIC _f_112F4
-PUBLIC _f_11302
-PUBLIC _f_11314
-PUBLIC _f_11344
-PUBLIC _f_11462
-PUBLIC _f_11478
-PUBLIC _f_1151A
-PUBLIC _f_11596
-PUBLIC _f_11602
-PUBLIC _f_11638
-PUBLIC _f_116A4
-PUBLIC _f_117F6
-PUBLIC _f_1184E
-PUBLIC _f_118D0
-PUBLIC _f_1195C
-PUBLIC _f_11964
-PUBLIC _f_119BC
-PUBLIC _f_11A64
-PUBLIC _f_11A9C
-PUBLIC _f_11AE2
-PUBLIC _f_11B18
-PUBLIC _f_11B68
-PUBLIC _f_11BA6
-PUBLIC _f_11BFA
-PUBLIC _f_11C36
-PUBLIC _f_11C7E
-PUBLIC _f_11CBA
-PUBLIC _f_11CF8
-PUBLIC _f_11D32
-PUBLIC _f_11D7C
-PUBLIC _f_11D94
-PUBLIC _f_11D9C
-PUBLIC _f_11DA4
-PUBLIC _f_11DAC
-PUBLIC _f_11DB4
-PUBLIC _f_11DBC
-PUBLIC _f_11DE2
-PUBLIC _f_11E0A
-PUBLIC _f_11E3C
-PUBLIC _f_11EA4
-PUBLIC _f_11EEE
-PUBLIC _f_11F20
-PUBLIC _f_11F48
-PUBLIC _f_11FB0
-PUBLIC _f_12018
-PUBLIC _f_12080
-PUBLIC _f_120E8
-PUBLIC _f_12150
-PUBLIC _f_121A6
-PUBLIC _f_122CE
-PUBLIC _f_1232A
-PUBLIC _f_123E2
-PUBLIC _f_12424
-PUBLIC _f_12472
-PUBLIC _f_1254C
-PUBLIC _f_1267C
-PUBLIC _f_127DE
-PUBLIC _f_12836
-PUBLIC _f_12944
-PUBLIC _f_12A32
-PUBLIC _f_12BA0
-PUBLIC _f_12C3A
-PUBLIC _f_12C4C
-PUBLIC _f_12C68
-PUBLIC _f_12CB6
-PUBLIC _f_12CE0
-PUBLIC _f_12D1E
-PUBLIC _f_12D5A
-PUBLIC _f_12DA0
-PUBLIC _f_12DD2
-PUBLIC _f_12E02
-PUBLIC _f_12E32
-PUBLIC _f_12E68
-PUBLIC _f_12E98
-PUBLIC _f_12EAE
-PUBLIC _f_12EE4
-PUBLIC _f_12F18
-PUBLIC _f_12F2E
-PUBLIC _f_12F50
-PUBLIC _f_12F66
-PUBLIC _f_12F94
-PUBLIC _f_12FC4
-PUBLIC _f_12FF4
-PUBLIC _f_13024
-PUBLIC _f_1305A
-PUBLIC _f_13070
-PUBLIC _f_13086
-PUBLIC _f_1309C
-PUBLIC _num_stat_P
-PUBLIC _num_stat_Q
-PUBLIC _num_stat_R
-PUBLIC _num_stat_to_t
-PUBLIC _f_131F0
-PUBLIC _f_13226
-PUBLIC _num_random
-PUBLIC _mv_n4_1d10
-PUBLIC _num_normalize
-PUBLIC _f_132F6
-PUBLIC _num_randint
-PUBLIC _f_133CE
-PUBLIC _f_133D6
-PUBLIC _num_mul_2__
-PUBLIC _mv_n8_n4
-PUBLIC _mv_n0_n4
-PUBLIC _mv_n10_n4
-PUBLIC _mv_n10_n2
-PUBLIC _mv_n0_n2
-PUBLIC _num_invalid_zf__
-PUBLIC _mat_add
-PUBLIC _f_13474
-PUBLIC _f_13488
-PUBLIC _f_134A0
-PUBLIC _f_134B0
-PUBLIC _mat_sub
-PUBLIC _mat_mul_num
-PUBLIC _mat_div
-PUBLIC _f_1353A
-PUBLIC _f_135CE
-PUBLIC _f_135D6
-PUBLIC _mat_mul
-PUBLIC _mat_det
-PUBLIC _f_13860
-PUBLIC _f_138BC
-PUBLIC _f_13982
-PUBLIC _f_139A2
-PUBLIC _f_139AE
-PUBLIC _f_13B36
-PUBLIC _f_13B42
-PUBLIC _f_13BA6
-PUBLIC _f_13BAE
-PUBLIC _f_13BB4
-PUBLIC _f_13BBC
-PUBLIC _f_13BC4
-PUBLIC _f_13BCC
-PUBLIC _f_13BD4
-PUBLIC _f_13BDC
-PUBLIC _f_13BE2
-PUBLIC _f_13BEA
-PUBLIC _f_13E54
-PUBLIC _f_14158
-PUBLIC _f_1416C
-PUBLIC _f_14182
-PUBLIC _f_1418E
-PUBLIC _f_1419E
-PUBLIC _f_141AA
-PUBLIC _f_141B4
-PUBLIC _f_141BC
-PUBLIC _f_141C6
-PUBLIC _f_141D0
-PUBLIC _f_141DA
-PUBLIC _f_1438E
-PUBLIC _f_143B0
-PUBLIC _f_143C2
-PUBLIC _f_143D0
 PUBLIC _f_143EA
 PUBLIC _get_const_token
 PUBLIC _get_conv_token
-PUBLIC _f_1444C
+PUBLIC _num_to_str_base_n
 PUBLIC _f_144F4
 PUBLIC _f_14516
 PUBLIC _f_14532
-PUBLIC _f_14560
-PUBLIC _f_14562
-PUBLIC _f_1458C
-PUBLIC _f_1459C
-PUBLIC _f_145E2
-PUBLIC _f_14612
-PUBLIC _f_1467E
-PUBLIC _f_1470E
-PUBLIC _f_14712
-PUBLIC _f_14726
-PUBLIC _f_1473A
-PUBLIC _f_14748
-PUBLIC _f_14758
-PUBLIC _f_14792
-PUBLIC _f_14796
-PUBLIC _f_1479A
-PUBLIC _f_147C4
-PUBLIC _f_14800
-PUBLIC _f_1481C
-PUBLIC _num_rnd
-PUBLIC _cmplx_rnd
-PUBLIC _cmplx_negate
-PUBLIC _f_148E0
-PUBLIC _f_1491C
-PUBLIC _f_14958
-PUBLIC _f_1499C
+PUBLIC _num_to_str_std_lineo
 PUBLIC _f_149D8
-PUBLIC _f_14A00
-PUBLIC _f_14A54
-PUBLIC _num_cmplx_pow
-PUBLIC _num_add
-PUBLIC _num_sub
-PUBLIC _num_mul
-PUBLIC _num_div
-PUBLIC _f_14AEC
-PUBLIC _cmplx_inverse
-PUBLIC _cmplx_add
-PUBLIC _cmplx_sub
-PUBLIC _cmplx_mul
-PUBLIC _cmplx_div
-PUBLIC _f_14BBC
-PUBLIC _num_frac
-PUBLIC _num_pol
-PUBLIC _num_rec
-PUBLIC _num_percent
-PUBLIC _num_deg
-PUBLIC _num_rad
-PUBLIC _num_grad
-PUBLIC _f_14D24
-PUBLIC _num_sin
-PUBLIC _num_cos
-PUBLIC _num_tan
-PUBLIC _f_14EB4
-PUBLIC _f_15160
-PUBLIC _f_15174
-PUBLIC _f_15178
-PUBLIC _f_1517C
-PUBLIC _f_151D6
-PUBLIC _f_15204
-PUBLIC _f_15228
-PUBLIC _f_15238
-PUBLIC _f_15250
-PUBLIC _f_152A4
-PUBLIC _f_152D8
-PUBLIC _f_15314
-PUBLIC _f_1533A
-PUBLIC _f_1535A
-PUBLIC _f_1547E
 PUBLIC _f_15486
-PUBLIC _f_1548E
-PUBLIC _f_154CE
-PUBLIC _f_154D6
 PUBLIC _f_154E0
 PUBLIC _f_154F2
 PUBLIC _f_15526
 PUBLIC _f_15532
 PUBLIC _f_1553C
-PUBLIC _f_15544
-PUBLIC _f_15546
-PUBLIC _f_15596
-PUBLIC _f_155AC
-PUBLIC _f_15662
-PUBLIC _num_sum__
-PUBLIC _f_15682
-PUBLIC _f_15712
-PUBLIC _f_157B0
-PUBLIC _f_15802
-PUBLIC _f_158C6
-PUBLIC _f_15AA0
-PUBLIC _f_15AFE
-PUBLIC _f_15B64
-PUBLIC _f_15B96
-PUBLIC _f_15C30
 PUBLIC _num_eval__
 PUBLIC _num_parse
 PUBLIC _f_15DE8
 PUBLIC _f_15EE4
-PUBLIC _f_15EF4
-PUBLIC _f_15F06
-PUBLIC _f_15F2C
-PUBLIC _f_15F5A
-PUBLIC _f_15F8A
-PUBLIC _f_16052
-PUBLIC _f_16060
-PUBLIC _f_160E8
-PUBLIC _f_16100
-PUBLIC _f_161F6
-PUBLIC _f_16208
-PUBLIC _f_16224
-PUBLIC _f_162D6
-PUBLIC _f_162FE
-PUBLIC _f_16382
-PUBLIC _f_16398
-PUBLIC _f_16424
-PUBLIC _f_16454
-PUBLIC _f_16474
-PUBLIC _f_16482
-PUBLIC _f_1648C
-PUBLIC _f_16496
-PUBLIC _f_16524
-PUBLIC _f_16612
-PUBLIC _f_1661C
-PUBLIC _f_1663A
-PUBLIC _f_16646
-PUBLIC _f_16666
-PUBLIC _f_166A2
-PUBLIC _f_16700
-PUBLIC _f_16728
-PUBLIC _f_1674E
-PUBLIC _f_1676E
-PUBLIC _f_1678A
-PUBLIC _f_167C2
-PUBLIC _f_167F2
-PUBLIC _f_1680A
-PUBLIC _f_1683E
-PUBLIC _f_168B8
-PUBLIC _f_168DE
-PUBLIC _f_168F8
-PUBLIC _f_16920
-PUBLIC _f_16938
-PUBLIC _f_169A0
-PUBLIC _f_169C0
-PUBLIC _f_169FC
-PUBLIC _f_16A24
-PUBLIC _f_16B66
-PUBLIC _f_16BAA
-PUBLIC _f_16BB2
-PUBLIC _f_16BF6
 PUBLIC _f_16C54
-PUBLIC _f_16CE4
 PUBLIC _f_16CF0
-PUBLIC _num_cube
-PUBLIC _num_square
-PUBLIC _num_inverse
-PUBLIC _f_16DCA
 PUBLIC _f_16E44
-PUBLIC _cmplx_square_1
-PUBLIC _f_16EE2
-PUBLIC _f_16F3A
-PUBLIC _f_16F5E
-PUBLIC _f_17052
-PUBLIC _f_1709E
-PUBLIC _f_170B8
-PUBLIC _f_170D0
-PUBLIC _f_170F0
-PUBLIC _f_17110
-PUBLIC _cmplx_cube
-PUBLIC _cmplx_square
-PUBLIC _f_17186
-PUBLIC _f_171D2
-PUBLIC _f_171E6
-PUBLIC _f_17202
-PUBLIC _f_1724A
-PUBLIC _f_1726A
-PUBLIC _f_172B4
-PUBLIC _f_17398
-PUBLIC _set_reg1_10
-PUBLIC _set_reg1_100d9
-PUBLIC _set_reg1_1d10
-PUBLIC _set_reg1_200
-PUBLIC _set_reg1_180
-PUBLIC _num_cmp_reg01
-PUBLIC _byte_to_bcd
-PUBLIC _bcd_to_byte
-PUBLIC _f_174E4
-PUBLIC _f_174FC
-PUBLIC _f_17626
-PUBLIC _f_17644
-PUBLIC _f_17662
-PUBLIC _f_17698
-PUBLIC _f_176B4
-PUBLIC _f_1776A
-PUBLIC _mv_reg1_reg5
-PUBLIC _mv_reg5_reg1
-PUBLIC _mv_reg5_reg0
-PUBLIC _mv_reg0_reg4
-PUBLIC _mv_reg1_reg4
-PUBLIC _mv_reg4_reg0
-PUBLIC _mv_reg1_reg6
-PUBLIC _mv_reg6_reg0
-PUBLIC _mv_reg1_reg3
-PUBLIC _mv_reg3_reg0
-PUBLIC _mv_reg1_reg0
-PUBLIC _mv_reg0_reg1
-PUBLIC _mv_reg6_reg1
-PUBLIC _mv_reg0_reg6
-PUBLIC _mv_reg0_reg3
-PUBLIC _mv_reg3_reg1
-PUBLIC _f_17956
-PUBLIC _f_1798C
-PUBLIC _f_179B0
-PUBLIC _f_179B8
-PUBLIC _f_17A18
-PUBLIC _f_17AB6
-PUBLIC _f_17AD2
-PUBLIC _f_17ADE
-PUBLIC _f_17AE8
-PUBLIC _f_17B6E
-PUBLIC _f_17B78
-PUBLIC _f_17BBA
-PUBLIC _f_17BF4
-PUBLIC _f_17C04
-PUBLIC _num_arith_r
-PUBLIC _f_17DC4
-PUBLIC _f_17E26
-PUBLIC _f_17F4A
-PUBLIC _num_unk_1_r__
-PUBLIC _f_1805A
-PUBLIC _f_180EA
-PUBLIC _f_1820E
-PUBLIC _f_182B4
-PUBLIC _f_182DC
-PUBLIC _f_182E6
-PUBLIC _f_18386
-PUBLIC _f_18390
-PUBLIC _f_1850C
-PUBLIC _f_18540
-PUBLIC _f_18562
-PUBLIC _f_18576
-PUBLIC _f_18740
-PUBLIC _f_18818
-PUBLIC _f_188F0
-PUBLIC _f_188FE
-PUBLIC _f_18A0E
-PUBLIC _f_18A2A
-PUBLIC _f_18AAE
-PUBLIC _f_18B00
-PUBLIC _f_18B46
-PUBLIC _f_18B90
-PUBLIC _f_18BA4
-PUBLIC _f_18BCA
-PUBLIC _f_18BF0
-PUBLIC _f_18C16
-PUBLIC _f_18C3C
-PUBLIC _f_18C62
-PUBLIC _f_18C88
-PUBLIC _f_18DA8
-PUBLIC _f_18DB6
-PUBLIC _f_18DD4
-PUBLIC _f_18F2E
-PUBLIC _f_18F46
-PUBLIC _f_18F74
-PUBLIC _f_18F8C
-PUBLIC _invalid_reg1
-PUBLIC _invalid_reg0
-PUBLIC _f_18FBC
-PUBLIC _f_18FD0
-PUBLIC _f_19004
-PUBLIC _f_19012
-PUBLIC _f_19026
-PUBLIC _f_1910E
-PUBLIC _f_19122
-PUBLIC _f_19144
-PUBLIC _f_19158
-PUBLIC _f_19432
-PUBLIC _f_19444
-PUBLIC _f_19458
-PUBLIC _f_1946A
-PUBLIC _f_1947E
-PUBLIC _f_194A8
-PUBLIC _f_194D2
-PUBLIC _f_194FC
-PUBLIC _f_19526
-PUBLIC _f_19586
-PUBLIC _f_195BC
-PUBLIC _f_195E8
-PUBLIC _f_19672
-PUBLIC _f_1970A
-PUBLIC _f_19794
-PUBLIC _f_1979E
-PUBLIC _f_19850
-PUBLIC _f_198F4
-PUBLIC _f_199AE
-PUBLIC _f_19A12
-PUBLIC _f_19BB4
-PUBLIC _f_19BD6
-PUBLIC _f_19BF4
-PUBLIC _num_div_r
-PUBLIC _f_19D1E
-PUBLIC _f_19D3C
-PUBLIC _num_mul_r
-PUBLIC _f_19ED0
-PUBLIC _f_19ED8
-PUBLIC _f_19EFC
-PUBLIC _f_19F04
-PUBLIC _l_regs
-PUBLIC _l_reg0
-PUBLIC _l_reg1
-PUBLIC _st_reg0
-PUBLIC _st_reg1
-PUBLIC _f_19F94
-PUBLIC _f_19FA6
-PUBLIC _f_19FD6
-PUBLIC _f_19FF8
-PUBLIC _f_1A01C
-PUBLIC _num_sub_r
-PUBLIC _num_add_r
-PUBLIC _num_sub1_r__
-PUBLIC _num_add1_r__
-PUBLIC _f_1A23C
-PUBLIC _reg0_lt_reg1_abs
-PUBLIC _set_reg0_error
 PUBLIC _f_1A3FC
 PUBLIC _f_1A410
 PUBLIC _f_1A424
 PUBLIC _f_1A438
 PUBLIC _f_1A44C
 PUBLIC _f_1A460
-PUBLIC _num_log
-PUBLIC _num_combi
-PUBLIC _num_permu
-PUBLIC _f_1A52A
-PUBLIC _f_1A5A4
-PUBLIC _num_factorial
-PUBLIC _f_1A5E2
-PUBLIC _f_1A5F6
-PUBLIC _f_1A60A
-PUBLIC _num_10xp
-PUBLIC _num_exp
-PUBLIC _num_ln
-PUBLIC _num_log10
 PUBLIC _num_abs
-PUBLIC _f_1A744
 PUBLIC _num_unk_1_1__
-PUBLIC _num_atanh
-PUBLIC _num_acosh
-PUBLIC _num_asinh
-PUBLIC _num_tanh
-PUBLIC _num_cosh
-PUBLIC _num_sinh
-PUBLIC _num_atan
-PUBLIC _num_acos
-PUBLIC _num_asin
-PUBLIC _f_1A8D6
-PUBLIC _f_1A8E8
-PUBLIC _f_1A8FA
-PUBLIC _f_1A960
-PUBLIC _f_1A9A4
-PUBLIC _f_1A9C0
-PUBLIC _num_sub_1
 PUBLIC _num_add_1
-PUBLIC _num_div_1
-PUBLIC _num_mul_1
-PUBLIC _f_1AAC6
-PUBLIC _num_sqrt
-PUBLIC _num_cbrt
-PUBLIC _f_1ABE0
-PUBLIC _f_1ABF0
-PUBLIC _f_1AC00
-PUBLIC _f_1AC56
 PUBLIC _f_1AC6A
 PUBLIC _f_1AC7E
 PUBLIC _f_1AC92
-PUBLIC _f_1ACD6
-PUBLIC _f_1ACEA
-PUBLIC _f_1ACFE
-PUBLIC _f_1AD86
-PUBLIC _f_1ADF0
 PUBLIC _f_1AE06
 PUBLIC _cmplx_abs
-PUBLIC _f_1AF44
 PUBLIC _f_1AFB8
 PUBLIC _f_1AFC8
 PUBLIC _f_1AFD8
@@ -23736,12 +24016,11 @@ PUBLIC _num_cmp
 PUBLIC _f_1B0DC
 PUBLIC _get_numtype
 PUBLIC _num_fromdigit
-PUBLIC _f_1B12C
-PUBLIC _f_1B152
+PUBLIC _init_num
 PUBLIC _num_negate
 PUBLIC _f_1B208
 PUBLIC _f_1B238
-PUBLIC _f_1B288
+PUBLIC _get_num_err_type
 PUBLIC _num_mulxp__
 PUBLIC _num_get_exp
 PUBLIC _f_1B378
@@ -23750,19 +24029,18 @@ PUBLIC _num_frombyte
 PUBLIC _num_to_byte
 PUBLIC _num_cpy_im
 PUBLIC _num_cpy
-PUBLIC _f_1B4A0
-PUBLIC _f_1B4B6
 PUBLIC _f_1B4D0
 PUBLIC _invalid_var
 
+EXTRN TABLE	: _vars_list
 EXTRN TABLE	: _unk_01c74
 
 EXTRN CODE	: _smart_strlen
 EXTRN CODE	: _smart_strcpy
 EXTRN CODE	: _smart_strcat
-EXTRN CODE	: _f_02AAA
-EXTRN CODE	: _f_02AB2
-EXTRN CODE	: _f_02ACA
+EXTRN CODE	: _get_result_disp_fmt
+EXTRN CODE	: _get_result_store_fmt
+EXTRN CODE	: _set_result_store_fmt
 EXTRN CODE	: _buffer_clear
 EXTRN CODE	: _f_02D52
 EXTRN CODE	: _line_print
@@ -23771,7 +24049,7 @@ EXTRN CODE	: _f_03A72
 EXTRN CODE	: _f_03E72
 EXTRN CODE	: _f_043CE
 EXTRN CODE	: _f_0441A
-EXTRN CODE	: _f_04448
+EXTRN CODE	: _get_num_stat_table_cols
 EXTRN CODE	: _memzero
 EXTRN CODE	: _f_044B6
 EXTRN CODE	: _l_var
@@ -23786,5 +24064,75 @@ EXTRN CODE	: _memcpy_nn
 EXTRN CODE	: _f_085D2
 EXTRN CODE	: _is_mathi
 EXTRN CODE	: _f_08A0A
-EXTRN CODE	: _f_0BC34
-EXTRN CODE	: _f_0BC90
+EXTRN CODE	: _get_num_replay_entries
+EXTRN CODE	: _write_replay_entry
+
+EXTRN DATA	: _d_08000
+EXTRN DATA	: _d_08002
+EXTRN DATA	: _d_08004
+EXTRN DATA	: _d_08005
+EXTRN DATA	: _d_08006
+EXTRN DATA	: _d_08007
+EXTRN DATA	: _d_08008
+EXTRN DATA	: _mathi_enable_draw
+EXTRN DATA	: _d_0800A
+EXTRN DATA	: _d_0800B
+EXTRN DATA	: _d_0800C
+EXTRN DATA	: _d_0800D
+EXTRN DATA	: _d_0800E
+EXTRN DATA	: _d_0800F
+EXTRN DATA	: _reg1
+EXTRN DATA	: _d_0801A
+EXTRN DATA	: _d_0801C
+EXTRN DATA	: _d_0801D
+EXTRN DATA	: _arith_op
+EXTRN DATA	: _d_0801F
+EXTRN DATA	: _reg2
+EXTRN DATA	: _d_0802A
+EXTRN DATA	: _d_0802B
+EXTRN DATA	: _d_0802C
+EXTRN DATA	: _d_0802D
+EXTRN DATA	: _d_0802E
+EXTRN DATA	: _d_0802F
+EXTRN DATA	: _reg3
+EXTRN DATA	: _d_0803A
+EXTRN DATA	: _d_0803B
+EXTRN DATA	: _reg4
+EXTRN DATA	: _reg5
+EXTRN DATA	: _reg6
+EXTRN DATA	: _d_0805A
+EXTRN DATA	: _d_0805B
+EXTRN DATA	: _arg0_ref
+EXTRN DATA	: _arg1_ref
+EXTRN DATA	: _d_08060
+EXTRN DATA	: _d_08078
+EXTRN DATA	: _d_080E0
+EXTRN DATA	: _last_key_keycode
+EXTRN DATA	: _modifiers
+EXTRN DATA	: _mode
+EXTRN DATA	: _submode
+EXTRN DATA	: _table_mode
+EXTRN DATA	: _result_template
+EXTRN DATA	: _setup_start
+EXTRN DATA	: _setup_num_fmt
+EXTRN DATA	: _setup_num_fmt_n
+EXTRN DATA	: _setup_decimal_mark
+EXTRN DATA	: _setup_angle_unit
+EXTRN DATA	: _setup_mathi
+EXTRN DATA	: _setup_stat_freq
+EXTRN DATA	: _setup_rdec
+EXTRN DATA	: _setup_decimalo
+EXTRN DATA	: _replay_idx
+EXTRN DATA	: _cursor_pos_byte
+EXTRN DATA	: _formula_x
+EXTRN DATA	: _cursor_char
+EXTRN DATA	: _d_08120
+EXTRN DATA	: _d_08121
+EXTRN DATA	: _d_08122
+EXTRN DATA	: _use_output_charset
+EXTRN DATA	: _d_08124
+EXTRN DATA	: _d_08126
+EXTRN DATA	: _input_area_ptr
+EXTRN DATA	: _input_area
+EXTRN DATA	: _random_seed
+EXTRN DATA	: _d_08640

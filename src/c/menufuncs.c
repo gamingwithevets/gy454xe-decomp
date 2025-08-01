@@ -1,4 +1,5 @@
 #include "consts.h"
+#include "setup.h"
 #include "menufuncs.h"
 #include "unk4.h"
 #include "unk5.h"
@@ -8,7 +9,7 @@ static char menufunc_drg(void);
 static char menufunc_cmplx(void);
 static char menufunc_hyp(void);
 static char menufunc_stat_dist(void);
-static char f_090BC(char a);
+static char stat_prompt_clr_mem(char a);
 static char menufunc_matrix(void);
 static char menufunc_vector(void);
 static void f_09474(char a, char *b);
@@ -34,35 +35,35 @@ static char (* const menu_funcs[])(void) = {
 };
 
 // FUNCTION: GY454XE  Re 09014
-signed char f_09014(void) {
+char f_09014(void) {
 	char v0;
 
 	if (d_080FE & (1 << 6)) return 0;
-	if ((char)f_0B7B6() && last_key_keycode != K_CLR) return 0;
+	if (is_eqn_result() && last_key_keycode != K_CLR) return 0;
 	v0 = menu_funcs[last_key_keycode-1]();
 	return v0;
 }
 
 // FUNCTION: GY454XE  Re 09050
 static char menufunc_base_n(void) {
-	return f_0A010(MODE_BASE_N, 0x14);
+	return display_token_menu(MODE_BASE_N, 20);
 }
 
 // FUNCTION: GY454XE  Re 09058
 static char menufunc_drg(void) {
 	if (f_036B8()) return 0;
-	return f_0A010(NULL, 0x16);
+	return display_token_menu(NULL, 22);
 }
 
 // FUNCTION: GY454XE  Re 09070
 static char menufunc_cmplx(void) {
-	return f_0A010(MODE_CMPLX, 0x13);
+	return display_token_menu(MODE_CMPLX, 19);
 }
 
 // FUNCTION: GY454XE  Re 09078
 static char menufunc_hyp(void) {
 	if (f_036B8()) return 0;
-	return f_0A010(NULL, 0x17);
+	return display_token_menu(NULL, 23);
 }
 
 // FUNCTION: GY454XE  Re 09090
@@ -70,22 +71,23 @@ static char menufunc_stat_dist(void) {
 	char v0;
 
 	if (mode != MODE_STAT) return 0;
-	if (table_mode == TABLE_STAT_TABLE) v0 = 0x18;
-	else if (submode == SMODE_STAT_1VAR) v0 = 0x19;
-	else v0 = 0x1a;
+	if (table_mode == TABLE_STAT_TABLE) v0 = 24;
+	else if (submode == SMODE_STAT_1VAR) v0 = 25;
+	else v0 = 26;
 
-	return f_09118(v0, 0);
+	return stat_display_menu(v0, 0);
 }
 
 // FUNCTION: GY454XE  Re 090BC
-static char f_090BC(char a) {
+static char stat_prompt_clr_mem(char sm) {
 	char v0;
 	char v1;
 
 	v0 = 1;
 	v1 = 0;
-	if (submode == SMODE_STAT_1VAR) if (a != 1) v1 = 1;
-	else if (a == 1) v1 = 1;
+	if (submode == SMODE_STAT_1VAR) {
+		if (sm != SMODE_STAT_1VAR) v1 = 1;
+	} else if (sm == SMODE_STAT_1VAR) v1 = 1;
 	if (v1) {
 		print_4lines_4str(s_clr_mem, s_blank_line, s_prompt_yes, s_prompt_cancel);
 		if (prompt_yes_no()) {
@@ -97,9 +99,64 @@ static char f_090BC(char a) {
 	return v0;
 }
 
-// STUB: GY454XE  Re 09118
-char f_09118(char a, char b) {
-	return 0;
+// FUNCTION: GY454XE  Re 09118
+char stat_display_menu(char val, char noclr) {
+	char v0;
+	char loc_m1;
+
+	v0 = val;
+	while (1) {
+		char tmp;
+		char tmp2;
+		loc_m1 = v0;
+		switch (display_menu(&loc_m1, NULL)) {
+			case 3:
+				tmp2 = SMODE_STAT_1VAR;
+				if (SMODE_STAT_1VAR <= loc_m1 && (tmp2 = loc_m1) && loc_m1 <= SMODE_STAT_REG_INV) {
+					if (!noclr) {
+						if (stat_prompt_clr_mem(tmp2)) {
+							submode = loc_m1;
+							d_08126 = 0;
+							clear_cache_area();
+							goto j_0916e;
+						} else return -1;
+					} else return loc_m1;
+				} else if (loc_m1 == 20) {
+j_0916e:
+					table_mode = TABLE_STAT_TABLE;
+					f_0AF0A();
+					return -1;
+				} else if (loc_m1 == 21) {
+					if (table_mode == TABLE_STAT_TABLE) {
+						f_044B6();
+						f_0AD08(table_viewport + table_y - 1);
+						d_08126 = 0;
+						return -1;
+					}
+				} else if (loc_m1 == 22) {
+					if (table_mode == TABLE_STAT_TABLE) {
+						f_044B6();
+						setup_stat();
+						return -1;
+					}
+				} else if (loc_m1 == 23) {
+					if (submode != SMODE_STAT_REG_QUAD) tmp = 36;
+					else tmp = 37;
+					v0 = tmp;
+					continue;
+				} else continue;
+			case 2:
+				last_key_keycode = loc_m1;
+				return 1;
+			case 1:
+				if (loc_m1 == -1) {
+					v0 = val;
+					continue;
+				}
+				break;
+		}
+		return 0;
+	}
 }
 
 // FUNCTION: GY454XE  Re 09210
@@ -219,29 +276,33 @@ static char menufunc_conv(void) {
 static char menufunc_clr(void) {
 	char v0;
 	char v1;
-	char *v2;
+	char *prompt;
 	char val;
 	scancode sc;
 
-	v0 = 0xff;
+	v0 = -1;
 	v1 = 1;
 	d_08126 = 0;
 	val = 1;
 	if (display_menu(&val, 0) == 3) {
-		if (val != 1) {
-			if (val != 2) v2 = s_reset_all;
-			else v2 = s_clr_mem;
-		} else v2 = s_clr_setup;
-		print_4lines_4str(v2, s_blank_line, s_prompt_yes, s_prompt_cancel);
+		switch (val) {
+			case 1:
+				prompt = s_clr_setup;
+				break;
+			case 2:
+				prompt = s_clr_mem;
+				break;
+			default:
+				prompt = s_reset_all;
+				break;
+		}
+		print_4lines_4str(prompt, s_blank_line, s_prompt_yes, s_prompt_cancel);
 		if (prompt_yes_no()) {
-			if (val != 1) {
-				if (val != 2) {
-					if (val == 3) {
-						sc.kio = last_key_scancode.kio;
-						reset_all();
-						last_key_scancode.kio = sc.kio;
-					}
-				} else {
+			switch (val) {
+				case 1:
+					clear_setup();
+					break;
+				case 2:
 					clear_mem();
 					if (mode == MODE_EQN || mode == MODE_INEQ) {
 						if (mode == MODE_EQN) table_mode = TABLE_EQN;
@@ -256,15 +317,23 @@ static char menufunc_clr(void) {
 						f_044B6();
 						v1 = 0;
 					}
-				}
-			} else clear_setup();
-			if (val == 3) v2 = s_clr_done_all;
-			else v2 = s_clr_done;
-			print_4lines_4str(s_blank_line, v2, s_blank_line, s_clr_prompt_ac);
+					break;
+				case 3:
+					sc.kio = last_key_scancode.kio;
+					reset_all();
+					last_key_scancode.kio = sc.kio;
+					break;
+			}
+			if (val == 3) prompt = s_clr_done_all;
+			else prompt = s_clr_done;
+			print_4lines_4str(s_blank_line, prompt, s_blank_line, s_clr_prompt_ac);
 			prompt_yes_no();
-			if (v1) f_044D6(K_AC);
-		} else v0 = 0;
-	} else v0 = 0;
+			if (v1) set_keycode(K_AC);
+			else goto j_0965c;
+		} else
+j_0965c:
+		v0 = 0;
+	} else goto j_0965c;
 
 	return v0;
 }

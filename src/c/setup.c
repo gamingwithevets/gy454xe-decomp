@@ -2,12 +2,13 @@
 #include "consts.h"
 #include "generals.h"
 #include "diagnostic.h"
-#include "unk3.h"
+#include "setup.h"
+#include "menufuncs.h"
 #include "unk4.h"
 
 typedef char *char_p;
 
-// DATA: 007E6
+// DATA: GY454XE  Re 007E6
 const char_p unk_007e6[] = {
 	&mode_ram[0],
 	&mode_ram[10],
@@ -15,23 +16,35 @@ const char_p unk_007e6[] = {
 	&mode_ram[30]
 };
 
-// DATA: 007FC
+// DATA: GY454XE  Re 007FC
 const char_p unk_007fc = &mode_ram[90];
-// DATA: 007FE
+
+// DATA: GY454XE  Re 007FE
 const char_p table_start_ptr = &mode_ram[0];
-// DATA: 00800
+
+// DATA: GY454XE  Re 00800
 const char_p table_end_ptr = &mode_ram[10];
-// DATA: 00802
+
+// DATA: GY454XE  Re 00802
 const char_p table_step_ptr = &mode_ram[20];
 
+extern const char s_blank_line[];
+extern const char s_prompt_fix[];
+extern const char s_prompt_sci[];
+extern const char s_prompt_norm[];
+
+static void f_08EBA(char a);
+static char show_eqn_select(void);
+static char num_fmt_prompt(char a);
+
 // FUNCTION: GY454XE  Re 08BC4
-void f_08BC4(char m, char sm) {
+void mode_init(char m, char sm) {
 	int v0;
 	char v1[40];
 	char num[10];
 
 	v0 = 0;
-	do memcpy((void*)v1[v0 * 10], unk_007e6[v0], 10);
+	do memcpy((void *)v1[v0 * 10], unk_007e6[v0], 10);
 	while (++v0 < 3);
 	memcpy(&v1[30], unk_007fc, 10);
 	if (mode != m) {
@@ -79,15 +92,16 @@ char mode_menu(void) {
 
 	m = show_mode_menu();
 	if (m) {
-		d_08125 = 0;
+		arrow_state = 0;
 		f_0B05A();
 		switch (m) {
-			case MODE_BASE_N:
-				f_08BC4(MODE_BASE_N, SMODE_BASE_N_DEC);
+			default:
+				i = 0;
+				mode_init(m, 0);
 				break;
 			case MODE_STAT:
-				i = f_09118(0x29, 1);
-				f_08BC4(MODE_STAT, i);
+				i = stat_display_menu(41, 1);
+				mode_init(MODE_STAT, i);
 				break;
 			case MODE_MATRIX:
 				i = f_09268(0x27, 1);
@@ -96,11 +110,12 @@ char mode_menu(void) {
 				i = f_09268(0x28, 1);
 				break;
 			case MODE_EQN:
-				f_08BC4(MODE_EQN, f_08D94());
+				mode_init(MODE_EQN, show_eqn_select());
 				i = submode;
-			default:
+				break;
+			case MODE_BASE_N:
+				mode_init(MODE_BASE_N, SMODE_BASE_N_DEC);
 				i = 0;
-				f_08BC4(m, 0);
 				break;
 		}
 		if (!i) {
@@ -121,9 +136,13 @@ char show_mode_menu(void) {
 	else return 0;
 }
 
-// 08D94 - STUB
-char f_08D94(void) {
-	return 0;
+// FUNCTION: GY454XE  Re 08D94
+static char show_eqn_select(void) {
+	char loc_m1;
+
+	loc_m1 = 38;  // EQN submode select
+	if (display_menu(&loc_m1, 0) == 3) return loc_m1;
+	else return 0;
 }
 
 // FUNCTION: GY454XE  Re 08DBA
@@ -143,82 +162,82 @@ char setup_menu(void) {
 			case 22:  // MathIO > MathO
 				f_08EBA(1);
 				setup_decimalo = 0;
-				goto j_08e06;
+				break;
 			// CASE: GY454XE  Re 08E18
 			case 23:  // MathIO > LineO
 				f_08EBA(1);
 				setup_decimalo = 1;
-				goto j_08e06;
+				break;
 			// CASE: GY454XE  Re 08E26
 			case 2:  // LineIO
 				f_08EBA(0);
 				setup_decimalo = 1;
-				goto j_08e06;
+				break;
 			// CASE: GY454XE  Re 08E34
 			case 3:  // Deg
 				setup_angle_unit = ANGLE_DEG;
-				goto j_08e06;
+				break;
 			// CASE: GY454XE  Re 08E3C
 			case 4:  // Rad
 				setup_angle_unit = ANGLE_RAD;
-				goto j_08e06;
+				break;
 			// CASE: GY454XE  Re 08E44
 			case 5:  // Gra
 				setup_angle_unit = ANGLE_GRA;
-				goto j_08e06;
+				break;
 			// CASE: GY454XE  Re 08E4C
 			case 6:  // Fix
 			case 7:  // Sci
 			case 8:  // Norm
-				v0 = f_08F00(v1);
-				goto j_08e06;
+				v0 = num_fmt_prompt(v1);
+				break;
 			// CASE: GY454XE  Re 08E56
 			case 9:  // ab/c
 				setup_frac_result = 1;
-				goto j_08e06;
+				break;
 			// CASE: GY454XE  Re 08E5E
 			case 10:  // d/c
 				setup_frac_result = 0;
-				goto j_08e06;
+				break;
 			// CASE: GY454XE  Re 08E66
 			case 12:  // CMPLX > a+bi
 				setup_cmplx_result = 1;
-				goto j_08e06;
+				break;
 			// CASE: GY454XE  Re 08E6E
 			case 13:  // CMPLX > r∠θ
 				setup_cmplx_result = 0;
-				goto j_08e06;
+				break;
 			// CASE: GY454XE  Re 08E76
 			case 14:  // STAT > ON
 				setup_stat_freq = 1;
 				setup_stat();
-				goto j_08e06;
+				break;
 			// CASE: GY454XE  Re 08E7A
 			case 15:  // STAT > OFF
 				setup_stat_freq = 0;
 				setup_stat();
-				goto j_08e06;
+				break;
 			// CASE: GY454XE  Re 08E86
 			case 16:  // Rdec > ON
 				setup_rdec = 1;
-				goto j_08e06;
+				break;
 			// CASE: GY454XE  Re 08E90
 			case 17:  // Rdec > OFF
 				setup_rdec = 0;
-				goto j_08e06;
+				break;
 			// CASE: GY454XE  Re 08E9A
 			case 18:  // Disp > Dot
 				setup_decimal_mark = 1;
-				goto j_08e06;
+				break;
 			// CASE: GY454XE  Re 08EA4
 			case 19:  // Disp > Comma
 				setup_decimal_mark = 0;
-				goto j_08e06;
+				break;
 			// CASE: GY454XE  Re 08EAE
 			case 11:  // <CONT>
 				set_contrast(0);
 				v0 = 0;
-				goto j_08e06;
+				break;
 		}
 	} else
 j_08e04:
@@ -228,8 +247,8 @@ j_08e06:
 }
 
 // FUNCTION: GY454XE  Re 08EBA
-void f_08EBA(char a) {
-	setup_mathi = a;
+static void f_08EBA(char mathi) {
+	setup_mathi = mathi;
 	if (!(mode == MODE_EQN || mode == MODE_INEQ || mode == MODE_RATIO) || (d_080FE & 0xf) != 3) {
 		if (table_mode & (1 << 7)) f_0AF16();
 		f_0B8B8(2);
@@ -241,9 +260,54 @@ void f_08EBA(char a) {
 	return;
 }
 
-// 08F00 - STUB
-void f_08F00(char a) {
-	return;
+// FUNCTION: GY454XE  Re 08F00
+static char num_fmt_prompt(char val) {
+	char n;
+	char min;
+	char max;
+	char *prompt;
+	char keycode;
+
+	n = 0xff;
+	min = K_0;
+	max = K_9;
+	while (1) {
+		switch (val) {
+			case 6:
+				prompt = s_prompt_fix;
+				break;
+			case 7:
+				prompt = s_prompt_sci;
+				break;
+			default:
+				min = K_1;
+				max = K_2;
+				prompt = s_prompt_norm;
+				break;
+		}
+		print_4lines_4str(prompt, s_blank_line, s_blank_line, s_blank_line);
+		keycode = getkeycode(1);
+		if (min <= keycode && keycode <= max) {
+			switch (val) {
+				case 8:
+					setup_num_fmt = keycode == K_1 ? NUM_FMT_NORM1 : NUM_FMT_NORM2;
+					break;
+				case 6:
+					setup_num_fmt = NUM_FMT_FIX;
+					setup_num_fmt_n = keycode & 0xf;
+					break;
+				case 7:
+					setup_num_fmt = NUM_FMT_SCI;
+					setup_num_fmt_n = keycode & 0xf;
+					break;
+			}
+			break;
+		} else if (keycode == K_SETUP || keycode == K_AC) {
+			n = 0;
+			break;
+		}
+	}
+	return n;
 }
 
 // FUNCTION: GY454XE  Re 08FA2

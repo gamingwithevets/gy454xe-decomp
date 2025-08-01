@@ -8,7 +8,7 @@
 static void num_to_str_norm(char *num, char *out, char n, char d);
 static void num_to_str_fix(char *num, char *out, char n, char d);
 static void num_to_str_sci(char *num, char *out, char n, char d);
-static char f_08304(char *a, char *b);
+static char num_to_str_dms(char *a, char *b);
 
 // FUNCTION: GY454XE  Re 07F30
 static void num_to_str_norm(char *num, char *out, char n, char d) {
@@ -46,41 +46,223 @@ static void num_to_str_norm(char *num, char *out, char n, char d) {
 	return;
 }
 
-// STUB: GY454XE  Re 0802E
+// FUNCTION: GY454XE  Re 0802E
 static void num_to_str_fix(char *num, char *out, char n, char d) {
+	char num_tmp[10];
+	num_struct nts;
+	char exp_str[8];
+
+	out[0] = '\0';
+	if (!num) return;
+	num_cpy(num_tmp, num);
+	if (num_invalid__(num) == 1) {
+		memzero(&nts, 24);
+		nts.unk_0x14 = n + 1;
+		nts.unk_0x15 = 2;
+		f_0285C(&nts, out);
+		return;
+	} else {
+		char v0;
+		int v1;
+		char v2;
+		int v3;
+
+		v0 = num[9] & 0xf;
+		v2 = num[8] & 0xf;
+		v3 = (char)((*(int *)(num+8) >> 4) & 0xf) * 10 + v2;
+		if (v0 == 0 || v0 == 5) v3 -= 99;
+		else ++v3;
+		v1 = n + v3 + 1;
+		v2 = v1;
+		if (v1 > 10) v2 = 11;
+		else if (v1 < 0) v2 = 0;
+		f_1AFD8(num_tmp, v2);
+		if (num_tmp[0] & 0xf0) num_cpy(num_tmp, num);
+		if (init_num_struct(num_tmp, &nts)) {
+			// Force Sci9 for numbers with exponent > 9 and 8 decimal digits or more
+			if (d && nts.exponent > 9 && nts.num[9]) num_to_str_sci(num, out, 9, 0);
+			else {
+				nts.unk_0x12 = 0;
+				v0 = f_10CC2(&nts);
+				if (nts.exponent >= 10 || v0) {
+					num_exp_to_str(&nts, exp_str);
+					nts.unk_0x14 = 10;
+					nts.unk_0x15 = 1;
+					if (v0) f_10DCA(&nts);
+					f_0285C(&nts, out);
+					smart_strcat(out, exp_str);
+				} else {
+					int tmp;
+					char tmp2;
+					tmp = nts.exponent;
+					if (nts.exponent < 0) {
+						if (n + nts.exponent < 0) {
+							nts.negative = 0;
+							tmp = 0 - (n + 1);
+						} else tmp = nts.exponent;
+					}
+					nts.unk_0x12 = tmp;
+					if ((char)(n + 1) < 0 - nts.exponent) tmp2 = 0;
+					else tmp2 = nts.exponent + n + 1;
+					nts.unk_0x14 = tmp2;
+					if (tmp2 >= 10) nts.unk_0x14 = 10;
+					nts.unk_0x15 = 2;
+					f_0285C(&nts, out);
+				}
+			}
+		}
+	}
 	return;
 }
 
-// STUB: GY454XE  Re 081DE
+// FUNCTION: GY454XE  Re 081DE
 static void num_to_str_sci(char *num, char *out, char n, char d) {
+	char v0;
+	char num_tmp[10];
+	num_struct nts;
+	char exp_str[8];
+
+	out[0] = '\0';
+	if (!num) return;
+	num_cpy(num_tmp, num);
+	if (!n) n = 10;
+	if (f_1AFD8(num_tmp, n+1)) num_cpy(num_tmp, num);
+	if (init_num_struct(num_tmp, &nts)) {
+		if (d && n == 10 && (nts.exponent > 9 || nts.exponent < -9)) {
+			n = 9;
+			if (f_1AFD8(num_tmp, 10)) num_cpy(num_tmp, num);
+			if (!init_num_struct(num_tmp, &nts)) return;
+		}
+		nts.unk_0x12 = 0;
+		v0 = f_10CC2(&nts);
+		num_exp_to_str(&nts, exp_str);
+		nts.unk_0x14 = n;
+		nts.unk_0x15 = 0;
+		if (v0) f_10DCA(&nts);
+		f_0285C(&nts, out);
+		smart_strcat(out, exp_str);
+	}
 	return;
 }
 
 // FUNCTION: GY454XE  Re 082C6
-char f_082C6(char *num) {
+char is_dms_num(char *num) {
 	char v0;
+	char v1;
 
-	v0 = f_02AB2();
-	if (v0 == 1) return 1;
-	// Degs Mins Secs format
-	if (get_numtype(num) != 0x40) return 0;
-	if (v0 < 2 || v0 > 12) {
-		if (v0 == 13 || !f_02AAA()) return 1;
+	v0 = get_result_store_fmt();
+	if (v0 == RESULT_DMS) {
+j_082d8:
+		v1 = 1;
+		goto j_082e8;
 	}
-	return 0;
+	// Degs Mins Secs format
+	if (get_numtype(num) != 0x40) {
+j_082e6:
+		v1 = 0;
+j_082e8:
+		return v1;
+	}
+	if ((v0 < RESULT_ENGM4 || v0 > RESULT_FRAC_MIX) && (v0 != RESULT_STANDARD || !get_result_disp_fmt())) goto j_082d8;
+	goto j_082e6;
 }
 
-// STUB: GY454XE  Re 08304
-static char f_08304(char *a, char *b) {
-	return 0;
+// FUNCTION: GY454XE  Re 08304
+static char num_to_str_dms(char *num, char *out) {
+	char v0;
+	int v1;
+	int v2;
+	char num_sec[10];
+	char num_60[10];
+	char num_deg[10];
+	char num_min[10];
+	num_struct nts;
+	char outstr[20];
+
+	v0 = RESULT_DECIMAL;
+	num_cpy(num_sec, num);
+	num_abs(num_sec);
+	num_to_str_std_lineo(num_sec);
+	v1 = num_get_exp(num_sec);
+	if (v1 < 7) {
+		num_frombyte(num_60, 60);
+		out[0] = '\0';
+		num_cpy(num_deg, num_sec);
+		num_trunc__(num_deg);
+		f_1B378(num_sec);
+		v1 -= num_get_exp(num_sec);
+		f_1A438(num_sec, num_60);
+		f_1B238(num_sec);
+		v2 = num_get_exp(num_sec);
+		num_cpy(num_min, num_sec);
+		num_trunc__(num_min);
+		f_1B378(num_sec);
+		v2 -= num_get_exp(num_sec);
+		f_1A438(num_sec, num_60);
+		f_1B238(num_sec);
+		f_1AFD8(num_sec, 14 - (v1 + v2));
+		num_mulxp__(num_sec, 2);
+		f_1AFB8(num_sec);
+		num_mulxp__(num_sec, -2);
+		if (num_cmp(num_sec, num_60) != 2) {
+			f_1A424(num_sec, num_60);
+			f_1A460(num_min, num_1);
+			if (num_cmp(num_min, num_60) != 2) {
+				f_1A424(num_min, num_60);
+				f_1A460(num_deg, num_1);
+			}
+			if (num_get_exp(num_deg) >= 7) goto j_085b2;
+		}
+		if (num_invalid__(num) == 2 && (num_invalid__(num_deg) != 1 || num_invalid__(num_min) != 1 || num_invalid__(num_sec) != 1)) concat_negative(out);;
+		if (init_num_struct(num_deg, &nts)) {
+			char tmp = 0;
+			if (nts.exponent == 4) tmp = 1;
+			else if (nts.exponent <= 3) tmp = 2;
+			nts.unk_0x12 = nts.exponent;
+			nts.unk_0x14 = 7;
+			nts.unk_0x15 = 1;
+			f_0285C(&nts, outstr);
+			smart_strcat(out, outstr);
+			// STRING: GY454XE  Re 01FAC
+			// STRING: GY455XE  Im 01FAE
+			smart_strcat(out, "\x85");  // °
+			if (init_num_struct(num_min, &nts)) {
+				nts.unk_0x12 = nts.exponent;
+				nts.unk_0x14 = nts.exponent + 1;
+				nts.unk_0x15 = 1;
+				f_0285C(&nts, outstr);
+				smart_strcat(out, outstr);
+				// STRING: GY454XE  Re 01FAE
+				// STRING: GY455XE  Im 01FB0
+				smart_strcat(out, "'");
+				if (init_num_struct(num_sec, &nts)) {
+					char tmp2;
+					nts.unk_0x12 = tmp + nts.exponent + 1;
+					if (nts.unk_0x12 <= 0) tmp2 = 1;
+					else tmp2 = nts.unk_0x12;
+					nts.unk_0x14 = tmp2;
+					nts.unk_0x12 = nts.exponent;
+					nts.unk_0x15 = 1;
+					f_0285C(&nts, outstr);
+					smart_strcat(out, outstr);
+					// STRING: GY454XE  Re 01FB0
+					// STRING: GY455XE  Im 01FB2
+					smart_strcat(out, "\"");
+					v0 = RESULT_DMS;
+				}
+			}
+		}
+	}
+j_085b2:
+	return v0;
 }
 
 // FUNCTION: GY454XE  Re 085C0
-void f_085C0(void) {
-	char v0;
+void set_default_result_fmt(void) {
+	char v0 = 0;
 
-	if (last_key_keycode == K_EXECUTE) v0 = 13;
-	f_02ADE(v0);
+	if (last_key_keycode == K_EXECUTE) v0 = RESULT_STANDARD;
+	set_result_fmt(v0);
 }
 
 // FUNCTION: GY454XE  Re 085D2
@@ -88,8 +270,8 @@ void f_085D2(void) {
 	char v0;
 
 	v0 = 0;
-	if (f_0B588()) v0 = 13;
-	f_02ADE(v0);
+	if (f_0B588()) v0 = RESULT_STANDARD;
+	set_result_fmt(v0);
 	return;
 }
 
@@ -101,39 +283,39 @@ char num_to_str(char *num, char *out, char c) {
 	char v3;
 	char loc_m10[10];
 
-	v0 = d_080FF;
-	// Send it to a different parser if it's an ERROR value
+	v0 = result_template;
+	// ERROR value
 	if ((*num & 0xf0) == 0xf0) {
-		f_10E14(num);
+		num_to_str_error(num);
 		return 0;
 	}
 	if (mode == MODE_BASE_N) {
-		f_1444C(num, out);
+		num_to_str_base_n(num, out);
 		return 0;
 	}
-	v1 = f_02AB2();
-	if (f_082C6(num)) {
-		v1 = f_08304(num, out);
-		if (v1 != 1) f_02ACA();
+	v1 = get_result_store_fmt();
+	if (is_dms_num(num)) {
+		v1 = num_to_str_dms(num, out);
+		if (v1 != RESULT_DMS) set_result_store_fmt(v1);
 		else return v1;
 	}
 	num_cpy(loc_m10, num);
 	f_1B208(loc_m10);
-	if (v1 <= 10 && v1 > 1) goto j_08678;
-	if (v0 & (1 << 4)) {
+	if ((v1 <= RESULT_DECIMAL && v1 > RESULT_DMS) || v0 & (1 << 4)) {
 j_08678:
-		f_14800(loc_m10);
-		if (v1 >= 11) {
-			char tmp = f_02AAA();
-			if (tmp == 1) {
-				char tmp2 = f_08304(loc_m10, out);
-				if (tmp2 == 1) return tmp2;
-				else f_02ACA();
-			} else if (tmp > 1 && tmp < 10) f_02ACA();
+		num_to_str_std_lineo(loc_m10);
+		if (v1 >= RESULT_FRAC) {
+			char tmp = get_result_disp_fmt();
+			if (tmp == RESULT_DMS) {
+				char tmp2 = num_to_str_dms(loc_m10, out);
+				if (tmp2 == RESULT_DMS) return tmp2;
+				else set_result_store_fmt(tmp2);
+			// Check ENG notation format
+			} else if (tmp > RESULT_DMS && tmp < RESULT_DECIMAL) set_result_store_fmt(tmp);
 		}
 		if (v0 & (1 << 4)) {
 			f_02986(num, out, 12);
-			return 10;
+			return RESULT_DECIMAL;
 		}
 		if (c >= 4) c = 0;
 		v2 = setup_num_fmt;
@@ -141,19 +323,19 @@ j_08678:
 		else if (setup_num_fmt == NUM_FMT_SCI) num_to_str_sci(loc_m10, out, setup_num_fmt_n, c);
 		else if (v2 == NUM_FMT_NORM2) num_to_str_norm(loc_m10, out, 3, c);
 		else num_to_str_norm(loc_m10, out, 2, c);
-		v3 = f_02AB2();
-		if (v3 && v3 <= 10) return v3;
-		else return 10;
+		v3 = get_result_store_fmt();
+		if (v3 && v3 <= RESULT_DECIMAL) return v3;
+		else return RESULT_DECIMAL;
 	} else {
-		char tmp = f_077CC(out, loc_m10, c);
-		if (tmp == 10) goto j_08678;
+		char tmp = num_to_str_std(out, loc_m10, c);
+		if (tmp == RESULT_DECIMAL) goto j_08678;
 		return tmp;
 	}
 }
 
 // FUNCTION: GY454XE  Re 08764
 void f_08764(char *a, char *b) {
-	if (d_080FF & (1 << 4) && !use_output_charset) {
+	if (result_template & (1 << 4) && !use_output_charset) {
 		smart_strcat(a, s_blank_line);
 		a[16 - smart_strlen(b)] = '\0';
 	}
@@ -171,9 +353,12 @@ char f_087A2(void) {
 // FUNCTION: GY454XE  Re 087BA
 char is_mathi(void) {
 	if (f_087A2()) {
-		if (!setup_mathi) return 0;
+		if (!setup_mathi)
+j_087ca:
+			return 0;
 		if (mode & (1 << 7)) return 1;
-	} else return 0;
+	}
+	goto j_087ca;
 }
 
 // FUNCTION: GY454XE  Re 087D8
@@ -185,21 +370,21 @@ char is_matho(void) {
 }
 
 // FUNCTION: GY454XE  Re 087F6
-int f_087F6(int a, int b) {
+int max(int a, int b) {
 	if (a > b) return a;
 	return b;
 }
 
 // FUNCTION: GY454XE  Re 08800
-char f_08800(unsigned int a, unsigned int b, char c, char d, unsigned int e) {
-	if (a != b) c = (b * c + (d - c) * e - a * d) / (b - a);
-	return c;
+char lerp16(unsigned int x0, unsigned int x1, char y0, char y1, unsigned int x) {
+	if (x0 != x1) y0 = (x1 * y0 + (y1 - y0) * x - x0 * y1) / (x1 - x0);
+	return y0;
 }
 
 // FUNCTION: GY454XE  Re 0885C
-char f_0885C(char a, char b, char c, char d, char e) {
-	if (d != c) a = (d * a + (b - a) * e - c * b) / (d - b);
-	return a;
+char lerp8(char y0, char y1, char x0, char x1, char x) {
+	if (x1 != x0) y0 = (x1 * y0 + (y1 - y0) * x - x0 * y1) / (x1 - y1);
+	return y0;
 }
 
 // FUNCTION: GY454XE  Re 088AA
@@ -207,14 +392,18 @@ int f_088AA(void) {
 	return formula_x + d_08000;
 }
 
-// STUB: GY454XE  Re 088B8
-void f_088B8(char *a) {
-	return;
+// FUNCTION: GY454XE  Re 088B8
+char *concat_angle(char *input) {
+	input[0] = 0xaf;  // Angle token
+	if (use_output_charset) input[0] = 0x88;  // Angle character
+	input[1] = '\0';
+	return input;
 }
 
-// STUB: GY454XE  Re 088D6
-void f_088D6(void) {
-	return;
+// FUNCTION: GY454XE  Re 088D6
+char is_sign_char(char tok) {
+	if (tok == '`' || tok == '-' || tok == '+') return 1;
+	return 0;
 }
 
 // FUNCTION: GY454XE  Re 088EC
@@ -228,8 +417,11 @@ char is_pow_char(char *a) {
 // FUNCTION: GY454XE  Re 088FE
 char f_088FE(char *a) {
 	// Box, Hex B, Hex C
-	if (*a++ == '!' && (*a == 0xb9 || *a == 0xba)) return 1;
-	return 0;
+	if (*a++ != '!')
+j_08908:
+		return 0;
+	if (*a == 0xb9 || *a == 0xba) return 1;
+	goto j_08908;
 }
 
 // FUNCTION: GY454XE  Re 0891A
@@ -248,7 +440,7 @@ void concat_num_str(char *out, char *num) {
 	return;
 }
 
-// STUB: GY454XE  Re 0895A
+// FUNCTION: GY454XE  Re 0895A
 void concat_sqrt(char *out, char *num) {
 	// STRING: GY454XE  Re 01FB2
 	smart_strcat(out, "\x98\xb8");
@@ -258,6 +450,7 @@ void concat_sqrt(char *out, char *num) {
 }
 
 // FUNCTION: GY454XE  Re 0897C
+// FUNCTION: GY455XE  Im 092A0
 char f_0897C(void) {
 	char s = 10;
 	if (font_size == 7) s = 7;
@@ -265,6 +458,7 @@ char f_0897C(void) {
 }
 
 // FUNCTION: GY454XE  Re 0898C
+// FUNCTION: GY455XE  Im 092B0
 char f_0898C(void) {
 	char s = 5;
 	if (font_size == 7) s = 3;
@@ -278,8 +472,16 @@ char get_font_width(void) {
 	return w;
 }
 
-// STUB: GY454XE  Re 089AC
-void f_089AC(array_bw_4 *a, array_bw_4 b) {
+// FUNCTION: GY454XE  Re 089AC
+void f_089AC(mathi_bbox *a, mathi_bbox b) {
+	char v0;
+	char v1;
+
+	v0 = a->byte[2] >= a->byte[3] ? a->byte[2] - a->byte[3] : 0;
+	v1 = b.byte[2] >= b.byte[3] ? b.byte[2] - b.byte[3] : 0;
+	v0 = max(v0, v1);
+	a->byte[3] = max(a->byte[3], b.byte[3]);
+	a->byte[2] = a->byte[3] + v0;
 	return;
 }
 
@@ -299,29 +501,30 @@ char f_08A2A(char a) {
 }
 
 // FUNCTION: GY454XE  Re 08A48
-char f_08A48(char *a) {
-	if (a < input_area_ptr) return 1;
-	else {
-		if (!f_08A2A(f_05658(a))) return 0;
-		else return 1;
-	}
+char f_08A48(char *input) {
+	if (input < input_area_ptr)
+j_08a52:
+		return 1;
+	if (!f_08A2A(f_05658(input))) return 0;
+	goto j_08a52;
 }
 
 // FUNCTION: GY454XE  Re 08A66
-char f_08A66(char *a, char *b) {
-	if (f_08A48(a) && *b == '^') {
-		// Hex A
-		if (*a == 0xb8 || *a == 0xba) {
-			// Hex B, Hex C
-			if (*b != 0xb9 && *b != 0xba) return 0;
-		}
+char f_08A66(char *input, char *b) {
+	if (f_08A48(input) && *b == '^')
+j_08a7c:
+		return 1;
+	// Hex A
+	if (*input == 0xb8 || *input == 0xba) {
+		// Hex B, Hex C
+		if (*b == 0xb9 || *b == 0xba) goto j_08a7c;
 	}
-	return 1;
+	return 0;
 }
 
 // FUNCTION: GY454XE  Re 08A9C
-void f_08A9C(char a) {
-	d_08009 = a;
+void mathi_set_draw_mode(char dmode) {
+	mathi_enable_draw = dmode;
 	font_size = 10;
 	d_0800A = 0;
 	d_08008 = 0;
@@ -331,6 +534,9 @@ void f_08A9C(char a) {
 
 // FUNCTION: GY454XE  Re 08ABA
 char f_08ABA(char a) {
+	return -((char)(0x5a-(d_08111 + a)) >> 7);
+/*
+	Original assembly below. Currently the conditions required to generate a CMP-SUBC sequence is unknown.
 #asm
 	extrn data near : _d_08111
 	mov	r2,	r0
@@ -340,20 +546,21 @@ char f_08ABA(char a) {
 	cmp	r1,	r0
 	subc	r0,	r0
 	neg	r0
-#endasm 
+#endasm
+*/
 }
 
 // FUNCTION: GY454XE  Re 08ACC
-char f_08ACC(void) {
-	char v1 = font_size;
+char begin_small_font(void) {
+	char size = font_size;
 	font_size = 7;
-	return v1;
+	return size;
 }
 
 // FUNCTION: GY454XE  Re 08ADC
-char f_08ADC(void) {
+char is_table_func_input(void) {
 	int v0 = 0;
-	if (mode == MODE_TABLE && table_mode == 1) v0 = 1;
-	return (char)v0;
+	if (mode == MODE_TABLE && table_mode == TABLE_NONE) v0 = 1;
+	return v0;
 }
 

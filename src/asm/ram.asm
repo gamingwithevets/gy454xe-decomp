@@ -28,7 +28,7 @@ _d_08007:
 _d_08008:
 	DS 1
 ; 08009
-_d_08009:
+_mathi_enable_draw:
 	DS 1
 ; 0800A
 _d_0800A:
@@ -570,7 +570,7 @@ _last_key_keycode:
 _d_080F6:
 	DS 1
 ; 080F7
-_d_080F7:
+_force_nochar:
 	DS 1
 ; 080F8
 _modifiers:
@@ -594,10 +594,10 @@ _d_080FD:
 _d_080FE:
 	DS 1
 ; 080FF
-_d_080FF:
+_result_template:
 	DS 1
 ; 08100
-_d_08100:
+_result_format:
 	DS 1
 ; 08101
 _d_08101:
@@ -643,7 +643,7 @@ _d_0810D:
 _setup_contrast:
 	DS 1
 ; 0810F
-_d_0810F:
+_replay_idx:
 	DS 1
 ; 08110
 _cursor_pos_byte:
@@ -709,7 +709,7 @@ _use_output_charset:
 _d_08124:
 	DS 1
 ; 08125
-_d_08125:
+_arrow_state:
 	DS 1
 ; 08126
 _d_08126:
@@ -2745,6 +2745,10 @@ _d_08A17:
 	DS 1
 _stack_start:
 
+; This is used in draw_byte... Casio why???
+_screen_buffer_y1_neg EQU -(OFFSET _screen_buffer + 12)
+PUBLIC _screen_buffer_y1_neg
+
 PUBLIC _ram_start
 PUBLIC _d_08000
 PUBLIC _d_08002
@@ -2753,16 +2757,47 @@ PUBLIC _d_08005
 PUBLIC _d_08006
 PUBLIC _d_08007
 PUBLIC _d_08008
-PUBLIC _d_08009
+PUBLIC _mathi_enable_draw
 PUBLIC _d_0800A
+PUBLIC _d_0800B
+PUBLIC _d_0800C
+PUBLIC _d_0800D
+PUBLIC _d_0800E
+PUBLIC _d_0800F
+PUBLIC _reg1
+PUBLIC _d_0801A
+PUBLIC _d_0801C
+PUBLIC _d_0801D
+PUBLIC _arith_op
+PUBLIC _d_0801F
+PUBLIC _reg2
+PUBLIC _d_0802A
+PUBLIC _d_0802B
+PUBLIC _d_0802C
+PUBLIC _d_0802D
+PUBLIC _d_0802E
+PUBLIC _d_0802F
+PUBLIC _reg3
+PUBLIC _d_0803A
+PUBLIC _d_0803B
+PUBLIC _reg4
+PUBLIC _reg5
+PUBLIC _reg6
+PUBLIC _d_0805A
+PUBLIC _d_0805B
+PUBLIC _arg0_ref
+PUBLIC _arg1_ref
+PUBLIC _d_08060
+PUBLIC _d_08078
 PUBLIC _d_080DC
 PUBLIC _cursor_noflash
 PUBLIC _d_080DE
 PUBLIC _d_080DF
 PUBLIC _d_080E0
 PUBLIC _last_key_scancode
+PUBLIC _d_080F4
 PUBLIC _last_key_keycode
-PUBLIC _d_080F7
+PUBLIC _force_nochar
 PUBLIC _modifiers
 PUBLIC _mode
 PUBLIC _submode
@@ -2770,8 +2805,8 @@ PUBLIC _screen_state
 PUBLIC _table_mode
 PUBLIC _d_080FD
 PUBLIC _d_080FE
-PUBLIC _d_080FF
-PUBLIC _d_08100
+PUBLIC _result_template
+PUBLIC _result_format
 PUBLIC _d_08101
 PUBLIC _setup_start
 PUBLIC _setup_num_fmt
@@ -2786,7 +2821,7 @@ PUBLIC _setup_rdec
 PUBLIC _setup_simp
 PUBLIC _setup_decimalo
 PUBLIC _setup_contrast
-PUBLIC _d_0810F
+PUBLIC _replay_idx
 PUBLIC _cursor_pos_byte
 PUBLIC _d_08111
 PUBLIC _formula_x
@@ -2802,10 +2837,11 @@ PUBLIC _font_size
 PUBLIC _draw_mode
 PUBLIC _use_rambuf
 PUBLIC _d_08120
+PUBLIC _d_08121
 PUBLIC _d_08122
 PUBLIC _use_output_charset
 PUBLIC _d_08124
-PUBLIC _d_08125
+PUBLIC _arrow_state
 PUBLIC _d_08126
 PUBLIC _input_area_ptr
 PUBLIC _d_0812A
@@ -2813,9 +2849,13 @@ PUBLIC _d_0812C
 PUBLIC _result
 PUBLIC _input_area
 PUBLIC _cache_area
+PUBLIC _random_seed
 PUBLIC _timer
 PUBLIC _vars_start
+PUBLIC _var_m
+PUBLIC _var_x
 PUBLIC _mode_ram
 PUBLIC _magic_string
 PUBLIC _d_08640
+PUBLIC _screen_buffer
 PUBLIC _stack_start

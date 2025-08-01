@@ -1,15 +1,6 @@
 TYPE(ML610CASESplus)
 MODEL LARGE
 
-_cursor_noflash		EQU 80DDH
-_last_key_scancode	EQU 80F2H
-_setup_contrast		EQU 810EH
-_font_size			EQU 811BH
-_use_rambuf			EQU 811DH
-_magic_string		EQU 860EH
-_screen_buffer		EQU 87D0H
-_screen_buffer_y1	EQU _screen_buffer+12
-_screen_buffer_y31	EQU _screen_buffer+12*31
 _version			EQU 1:0FFF4H
 _checksum			EQU 1:0FFFCH
 
@@ -31,6 +22,13 @@ EXTRN CODE	: _getscancode
 EXTRN CODE	: _set_modifiers
 EXTRN CODE	: _wait_shift
 EXTRN CODE	: _diag_initloop
+EXTRN DATA	: _cursor_noflash
+EXTRN DATA	: _last_key_scancode
+EXTRN DATA	: _setup_contrast
+EXTRN DATA	: _font_size
+EXTRN DATA	: _use_rambuf
+EXTRN DATA	: _magic_string
+EXTRN DATA	: _screen_buffer
 
 $$NCODdiagnostic SEGMENT CODE 2H ANY
 $$NTABdiagnostic SEGMENT TABLE 2H #0
@@ -41,7 +39,8 @@ RSEG $$NTABdiagnostic
 ; The null byte is actually unnecessary as diag_check_key returns if the key count is
 ; exactly 49, thus only the first 49 entries are ever used.
 ; DATA: GY454XE  Re 01EB6
-_diagkey_unk:
+; DATA: GY455XE  Im 01EB8
+_diag_keys:
 	DB 81H, 82H, 83H, 84H, 85H
 	DB 71H, 72H, 73H, 74H, 75H, 76H
 	DB 61H, 62H, 63H, 64H, 65H, 66H
@@ -54,24 +53,29 @@ _diagkey_unk:
 	DB 0
 
 ; DATA: GY454XE  Re 01EE8
+; DATA: GY455XE  Im 01EEA
 _s_dpressac:
 	DB "Press AC", 0
 
 ; DATA: GY454XE  Re 01EF1
+; DATA: GY455XE  Im 01EF3
 _s_dtestok:
 	DB "TEST OK", 0
 
 ; DATA: GY454XE  Re 01EF9
+; DATA: GY455XE  Im 01EFB
 _s_dresetall:
 	DB "Reset All", 0
 
 ; DATA: GY454XE  Re 01F03
+; DATA: GY455XE  Im 01F05
 _s_diagnostic:
 	DB "DIAGNOSTIC ", 0
 
 RSEG $$NCODdiagnostic
 
 ; FUNCTION: GY454XE  Re 04898
+; FUNCTION: GY455XE  Im 049A6
 _diag_init_check:
 	PUSH LR
 	PUSH XR4
@@ -95,6 +99,7 @@ _$j_048bc:
 	BAL _$j_04980
 
 ; FUNCTION: GY454XE  Re 048C2
+; FUNCTION: GY455XE  Im 049D0
 _diagnostic_mode:
 	PUSH LR
 	PUSH QR0
@@ -119,6 +124,7 @@ _$j_048f2:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 048F6
+; FUNCTION: GY455XE  Im 04A04
 _diagnostic:
 	PUSH LR
 	PUSH XR4
@@ -174,6 +180,7 @@ _$j_04980:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 04986
+; FUNCTION: GY455XE  Im 04A94
 _diag_check_key:
 	PUSH LR
 	PUSH XR4
@@ -182,7 +189,7 @@ _diag_check_key:
 	MOV FP, SP
 	BL _buffer_clear
 	MOV ER8, #0H
-	ST ER8, 2H[FP]
+	ST ER8, 2[FP]
 _$j_04998:
 	MOV R2, R8
 	MOV BP, #1H
@@ -198,7 +205,7 @@ _$j_049a4:
 	BNE _$j_0499c
 	MOV R12, R13
 	SRL R12, #4
-	AND R13, #0FH
+	AND R13, #00001111B
 	ADD R12, #30H
 	ADD R13, #30H
 	ST BP, [FP]
@@ -209,25 +216,26 @@ _$j_049a4:
 	MOV ER0, FP
 	BL _getscancode
 	L R0, [FP]
-	BL _f_04C8A
+	BL _find_bit
 	MOV R2, R0
 	SLL R2, #4
 	L R0, 1[FP]
-	BL _f_04C8A
+	BL _find_bit
 	OR R2, R0
-	MOV R0, #BYTE1 _diagkey_unk
-	MOV R1, #BYTE2 _diagkey_unk
+	MOV R0, #BYTE1 _diag_keys
+	MOV R1, #BYTE2 _diag_keys
 	ADD ER0, ER8
 	L R0, [ER0]
 	CMP R0, R2
 	BNE _$j_04998
-	ADD R8, #1H
-	CMP R8, #31H
+	ADD R8, #1
+	CMP R8, #49
 	BNE _$j_04998
 	ADD SP, #0AH
 	BAL _$j_04980
 
 ; FUNCTION: GY454XE  Re 049F2
+; FUNCTION: GY455XE  Im 04B00
 _line_print_small:
 	PUSH LR
 	MOV R1, R0
@@ -237,6 +245,7 @@ _line_print_small:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 04A02
+; FUNCTION: GY455XE  Im 04B10
 _diag_scr_fill_ws:
 	PUSH LR
 	MOV R1, #1H
@@ -246,6 +255,7 @@ _$j_04a0a:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 04A10
+; FUNCTION: GY455XE  Im 04B1E
 _diag_scr_ckb1_ws:
 	MOV R2, #01010101B
 _$j_04a12:
@@ -264,11 +274,13 @@ _$j_04a12:
 	BAL _$j_04a0a
 
 ; FUNCTION: GY454XE  Re 04A30
+; FUNCTION: GY455XE  Im 04B3E
 _diag_scr_ckb2_ws:
 	MOV R2, #10101010B
 	BAL _$j_04a12
 
 ; FUNCTION: GY454XE  Re 04A34
+; FUNCTION: GY455XE  Im 04B42
 _f_04A34:
 	PUSH LR
 	PUSH QR8
@@ -290,24 +302,25 @@ _$j_04a42:
 	BAL _$j_04a9a
 
 ; FUNCTION: GY454XE  Re 04A58
+; FUNCTION: GY455XE  Im 04B66
 _diag_scr_box_ws:
 	PUSH LR
 	PUSH QR8
 	MOV ER8, #0CH
 	PUSH ER8
 	MOV R2, #-1H
-	MOV R1, #BYTE2 _screen_buffer_y1
-	MOV R0, #BYTE1 _screen_buffer_y1
+	MOV R1, #BYTE2 (_screen_buffer+12)
+	MOV R0, #BYTE1 (_screen_buffer+12)
 	BL _memset_n
 	POP ER0
 	PUSH ER8
 	MOV R2, #-1H
-	MOV R1, #BYTE2 _screen_buffer_y31
-	MOV R0, #BYTE1 _screen_buffer_y31
+	MOV R1, #BYTE2 (_screen_buffer+12*31)
+	MOV R0, #BYTE1 (_screen_buffer+12*31)
 	BL _memset_n
 	POP ER0
-	MOV R1, #BYTE2 _screen_buffer_y1
-	MOV R0, #BYTE1 _screen_buffer_y1
+	MOV R1, #BYTE2 (_screen_buffer+12)
+	MOV R0, #BYTE1 (_screen_buffer+12)
 	MOV R2, #1FH
 _$j_04a80:
 	L R8, [ER0]
@@ -325,6 +338,7 @@ _$j_04a9a:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 04A9E
+; FUNCTION: GY455XE  Im 04BAC
 _diag_checksum:
 	PUSH LR
 	PUSH QR0
@@ -428,6 +442,8 @@ _$j_04b7a:
 	POP QR0
 	POP PC
 
+; FUNCTION: GY454XE  Re 04B90
+; FUNCTION: GY455XE  Im 04C9E
 _store_regs_to_stack:
 	PUSH BP
 	MOV BP, FP
@@ -439,6 +455,7 @@ _store_regs_to_stack:
 	RT
 
 ; FUNCTION: GY454XE  Re 04BA0
+; FUNCTION: GY455XE  Im 04CAE
 _diag_get_checksum:
 	PUSH LR
 	PUSH QR8
@@ -475,6 +492,7 @@ _$j_04bc2:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 04BE6
+; FUNCTION: GY455XE  Im 04CF4
 _diag_pd_check:
 	PUSH LR
 	PUSH QR8
@@ -519,6 +537,7 @@ _$j_04c30:
 	BAL _$j_04c2c
 
 ; FUNCTION: GY454XE  Re 04C34
+; FUNCTION: GY455XE  Im 04D42
 _hex_to_char:
 	MOV R1, R0
 	AND R1, #0FH
@@ -540,6 +559,7 @@ _$j_04c4e:
 	RT
 
 ; FUNCTION: GY454XE  Re 04C50
+; FUNCTION: GY455XE  Im 04D5E
 _diag_print_hex:
 	PUSH LR
 	PUSH QR8
@@ -570,7 +590,8 @@ _$j_04c68:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 04C8A
-_f_04C8A:
+; FUNCTION: GY455XE  Im 04D98
+_find_bit:
 	CMP R0, #3H
 	BLT _$j_04c9c
 	MOV R1, #9H
@@ -586,6 +607,7 @@ _$j_04c9c:
 	RT
 
 ; FUNCTION: GY454XE  Re 04C9E
+; FUNCTION: GY455XE  Im 04DAC
 _render_waitshift:
 	PUSH LR
 	BL _render
@@ -593,6 +615,7 @@ _render_waitshift:
 	POP PC
 
 ; FUNCTION: GY454XE  Re 04CAA
+; FUNCTION: GY455XE  Im 04DB8
 _diag_factory_test:
 	PUSH LR
 	MOV R1, #3H
