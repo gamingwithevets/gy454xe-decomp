@@ -17,12 +17,15 @@ _reg4_9				EQU 8045H
 _reg5_6				EQU 804CH
 _reg6_2				EQU 8052H
 _reg6_9				EQU 8059H
+
+; TODO: Replace these with addresses relative to mode_ram
 _d_0829E			EQU 829EH
 _d_08300			EQU 8300H
 _d_08398			EQU 8398H
 _d_083FC			EQU 83FCH
 _d_08406			EQU 8406H
 _d_08546			EQU 8546H
+
 _setup_default		EQU 1:0FFD4H
 
 $$NTABunk5_0 SEGMENT TABLE 2H #0
@@ -5284,14 +5287,14 @@ _f_123E2:
 	MOV ER0, #0H
 	MOV ER2, FP
 	ADD ER2, #-14H
-	BL _f_0441A
+	BL _table_stat_get_col_addr
 	ST R0, -9H[FP]
 	MOV R0, R12
 	AND R0, #00000001B
 	MOV R1, #1H
 	MOV ER2, FP
 	ADD ER2, #-4H
-	BL _f_043CE
+	BL _table_stat_get_cell_addr
 	L ER4, -4H[FP]
 	L R0, _setup_stat_freq
 	BEQ _$j_12414
@@ -5299,10 +5302,10 @@ _f_123E2:
 	MOV R1, #1H
 	MOV ER2, FP
 	ADD ER2, #-4H
-	BL _f_043CE
+	BL _table_stat_get_cell_addr
 	L ER8, -4H[FP]
 _$j_12414:
-	BL _get_num_stat_table_cols
+	BL _table_stat_get_num_cols
 	MOV R1, #0AH
 	MUL ER0, R1
 	ST R0, -0AH[FP]
@@ -5317,19 +5320,19 @@ _f_12424:
 	MOV ER0, #0H
 	MOV ER2, FP
 	ADD ER2, #-14H
-	BL _f_0441A
+	BL _table_stat_get_col_addr
 	ST R0, -9H[FP]
 	MOV R0, #0H
 	MOV R1, #1H
 	MOV ER2, FP
 	ADD ER2, #-4H
-	BL _f_043CE
+	BL _table_stat_get_cell_addr
 	L ER4, -4H[FP]
 	MOV R0, #1H
 	MOV R1, #1H
 	MOV ER2, FP
 	ADD ER2, #-4H
-	BL _f_043CE
+	BL _table_stat_get_cell_addr
 	L ER10, -4H[FP]
 	L R0, _setup_stat_freq
 	BEQ _$j_12462
@@ -5337,10 +5340,10 @@ _f_12424:
 	MOV R1, #1H
 	MOV ER2, FP
 	ADD ER2, #-4H
-	BL _f_043CE
+	BL _table_stat_get_cell_addr
 	L ER8, -4H[FP]
 _$j_12462:
-	BL _get_num_stat_table_cols
+	BL _table_stat_get_num_cols
 	MOV R1, #0AH
 	MUL ER0, R1
 	ST R0, -0AH[FP]
@@ -5593,7 +5596,7 @@ _f_1267C:
 	MOV ER0, #0H
 	MOV ER2, FP
 	ADD ER2, #-14H
-	BL _f_0441A
+	BL _table_stat_get_col_addr
 	CMP R0, #0H
 	BNE _$j_126a2
 	MOV R2, #3H
@@ -5924,16 +5927,16 @@ _f_12944:
 	MOV ER0, #0H
 	MOV ER2, FP
 	ADD ER2, #-14H
-	BL _f_0441A
+	BL _table_stat_get_col_addr
 	ST R0, -9H[FP]
 	MOV R0, R12
 	AND R0, #00000001B
 	MOV R1, #1H
 	MOV ER2, FP
 	ADD ER2, #-4H
-	BL _f_043CE
+	BL _table_stat_get_cell_addr
 	L ER4, -4H[FP]
-	BL _get_num_stat_table_cols
+	BL _table_stat_get_num_cols
 	MOV R1, #0AH
 	MUL ER0, R1
 	ST R0, -0AH[FP]
@@ -6216,7 +6219,7 @@ _f_12BA0:
 	MOV ER0, #0H
 	MOV ER2, FP
 	ADD ER2, #-14H
-	BL _f_0441A
+	BL _table_stat_get_col_addr
 	ST R0, -9H[FP]
 	CMP R0, #0H
 	BEQ _$j_12c2a
@@ -6235,8 +6238,8 @@ _$j_12bca:
 	MOV R1, #1H
 	MOV ER2, FP
 	ADD ER2, #-4H
-	BL _f_043CE
-	BL _get_num_stat_table_cols
+	BL _table_stat_get_cell_addr
+	BL _table_stat_get_num_cols
 	MOV R1, #0AH
 	MUL ER0, R1
 	ST R0, -0AH[FP]
@@ -7451,8 +7454,8 @@ _$j_1346e:
 _f_13474:
 	AND R4, #00001111B
 	AND R6, #00001111B
-	MOV R2, #BYTE1 _d_080E0
-	MOV R3, #BYTE2 _d_080E0
+	MOV R2, #BYTE1 _matvct_dims
+	MOV R3, #BYTE2 _matvct_dims
 	MOV R0, R4
 	MOV R1, #0H
 	ADD ER0, ER0
@@ -8469,8 +8472,8 @@ _f_13BEA:
 	MOV R3, #0H
 	MOV R2, #0B4H
 	BL _memzero
-	MOV R2, #BYTE1 _d_080E0
-	MOV R3, #BYTE2 _d_080E0
+	MOV R2, #BYTE1 _matvct_dims
+	MOV R3, #BYTE2 _matvct_dims
 	L R8, _submode
 	ST R8, -1H[FP]
 	CMP R8, #3H
@@ -11802,8 +11805,8 @@ _$j_15494:
 	MOV ER0, ER4
 	MOV R5, #0H
 	ADD ER4, ER4
-	MOV R6, #BYTE1 _d_080E0
-	MOV R7, #BYTE2 _d_080E0
+	MOV R6, #BYTE1 _matvct_dims
+	MOV R7, #BYTE2 _matvct_dims
 	ADD ER4, ER6
 	L ER2, [ER4]
 	MOV R4, R1
@@ -12795,8 +12798,8 @@ _$j_15b70:
 	AND R0, #00001111B
 	MOV R1, #0H
 	ADD ER0, ER0
-	MOV R4, #BYTE1 _d_080E0
-	MOV R5, #BYTE2 _d_080E0
+	MOV R4, #BYTE1 _matvct_dims
+	MOV R5, #BYTE2 _matvct_dims
 	ADD ER4, ER0
 	L ER0, [ER4]
 	BNE _$j_15b86
@@ -15022,7 +15025,7 @@ _$j_16d28:
 	MOV R0, #0H
 	POP PC
 
-; Not used in any function
+; Only used in emulator ROM.
 ; FUNCTION: GY454XE  Re 16D2C
 ; FUNCTION: GY455XE  Im 16D2C
 _reset:
@@ -23972,6 +23975,7 @@ PUBLIC _concat_argsep
 PUBLIC _f_112B6
 PUBLIC _set_default_settings
 PUBLIC _f_112EA
+PUBLIC _f_13BEA
 PUBLIC _f_143EA
 PUBLIC _get_const_token
 PUBLIC _get_conv_token
@@ -23981,6 +23985,7 @@ PUBLIC _f_14516
 PUBLIC _f_14532
 PUBLIC _num_to_str_std_lineo
 PUBLIC _f_149D8
+PUBLIC _f_1547E
 PUBLIC _f_15486
 PUBLIC _f_154E0
 PUBLIC _f_154F2
@@ -23993,6 +23998,7 @@ PUBLIC _f_15DE8
 PUBLIC _f_15EE4
 PUBLIC _f_16C54
 PUBLIC _f_16CF0
+PUBLIC _reset
 PUBLIC _f_16E44
 PUBLIC _f_1A3FC
 PUBLIC _f_1A410
@@ -24047,9 +24053,9 @@ EXTRN CODE	: _line_print
 EXTRN CODE	: _num_sum_1__
 EXTRN CODE	: _f_03A72
 EXTRN CODE	: _f_03E72
-EXTRN CODE	: _f_043CE
-EXTRN CODE	: _f_0441A
-EXTRN CODE	: _get_num_stat_table_cols
+EXTRN CODE	: _table_stat_get_cell_addr
+EXTRN CODE	: _table_stat_get_col_addr
+EXTRN CODE	: _table_stat_get_num_cols
 EXTRN CODE	: _memzero
 EXTRN CODE	: _f_044B6
 EXTRN CODE	: _l_var
@@ -24106,7 +24112,7 @@ EXTRN DATA	: _arg0_ref
 EXTRN DATA	: _arg1_ref
 EXTRN DATA	: _d_08060
 EXTRN DATA	: _d_08078
-EXTRN DATA	: _d_080E0
+EXTRN DATA	: _matvct_dims
 EXTRN DATA	: _last_key_keycode
 EXTRN DATA	: _modifiers
 EXTRN DATA	: _mode

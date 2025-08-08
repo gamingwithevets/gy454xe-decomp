@@ -87,14 +87,19 @@ const char unk_01e24[] = {
 };
 
 // FUNCTION: GY454XE  Re 04E6E
+// FUNCTION: GY455XE  Im 055B0
+// FUNCTION: GY460XF  Im 04A74
 static void update_cursor(char x, char y) {
 	cursor_x = x;
 	cursor_y = y;
 	update_cursor_char();
 	d_08117 = font_size;
+	return;
 }
 
 // FUNCTION: GY454XE  Re 04E86
+// FUNCTION: GY455XE  Im 055C8
+// FUNCTION: GY460XF  Im 04A8C
 static char is_next_disp(char chr) {
 	if (d_080FE & (1 << 6) && chr == ':') return 1;
 	else if (chr) return 0;
@@ -102,6 +107,8 @@ static char is_next_disp(char chr) {
 }
 
 // FUNCTION: GY454XE  Re 04E9C
+// FUNCTION: GY455XE  Im 055DE
+// FUNCTION: GY460XF  Im 04AA2
 static char f_04E9C(char a) {
 	char v0;
 	char v1;
@@ -153,6 +160,8 @@ j_04f60:
 }
 
 // FUNCTION: GY454XE  Re 04F6E
+// FUNCTION: GY455XE  Im 056B0
+// FUNCTION: GY460XF  Im 04B74
 void input_print_linei(void) {
 	char *input;
 	char y;
@@ -208,6 +217,8 @@ void input_print_linei(void) {
 }
 
 // FUNCTION: GY454XE  Re 05076
+// FUNCTION: GY455XE  Im 057B8
+// FUNCTION: GY460XF  Im 04C7C
 static void mathi_draw_line(int x0, int x1, char y0, char y1) {
 	int v0;
 	char v1;
@@ -252,6 +263,8 @@ j_05124:
 }
 
 // FUNCTION: GY454XE  Re 05162
+// FUNCTION: GY455XE  Im 058A4
+// FUNCTION: GY460XF  Im 04D68
 static void mathi_draw_line_horz(int x1, int x2, char y) {
 	int v0;
 
@@ -276,6 +289,8 @@ static void mathi_draw_line_horz(int x1, int x2, char y) {
 }
 
 // FUNCTION: GY454XE  Re 051CE
+// FUNCTION: GY455XE  Im 05910
+// FUNCTION: GY460XF  Im 04DD4
 static void mathi_draw_line_vert(unsigned int x, char y0, char y1) {
 	if (mathi_enable_draw && x >= f_088AA()) {
 		x -= d_08000;
@@ -293,6 +308,8 @@ static void mathi_draw_line_vert(unsigned int x, char y0, char y1) {
 }
 
 // FUNCTION: GY454XE  Re 05222
+// FUNCTION: GY455XE  Im 05964
+// FUNCTION: GY460XF  Im 04E28
 static void mathi_plot_pixel(int x, char y) {
 	if (mathi_enable_draw && x >= f_088AA()) {
 		x -= d_08000;
@@ -305,6 +322,8 @@ static void mathi_plot_pixel(int x, char y) {
 }
 
 // FUNCTION: GY454XE  Re 05260
+// FUNCTION: GY455XE  Im 059A2
+// FUNCTION: GY460XF  Im 04E66
 static void mathi_line_print(char *string, int x, char y) {
 	int v0;
 
@@ -329,6 +348,8 @@ static void mathi_line_print(char *string, int x, char y) {
 }
 
 // FUNCTION: GY454XE  Re 052D0
+// FUNCTION: GY455XE  Im 05A12
+// FUNCTION: GY460XF  Im 04ED6
 static char f_052D0(char tok, int x, char y, char d) {
 	char v0;
 	char loc_m20[20];
@@ -353,6 +374,8 @@ static char f_052D0(char tok, int x, char y, char d) {
 }
 
 // FUNCTION: GY454XE  Re 05366
+// FUNCTION: GY455XE  Im 05AA8
+// FUNCTION: GY460XF  Im 04F6C
 static void _mathi_draw_abs_sqrt(mathi_bbox *a, int x, char y, char tok) {
 	int tmp;
 
@@ -389,6 +412,8 @@ static void _mathi_draw_abs_sqrt(mathi_bbox *a, int x, char y, char tok) {
 }
 
 // FUNCTION: GY454XE  Re 0542A
+// FUNCTION: GY455XE  Im 05B6C
+// FUNCTION: GY460XF  Im 05030
 static void mathi_draw_integral_symb(int x, char y, mathi_bbox c) {
 	if (mathi_enable_draw) {
 		char v0;
@@ -412,6 +437,8 @@ static void mathi_draw_integral_symb(int x, char y, mathi_bbox c) {
 }
 
 // FUNCTION: GY454XE  Re 054A4
+// FUNCTION: GY455XE  Im 05BE6
+// FUNCTION: GY460XF  Im 050AA
 static void mathi_draw_sigma(int x, char y) {
 	if (mathi_enable_draw) {
 		char v0;
@@ -435,6 +462,8 @@ static void mathi_draw_sigma(int x, char y) {
 }
 
 // FUNCTION: GY454XE  Re 05516
+// FUNCTION: GY455XE  Im 05C58
+// FUNCTION: GY460XF  Im 0511C
 static void mathi_draw_paren(int x, char y, char lr, mathi_bbox d) {
 	char v0;
 	char v1;
@@ -464,6 +493,8 @@ static void mathi_draw_paren(int x, char y, char lr, mathi_bbox d) {
 }
 
 // FUNCTION: GY454XE  Re 055BC
+// FUNCTION: GY455XE  Im 05CFE
+// FUNCTION: GY460XF  Im 051C2
 static void f_055BC(int x, char y, char *input) {
 	char v0;
 	char tokstr[20];
@@ -485,11 +516,15 @@ static void f_055BC(int x, char y, char *input) {
 }
 
 // FUNCTION: GY454XE  Re 05652
+// FUNCTION: GY455XE  Im 05D94
+// FUNCTION: GY460XF  Im 05258
 static char f_05652(char *input) {
 	return f_02676(*input);
 }
 
 // FUNCTION: GY454XE  Re 05658
+// FUNCTION: GY455XE  Im 05D9A
+// FUNCTION: GY460XF  Im 0525E
 char f_05658(char *input) {
 	char v0;
 
@@ -507,6 +542,7 @@ char f_05658(char *input) {
 
 // FUNCTION: GY454XE  Re 0568E
 // FUNCTION: GY455XE  Im 05DD0
+// FUNCTION: GY460XF  Im 05294
 static char f_0568E(char *input) {
 	char v0;
 
@@ -517,18 +553,24 @@ static char f_0568E(char *input) {
 }
 
 // FUNCTION: GY454XE  Re 056AE
+// FUNCTION: GY455XE  Im 05DF0
+// FUNCTION: GY460XF  Im 052B4
 static char f_056AE(char *input) {
 	if (f_05652(input) != 1) return 5;
 	return unk_01ddc[get_mathi_draw_idx(input[0])];
 }
 
 // FUNCTION: GY454XE  Re 056D0
+// FUNCTION: GY455XE  Im 05E12
+// FUNCTION: GY460XF  Im 052D6
 static char f_056D0(char *input) {
 	if (f_05658(input) != 1) return 5;
 	return unk_01ddc[get_mathi_draw_idx(input[0])];
 }
 
 // FUNCTION: GY454XE  Re 056F2
+// FUNCTION: GY455XE  Im 05E34
+// FUNCTION: GY460XF  Im 052F8
 static char *f_056F2(char *input, char *b) {
 	char v0;
 	char v1;
@@ -559,6 +601,8 @@ static char *f_056F2(char *input, char *b) {
 }
 
 // FUNCTION: GY454XE  Re 05766
+// FUNCTION: GY455XE  Im 05EA8
+// FUNCTION: GY460XF  Im 0536C
 static char f_05766(char *input) {
 	char v0;
 	char v1;
@@ -583,6 +627,8 @@ static char f_05766(char *input) {
 }
 
 // FUNCTION: GY454XE  Re 0579A
+// FUNCTION: GY455XE  Im 05EDC
+// FUNCTION: GY460XF  Im 053A0
 static char f_0579A(char *input, char b) {
 	char v0;
 	char v1;
@@ -627,6 +673,8 @@ static char f_0579A(char *input, char b) {
 }
 
 // FUNCTION: GY454XE  Re 05824
+// FUNCTION: GY455XE  Im 05F66
+// FUNCTION: GY460XF  Im 0542A
 static char f_05824(char *input) {
 	char v0;
 	char v1;
@@ -658,6 +706,8 @@ static char f_05824(char *input) {
 }
 
 // FUNCTION: GY454XE  Re 0587E
+// FUNCTION: GY455XE  Im 05FC0
+// FUNCTION: GY460XF  Im 05484
 static char f_0587E(char *input) {
 	char v0;
 	char v1;
@@ -685,6 +735,7 @@ static char f_0587E(char *input) {
 
 // FUNCTION: GY454XE  Re 058DC
 // FUNCTION: GY455XE  Im 0601E
+// FUNCTION: GY460XF  Im 054E2
 void input_print_mathi(void) {
 	char v0;
 	char v1;
@@ -765,6 +816,8 @@ void input_print_mathi(void) {
 }
 
 // FUNCTION: GY454XE  Re 05B2C
+// FUNCTION: GY455XE  Im 0626E
+// FUNCTION: GY460XF  Im 05732
 static char *mathi_draw_abs_sqrt(char *input, mathi_bbox *b, int x, char y) {
 	char v0;
 	char *v1;
@@ -776,6 +829,8 @@ static char *mathi_draw_abs_sqrt(char *input, mathi_bbox *b, int x, char y) {
 }
 
 // FUNCTION: GY454XE  Re 05B86
+// FUNCTION: GY455XE  Im 062C8
+// FUNCTION: GY460XF  Im 0578C
 static char *mathi_draw_pow(char *input, mathi_bbox *b, int x, char y) {
 	char v0;
 	char *v1;
@@ -837,6 +892,8 @@ j_05cc0:
 }
 
 // FUNCTION: GY454XE  Re 05D0C
+// FUNCTION: GY455XE  Im 0644E
+// FUNCTION: GY460XF  Im 05912
 static char *mathi_draw_logab(char *input, mathi_bbox *b, int x, char y) {
 	char *v0;
 	char v1;
@@ -887,6 +944,8 @@ j_05e5c:
 }
 
 // FUNCTION: GY454XE  Re 05EBC
+// FUNCTION: GY455XE  Im 065FE
+// FUNCTION: GY460XF  Im 05AC2
 static char *mathi_draw_ddx(char *input, mathi_bbox *b, int x, char y) {
 	char size;
 	int v1;
@@ -929,6 +988,8 @@ static char *mathi_draw_ddx(char *input, mathi_bbox *b, int x, char y) {
 }
 
 // FUNCTION: GY454XE  Re 06002
+// FUNCTION: GY455XE  Im 06744
+// FUNCTION: GY460XF  Im 05C08
 static char *mathi_draw_frac(char *input, mathi_bbox *b, int x, char y) {
 	char v0;
 	char v1;
@@ -1009,6 +1070,8 @@ j_062ca:
 }
 
 // FUNCTION: GY454XE  Re 062CE
+// FUNCTION: GY455XE  Im 06A10
+// FUNCTION: GY460XF  Im 05ED4
 static char *mathi_draw_nth_rt(char *input, mathi_bbox *b, int x, char y) {
 	mathi_bbox *v0;
 	char loc_m1;
@@ -1055,6 +1118,8 @@ j_06356:
 }
 
 // FUNCTION: GY454XE  Re 06456
+// FUNCTION: GY455XE  Im 06B98
+// FUNCTION: GY460XF  Im 0605C
 static char *mathi_draw_integral(char *input, mathi_bbox *b, int x, char y) {
 	char v0;
 	mathi_bbox *v1;
@@ -1122,6 +1187,8 @@ j_065fc:
 }
 
 // FUNCTION: GY454XE  Re 0666C
+// FUNCTION: GY455XE  Im 06DAE
+// FUNCTION: GY460XF  Im 06272
 static char *mathi_draw_sum(char *input, mathi_bbox *b, int x, char y) {
 	char v0;
 	mathi_bbox *v1;
@@ -1205,6 +1272,8 @@ j_06860:
 }
 
 // FUNCTION: GY454XE  Re 06914
+// FUNCTION: GY455XE  Im 07056
+// FUNCTION: GY460XF  Im 0651A
 static char f_06914(char *input) {
 	if (input > input_area_ptr) {
 		if (input[-1] == 0xb9 || input[-1] == 0xbc) return 1;
@@ -1216,6 +1285,7 @@ static char f_06914(char *input) {
 
 // FUNCTION: GY454XE  Re 06944
 // FUNCTION: GY455XE  Im 07086
+// FUNCTION: GY460XF  Im 0654A
 static char *mathi_draw_expr(char *input, mathi_bbox *b, int x, char y) {
 	int v0;
 	mathi_bbox loc_m4;
@@ -1241,9 +1311,11 @@ j_06966:
 			}
 			// SWITCH: GY454XE  Re 01DB2
 			// SWITCH: GY455XE  Im 01DB2
+			// SWITCH: GY460XF  Im 01B02
 			switch (f_05658(input)) {
 				// CASE: GY454XE  Re 069F4
 				// CASE: GY455XE  Im 07136
+				// CASE: GY460XF  Im 065FA
 				case 1:
 					++d_08007;
 					if (input = mathi_draw[get_mathi_draw_idx(*input)](input, &loc_m4, x, y)) {
@@ -1258,6 +1330,7 @@ j_06966:
 					goto j_069ea;
 				// CASE: GY454XE  Re 06A58
 				// CASE: GY455XE  Im 0719A
+				// CASE: GY460XF  Im 0665E
 				case 9:
 					mathi_draw_paren(x, y, 1, *b);
 					b->word[0] += 6;
@@ -1269,12 +1342,14 @@ j_06966:
 					goto j_069ea;
 				// CASE: GY454XE  Re 06A92
 				// CASE: GY455XE  Im 071D4
+				// CASE: GY460XF  Im 06698
 				case 10:
 					loc_m5 = f_052D0(*input, x, y, 1);
 					x += loc_m5;
 					b->word[0] += loc_m5;
 				// CASE: GY454XE  Re 06AB4
 				// CASE: GY455XE  Im 071F6
+				// CASE: GY460XF  Im 066BA
 				case 8:
 					if (input = mathi_draw_expr(input+1, &loc_m4, x+6, y)) {
 						mathi_draw_paren(x, y, 0, loc_m4);
@@ -1286,12 +1361,14 @@ j_06966:
 					goto j_069ea;
 				// CASE: GY454XE  Re 06B0E
 				// CASE: GY455XE  Im 07250
+				// CASE: GY460XF  Im 06714
 				case 3:
 				case 5:
 				case 11:
 					goto j_069ea;
 				// CASE: GY454XE  Re 06B12
 				// CASE: GY455XE  Im 07254
+				// CASE: GY460XF  Im 06718
 				case 0:
 				case 12:
 				case 13:
@@ -1304,6 +1381,7 @@ j_06966:
 					goto j_069ea;
 				// CASE: GY454XE  Re 06B4E
 				// CASE: GY455XE  Im 07290
+				// CASE: GY460XF  Im 06754
 				default: goto j_06966;
 			}
 			++input;
@@ -1317,6 +1395,7 @@ j_069ea:
 
 // FUNCTION: GY454XE  Re 06B52
 // FUNCTION: GY455XE  Im 07294
+// FUNCTION: GY460XF  Im 06758
 char f_06B52(char *input) {
 	char v0;
 	char *v1;
@@ -1353,6 +1432,7 @@ j_06ba0:
 
 // FUNCTION: GY454XE  Re 06C06
 // FUNCTION: GY455XE  Im 07348
+// FUNCTION: GY460XF  Im 0680C
 static char math2line_frac(char *input) {
 	char v0;
 	char v1;
@@ -1382,11 +1462,16 @@ static char math2line_frac(char *input) {
 
 // FUNCTION: GY454XE  Re 06C54
 // FUNCTION: GY455XE  Im 07396
+// FUNCTION: GY460XF  Im 0685A
 void math2line(char *input, char *b, char c, char d) {
 	char *v0;
 	char *v1;
 	char v2;
 	char *v3;
+#if ENABLE_RDEC == 1
+	char loc_m1_rdec;
+	char *tmp;
+#endif
 	char loc_m1;
 
 	loc_m1 = d_080FE & (1 << 6);
@@ -1394,9 +1479,12 @@ void math2line(char *input, char *b, char c, char d) {
 	v1 = b;
 	do {
 		// SWITCH: GY454XE  Re 01DCE
+		// SWITCH: GY455XE  Im 01DCE
+		// SWITCH: GY460XF  Im 01B1E
 		switch (f_0568E(input)) {
 			// CASE: GY454XE  Re 06D0A
 			// CASE: GY455XE  Im 0744C
+			// CASE: GY460XF  Im 06910
 			case 1:
 				v2 = f_056D0(input);
 				if (v2 != 2) {
@@ -1406,12 +1494,14 @@ void math2line(char *input, char *b, char c, char d) {
 				break;
 			// CASE: GY454XE  Re 06D20
 			// CASE: GY455XE  Im 07462
+			// CASE: GY460XF  Im 06926
 			case 2:
 				// Fraction
 				if (f_05652(&b[-1]) != 1 || b[-1] == 0xae) *b++ = '(';
 				break;
 			// CASE: GY454XE  Re 06D42
 			// CASE: GY455XE  Im 07484
+			// CASE: GY460XF  Im 06948
 			case 4:
 				*b++ = ')';
 				if (d || c + v1 + 1 != b) *b++ = math2line_frac(input);
@@ -1419,22 +1509,33 @@ void math2line(char *input, char *b, char c, char d) {
 				break;
 			// CASE: GY454XE  Re 06D68
 			// CASE: GY455XE  Im 074AA
+			// CASE: GY460XF  Im 0696E
 			case 6:
 				*b++ = '(';
 				break;
+			// CASE: GY460XF  Im 06978
+			case 3:
+#if ENABLE_RDEC == 1
+				tmp = f_06D90(input, &loc_m1_rdec);
+				// Recurring decimal
+				if (*tmp != 0xa4) *b++ = ')';
+				break;
+#endif
 			// CASE: GY454XE  Re 06D72
 			// CASE: GY455XE  Im 074B4
-			case 3:
+			// CASE: GY460XF  Im 06998
 			case 7:
 				*b++ = ')';
 				break;
 			// CASE: GY454XE  Re 06D7C
 			// CASE: GY455XE  Im 074BE
+			// CASE: GY460XF  Im 069A2
 			case 5:
 				*b++ = ',';
 				break;
 			// CASE: GY454XE  Re 06D86
 			// CASE: GY455XE  Im 074C8
+			// CASE: GY460XF  Im 069AC
 			default:
 				*b++ = *input;
 				break;
@@ -1461,6 +1562,7 @@ j_06cf6:
 
 // FUNCTION: GY454XE  Re 06D90
 // FUNCTION: GY455XE  Im 074D2
+// FUNCTION: GY460XF  Im 069B6
 static char *f_06D90(char *input, char *b) {
 	char v0;
 	char *v1;
@@ -1498,6 +1600,7 @@ static char *f_06D90(char *input, char *b) {
 
 // FUNCTION: GY454XE  Re 06E40
 // FUNCTION: GY455XE  Im 07582
+// FUNCTION: GY460XF  Im 06A66
 static char f_06E40(char *input, char b, char c) {
 	char v0;
 	char v1;
@@ -1554,6 +1657,7 @@ j_06eae:
 
 // FUNCTION: GY454XE  Re 06F1C
 // FUNCTION: GY455XE  Im 0765E
+// FUNCTION: GY460XF  Im 06B42
 static char *f_06F1C(char *input) {
 	char *v0;
 	char loc_m1;
@@ -1597,6 +1701,7 @@ j_06f66:
 
 // FUNCTION: GY454XE  Re 06FCE
 // FUNCTION: GY455XE  Im 07710
+// FUNCTION: GY460XF  Im 06BF4
 static void mathi_insert_box(char *input, char pos, char count) {
 	char *ip_curr;
 	char i;
@@ -1617,6 +1722,7 @@ static void mathi_insert_box(char *input, char pos, char count) {
 
 // FUNCTION: GY454XE  Re 07022
 // FUNCTION: GY455XE  Im 07764
+// FUNCTION: GY460XF  Im 06C48
 static void _insert_token(char token, char is_func, char *input) {
 	char *v0;
 	char count;
@@ -1791,6 +1897,7 @@ j_07272:
 
 // FUNCTION: GY454XE  Re 073BC
 // FUNCTION: GY455XE  Im 07AFE
+// FUNCTION: GY460XF  Im 06FE2
 static char is_mathi_char(char token) {
 	// Hex A - Hex F
 	if (is_mathi() && token >= 0xb8 && token <= 0xbd) return 1;
@@ -1799,6 +1906,7 @@ static char is_mathi_char(char token) {
 
 // FUNCTION: GY454XE  Re 073DC
 // FUNCTION: GY455XE  Im 07B1E
+// FUNCTION: GY460XF  Im 07002
 static char *move_cursor(char direction) {
 	char pos;
 	char *input;
@@ -1828,6 +1936,7 @@ static char *move_cursor(char direction) {
 
 // FUNCTION: GY454XE  Re 07442
 // FUNCTION: GY455XE  Im 07B84
+// FUNCTION: GY460XF  Im 07068
 static char *f_07442(char direction) {
 	char *cur_char;
 
@@ -1839,6 +1948,7 @@ static char *f_07442(char direction) {
 
 // FUNCTION: GY454XE  Re 07470
 // FUNCTION: GY455XE  Im 07BB2
+// FUNCTION: GY460XF  Im 07096
 void insert_token(char token, char is_func) {
 	char input[100];
 
@@ -1848,6 +1958,7 @@ void insert_token(char token, char is_func) {
 
 // FUNCTION: GY454XE  Re 07488
 // FUNCTION: GY455XE  Im 07BCA
+// FUNCTION: GY460XF  Im 070AE
 void process_cursor_action(char keycode) {
 	char *v0;
 	char v1;
@@ -2024,12 +2135,14 @@ j_076b6:
 
 // FUNCTION: GY454XE  Re 077C4
 // FUNCTION: GY455XE  Im 07F06
+// FUNCTION: GY460XF  Im 073EA
 static char is_num_1(char *num) {
 	return num_cmp(num, num_1);
 }
 
 // FUNCTION: GY454XE  Re 077CC
 // FUNCTION: GY455XE  Im 07F0E
+// FUNCTION: GY460XF  Im 073F2
 char num_to_str_std(char *out, char *num, char c) {
 	char v0;
 	char v1;
@@ -2169,6 +2282,7 @@ j_07b16:
 
 #if REAL == 0
 // FUNCTION: GY455XE  Im 082A2
+// FUNCTION: GY460XF  Im 077B0
 int f_082A2_E(emu_kb *kb) {
 	int v0;
 	int v1;
@@ -2197,6 +2311,7 @@ int f_082A2_E(emu_kb *kb) {
 }
 
 // FUNCTION: GY455XE  Im 0832A
+// FUNCTION: GY460XF  Im 07838
 static void f_0832A_E(char *result_str, char *error_buf) {
 	do {
 		switch (f_0568E(result_str)) {
@@ -2237,6 +2352,7 @@ static void f_0832A_E(char *result_str, char *error_buf) {
 
 // FUNCTION: GY454XE  Re 07B60
 // FUNCTION: GY455XE  Im 083B8
+// FUNCTION: GY460XF  Im 078C6
 void print_result(char *result) {
 	char v0;
 	char v1;

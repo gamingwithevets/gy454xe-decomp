@@ -8,6 +8,7 @@
 
 // FUNCTION: GY454XE  Re 09712
 // FUNCTION: GY455XE  Im 0A036
+// FUNCTION: GY460XF  Im 099BE
 void main(void) {
 	char i, j;
 
@@ -88,15 +89,15 @@ void main(void) {
 				f_0B8B8(1);
 				j = 0;
 			} else if (tm == TABLE_STAT_TABLE) {
-				draw_stat_table();
+				table_stat_handler();
 				j = 1;
 			}
-			else if (tm == TABLE_MATRIX) j = f_0A93A(i);
-			else if (tm == TABLE_VECTOR) j = f_0A936(i);
-			else if (tm == TABLE_EQN) j = f_0A594(i);
-			else if (tm == TABLE_RANGE) j = f_0A050(i);
-			else if (tm == TABLE_CALC) j = f_09BDC(i);
-			else if (tm == TABLE_SOLVE) j = f_09BDC(i);
+			else if (tm == TABLE_MATRIX) j = table_mat_handler(i);
+			else if (tm == TABLE_VECTOR) j = table_vct_handler(i);
+			else if (tm == TABLE_EQN) j = table_eqn_handler(i);
+			else if (tm == TABLE_RANGE) j = table_range_handler(i);
+			else if (tm == TABLE_CALC) j = calc_solve_handler(i);
+			else if (tm == TABLE_SOLVE) j = calc_solve_handler(i);
 		}
 		render();
 	}

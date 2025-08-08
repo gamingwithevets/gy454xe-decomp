@@ -504,59 +504,8 @@ _d_080DE:
 _d_080DF:
 	DS 1
 ; 080E0
-_d_080E0:
-	DS 1
-; 080E1
-_d_080E1:
-	DS 1
-; 080E2
-_d_080E2:
-	DS 1
-; 080E3
-_d_080E3:
-	DS 1
-; 080E4
-_d_080E4:
-	DS 1
-; 080E5
-_d_080E5:
-	DS 1
-; 080E6
-_d_080E6:
-	DS 1
-; 080E7
-_d_080E7:
-	DS 1
-; 080E8
-_d_080E8:
-	DS 1
-; 080E9
-_d_080E9:
-	DS 1
-; 080EA
-_d_080EA:
-	DS 1
-; 080EB
-_d_080EB:
-	DS 1
-; 080EC
-_d_080EC:
-	DS 1
-; 080ED
-_d_080ED:
-	DS 1
-; 080EE
-_d_080EE:
-	DS 1
-; 080EF
-_d_080EF:
-	DS 1
-; 080F0
-_d_080F0:
-	DS 1
-; 080F1
-_d_080F1:
-	DS 1
+_matvct_dims:
+	DS 18
 ; 080F2
 _last_key_scancode:
 	DS 2
@@ -725,7 +674,10 @@ _d_0812A:
 	DS 2
 ; 0812C
 _d_0812C:
-	DS 2
+	DS 1
+; 0812D
+_d_0812D:
+	DS 1
 ; 0812E
 _d_0812E:
 	DS 1
@@ -2793,7 +2745,7 @@ PUBLIC _d_080DC
 PUBLIC _cursor_noflash
 PUBLIC _d_080DE
 PUBLIC _d_080DF
-PUBLIC _d_080E0
+PUBLIC _matvct_dims
 PUBLIC _last_key_scancode
 PUBLIC _d_080F4
 PUBLIC _last_key_keycode
@@ -2846,6 +2798,8 @@ PUBLIC _d_08126
 PUBLIC _input_area_ptr
 PUBLIC _d_0812A
 PUBLIC _d_0812C
+PUBLIC _d_0812D
+PUBLIC _d_0812E
 PUBLIC _result
 PUBLIC _input_area
 PUBLIC _cache_area

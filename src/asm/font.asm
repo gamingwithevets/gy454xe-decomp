@@ -1,0 +1,345 @@
+TYPE(ML610CASESplus)
+MODEL LARGE
+ROMWINDOW 0, 7FFFH
+
+$$NTABfont SEGMENT TABLE 2H #0
+
+RSEG $$NTABfont
+
+; How the font works:
+; Every 8 characters in a font is defined by 5 (4 for the "tiny" font) 8x9 1-bit bitmap images merged together.
+; For example, for the big 5x9 font, for every image we take 8 bytes, convert to binary,
+; place each pixel in one row, from left (MSB) to right (LSB) and stack them top to bottom.
+; For example: We want to get the first 8 characters of the font. So we take the first 9*5 = 45 bytes.
+; Converting to image, we get the following:
+;Addr 22      2b      34      3d      46      
+;Char 20   21   22   23   24   25   26   27   
+; +0  .......#..##.##.#.#.................##..
+; +1  .......#..##.##.#.#.................##..
+; +2  .......#...#..#######...###.....#....#..
+; +3  .......#..#..#..#.#..#.#.##..#......#...
+; +4  .......#........#.#...#.....#.#####.....
+; +5  .......#........#.#..#.#...#............
+; +6  ...............######...#.#.....#.......
+; +7  .......#........#.#......#..##..........
+; +8  .......#........#.#.........##..........
+; If the characters are hard to make out, no worries! Just cut it into 5x9 chunks:
+;Char 20    21    22    23    24    25    26    27   
+; 0   ..... ..#.. ##.## .#.#. ..... ..... ..... .##..
+; 1   ..... ..#.. ##.## .#.#. ..... ..... ..... .##..
+; 2   ..... ..#.. .#..# ##### #...# ##... ..#.. ..#..
+; 3   ..... ..#.. #..#. .#.#. .#.#. ##..# ..... .#...
+; 4   ..... ..#.. ..... .#.#. ..#.. ...#. ##### .....
+; 5   ..... ..#.. ..... .#.#. .#.#. ..#.. ..... .....
+; 6   ..... ..... ..... ##### #...# .#... ..#.. .....
+; 7   ..... ..#.. ..... .#.#. ..... #..## ..... .....
+; 8   ..... ..#.. ..... .#.#. ..... ...## ..... .....
+; Rinse and repeat for the remaining characters.
+
+; How the fonts are stored:
+; The default character set for the 9px ("big") and 6px ("small") fonts contains a total of
+; 176 (0xB0) characters, from 0x20 to 0xCF.
+; The default character set for the 5px ("tiny") fonts contains a total of 45 (techincally 46,
+; but 0xFD is unused) characters, from 0xD0 to 0xFC. These characters are only used in table type
+; modes, e.g. TABLE, EQN, MATRIX, VECTOR, etc.
+; The "localization" character set can contain up to 31 (0x1F) chraracters, starting from index 0x01.
+; However, in practice, most of these character slots are left completely unused.
+; In GY builds (including this decomp), only 11 characters are actually used. 3 additional characters
+; were filled up in LY builds.
+
+; DATA: GY454XE  Re 00022
+; DATA: GY455XE  Im 00022
+; DATA: GY460XF  Im 00022
+_font_big_0:
+	DB	01H,	01H,	01H,	01H,	01H,	01H,	00H,	01H,	01H
+	DB	36H,	36H,	13H,	24H,	00H,	00H,	01H,	00H,	00H
+	DB	0A0H,	0A0H,	0F8H,	0A5H,	0A2H,	0A5H,	0F8H,	0A0H,	0A0H
+	DB	00H,	00H,	0E0H,	64H,	0BH,	10H,	0A0H,	4CH,	0CH
+	DB	0CH,	0CH,	84H,	08H,	0E0H,	00H,	80H,	00H,	00H
+	DB	12H,	21H,	40H,	40H,	40H,	40H,	40H,	21H,	12H
+	DB	00H,	00H,	80H,	80H,	99H,	98H,	80H,	00H,	00H
+	DB	00H,	00H,	40H,	40H,	0F0H,	46H,	46H,	02H,	04H
+	DB	00H,	00H,	00H,	00H,	7CH,	00H,	00H,	01H,	01H
+	DB	00H,	02H,	02H,	04H,	04H,	08H,	08H,	90H,	90H
+	DB	71H,	8BH,	89H,	89H,	89H,	89H,	89H,	89H,	73H
+	DB	1CH,	23H,	23H,	02H,	04H,	08H,	11H,	21H,	0BEH
+	DB	0E1H,	13H,	13H,	15H,	65H,	19H,	1FH,	11H,	0E1H
+	DB	7CH,	41H,	42H,	7AH,	47H,	06H,	86H,	46H,	39H
+	DB	0DFH,	11H,	01H,	02H,	0C2H,	22H,	24H,	24H,	0C4H
+	DB	73H,	8CH,	8CH,	8CH,	73H,	88H,	88H,	88H,	73H
+	DB	80H,	58H,	58H,	40H,	0C0H,	58H,	58H,	80H,	00H
+	DB	00H,	0C1H,	0C2H,	04H,	08H,	0C4H,	0C2H,	41H,	80H
+	DB	00H,	02H,	01H,	7CH,	00H,	7CH,	01H,	02H,	00H
+	DB	0EH,	11H,	11H,	81H,	42H,	84H,	00H,	04H,	04H
+	DB	01H,	72H,	8AH,	0BCH,	0ACH,	0AFH,	0BCH,	84H,	74H
+	DB	3CH,	0A3H,	0A3H,	63H,	7DH,	0E3H,	63H,	63H,	7CH
+	DB	0EEH,	19H,	08H,	08H,	08H,	08H,	08H,	19H,	0EEH
+	DB	7FH,	42H,	0C2H,	0C2H,	0FBH,	0C2H,	0C2H,	42H,	7EH
+	DB	0EEH,	11H,	10H,	10H,	0D7H,	11H,	11H,	13H,	0DH
+	DB	8BH,	89H,	89H,	89H,	0F9H,	89H,	89H,	89H,	8BH
+	DB	9FH,	05H,	05H,	05H,	05H,	05H,	25H,	25H,	99H
+	DB	18H,	28H,	28H,	48H,	88H,	48H,	28H,	28H,	1FH
+	DB	46H,	47H,	6FH,	6EH,	56H,	56H,	46H,	46H,	0C6H
+	DB	2EH,	31H,	31H,	0B1H,	0B1H,	71H,	71H,	31H,	2EH
+	DB	0F3H,	8CH,	8CH,	8CH,	0F4H,	84H,	85H,	86H,	83H
+	DB	0BCH,	63H,	63H,	63H,	7CH,	68H,	65H,	0A5H,	0E2H
+	DB	0EFH,	12H,	12H,	02H,	0E2H,	12H,	12H,	12H,	0E2H
+	DB	0C6H,	46H,	46H,	46H,	45H,	45H,	45H,	44H,	38H
+	DB	31H,	31H,	35H,	35H,	55H,	55H,	4AH,	8AH,	8AH
+	DB	8CH,	8CH,	52H,	22H,	21H,	51H,	51H,	89H,	89H
+	DB	7EH,	42H,	84H,	84H,	08H,	10H,	10H,	20H,	3EH
+	DB	0EFH,	89H,	89H,	8FH,	80H,	80H,	80H,	80H,	0E0H
+	DB	38H,	09H,	0AH,	08H,	08H,	08H,	08H,	08H,	38H
+	DB	80H,	40H,	20H,	00H,	00H,	00H,	00H,	00H,	1FH
+	DB	00H,	00H,	03H,	04H,	71H,	02H,	04H,	04H,	03H
+	DB	20H,	20H,	0ACH,	73H,	0E3H,	63H,	63H,	0F3H,	6CH
+	DB	00H,	00H,	0E6H,	19H,	08H,	08H,	08H,	19H,	0E6H
+	DB	80H,	80H,	0B9H,	0C4H,	0C4H,	0FCH,	0C0H,	0C4H,	0B8H
+	DB	60H,	80H,	0CFH,	91H,	91H,	91H,	8FH,	81H,	8EH
+	DB	81H,	80H,	83H,	0B1H,	0C9H,	89H,	89H,	89H,	8BH
+	DB	05H,	01H,	0DH,	05H,	05H,	05H,	05H,	25H,	99H
+	DB	06H,	02H,	12H,	22H,	42H,	82H,	42H,	22H,	17H
+	DB	00H,	00H,	6AH,	57H,	56H,	56H,	56H,	56H,	56H
+	DB	00H,	00H,	0CEH,	31H,	31H,	31H,	31H,	31H,	2EH
+	DB	00H,	00H,	0F3H,	8CH,	8CH,	8CH,	0CCH,	0B3H,	80H
+	DB	00H,	00H,	0ECH,	73H,	61H,	60H,	0E0H,	61H,	60H
+	DB	04H,	04H,	0EFH,	14H,	04H,	0E4H,	14H,	14H,	0E3H
+	DB	00H,	00H,	46H,	46H,	46H,	45H,	45H,	0CCH,	34H
+	DB	00H,	00H,	31H,	35H,	35H,	55H,	55H,	8AH,	8AH
+	DB	00H,	00H,	8CH,	8CH,	52H,	22H,	51H,	89H,	8EH
+	DB	00H,	00H,	7EH,	42H,	84H,	88H,	10H,	20H,	3EH
+	DB	38H,	48H,	48H,	48H,	88H,	48H,	48H,	48H,	38H
+	DB	60H,	10H,	10H,	11H,	0AH,	12H,	10H,	10H,	60H
+	DB	00H,	00H,	00H,	00H,	0A0H,	0A0H,	40H,	00H,	00H
+	DB	00H,	60H,	01H,	0E2H,	66H,	67H,	66H,	66H,	0F3H
+	DB	00H,	00H,	81H,	63H,	95H,	09H,	15H,	63H,	81H
+	DB	00H,	00H,	70H,	55H,	5AH,	5AH,	55H,	50H,	70H
+	DB	32H,	4BH,	4AH,	4AH,	0B2H,	80H,	00H,	00H,	00H
+	DB	0CEH,	12H,	12H,	0EH,	02H,	0CH,	00H,	00H,	00H
+	DB	00H,	17H,	10H,	20H,	26H,	41H,	41H,	83H,	0FCH
+	DB	00H,	0FEH,	01H,	00H,	63H,	92H,	0CH,	08H,	0F1H
+	DB	42H,	0A5H,	18H,	00H,	98H,	64H,	43H,	0C2H,	3CH
+	DB	00H,	00H,	90H,	08H,	0FCH,	89H,	13H,	01H,	00H
+	DB	00H,	08H,	24H,	3EH,	0A1H,	3EH,	0E4H,	08H,	80H
+	DB	00H,	00H,	00H,	00H,	8DH,	55H,	25H,	55H,	8DH
+	DB	00H,	00H,	1EH,	00H,	0C0H,	6EH,	6AH,	6AH,	0EEH
+	DB	01H,	02H,	04H,	08H,	14H,	12H,	11H,	10H,	0FFH
+	DB	02H,	09H,	08H,	7CH,	10H,	7DH,	22H,	20H,	03H
+	DB	00H,	00H,	80H,	40H,	80H,	01H,	03H,	07H,	0CFH
+	DB	38H,	21H,	21H,	21H,	21H,	21H,	0A1H,	65H,	22H
+	DB	80H,	40H,	00H,	1DH,	23H,	23H,	3FH,	23H,	23H
+	DB	00H,	00H,	00H,	0E7H,	18H,	0E8H,	18H,	18H,	0E7H
+	DB	00H,	01H,	01H,	59H,	0E5H,	45H,	45H,	0C5H,	44H
+	DB	00H,	02H,	86H,	0CEH,	0FEH,	0CEH,	86H,	02H,	00H
+	DB	71H,	8BH,	89H,	89H,	89H,	73H,	00H,	00H,	00H
+	DB	1CH,	23H,	04H,	08H,	11H,	0BEH,	00H,	00H,	00H
+	DB	0E1H,	13H,	65H,	19H,	1FH,	0E1H,	00H,	00H,	00H
+	DB	7CH,	41H,	7BH,	06H,	0C6H,	39H,	00H,	00H,	00H
+	DB	0DFH,	01H,	0C2H,	22H,	24H,	0C4H,	00H,	00H,	00H
+	DB	73H,	8CH,	74H,	8BH,	88H,	73H,	00H,	00H,	00H
+	DB	87H,	42H,	7AH,	0C2H,	83H,	02H,	00H,	00H,	00H
+	DB	9BH,	6AH,	4AH,	0CAH,	3AH,	0BH,	00H,	00H,	00H
+	DB	80H,	80H,	80H,	89H,	90H,	90H,	10H,	10H,	09H
+	DB	00H,	00H,	04H,	04H,	9FH,	84H,	84H,	80H,	1FH
+	DB	00H,	00H,	00H,	71H,	8BH,	89H,	89H,	89H,	73H
+	DB	00H,	00H,	00H,	1CH,	22H,	05H,	08H,	10H,	0BEH
+	DB	00H,	00H,	00H,	3FH,	18H,	0DFH,	18H,	18H,	18H
+	DB	00H,	00H,	00H,	0C7H,	66H,	56H,	4FH,	46H,	46H
+	DB	00H,	00H,	00H,	0C0H,	2AH,	2AH,	0CAH,	15H,	10H
+	DB	77H,	0CEH,	0CEH,	0CEH,	0CFH,	0FEH,	0CEH,	0CEH,	0CFH
+	DB	9DH,	73H,	71H,	71H,	0B1H,	71H,	71H,	73H,	9DH
+	DB	0CFH,	0ACH,	9CH,	9CH,	9FH,	9CH,	9CH,	0ACH,	0CFH
+	DB	0FFH,	63H,	63H,	63H,	7BH,	63H,	63H,	63H,	0E3H
+	DB	0C0H,	28H,	2CH,	2AH,	0C9H,	0AH,	0CH,	08H,	00H
+	DB	0F8H,	88H,	42H,	45H,	24H,	44H,	44H,	8DH,	0FAH
+	DB	00H,	00H,	72H,	4CH,	88H,	88H,	91H,	91H,	50H
+	DB	03H,	04H,	64H,	98H,	8FH,	0E8H,	09H,	19H,	0E6H
+	DB	60H,	90H,	91H,	91H,	0A9H,	0A9H,	2AH,	46H,	46H
+	DB	00H,	00H,	5FH,	4AH,	4AH,	4AH,	0AAH,	2BH,	12H
+	DB	00H,	00H,	1BH,	65H,	95H,	95H,	93H,	92H,	62H
+	DB	88H,	94H,	94H,	55H,	54H,	54H,	94H,	08H,	36H
+	DB	8FH,	8FH,	0CFH,	8FH,	8FH,	0EFH,	9FH,	9FH,	9FH
+	DB	0FCH,	0C4H,	0C4H,	0C5H,	0C6H,	0C4H,	0C4H,	0C6H,	0FDH
+	DB	00H,	00H,	00H,	0C0H,	20H,	0C0H,	20H,	3FH,	0DFH
+
+; DATA: GY454XE  Re 00400
+; DATA: GY455XE  Im 00400
+; DATA: GY460XF  Im 00400
+_font_small_0:
+	DB	01H,	01H,	01H,	01H,	00H,	01H
+	DB	36H,	12H,	25H,	00H,	01H,	00H
+	DB	00H,	0A8H,	0F5H,	0A2H,	0F5H,	0A8H
+	DB	00H,	0E4H,	68H,	13H,	2CH,	0CCH
+	DB	0CH,	84H,	08H,	0E0H,	00H,	80H
+	DB	12H,	21H,	21H,	21H,	21H,	12H
+	DB	00H,	00H,	18H,	19H,	00H,	00H
+	DB	00H,	40H,	40H,	0F6H,	42H,	44H
+	DB	00H,	00H,	00H,	7CH,	01H,	01H
+	DB	00H,	01H,	02H,	04H,	88H,	90H
+	DB	71H,	8BH,	89H,	89H,	89H,	73H
+	DB	1CH,	23H,	04H,	08H,	11H,	0BEH
+	DB	0E1H,	13H,	65H,	19H,	1FH,	0E1H
+	DB	7CH,	41H,	7BH,	06H,	0C6H,	39H
+	DB	0DFH,	01H,	0C2H,	22H,	24H,	0C4H
+	DB	73H,	8CH,	74H,	8BH,	88H,	73H
+	DB	80H,	58H,	58H,	0C0H,	98H,	18H
+	DB	0C0H,	0C1H,	02H,	0C4H,	42H,	81H
+	DB	00H,	01H,	7CH,	00H,	7CH,	01H
+	DB	0EH,	11H,	82H,	44H,	80H,	04H
+	DB	71H,	8AH,	0BCH,	0AFH,	9CH,	64H
+	DB	3CH,	0A3H,	7DH,	0E3H,	63H,	7CH
+	DB	0EEH,	19H,	08H,	08H,	19H,	0EEH
+	DB	7FH,	42H,	0FBH,	0C2H,	42H,	7EH
+	DB	0EEH,	11H,	0D0H,	17H,	11H,	0FH
+	DB	8BH,	89H,	0F9H,	89H,	89H,	8BH
+	DB	8FH,	05H,	05H,	05H,	25H,	99H
+	DB	18H,	28H,	48H,	0C8H,	28H,	1FH
+	DB	46H,	6FH,	56H,	56H,	46H,	0C6H
+	DB	2EH,	31H,	0B1H,	71H,	31H,	2EH
+	DB	0F3H,	8CH,	8CH,	0F5H,	84H,	83H
+	DB	0BCH,	63H,	62H,	7CH,	0A5H,	62H
+	DB	0EFH,	12H,	0C2H,	22H,	12H,	0E2H
+	DB	0C6H,	46H,	45H,	45H,	44H,	38H
+	DB	31H,	35H,	55H,	55H,	8AH,	8AH
+	DB	8CH,	54H,	22H,	51H,	89H,	89H
+	DB	7EH,	42H,	84H,	08H,	10H,	3EH
+	DB	0EEH,	8AH,	8EH,	80H,	80H,	0E0H
+	DB	38H,	09H,	0AH,	08H,	08H,	38H
+	DB	80H,	40H,	20H,	00H,	00H,	1FH
+	DB	00H,	03H,	00H,	73H,	04H,	03H
+	DB	20H,	0ACH,	73H,	0E3H,	63H,	0FCH
+	DB	00H,	0E6H,	09H,	08H,	18H,	0E7H
+	DB	80H,	0B8H,	0C5H,	0FCH,	0C0H,	0B8H
+	DB	60H,	8FH,	0D1H,	8FH,	81H,	8EH
+	DB	81H,	80H,	0B3H,	0C9H,	89H,	8BH
+	DB	04H,	00H,	04H,	04H,	24H,	98H
+	DB	86H,	92H,	0A2H,	0C2H,	0A2H,	97H
+	DB	00H,	6AH,	57H,	56H,	56H,	56H
+	DB	00H,	0CEH,	31H,	31H,	31H,	2EH
+	DB	00H,	0F3H,	8CH,	0CCH,	0B3H,	80H
+	DB	00H,	0ECH,	73H,	0E0H,	60H,	61H
+	DB	04H,	0FFH,	04H,	0E4H,	14H,	0E3H
+	DB	00H,	46H,	46H,	45H,	0CDH,	34H
+	DB	00H,	31H,	35H,	55H,	55H,	8AH
+	DB	00H,	0CCH,	32H,	21H,	61H,	9EH
+	DB	00H,	7EH,	44H,	88H,	10H,	3EH
+	DB	38H,	48H,	88H,	48H,	48H,	38H
+	DB	60H,	10H,	09H,	12H,	10H,	60H
+	DB	00H,	00H,	00H,	0A0H,	40H,	00H
+	DB	61H,	02H,	0E6H,	67H,	66H,	0F3H
+	DB	80H,	63H,	95H,	09H,	55H,	0A3H
+	DB	00H,	75H,	5AH,	5AH,	55H,	70H
+	DB	32H,	4BH,	0CAH,	0B2H,	00H,	00H
+	DB	9CH,	14H,	1CH,	04H,	18H,	00H
+	DB	0FH,	10H,	26H,	41H,	83H,	0FCH
+	DB	0FEH,	00H,	63H,	94H,	08H,	0F1H
+	DB	42H,	0A5H,	98H,	65H,	0C2H,	3CH
+	DB	00H,	10H,	89H,	7FH,	09H,	10H
+	DB	20H,	0A4H,	3EH,	0E1H,	1EH,	84H
+	DB	00H,	00H,	00H,	0AFH,	4DH,	0AFH
+	DB	00H,	0EH,	00H,	38H,	28H,	38H
+	DB	01H,	02H,	04H,	2FH,	20H,	0EFH
+	DB	02H,	09H,	7CH,	13H,	7CH,	23H
+	DB	00H,	00H,	80H,	0C2H,	06H,	0CEH
+	DB	38H,	21H,	21H,	0A1H,	61H,	26H
+	DB	0C0H,	1DH,	23H,	3FH,	23H,	23H
+	DB	00H,	0E7H,	18H,	0E8H,	18H,	0E7H
+	DB	00H,	01H,	59H,	65H,	0C5H,	45H
+	DB	00H,	86H,	0CEH,	0FEH,	0CEH,	86H
+	DB	61H,	93H,	91H,	91H,	63H,	00H
+	DB	19H,	24H,	08H,	10H,	0BDH,	00H
+	DB	0C2H,	26H,	0CAH,	2FH,	0C2H,	00H
+	DB	79H,	42H,	73H,	0AH,	71H,	00H
+	DB	9EH,	02H,	84H,	48H,	88H,	00H
+	DB	63H,	94H,	63H,	90H,	63H,	00H
+	DB	07H,	82H,	0BAH,	83H,	02H,	00H
+	DB	9BH,	6AH,	0CAH,	3BH,	00H,	00H
+	DB	80H,	80H,	89H,	90H,	10H,	09H
+	DB	04H,	04H,	1FH,	84H,	84H,	1FH
+	DB	00H,	61H,	93H,	91H,	91H,	63H
+	DB	00H,	18H,	24H,	09H,	10H,	0BCH
+	DB	00H,	3FH,	18H,	0DEH,	18H,	18H
+	DB	00H,	4BH,	6AH,	5BH,	4AH,	4AH
+	DB	00H,	80H,	4AH,	8AH,	15H,	10H
+	DB	77H,	0CEH,	0CFH,	0FEH,	0CEH,	0CFH
+	DB	9DH,	73H,	0B1H,	71H,	73H,	9DH
+	DB	0EFH,	9CH,	9FH,	9CH,	9CH,	0EFH
+	DB	0FFH,	63H,	7BH,	63H,	63H,	0E3H
+	DB	0C0H,	2CH,	2AH,	0C9H,	0AH,	0CH
+	DB	0F8H,	4BH,	24H,	24H,	4CH,	0FBH
+	DB	00H,	72H,	8CH,	88H,	91H,	50H
+	DB	03H,	74H,	8FH,	0E8H,	09H,	0E6H
+	DB	20H,	91H,	91H,	0A9H,	4AH,	46H
+	DB	00H,	5FH,	4AH,	4AH,	0ABH,	12H
+	DB	18H,	63H,	95H,	95H,	93H,	62H
+	DB	88H,	94H,	55H,	54H,	88H,	36H
+	DB	8FH,	0CFH,	8FH,	0EFH,	9FH,	9FH
+	DB	0FCH,	0C7H,	0C4H,	0C5H,	0C4H,	0FFH
+	DB	00H,	80H,	40H,	80H,	5FH,	9FH
+
+; The 5px "tiny" font actually has a width of 4, meaning 2 chr/1 img.
+; Charmap for reference:
+;    x0 x1 x2 x3 x4 x5 x6 x7 x8 x9 xA xB xC xD xE xF
+; Dx 0  1  2  3  4  5  6  7  8  9  +  -  .  *1 0  0⁻
+; Ex A  B  C  D  E  F  M  O  Q  R  X  Y     ,  ^  v
+; Fx a  b  c  d  n  s  (  )  ´  ∑  i  ∠  >
+; DATA: GY454XE  Re 00694
+; DATA: GY455XE  Im 00694
+; DATA: GY460XF  Im 00694
+_font_tiny:
+	DB	72H,	52H,	52H,	52H,	72H
+	DB	77H,	11H,	77H,	41H,	77H
+	DB	57H,	54H,	57H,	71H,	17H
+	DB	77H,	45H,	71H,	51H,	71H
+	DB	77H,	55H,	77H,	51H,	77H
+	DB	00H,	20H,	77H,	20H,	00H
+	DB	00H,	00H,	05H,	61H,	61H
+	DB	03H,	00H,	77H,	55H,	77H
+	DB	26H,	55H,	76H,	55H,	56H
+	DB	36H,	45H,	45H,	45H,	36H
+	DB	77H,	44H,	77H,	44H,	74H
+	DB	52H,	75H,	75H,	55H,	52H
+	DB	76H,	55H,	56H,	65H,	35H
+	DB	55H,	55H,	22H,	52H,	52H
+	DB	00H,	00H,	06H,	02H,	04H
+	DB	20H,	70H,	77H,	07H,	02H
+	DB	24H,	14H,	37H,	55H,	36H
+	DB	01H,	31H,	47H,	45H,	33H
+	DB	03H,	64H,	52H,	51H,	56H
+	DB	14H,	22H,	22H,	22H,	14H
+	DB	27H,	44H,	02H,	04H,	07H
+	DB	60H,	01H,	62H,	64H,	67H
+	DB	40H,	20H,	10H,	20H,	40H
+
+; DATA: GY454XE  Re 00707
+; DATA: GY455XE  Im 00707
+; DATA: GY460XF  Im 00707
+_font_big_1:
+	DB	22H,	21H,	00H,	23H,	40H,	83H,	8CH,	8CH,	73H
+	DB	04H,	08H,	00H,	9CH,	43H,	0DFH,	63H,	0E7H,	5AH
+	DB	21H,	42H,	00H,	0E6H,	12H,	0F2H,	02H,	12H,	0E7H
+	DB	08H,	11H,	00H,	39H,	46H,	46H,	46H,	46H,	39H
+	DB	00H,	4AH,	00H,	0D1H,	31H,	31H,	31H,	33H,	0CDH
+	DB	11H,	21H,	00H,	89H,	89H,	89H,	89H,	99H,	69H
+	DB	04H,	08H,	1CH,	22H,	22H,	22H,	22H,	22H,	1CH
+
+; Note: the small font's localization character set is actually 7px tall!
+; DATA: GY454XE  Re 00746
+; DATA: GY455XE  Im 00746
+; DATA: GY460XF  Im 00746
+_font_small_1:
+	DB	02H,	21H,	03H,	20H,	43H,	8CH,	73H
+	DB	04H,	08H,	9CH,	43H,	0DFH,	63H,	0DEH
+	DB	21H,	42H,	0E0H,	16H,	0F2H,	02H,	0E7H
+	DB	09H,	10H,	00H,	39H,	46H,	46H,	39H
+	DB	4AH,	00H,	00H,	0D1H,	31H,	33H,	0CDH
+	DB	10H,	21H,	00H,	89H,	89H,	99H,	69H
+	DB	04H,	08H,	1CH,	22H,	22H,	22H,	1CH
+
+PUBLIC _font_big_0
+PUBLIC _font_small_0
+PUBLIC _font_tiny
+PUBLIC _font_big_1
+PUBLIC _font_small_1
+
+END

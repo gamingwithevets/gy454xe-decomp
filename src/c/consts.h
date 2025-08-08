@@ -16,6 +16,14 @@ typedef union {
 	unsigned int kio;
 } scancode;
 
+typedef union {
+	struct {
+		char m;
+		char n;
+	} b;
+	unsigned int mn;
+} dim;
+
 // Struct used by num_to_str functions and some functions in generals.
 typedef struct {
 	char num[15];
@@ -297,7 +305,16 @@ enum var {
 	VAR_PREANS	= 10
 };
 
-// Result format (result_format 80FFH)
+// Result template (result_template 80FFH)
+enum result_template {
+	RESTMP_REC			= 0x11,
+	RESTMP_POL			= 0x12,
+	RESTMP_SOLVE		= 0x13,
+	RESTMP_REMAINDER	= 0x14,
+	RESTMP_SIMP			= 0x15
+};
+
+// Result format (result_format 8100H)
 enum result_fmt {
 	RESULT_DMS		= 1,
 	RESULT_ENGM4	= 2,
@@ -332,7 +349,7 @@ extern char d_080DC;
 extern char cursor_noflash;
 extern char d_080DE;
 extern char d_080DF;
-extern char (*d_080E0)[2];
+extern dim matvct_dims[9];
 extern scancode last_key_scancode;
 extern char last_key_keycode;
 extern char force_nochar;
@@ -381,6 +398,8 @@ extern char d_08126;
 extern char *input_area_ptr;
 extern char *d_0812A;
 extern char d_0812C;
+extern char d_0812D;
+extern char d_0812E;
 extern char result[20];
 extern char input_area[100];
 extern char cache_area[100];
@@ -390,5 +409,9 @@ extern char mode_ram[880];
 extern char magic_string[16];
 extern mathi_bbox d_08640[100];
 extern void *stack_start;
+
+// SFR address defines
+#define KID_ADDR 0xF040
+#define KOD_ADDR 0xF046
 
 #endif

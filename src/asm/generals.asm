@@ -6,7 +6,7 @@ ROMWINDOW 0, 7FFFH
 ; generals may be partially written in C (at least 1 C source and 1 ASM source), however full assembly will be used for now.
 ; generals may be made up of multiple ASM files. For now, these are combined into a single ASM file.
 
-_calc_history		EQU 829EH
+; TODO: Replace these with addresses relative to mode_ram
 _vars_im_start		EQU 8408H
 _var_m_im			EQU 8408H
 _d_0850A			EQU 850AH
@@ -33,336 +33,136 @@ $$NTABgenerals0 SEGMENT TABLE 2H #0
 $$NTABgenerals1 SEGMENT TABLE 2H #0
 $$NTABgenerals2 SEGMENT TABLE 2H #0
 $$NTABgenerals3 SEGMENT TABLE 2H #0
-$$NTABgenerals4 SEGMENT TABLE 2H #0
 
 RSEG $$NTABgenerals0
 
-; How the font works:
-; Every 8 characters in a font is defined by 5 (4 for the "tiny" font) 8x9 1-bit bitmap images merged together.
-; For example, for the big 5x9 font, for every image we take 8 bytes, convert to binary,
-; place each pixel in one row, from left (MSB) to right (LSB) and stack them top to bottom.
-; For example: We want to get the first 8 characters of the font. So we take the first 9*5 = 45 bytes.
-; Converting to image, we get the following:
-;Addr 22      2b      34      3d      46      
-;Char 20   21   22   23   24   25   26   27   
-; +0  .......#..##.##.#.#.................##..
-; +1  .......#..##.##.#.#.................##..
-; +2  .......#...#..#######...###.....#....#..
-; +3  .......#..#..#..#.#..#.#.##..#......#...
-; +4  .......#........#.#...#.....#.#####.....
-; +5  .......#........#.#..#.#...#............
-; +6  ...............######...#.#.....#.......
-; +7  .......#........#.#......#..##..........
-; +8  .......#........#.#.........##..........
-; If the characters are hard to make out, no worries! Just cut it into 5x9 chunks:
-;Char 20    21    22    23    24    25    26    27   
-; 0   ..... ..#.. ##.## .#.#. ..... ..... ..... .##..
-; 1   ..... ..#.. ##.## .#.#. ..... ..... ..... .##..
-; 2   ..... ..#.. .#..# ##### #...# ##... ..#.. ..#..
-; 3   ..... ..#.. #..#. .#.#. .#.#. ##..# ..... .#...
-; 4   ..... ..#.. ..... .#.#. ..#.. ...#. ##### .....
-; 5   ..... ..#.. ..... .#.#. .#.#. ..#.. ..... .....
-; 6   ..... ..... ..... ##### #...# .#... ..#.. .....
-; 7   ..... ..#.. ..... .#.#. ..... #..## ..... .....
-; 8   ..... ..#.. ..... .#.#. ..... ...## ..... .....
-; Rinse and repeat for the remaining characters.
+; DATA: GY454XE  Re 00778
+; DATA: GY455XE  Im 00778
+_matrix_dims:
+	DB 3, 3
+	DB 3, 2
+	DB 3, 1
+	DB 2, 3
+	DB 2, 2
+	DB 2, 1
+	DB 1, 3
+	DB 1, 2
+	DB 1, 1
 
-; How the fonts are stored:
-; The default character set for the 9px ("big") and 6px ("small") fonts contains a total of
-; 176 (0xB0) characters, from 0x20 to 0xCF.
-; The default character set for the 5px ("tiny") fonts contains a total of 45 (techincally 46,
-; but 0xFD is unused) characters, from 0xD0 to 0xFC. These characters are only used in table type
-; modes, e.g. TABLE, EQN, MATRIX, VECTOR, etc.
-; The "localization" character set can contain up to 31 (0x1F) chraracters, starting from index 0x01.
-; However, in practice, most of these character slots are left completely unused.
-; In GY builds (including this decomp), only 11 characters are actually used. 3 additional characters
-; were filled up in LY builds.
+; DATA: GY454XE  Re 0078A
+; DATA: GY455XE  Im 0078A
+_unk_0078a:
+	DW _mode_ram+0
+	DW _mode_ram+10
+	DW _mode_ram+20
+	DW _mode_ram+30
+	DW _mode_ram+40
+	DW _mode_ram+50
+	DW _mode_ram+60
+	DW _mode_ram+70
+	DW _mode_ram+80
+	DW _mode_ram+90
+	DW _mode_ram+100
+	DW _mode_ram+110
+	DW _mode_ram+120
+	DW _mode_ram+130
+	DW _mode_ram+140
+	DW _mode_ram+150
+	DW _mode_ram+160
+	DW _mode_ram+170
+	DW _mode_ram+180
+	DW _mode_ram+190
+	DW _mode_ram+200
+	DW _mode_ram+210
+	DW _mode_ram+220
+	DW _mode_ram+230
+	DW _mode_ram+240
+	DW _mode_ram+250
+	DW _mode_ram+260
+	DW _mode_ram+270
+	DW _mode_ram+280
+	DW _mode_ram+290
+	DW _mode_ram+300
+	DW _mode_ram+310
+	DW _mode_ram+320
+	DW _mode_ram+330
+	DW _mode_ram+340
+	DW _mode_ram+350
 
-; DATA: GY454XE  Re 00022
-; DATA: GY455XE  Im 00022
-_font_big_0:
-	DB	01H,	01H,	01H,	01H,	01H,	01H,	00H,	01H,	01H
-	DB	36H,	36H,	13H,	24H,	00H,	00H,	01H,	00H,	00H
-	DB	0A0H,	0A0H,	0F8H,	0A5H,	0A2H,	0A5H,	0F8H,	0A0H,	0A0H
-	DB	00H,	00H,	0E0H,	64H,	0BH,	10H,	0A0H,	4CH,	0CH
-	DB	0CH,	0CH,	84H,	08H,	0E0H,	00H,	80H,	00H,	00H
-	DB	12H,	21H,	40H,	40H,	40H,	40H,	40H,	21H,	12H
-	DB	00H,	00H,	80H,	80H,	99H,	98H,	80H,	00H,	00H
-	DB	00H,	00H,	40H,	40H,	0F0H,	46H,	46H,	02H,	04H
-	DB	00H,	00H,	00H,	00H,	7CH,	00H,	00H,	01H,	01H
-	DB	00H,	02H,	02H,	04H,	04H,	08H,	08H,	90H,	90H
-	DB	71H,	8BH,	89H,	89H,	89H,	89H,	89H,	89H,	73H
-	DB	1CH,	23H,	23H,	02H,	04H,	08H,	11H,	21H,	0BEH
-	DB	0E1H,	13H,	13H,	15H,	65H,	19H,	1FH,	11H,	0E1H
-	DB	7CH,	41H,	42H,	7AH,	47H,	06H,	86H,	46H,	39H
-	DB	0DFH,	11H,	01H,	02H,	0C2H,	22H,	24H,	24H,	0C4H
-	DB	73H,	8CH,	8CH,	8CH,	73H,	88H,	88H,	88H,	73H
-	DB	80H,	58H,	58H,	40H,	0C0H,	58H,	58H,	80H,	00H
-	DB	00H,	0C1H,	0C2H,	04H,	08H,	0C4H,	0C2H,	41H,	80H
-	DB	00H,	02H,	01H,	7CH,	00H,	7CH,	01H,	02H,	00H
-	DB	0EH,	11H,	11H,	81H,	42H,	84H,	00H,	04H,	04H
-	DB	01H,	72H,	8AH,	0BCH,	0ACH,	0AFH,	0BCH,	84H,	74H
-	DB	3CH,	0A3H,	0A3H,	63H,	7DH,	0E3H,	63H,	63H,	7CH
-	DB	0EEH,	19H,	08H,	08H,	08H,	08H,	08H,	19H,	0EEH
-	DB	7FH,	42H,	0C2H,	0C2H,	0FBH,	0C2H,	0C2H,	42H,	7EH
-	DB	0EEH,	11H,	10H,	10H,	0D7H,	11H,	11H,	13H,	0DH
-	DB	8BH,	89H,	89H,	89H,	0F9H,	89H,	89H,	89H,	8BH
-	DB	9FH,	05H,	05H,	05H,	05H,	05H,	25H,	25H,	99H
-	DB	18H,	28H,	28H,	48H,	88H,	48H,	28H,	28H,	1FH
-	DB	46H,	47H,	6FH,	6EH,	56H,	56H,	46H,	46H,	0C6H
-	DB	2EH,	31H,	31H,	0B1H,	0B1H,	71H,	71H,	31H,	2EH
-	DB	0F3H,	8CH,	8CH,	8CH,	0F4H,	84H,	85H,	86H,	83H
-	DB	0BCH,	63H,	63H,	63H,	7CH,	68H,	65H,	0A5H,	0E2H
-	DB	0EFH,	12H,	12H,	02H,	0E2H,	12H,	12H,	12H,	0E2H
-	DB	0C6H,	46H,	46H,	46H,	45H,	45H,	45H,	44H,	38H
-	DB	31H,	31H,	35H,	35H,	55H,	55H,	4AH,	8AH,	8AH
-	DB	8CH,	8CH,	52H,	22H,	21H,	51H,	51H,	89H,	89H
-	DB	7EH,	42H,	84H,	84H,	08H,	10H,	10H,	20H,	3EH
-	DB	0EFH,	89H,	89H,	8FH,	80H,	80H,	80H,	80H,	0E0H
-	DB	38H,	09H,	0AH,	08H,	08H,	08H,	08H,	08H,	38H
-	DB	80H,	40H,	20H,	00H,	00H,	00H,	00H,	00H,	1FH
-	DB	00H,	00H,	03H,	04H,	71H,	02H,	04H,	04H,	03H
-	DB	20H,	20H,	0ACH,	73H,	0E3H,	63H,	63H,	0F3H,	6CH
-	DB	00H,	00H,	0E6H,	19H,	08H,	08H,	08H,	19H,	0E6H
-	DB	80H,	80H,	0B9H,	0C4H,	0C4H,	0FCH,	0C0H,	0C4H,	0B8H
-	DB	60H,	80H,	0CFH,	91H,	91H,	91H,	8FH,	81H,	8EH
-	DB	81H,	80H,	83H,	0B1H,	0C9H,	89H,	89H,	89H,	8BH
-	DB	05H,	01H,	0DH,	05H,	05H,	05H,	05H,	25H,	99H
-	DB	06H,	02H,	12H,	22H,	42H,	82H,	42H,	22H,	17H
-	DB	00H,	00H,	6AH,	57H,	56H,	56H,	56H,	56H,	56H
-	DB	00H,	00H,	0CEH,	31H,	31H,	31H,	31H,	31H,	2EH
-	DB	00H,	00H,	0F3H,	8CH,	8CH,	8CH,	0CCH,	0B3H,	80H
-	DB	00H,	00H,	0ECH,	73H,	61H,	60H,	0E0H,	61H,	60H
-	DB	04H,	04H,	0EFH,	14H,	04H,	0E4H,	14H,	14H,	0E3H
-	DB	00H,	00H,	46H,	46H,	46H,	45H,	45H,	0CCH,	34H
-	DB	00H,	00H,	31H,	35H,	35H,	55H,	55H,	8AH,	8AH
-	DB	00H,	00H,	8CH,	8CH,	52H,	22H,	51H,	89H,	8EH
-	DB	00H,	00H,	7EH,	42H,	84H,	88H,	10H,	20H,	3EH
-	DB	38H,	48H,	48H,	48H,	88H,	48H,	48H,	48H,	38H
-	DB	60H,	10H,	10H,	11H,	0AH,	12H,	10H,	10H,	60H
-	DB	00H,	00H,	00H,	00H,	0A0H,	0A0H,	40H,	00H,	00H
-	DB	00H,	60H,	01H,	0E2H,	66H,	67H,	66H,	66H,	0F3H
-	DB	00H,	00H,	81H,	63H,	95H,	09H,	15H,	63H,	81H
-	DB	00H,	00H,	70H,	55H,	5AH,	5AH,	55H,	50H,	70H
-	DB	32H,	4BH,	4AH,	4AH,	0B2H,	80H,	00H,	00H,	00H
-	DB	0CEH,	12H,	12H,	0EH,	02H,	0CH,	00H,	00H,	00H
-	DB	00H,	17H,	10H,	20H,	26H,	41H,	41H,	83H,	0FCH
-	DB	00H,	0FEH,	01H,	00H,	63H,	92H,	0CH,	08H,	0F1H
-	DB	42H,	0A5H,	18H,	00H,	98H,	64H,	43H,	0C2H,	3CH
-	DB	00H,	00H,	90H,	08H,	0FCH,	89H,	13H,	01H,	00H
-	DB	00H,	08H,	24H,	3EH,	0A1H,	3EH,	0E4H,	08H,	80H
-	DB	00H,	00H,	00H,	00H,	8DH,	55H,	25H,	55H,	8DH
-	DB	00H,	00H,	1EH,	00H,	0C0H,	6EH,	6AH,	6AH,	0EEH
-	DB	01H,	02H,	04H,	08H,	14H,	12H,	11H,	10H,	0FFH
-	DB	02H,	09H,	08H,	7CH,	10H,	7DH,	22H,	20H,	03H
-	DB	00H,	00H,	80H,	40H,	80H,	01H,	03H,	07H,	0CFH
-	DB	38H,	21H,	21H,	21H,	21H,	21H,	0A1H,	65H,	22H
-	DB	80H,	40H,	00H,	1DH,	23H,	23H,	3FH,	23H,	23H
-	DB	00H,	00H,	00H,	0E7H,	18H,	0E8H,	18H,	18H,	0E7H
-	DB	00H,	01H,	01H,	59H,	0E5H,	45H,	45H,	0C5H,	44H
-	DB	00H,	02H,	86H,	0CEH,	0FEH,	0CEH,	86H,	02H,	00H
-	DB	71H,	8BH,	89H,	89H,	89H,	73H,	00H,	00H,	00H
-	DB	1CH,	23H,	04H,	08H,	11H,	0BEH,	00H,	00H,	00H
-	DB	0E1H,	13H,	65H,	19H,	1FH,	0E1H,	00H,	00H,	00H
-	DB	7CH,	41H,	7BH,	06H,	0C6H,	39H,	00H,	00H,	00H
-	DB	0DFH,	01H,	0C2H,	22H,	24H,	0C4H,	00H,	00H,	00H
-	DB	73H,	8CH,	74H,	8BH,	88H,	73H,	00H,	00H,	00H
-	DB	87H,	42H,	7AH,	0C2H,	83H,	02H,	00H,	00H,	00H
-	DB	9BH,	6AH,	4AH,	0CAH,	3AH,	0BH,	00H,	00H,	00H
-	DB	80H,	80H,	80H,	89H,	90H,	90H,	10H,	10H,	09H
-	DB	00H,	00H,	04H,	04H,	9FH,	84H,	84H,	80H,	1FH
-	DB	00H,	00H,	00H,	71H,	8BH,	89H,	89H,	89H,	73H
-	DB	00H,	00H,	00H,	1CH,	22H,	05H,	08H,	10H,	0BEH
-	DB	00H,	00H,	00H,	3FH,	18H,	0DFH,	18H,	18H,	18H
-	DB	00H,	00H,	00H,	0C7H,	66H,	56H,	4FH,	46H,	46H
-	DB	00H,	00H,	00H,	0C0H,	2AH,	2AH,	0CAH,	15H,	10H
-	DB	77H,	0CEH,	0CEH,	0CEH,	0CFH,	0FEH,	0CEH,	0CEH,	0CFH
-	DB	9DH,	73H,	71H,	71H,	0B1H,	71H,	71H,	73H,	9DH
-	DB	0CFH,	0ACH,	9CH,	9CH,	9FH,	9CH,	9CH,	0ACH,	0CFH
-	DB	0FFH,	63H,	63H,	63H,	7BH,	63H,	63H,	63H,	0E3H
-	DB	0C0H,	28H,	2CH,	2AH,	0C9H,	0AH,	0CH,	08H,	00H
-	DB	0F8H,	88H,	42H,	45H,	24H,	44H,	44H,	8DH,	0FAH
-	DB	00H,	00H,	72H,	4CH,	88H,	88H,	91H,	91H,	50H
-	DB	03H,	04H,	64H,	98H,	8FH,	0E8H,	09H,	19H,	0E6H
-	DB	60H,	90H,	91H,	91H,	0A9H,	0A9H,	2AH,	46H,	46H
-	DB	00H,	00H,	5FH,	4AH,	4AH,	4AH,	0AAH,	2BH,	12H
-	DB	00H,	00H,	1BH,	65H,	95H,	95H,	93H,	92H,	62H
-	DB	88H,	94H,	94H,	55H,	54H,	54H,	94H,	08H,	36H
-	DB	8FH,	8FH,	0CFH,	8FH,	8FH,	0EFH,	9FH,	9FH,	9FH
-	DB	0FCH,	0C4H,	0C4H,	0C5H,	0C6H,	0C4H,	0C4H,	0C6H,	0FDH
-	DB	00H,	00H,	00H,	0C0H,	20H,	0C0H,	20H,	3FH,	0DFH
+; DATA: GY454XE  Re 007D2
+; DATA: GY455XE  Im 007D2
+_vector_dims:
+	DB 1, 3
+	DB 1, 2
 
-; DATA: GY454XE  Re 00400
-; DATA: GY455XE  Im 00400
-_font_small_0:
-	DB	01H,	01H,	01H,	01H,	00H,	01H
-	DB	36H,	12H,	25H,	00H,	01H,	00H
-	DB	00H,	0A8H,	0F5H,	0A2H,	0F5H,	0A8H
-	DB	00H,	0E4H,	68H,	13H,	2CH,	0CCH
-	DB	0CH,	84H,	08H,	0E0H,	00H,	80H
-	DB	12H,	21H,	21H,	21H,	21H,	12H
-	DB	00H,	00H,	18H,	19H,	00H,	00H
-	DB	00H,	40H,	40H,	0F6H,	42H,	44H
-	DB	00H,	00H,	00H,	7CH,	01H,	01H
-	DB	00H,	01H,	02H,	04H,	88H,	90H
-	DB	71H,	8BH,	89H,	89H,	89H,	73H
-	DB	1CH,	23H,	04H,	08H,	11H,	0BEH
-	DB	0E1H,	13H,	65H,	19H,	1FH,	0E1H
-	DB	7CH,	41H,	7BH,	06H,	0C6H,	39H
-	DB	0DFH,	01H,	0C2H,	22H,	24H,	0C4H
-	DB	73H,	8CH,	74H,	8BH,	88H,	73H
-	DB	80H,	58H,	58H,	0C0H,	98H,	18H
-	DB	0C0H,	0C1H,	02H,	0C4H,	42H,	81H
-	DB	00H,	01H,	7CH,	00H,	7CH,	01H
-	DB	0EH,	11H,	82H,	44H,	80H,	04H
-	DB	71H,	8AH,	0BCH,	0AFH,	9CH,	64H
-	DB	3CH,	0A3H,	7DH,	0E3H,	63H,	7CH
-	DB	0EEH,	19H,	08H,	08H,	19H,	0EEH
-	DB	7FH,	42H,	0FBH,	0C2H,	42H,	7EH
-	DB	0EEH,	11H,	0D0H,	17H,	11H,	0FH
-	DB	8BH,	89H,	0F9H,	89H,	89H,	8BH
-	DB	8FH,	05H,	05H,	05H,	25H,	99H
-	DB	18H,	28H,	48H,	0C8H,	28H,	1FH
-	DB	46H,	6FH,	56H,	56H,	46H,	0C6H
-	DB	2EH,	31H,	0B1H,	71H,	31H,	2EH
-	DB	0F3H,	8CH,	8CH,	0F5H,	84H,	83H
-	DB	0BCH,	63H,	62H,	7CH,	0A5H,	62H
-	DB	0EFH,	12H,	0C2H,	22H,	12H,	0E2H
-	DB	0C6H,	46H,	45H,	45H,	44H,	38H
-	DB	31H,	35H,	55H,	55H,	8AH,	8AH
-	DB	8CH,	54H,	22H,	51H,	89H,	89H
-	DB	7EH,	42H,	84H,	08H,	10H,	3EH
-	DB	0EEH,	8AH,	8EH,	80H,	80H,	0E0H
-	DB	38H,	09H,	0AH,	08H,	08H,	38H
-	DB	80H,	40H,	20H,	00H,	00H,	1FH
-	DB	00H,	03H,	00H,	73H,	04H,	03H
-	DB	20H,	0ACH,	73H,	0E3H,	63H,	0FCH
-	DB	00H,	0E6H,	09H,	08H,	18H,	0E7H
-	DB	80H,	0B8H,	0C5H,	0FCH,	0C0H,	0B8H
-	DB	60H,	8FH,	0D1H,	8FH,	81H,	8EH
-	DB	81H,	80H,	0B3H,	0C9H,	89H,	8BH
-	DB	04H,	00H,	04H,	04H,	24H,	98H
-	DB	86H,	92H,	0A2H,	0C2H,	0A2H,	97H
-	DB	00H,	6AH,	57H,	56H,	56H,	56H
-	DB	00H,	0CEH,	31H,	31H,	31H,	2EH
-	DB	00H,	0F3H,	8CH,	0CCH,	0B3H,	80H
-	DB	00H,	0ECH,	73H,	0E0H,	60H,	61H
-	DB	04H,	0FFH,	04H,	0E4H,	14H,	0E3H
-	DB	00H,	46H,	46H,	45H,	0CDH,	34H
-	DB	00H,	31H,	35H,	55H,	55H,	8AH
-	DB	00H,	0CCH,	32H,	21H,	61H,	9EH
-	DB	00H,	7EH,	44H,	88H,	10H,	3EH
-	DB	38H,	48H,	88H,	48H,	48H,	38H
-	DB	60H,	10H,	09H,	12H,	10H,	60H
-	DB	00H,	00H,	00H,	0A0H,	40H,	00H
-	DB	61H,	02H,	0E6H,	67H,	66H,	0F3H
-	DB	80H,	63H,	95H,	09H,	55H,	0A3H
-	DB	00H,	75H,	5AH,	5AH,	55H,	70H
-	DB	32H,	4BH,	0CAH,	0B2H,	00H,	00H
-	DB	9CH,	14H,	1CH,	04H,	18H,	00H
-	DB	0FH,	10H,	26H,	41H,	83H,	0FCH
-	DB	0FEH,	00H,	63H,	94H,	08H,	0F1H
-	DB	42H,	0A5H,	98H,	65H,	0C2H,	3CH
-	DB	00H,	10H,	89H,	7FH,	09H,	10H
-	DB	20H,	0A4H,	3EH,	0E1H,	1EH,	84H
-	DB	00H,	00H,	00H,	0AFH,	4DH,	0AFH
-	DB	00H,	0EH,	00H,	38H,	28H,	38H
-	DB	01H,	02H,	04H,	2FH,	20H,	0EFH
-	DB	02H,	09H,	7CH,	13H,	7CH,	23H
-	DB	00H,	00H,	80H,	0C2H,	06H,	0CEH
-	DB	38H,	21H,	21H,	0A1H,	61H,	26H
-	DB	0C0H,	1DH,	23H,	3FH,	23H,	23H
-	DB	00H,	0E7H,	18H,	0E8H,	18H,	0E7H
-	DB	00H,	01H,	59H,	65H,	0C5H,	45H
-	DB	00H,	86H,	0CEH,	0FEH,	0CEH,	86H
-	DB	61H,	93H,	91H,	91H,	63H,	00H
-	DB	19H,	24H,	08H,	10H,	0BDH,	00H
-	DB	0C2H,	26H,	0CAH,	2FH,	0C2H,	00H
-	DB	79H,	42H,	73H,	0AH,	71H,	00H
-	DB	9EH,	02H,	84H,	48H,	88H,	00H
-	DB	63H,	94H,	63H,	90H,	63H,	00H
-	DB	07H,	82H,	0BAH,	83H,	02H,	00H
-	DB	9BH,	6AH,	0CAH,	3BH,	00H,	00H
-	DB	80H,	80H,	89H,	90H,	10H,	09H
-	DB	04H,	04H,	1FH,	84H,	84H,	1FH
-	DB	00H,	61H,	93H,	91H,	91H,	63H
-	DB	00H,	18H,	24H,	09H,	10H,	0BCH
-	DB	00H,	3FH,	18H,	0DEH,	18H,	18H
-	DB	00H,	4BH,	6AH,	5BH,	4AH,	4AH
-	DB	00H,	80H,	4AH,	8AH,	15H,	10H
-	DB	77H,	0CEH,	0CFH,	0FEH,	0CEH,	0CFH
-	DB	9DH,	73H,	0B1H,	71H,	73H,	9DH
-	DB	0EFH,	9CH,	9FH,	9CH,	9CH,	0EFH
-	DB	0FFH,	63H,	7BH,	63H,	63H,	0E3H
-	DB	0C0H,	2CH,	2AH,	0C9H,	0AH,	0CH
-	DB	0F8H,	4BH,	24H,	24H,	4CH,	0FBH
-	DB	00H,	72H,	8CH,	88H,	91H,	50H
-	DB	03H,	74H,	8FH,	0E8H,	09H,	0E6H
-	DB	20H,	91H,	91H,	0A9H,	4AH,	46H
-	DB	00H,	5FH,	4AH,	4AH,	0ABH,	12H
-	DB	18H,	63H,	95H,	95H,	93H,	62H
-	DB	88H,	94H,	55H,	54H,	88H,	36H
-	DB	8FH,	0CFH,	8FH,	0EFH,	9FH,	9FH
-	DB	0FCH,	0C7H,	0C4H,	0C5H,	0C4H,	0FFH
-	DB	00H,	80H,	40H,	80H,	5FH,	9FH
+; DATA: GY454XE  Re 007D6
+; DATA: GY455XE  Im 007D6
+_matvct_strings:
+	DB "\xe0\x00\x00", 0	; "A"
+	DB "\xe1\x00\x00", 0	; "B"
+	DB "\xe2\x00\x00", 0	; "C"
+	DB "\xe0\xf4\xf5", 0	; "Ans"
 
-; The 5px "tiny" font actually has a width of 4, meaning 2 chr/1 img.
-; Charmap for reference:
-;    x0 x1 x2 x3 x4 x5 x6 x7 x8 x9 xA xB xC xD xE xF
-; Dx 0  1  2  3  4  5  6  7  8  9  +  -  .  *1 0  0⁻
-; Ex A  B  C  D  E  F  M  O  Q  R  X  Y     ,  ^  v
-; Fx a  b  c  d  n  s  (  )  ´  ∑  i  ∠  >
-; DATA: GY454XE  Re 00694
-; DATA: GY455XE  Im 00694
-_font_tiny:
-	DB	72H,	52H,	52H,	52H,	72H
-	DB	77H,	11H,	77H,	41H,	77H
-	DB	57H,	54H,	57H,	71H,	17H
-	DB	77H,	45H,	71H,	51H,	71H
-	DB	77H,	55H,	77H,	51H,	77H
-	DB	00H,	20H,	77H,	20H,	00H
-	DB	00H,	00H,	05H,	61H,	61H
-	DB	03H,	00H,	77H,	55H,	77H
-	DB	26H,	55H,	76H,	55H,	56H
-	DB	36H,	45H,	45H,	45H,	36H
-	DB	77H,	44H,	77H,	44H,	74H
-	DB	52H,	75H,	75H,	55H,	52H
-	DB	76H,	55H,	56H,	65H,	35H
-	DB	55H,	55H,	22H,	52H,	52H
-	DB	00H,	00H,	06H,	02H,	04H
-	DB	20H,	70H,	77H,	07H,	02H
-	DB	24H,	14H,	37H,	55H,	36H
-	DB	01H,	31H,	47H,	45H,	33H
-	DB	03H,	64H,	52H,	51H,	56H
-	DB	14H,	22H,	22H,	22H,	14H
-	DB	27H,	44H,	02H,	04H,	07H
-	DB	60H,	01H,	62H,	64H,	67H
-	DB	40H,	20H,	10H,	20H,	40H
+; DATA: GY454XE  Re 007E6
+; DATA: GY455XE  Im 007E6
+_unk_007e6:
+	DW _mode_ram+0
+	DW _mode_ram+10
+	DW _mode_ram+20
+	DW _mode_ram+30
+	DW _mode_ram+40
+	DW _mode_ram+50
+	DW _mode_ram+60
+	DW _mode_ram+70
+	DW _mode_ram+80
+	DW _mode_ram+10
+	DW _mode_ram+20
+	DW _mode_ram+90
+	DW _mode_ram+40
+	DW _mode_ram+50
+	DW _mode_ram+100
+	DW _mode_ram+70
+	DW _mode_ram+80
+	DW _mode_ram+110
 
-; DATA: GY454XE  Re 00707
-; DATA: GY455XE  Im 00707
-_font_big_1:
-	DB	22H,	21H,	00H,	23H,	40H,	83H,	8CH,	8CH,	73H
-	DB	04H,	08H,	00H,	9CH,	43H,	0DFH,	63H,	0E7H,	5AH
-	DB	21H,	42H,	00H,	0E6H,	12H,	0F2H,	02H,	12H,	0E7H
-	DB	08H,	11H,	00H,	39H,	46H,	46H,	46H,	46H,	39H
-	DB	00H,	4AH,	00H,	0D1H,	31H,	31H,	31H,	33H,	0CDH
-	DB	11H,	21H,	00H,	89H,	89H,	89H,	89H,	99H,	69H
-	DB	04H,	08H,	1CH,	22H,	22H,	22H,	22H,	22H,	1CH
+; DATA: GY454XE  Re 0080A
+; DATA: GY455XE  Im 0080A
+_unk_0080a:
+	DB 2, 3
+	DB 3, 3
+	DB 1, 3
+	DB 1, 3
 
-; Note: the small font's localization character set is actually 7px tall!
-; DATA: GY454XE  Re 00746
-; DATA: GY455XE  Im 00746
-_font_small_1:
-	DB	02H,	21H,	03H,	20H,	43H,	8CH,	73H
-	DB	04H,	08H,	9CH,	43H,	0DFH,	63H,	0DEH
-	DB	21H,	42H,	0E0H,	16H,	0F2H,	02H,	0E7H
-	DB	09H,	10H,	00H,	39H,	46H,	46H,	39H
-	DB	4AH,	00H,	00H,	0D1H,	31H,	33H,	0CDH
-	DB	10H,	21H,	00H,	89H,	89H,	99H,	69H
-	DB	04H,	08H,	1CH,	22H,	22H,	22H,	1CH
+; DATA: GY454XE  Re 0080A
+; DATA: GY455XE  Im 0080A
+_unk_00812:
+	DB 2, 3
+	DB 3, 4
+	DB 1, 3
+	DB 1, 4
 
-RSEG $$NTABgenerals1
+; DATA: GY454XE  Re 0081A
+; DATA: GY455XE  Im 0081A
+_table_param_ptrs:
+	DW _mode_ram+0		; Start
+	DW _mode_ram+10		; End
+	DW _mode_ram+20		; Step
+
+; DATA: GY454XE  Re 00820
+; DATA: GY455XE  Im 00820
+_table_eqn_linel_params:
+	DB  10, 7, 18, 11000000B
+	DB  10, 7, 24, 11000000B
+	DB  10, 7, 12, 11000000B
+	DB  10, 7, 12, 11000000B
+
+; DATA: GY454XE  Re 00830
+; DATA: GY455XE  Im 00830
+_table_eqn_liner_params:
+	DB  94, 7, 18, 00110000B
+	DB  94, 7, 24, 00110000B
+	DB  94, 7, 12, 00110000B
+	DB  94, 7, 12, 00110000B
 
 ; DATA: GY454XE  Re 00840
 ; DATA: GY455XE  Im 00840
@@ -698,22 +498,22 @@ _menu_matrix_dim1:
 
 ; DATA: GY454XE  Re 00B0C
 ; DATA: GY455XE  Im 00B0C
-_unk_00b0c:
+_menu_matrix_sel:
 	DB "Matrix?", 0
 
 ; DATA: GY454XE  Re 00B14
 ; DATA: GY455XE  Im 00B14
-_unk_00b14:
+_menu_mata_dim_sel:
 	DB "MatA(m$n) m$n?", 0
 
 ; DATA: GY454XE  Re 00B23
 ; DATA: GY455XE  Im 00B23
-_unk_00b23:
+_menu_matb_dim_sel:
 	DB "MatB(m$n) m$n?", 0
 
 ; DATA: GY454XE  Re 00B32
 ; DATA: GY455XE  Im 00B32
-_unk_00b32:
+_menu_matc_dim_sel:
 	DB "MatC(m$n) m$n?", 0
 
 ; DATA: GY454XE  Re 00B41
@@ -751,22 +551,22 @@ _menu_vector_dim:
 
 ; DATA: GY454XE  Re 00BB1
 ; DATA: GY455XE  Im 00BB1
-_unk_00bb1:
+_menu_vector_sel:
 	DB "Vector?", 0
 
 ; DATA: GY454XE  Re 00BB9
 ; DATA: GY455XE  Im 00BB9
-_unk_00bb9:
+_menu_vcta_dim_sel:
 	DB "VctA(m) m?", 0
 
 ; DATA: GY454XE  Re 00BC4
 ; DATA: GY455XE  Im 00BC4
-_unk_00bc4:
+_menu_vctb_dim_sel:
 	DB "VctB(m) m?", 0
 
 ; DATA: GY454XE  Re 00BCF
 ; DATA: GY455XE  Im 00BCF
-_unk_00bcf:
+_menu_vctc_dim_sel:
 	DB "VctC(m) m?", 0
 
 ; DATA: GY454XE  Re 00BDA
@@ -1042,7 +842,7 @@ _s_ineq_allreal:
 _s_ineq_nosolution:
 	DB "No-Solution", 0
 
-RSEG $$NTABgenerals2
+RSEG $$NTABgenerals1
 
 ; DATA: GY454XE  Re 010F2
 ; DATA: GY455XE  Im 010F2
@@ -2579,7 +2379,7 @@ _char_atan:
 	DB "tan\xaa"
 
 
-RSEG $$NTABgenerals3
+RSEG $$NTABgenerals2
 
 ; X position bitmask. Indexed with x_pos & 7. Used in char_print.
 ; DATA: GY454XE  Re 01C64
@@ -2658,7 +2458,7 @@ _num_gk_nodes_expanded:
 	DB 02H, 07H, 78H, 49H, 55H, 00H, 78H, 99H, 99H, 00H  ; 0.207784955007899
 	DB 02H, 04H, 43H, 29H, 40H, 07H, 52H, 99H, 99H, 00H  ; 0.204432940075299
 
-RSEG $$NTABgenerals4
+RSEG $$NTABgenerals3
 
 ; 96x13 bitmap image, 12 bytes per row. Need I say more?
 ; DATA: GY454XE  Re 01F10
@@ -2682,6 +2482,7 @@ RSEG $$NCODgenerals
 
 ; FUNCTION: GY454XE  Re 02676
 ; FUNCTION: GY455XE  Im 02808
+; FUNCTION: GY460XF  Im 0249C
 _f_02676:
 	MOV R1, #0H
 	SRL R0, #1
@@ -2698,6 +2499,7 @@ _f_02676:
 
 ; DATA: GY454XE  Re 0268E
 ; DATA: GY455XE  Im 02820
+; DATA: GY460XF  Im 024B4
 _unk_0268e:
 	DB  0BH,  00H,  00H,  00H,  00H,  00H,  00H,  00H
 	DB  00H,  00H,  00H,  00H,  00H,  00H,  00H,  00H
@@ -2716,8 +2518,10 @@ _unk_0268e:
 	DB  00H,  00H,  00H,  00H,  00H,  00H,  00H,  00H
 	DB  00H,  00H,  00H,  00H,  00H,  00H,  00H,  00H
 
+
 ; FUNCTION: GY454XE  Re 0270E
 ; FUNCTION: GY455XE  Im 028A0
+; FUNCTION: GY460XF  Im 02534
 _get_mathi_draw_idx:
 	MOV R1, #5EH       ; Pow
 	SUB R0, R1
@@ -2756,6 +2560,7 @@ _$j_0274e:
 
 ; FUNCTION: GY454XE  Re 02750
 ; FUNCTION: GY455XE  Im 028E2
+; FUNCTION: GY460XF  Im 0257C
 _smart_strlen:
 	MOV ER0, ER0
 	BEQ _$j_02758
@@ -2765,6 +2570,7 @@ _$j_02758:
 
 ; FUNCTION: GY454XE  Re 0275A
 ; FUNCTION: GY455XE  Im 028EC
+; FUNCTION: GY460XF  Im 02586
 _smart_strcpy:
 	PUSH LR
 	MOV ER0, ER0
@@ -2780,6 +2586,7 @@ _$j_0276a:
 
 ; FUNCTION: GY454XE  Re 0276E
 ; FUNCTION: GY455XE  Im 02900
+; FUNCTION: GY460XF  Im 0259A
 _smart_strcat:
 	PUSH LR
 	MOV ER0, ER0
@@ -2791,6 +2598,7 @@ _smart_strcat:
 
 ; FUNCTION: GY454XE  Re 0277E
 ; FUNCTION: GY455XE  Im 02910
+; FUNCTION: GY460XF  Im 025AA
 _init_num_struct:
 	PUSH LR
 	PUSH XR12
@@ -2864,6 +2672,7 @@ _$j_027f4:
 
 ; FUNCTION: GY454XE  Re 027FA
 ; FUNCTION: GY455XE  Im 0298C
+; FUNCTION: GY460XF  Im 02626
 _num_exp_to_str:
 	PUSH LR
 	PUSH QR8
@@ -2873,11 +2682,11 @@ _num_exp_to_str:
 	MOV R4, #90H   ; × in ×10
 	L R9, _use_output_charset
 	CMP R9, #1H
-	BNE _$j_02812  ; If use_output_charset != 1...
+	BNE _$j_02812  ; If use_output_charset == 1...
 	MOV R4, #0E0H  ; Use character 0xE0 (???)
 	BAL _$j_0281a
 _$j_02812:
-	L R8, 16H[BP]  ; Otherwise, if unk_0x16 == 1, use character 0xDD (tiny)
+	L R8, 16H[BP]  ; Otherwise, if use_tiny_font == 1, use character 0xDD (tiny)
 	CMP R8, #1H
 	BNE _$j_0281a
 	MOV R4, #0DDH
@@ -2898,12 +2707,12 @@ _$j_0282a:
 	MOV R4, R0     ; Tens digit
 	MOV R5, R2     ; Ones digit
 	MOV R6, #0A0H  ; Start with superscript 0 (0xA0 is for big/small font)
-	CMP R9, #1H    ; If use_output_charset != 1...
+	CMP R9, #1H    ; If use_output_charset == 1...
 	BNE _$j_02840
 	MOV R6, #0F0H  ; Start with character 0xF0 (???)
 	BAL _$j_02846
 _$j_02840:
-	CMP R8, #1H    ; Otherwise, if unk_0x16 == 1, start with number 0 (0xD0 tiny)
+	CMP R8, #1H    ; Otherwise, if use_tiny_font == 1, start with number 0 (0xD0 tiny)
 	BNE _$j_02846
 	MOV R6, #0D0H
 _$j_02846:
@@ -2922,6 +2731,7 @@ _$j_0284e:
 
 ; FUNCTION: GY454XE  Re 0285C
 ; FUNCTION: GY455XE  Im 029EE
+; FUNCTION: GY460XF  Im 02688
 _f_0285C:
 	PUSH QR8
 	PUSH XR4
@@ -3102,6 +2912,7 @@ _$j_0297e:
 
 ; FUNCTION: GY454XE  Re 02986
 ; FUNCTION: GY455XE  Im 02B18
+; FUNCTION: GY460XF  Im 027B2
 _f_02986:
 	PUSH LR
 	PUSH XR12
@@ -3256,18 +3067,24 @@ _$j_02aa2:
 	BAL _$j_02a24
 
 ; FUNCTION: GY454XE  Re 02AAA
+; FUNCTION: GY455XE  Im 02C3C
+; FUNCTION: GY460XF  Im 028D6
 _get_result_disp_fmt:
 	L R0, _result_format
 	SRL R0, #4
 	RT
 
 ; FUNCTION: GY454XE  Re 02AB2
+; FUNCTION: GY455XE  Im 02C44
+; FUNCTION: GY460XF  Im 028DE
 _get_result_store_fmt:
 	L R0, _result_format
 	AND R0, #0FH
 	RT
 
 ; FUNCTION: GY454XE  Re 02ABA
+; FUNCTION: GY455XE  Im 02C4C
+; FUNCTION: GY460XF  Im 028E6
 _set_result_store2disp:
 	L R1, _result_format
 	AND R1, #0FH
@@ -3277,6 +3094,8 @@ _set_result_store2disp:
 	RT
 
 ; FUNCTION: GY454XE  Re 02ACA
+; FUNCTION: GY455XE  Im 02C5C
+; FUNCTION: GY460XF  Im 028F6
 _set_result_store_fmt:
 	L R1, _result_format
 	AND R1, #0F0H
@@ -3288,6 +3107,7 @@ _set_result_store_fmt:
 
 ; FUNCTION: GY454XE  Re 02ADE
 ; FUNCTION: GY455XE  Im 02C70
+; FUNCTION: GY460XF  Im 0290A
 _set_result_fmt:
 	ST R0, _result_format
 	MOV R0, #0H
@@ -3296,6 +3116,7 @@ _set_result_fmt:
 
 ; FUNCTION: GY454XE  Re 02AEA
 ; FUNCTION: GY455XE  Im 02C7C
+; FUNCTION: GY460XF  Im 02916
 _result_str_print:
 	PUSH LR
 	PUSH ER0
@@ -3319,6 +3140,7 @@ _$j_02b04:
 
 ; FUNCTION: GY454XE  Re 02B10
 ; FUNCTION: GY455XE  Im 02CA2
+; FUNCTION: GY460XF  Im 0293C
 _basen_base_print:
 	PUSH LR
 	L R0, _submode
@@ -3336,6 +3158,7 @@ _basen_base_print:
 
 ; DATA: GY454XE  Re 02B2E
 ; DATA: GY455XE  Im 02CC0
+; DATA: GY460XF  Im 0295A
 _base_strs:
 	DB "Bin", 0
 	DB "Oct", 0
@@ -3344,6 +3167,7 @@ _base_strs:
 
 ; FUNCTION: GY454XE  Re 02B3E
 ; FUNCTION: GY455XE  Im 02CD0
+; FUNCTION: GY460XF  Im 0296A
 _f_02B3E:
 	LEA [ER0]
 	L R3, [EA+]
@@ -3378,6 +3202,7 @@ _$j_02b6a:
 
 ; FUNCTION: GY454XE  Re 02B76
 ; FUNCTION: GY455XE  Im 02D08
+; FUNCTION: GY460XF  Im 029A2
 _get_token:
 	PUSH ER4
 	LEA [ER2]
@@ -3420,6 +3245,7 @@ _$j_02bb8:
 
 ; FUNCTION: GY454XE  Re 02BBE
 ; FUNCTION: GY455XE  Im 02D50
+; FUNCTION: GY460XF  Im 029EA
 _get_token_length:
 	MOV R1, #0H
 	MOV R2, #BYTE1 _token_lengths
@@ -3436,6 +3262,7 @@ _$j_02bd2:
 
 ; FUNCTION: GY454XE  Re 02BD4
 ; FUNCTION: GY455XE  Im 02D66
+; FUNCTION: GY460XF  Im 02A00
 _print_continue_prompt:
 	PUSH LR
 	BL _buffer_clear
@@ -3448,6 +3275,7 @@ _print_continue_prompt:
 
 ; FUNCTION: GY454XE  Re 02BE8
 ; FUNCTION: GY455XE  Im 02D7A
+; FUNCTION: GY460XF  Im 02A14
 _print_input_area:
 	PUSH LR
 	MOV R2, #BYTE1 _s_blank_line
@@ -3464,6 +3292,7 @@ _print_input_area:
 
 ; FUNCTION: GY454XE  Re 02C04
 ; FUNCTION: GY455XE  Im 02D96
+; FUNCTION: GY460XF  Im 02A30
 _num_output_print:
 	PUSH LR
 	PUSH FP
@@ -3522,6 +3351,7 @@ _$j_02c48:
 
 ; FUNCTION: GY454XE  Re 02C76
 ; FUNCTION: GY455XE  Im 02E08
+; FUNCTION: GY460XF  Im 02AA2
 _f_02C76:
 	PUSH LR
 	PUSH R8
@@ -3557,6 +3387,7 @@ _$j_02cb0:
 
 ; FUNCTION: GY454XE  Re 02CB6
 ; FUNCTION: GY455XE  Im 02E48
+; FUNCTION: GY460XF  Im 02AE2
 _f_02CB6:
 	PUSH ER8
 	L R8, _table_mode
@@ -3584,11 +3415,12 @@ _$j_02cdc:
 
 ; FUNCTION: GY454XE  Re 02CE0
 ; FUNCTION: GY455XE  Im 02E72
+; FUNCTION: GY460XF  Im 02B0C
 _buffer_clear_lastnline:
 	PUSH LR
-	MOV R2, #80H
-	MOV R3, #1H
-	MOV R1, #0CH
+	MOV R2, #BYTE1 (32*12)
+	MOV R3, #BYTE2 (32*12)
+	MOV R1, #12
 	MUL ER0, R1
 	SUB R2, R0
 	SUBC R3, R1
@@ -3602,6 +3434,7 @@ _buffer_clear_lastnline:
 
 ; FUNCTION: GY454XE  Re 02CFE
 ; FUNCTION: GY455XE  Im 02E90
+; FUNCTION: GY460XF  Im 02B2A
 _fill_screen:
 	PUSH LR
 	PUSH ER4
@@ -3635,6 +3468,7 @@ _$j_02d34:
 
 ; FUNCTION: GY454XE  Re 02D38
 ; FUNCTION: GY455XE  Im 02ECA
+; FUNCTION: GY460XF  Im 02B64
 _buffer_clear:
 	PUSH QR8
 	MOV ER8, #0H
@@ -3652,6 +3486,7 @@ _$j_02d48:
 
 ; FUNCTION: GY454XE  Re 02D52
 ; FUNCTION: GY455XE  Im 02EE4
+; FUNCTION: GY460XF  Im 02B7E
 _f_02D52:
 	PUSH LR
 	PUSH XR4
@@ -3683,8 +3518,17 @@ _f_02D52:
 	POP XR4
 	POP PC
 
+; Draws a vertical line and adds pixels on the top and bottom based on flags (R3/R11).
+;     Bit 5 -> ### <- Bit 7
+;               #
+;               #
+;               #
+;               #
+;               #
+;     Bit 4 -> ### <- Bit 6
 ; FUNCTION: GY454XE  Re 02D90
 ; FUNCTION: GY455XE  Im 02F22
+; FUNCTION: GY460XF  Im 02BBC
 _draw_line_vert:
 	PUSH LR
 	PUSH XR8
@@ -3725,6 +3569,7 @@ _$j_02dd4:
 
 ; FUNCTION: GY454XE  Re 02DD8
 ; FUNCTION: GY455XE  Im 02F6A
+; FUNCTION: GY460XF  Im 02C04
 _draw_line:
 	PUSH LR
 	PUSH XR4
@@ -3814,11 +3659,13 @@ _$j_02e70:
 
 ; FUNCTION: GY454XE  Re 02E78
 ; FUNCTION: GY455XE  Im 0300A
+; FUNCTION: GY460XF  Im 02CA4
 _line_print_col_0:
 	MOV R0, #0H
 
 ; FUNCTION: GY454XE  Re 02E7A
 ; FUNCTION: GY455XE  Im 0300C
+; FUNCTION: GY460XF  Im 02CA6
 _line_print:
 	PUSH LR
 	PUSH QR8
@@ -3857,6 +3704,7 @@ _$j_02eb4:
 
 ; FUNCTION: GY454XE  Re 02EBA
 ; FUNCTION: GY455XE  Im 0304C
+; FUNCTION: GY460XF  Im 02CE6
 _char_print:
 	PUSH LR
 	PUSH XR4
@@ -3989,6 +3837,7 @@ _$j_02fb4:
 
 ; FUNCTION: GY454XE  Re 02FB8
 ; FUNCTION: GY455XE  Im 0314A
+; FUNCTION: GY460XF  Im 02DE4
 _plot_pixel:
 	CMP R0, #0
 	BLTS _$j_02fea
@@ -4001,6 +3850,7 @@ _plot_pixel:
 
 ; FUNCTION: GY454XE  Re 02FC8
 ; FUNCTION: GY455XE  Im 0315A
+; FUNCTION: GY460XF  Im 02DF4
 _plot_pixel_unsafe:
 	PUSH ER4
 	MOV R3, #10000000B
@@ -4024,6 +3874,7 @@ _$j_02fea:
 
 ; FUNCTION: GY454XE  Re 02FEC
 ; FUNCTION: GY455XE  Im 0317E
+; FUNCTION: GY460XF  Im 02E18
 _f_02FEC:
 	PUSH ER8
 	L R1, _font_size
@@ -4137,6 +3988,7 @@ _$j_030b4:
 
 ; FUNCTION: GY454XE  Re 030BE
 ; FUNCTION: GY455XE  Im 03250
+; FUNCTION: GY460XF  Im 02EEA
 _draw_byte:
 	PUSH FP
 	MOV R14, #BYTE1 _screen_buffer_y1_neg
@@ -4201,6 +4053,7 @@ _$j_03124:
 
 ; FUNCTION: GY454XE  Re 0312C
 ; FUNCTION: GY455XE  Im 032BE
+; FUNCTION: GY460XF  Im 02F58
 _render:
 	PUSH XR4
 	PUSH QR8
@@ -4228,6 +4081,7 @@ _$j_0313c:
 
 ; FUNCTION: GY454XE  Re 03158
 ; FUNCTION: GY455XE  Im 032EA
+; FUNCTION: GY460XF  Im 02F84
 _get_screen_addr:
 	PUSH XR8
 	MOV R8, #0CH
@@ -4263,6 +4117,7 @@ _$j_03188:
 
 ; FUNCTION: GY454XE  Re 03192
 ; FUNCTION: GY455XE  Im 03324
+; FUNCTION: GY460XF  Im 02FBE
 _setup_status_bar:
 	PUSH LR
 	MOV ER2, #12
@@ -4382,6 +4237,7 @@ _$j_03290:
 
 ; FUNCTION: GY454XE  Re 032A4
 ; FUNCTION: GY455XE  Im 03436
+; FUNCTION: GY460XF  Im 030D0
 _f_032A4:
 	PUSH LR
 	PUSH ER6
@@ -4426,6 +4282,7 @@ _$j_032d4:
 
 ; FUNCTION: GY454XE  Re 032F0
 ; FUNCTION: GY455XE  Im 03482
+; FUNCTION: GY460XF  Im 0311C
 _f_032F0:
 	PUSH LR
 	PUSH XR12
@@ -4434,7 +4291,7 @@ _f_032F0:
 	MOV BP, FP
 	ADD BP, #-0AH
 	PUSH ER2
-	MOV R2, #-14H
+	MOV R2, #0ECH
 	MOV R3, #0H
 	ST ER2, -0AH[FP]
 	MOV ER0, ER0
@@ -4486,6 +4343,7 @@ _$j_03340:
 
 ; FUNCTION: GY454XE  Re 0336A
 ; FUNCTION: GY455XE  Im 034FC
+; FUNCTION: GY460XF  Im 03196
 _f_0336A:
 	PUSH LR
 	PUSH QR8
@@ -4497,7 +4355,7 @@ _f_0336A:
 	MOV R12, R0
 	MOV R11, #7H
 	MOV R10, #0H
-	MOV R8, #-14H
+	MOV R8, #0ECH
 _$j_03382:
 	MOV ER2, FP
 	MOV R0, R12
@@ -4522,17 +4380,18 @@ _$j_03394:
 
 ; FUNCTION: GY454XE  Re 033AC
 ; FUNCTION: GY455XE  Im 0353E
+; FUNCTION: GY460XF  Im 031D8
 _f_033AC:
 	PUSH R4
 	LEA [ER2]
 	CMP R0, #0H
 	BGES _$j_033ba
 	NEG R0
-	MOV R1, #-25H
+	MOV R1, #0DBH
 	ST R1, [EA+]
 _$j_033ba:
 	MOV R4, #0H
-	MOV R2, #64H
+	MOV R2, #100
 	MOV R1, #0H
 	DIV ER0, R2
 	BEQ _$j_033ca
@@ -4561,6 +4420,7 @@ _$j_033e0:
 
 ; FUNCTION: GY454XE  Re 033EA
 ; FUNCTION: GY455XE  Im 0357C
+; FUNCTION: GY460XF  Im 03216
 _print_4lines_4str:
 	PUSH LR
 	PUSH QR8
@@ -4589,6 +4449,7 @@ _$j_03410:
 
 ; FUNCTION: GY454XE  Re 0341E
 ; FUNCTION: GY455XE  Im 035B0
+; FUNCTION: GY460XF  Im 0324A
 _print_4lines_head:
 	PUSH LR
 	PUSH QR8
@@ -4606,6 +4467,7 @@ _print_4lines_head:
 
 ; FUNCTION: GY454XE  Re 0343C
 ; FUNCTION: GY455XE  Im 035CE
+; FUNCTION: GY460XF  Im 03268
 _print_4lines:
 	MOV R2, #4H
 	PUSH LR
@@ -4626,6 +4488,7 @@ _$j_0344e:
 
 ; FUNCTION: GY454XE  Re 0345E
 ; FUNCTION: GY455XE  Im 035F0
+; FUNCTION: GY460XF  Im 0328A
 _f_0345E:
 	PUSH LR
 	MOV R0, #7H
@@ -4640,18 +4503,21 @@ _f_0345E:
 
 ; FUNCTION: GY454XE  Re 0347A
 ; FUNCTION: GY455XE  Im 0360C
+; FUNCTION: GY460XF  Im 032A6
 _set_up_arrow:
 	SB _real_screen_11.7
 	RT
 
 ; FUNCTION: GY454XE  Re 03480
 ; FUNCTION: GY455XE  Im 03612
+; FUNCTION: GY460XF  Im 032AC
 _set_down_arrow:
 	SB _real_screen_10.3
 	RT
 
 ; FUNCTION: GY454XE  Re 03486
 ; FUNCTION: GY455XE  Im 03618
+; FUNCTION: GY460XF  Im 032B2
 _pd_value:
 IF REAL == 1
 	PUSH LR
@@ -4724,7 +4590,7 @@ _$j_0350e:
 	POP PC
 ELSE
 	PUSH ER2
-	MOV R3, #BYTE2 _pd_val_emu
+	MOV R3, #BYTE2 _pd_val_emu  ; read F050H, thats it lol
 	MOV R2, #BYTE1 _pd_val_emu
 	L R0, [ER2]
 	POP ER2
@@ -4733,6 +4599,7 @@ ENDIF
 
 ; FUNCTION: GY454XE  Re 03518
 ; FUNCTION: GY455XE  Im 03624
+; FUNCTION: GY460XF  Im 032BE
 _set_ko1_ko9:
 	PUSH ER0
 	MOV R0, #10000000B
@@ -4744,6 +4611,7 @@ _set_ko1_ko9:
 
 ; FUNCTION: GY454XE  Re 0352A
 ; FUNCTION: GY455XE  Im 03636
+; FUNCTION: GY460XF  Im 032D0
 _print_error:
 	PUSH LR
 	MOV R1, #7H
@@ -4769,6 +4637,7 @@ _print_error:
 
 ; FUNCTION: GY454XE  Re 03558
 ; FUNCTION: GY455XE  Im 03664
+; FUNCTION: GY460XF  Im 032FE
 _f_03558:
 	PUSH LR
 	MOV ER0, #1H
@@ -4802,6 +4671,7 @@ _f_03558:
 
 ; FUNCTION: GY454XE  Re 035B8
 ; FUNCTION: GY455XE  Im 036C4
+; FUNCTION: GY460XF  Im 0335E
 _is_char_keycode:
 	MOV R1, R0
 	BEQ _$j_035ce
@@ -4820,6 +4690,7 @@ _$j_035ce:
 
 ; FUNCTION: GY454XE  Re 035D2
 ; FUNCTION: GY455XE  Im 036DE
+; FUNCTION: GY460XF  Im 03378
 _is_format_keycode:
 	MOV R1, R0
 	BEQ _$j_035ce
@@ -4837,6 +4708,7 @@ _$j_035e8:
 
 ; FUNCTION: GY454XE  Re 035EC
 ; FUNCTION: GY455XE  Im 036F8
+; FUNCTION: GY460XF  Im 03392
 _f_035EC:
 	PUSH LR
 	MOV ER2, ER0
@@ -4892,6 +4764,7 @@ _$j_03652:
 
 ; FUNCTION: GY454XE  Re 03656
 ; FUNCTION: GY455XE  Im 03762
+; FUNCTION: GY460XF  Im 033FC
 _is_ac_keycode:
 	CMP R0, #0E6H  ; K_AC
 	BEQ _$j_0365c
@@ -4902,12 +4775,14 @@ _$j_0365c:
 
 ; FUNCTION: GY454XE  Re 03660
 ; FUNCTION: GY455XE  Im 0376C
+; FUNCTION: GY460XF  Im 03406
 _f_03660:
 	MOV R1, #3H
 	BAL _$j_03666
 
 ; FUNCTION: GY454XE  Re 03664
 ; FUNCTION: GY455XE  Im 03770
+; FUNCTION: GY460XF  Im 0340A
 _f_03664:
 	MOV R1, #1H
 _$j_03666:
@@ -4919,6 +4794,7 @@ _$j_03666:
 
 ; FUNCTION: GY454XE  Re 03672
 ; FUNCTION: GY455XE  Im 0377E
+; FUNCTION: GY460XF  Im 03418
 _is_mov_keycode:
 	L R1, _force_nochar
 	BEQ _$j_03684
@@ -4935,6 +4811,7 @@ _$j_03684:
 
 ; FUNCTION: GY454XE  Re 03688
 ; FUNCTION: GY455XE  Im 03794
+; FUNCTION: GY460XF  Im 0342E
 _is_mov_y_keycode:
 	L R1, _force_nochar
 	BEQ _$j_03684
@@ -4946,6 +4823,7 @@ _is_mov_y_keycode:
 
 ; FUNCTION: GY454XE  Re 03698
 ; FUNCTION: GY455XE  Im 037A4
+; FUNCTION: GY460XF  Im 0343E
 _is_mov_x_keycode:
 	L R1, _force_nochar
 	BEQ _$j_03684
@@ -4957,18 +4835,20 @@ _is_mov_x_keycode:
 
 ; FUNCTION: GY454XE  Re 036A8
 ; FUNCTION: GY455XE  Im 037B4
-_f_036A8:
+; FUNCTION: GY460XF  Im 0344E
+_is_sto_abc_keycode:
 	L R1, _force_nochar
 	BEQ _$j_03684
-	CMP R0, #17H  ; K_STO_A
+	CMP R0, #17H  ; >= K_STO_A
 	BLT _$j_03684
-	CMP R0, #19H  ; K_STO_C
+	CMP R0, #19H  ; <= K_STO_C
 	BGT _$j_03684
 	BAL _$j_03680
 
 ; FUNCTION: GY454XE  Re 036B8
 ; FUNCTION: GY455XE  Im 037C4
-_f_036B8:
+; FUNCTION: GY460XF  Im 0345E
+_is_func_table:
 	L R0, _mode
 	CMP R0, #88H  ; TABLE mode
 	BNE _$j_03684
@@ -4979,6 +4859,7 @@ _f_036B8:
 
 ; FUNCTION: GY454XE  Re 036CA
 ; FUNCTION: GY455XE  Im 037D6
+; FUNCTION: GY460XF  Im 03470
 _filter_chars_stat_mat_vct:
 	L R1, _table_mode
 	CMP R1, #1H
@@ -4996,6 +4877,7 @@ _$j_036e2:
 
 ; FUNCTION: GY454XE  Re 036E8
 ; FUNCTION: GY455XE  Im 037F4
+; FUNCTION: GY460XF  Im 0348E
 _filter_chars:
 	LEA _blacklist
 _$j_036ec:
@@ -5009,6 +4891,7 @@ _$j_036f6:
 
 ; FUNCTION: GY454XE  Re 036F8
 ; FUNCTION: GY455XE  Im 03804
+; FUNCTION: GY460XF  Im 0349E
 _filter_chars_table:
 	L R1, _mode
 	CMP R1, #88H  ; TABLE mode
@@ -5018,6 +4901,7 @@ _filter_chars_table:
 
 ; FUNCTION: GY454XE  Re 03706
 ; FUNCTION: GY455XE  Im 03812
+; FUNCTION: GY460XF  Im 034AC
 _filter_chars_cmplx:
 	L R1, _mode
 	CMP R1, #0C4H  ; CMPLX mode
@@ -5027,6 +4911,7 @@ _filter_chars_cmplx:
 
 ; FUNCTION: GY454XE  Re 03714
 ; FUNCTION: GY455XE  Im 03820
+; FUNCTION: GY460XF  Im 034BA
 _f_03714:
 	PUSH LR
 	MOV ER0, BP
@@ -5040,7 +4925,9 @@ _$j_03724:
 
 ; FUNCTION: GY454XE  Re 03726
 ; FUNCTION: GY455XE  Im 03832
+; FUNCTION: GY460XF  Im 034CC
 _num_sum_1__:
+IF ENABLE_SUM == 1
 	PUSH LR
 	CMP R6, #0H
 	BEQ _$j_03730
@@ -5150,7 +5037,11 @@ _$j_0380e:
 	MOV R2, R0
 	POP ER8
 	POP PC
+ELSE
+	RT
+ENDIF
 
+IF ENABLE_INTEGRAL == 1
 ; FUNCTION: GY454XE  Re 03814
 ; FUNCTION: GY455XE  Im 03920
 _f_03814:
@@ -5434,10 +5325,13 @@ _$j_03a6c:
 	ADD SP, #2H
 	MOV R0, #4H
 	BAL _$j_03a66
+ENDIF
 
 ; FUNCTION: GY454XE  Re 03A72
 ; FUNCTION: GY455XE  Im 03B7E
+; FUNCTION: GY460XF  Im 034CE
 _f_03A72:
+IF ENABLE_INTEGRAL == 1
 	PUSH LR
 	CMP R6, #0H
 	BEQ _$j_03a7c
@@ -5821,7 +5715,11 @@ _$j_03de0:
 	ADD SP, #2H
 	MOV R2, R0
 	POP PC
+ELSE
+	RT
+ENDIF
 
+IF ENABLE_DDX == 1
 ; FUNCTION: GY454XE  Re 03DE6
 ; FUNCTION: GY455XE  Im 03EF2
 _f_03DE6:
@@ -5886,10 +5784,13 @@ _$j_03e6c:
 	ADD SP, #2H
 	CMP R0, #3H
 	POP PC
+ENDIF
 
 ; FUNCTION: GY454XE  Re 03E72
 ; FUNCTION: GY455XE  Im 03F7E
+; FUNCTION: GY460XF  Im 034D0
 _f_03E72:
+IF ENABLE_DDX == 1
 	PUSH LR
 	CMP R6, #0H
 	BEQ _$j_03e7c
@@ -6389,9 +6290,13 @@ _$j_042a0:
 	B _$j_04140
 _$j_042a6:
 	B _$j_03f94
+ELSE
+	RT
+ENDIF
 
 ; FUNCTION: GY454XE  Re 042AA
 ; FUNCTION: GY455XE  Im 043B6
+; FUNCTION: GY460XF  Im 034D2
 _f_042AA:
 	PUSH LR
 	PUSH QR8
@@ -6400,30 +6305,30 @@ _f_042AA:
 	L FP, [ER0]
 	ADD SP, #-3CH
 	MOV BP, SP
-	MOV R0, #BYTE1 _calc_history
-	MOV R1, #BYTE2 _calc_history
-	MOV R2, #BYTE1 (_calc_history+10)
-	MOV R3, #BYTE2 (_calc_history+10)
+	MOV R0, #BYTE1 _mode_ram
+	MOV R1, #BYTE2 _mode_ram
+	MOV R2, #BYTE1 (_mode_ram+10)
+	MOV R3, #BYTE2 (_mode_ram+10)
 	BL _f_1B0DC
 	CMP R0, #0F0H
 	BEQ _$j_043a4
 	CMP R0, #4H
 	BEQ _$j_043a4
-	MOV R0, #BYTE1 (_calc_history+20)
-	MOV R1, #BYTE2 (_calc_history+20)
+	MOV R0, #BYTE1 (_mode_ram+20)
+	MOV R1, #BYTE2 (_mode_ram+20)
 	BL _num_invalid__
 	CMP R0, #4H
 	BNE _$j_043a4
-	MOV R0, #BYTE1 (_calc_history+10)
-	MOV R1, #BYTE2 (_calc_history+10)
+	MOV R0, #BYTE1 (_mode_ram+10)
+	MOV R1, #BYTE2 (_mode_ram+10)
 	BL _f_15526
 	MOV ER0, BP
-	MOV R2, #BYTE1 _calc_history
-	MOV R3, #BYTE2 _calc_history
+	MOV R2, #BYTE1 _mode_ram
+	MOV R3, #BYTE2 _mode_ram
 	BL _f_1A3FC
 	MOV ER0, BP
-	MOV R2, #BYTE1 (_calc_history+20)
-	MOV R3, #BYTE2 (_calc_history)
+	MOV R2, #BYTE1 (_mode_ram+20)
+	MOV R3, #BYTE2 (_mode_ram)
 	BL _f_1A44C
 	MOV ER0, BP
 	BL _f_1B238
@@ -6451,8 +6356,8 @@ _$j_04320:
 	MOV R8, R0
 	MOV R9, #1H
 	BL _f_04468
-	MOV R0, #BYTE1 _calc_history
-	MOV R1, #BYTE2 _calc_history
+	MOV R0, #BYTE1 _mode_ram
+	MOV R1, #BYTE2 _mode_ram
 	MOV R2, #BYTE1 _var_x
 	MOV R3, #BYTE2 _var_x
 	BL _f_1553C
@@ -6490,8 +6395,8 @@ _$j_0435a:
 	BNE _$j_04396
 	MOV R0, #BYTE1 _var_x
 	MOV R1, #BYTE2 _var_x
-	MOV R2, #BYTE1 (_calc_history+20)
-	MOV R3, #BYTE2 (_calc_history)
+	MOV R2, #BYTE1 (_mode_ram+20)
+	MOV R3, #BYTE2 (_mode_ram)
 	BL _f_1A410
 	MOV R0, #BYTE1 _var_x
 	MOV R1, #BYTE2 _var_x
@@ -6517,39 +6422,41 @@ _$j_043a8:
 
 ; FUNCTION: GY454XE  Re 043AC
 ; FUNCTION: GY455XE  Im 044B8
+; FUNCTION: GY460XF  Im 035D4
 _f_043AC:
 	PUSH R0
-	ADD R1, #-1H
-	MOV R0, #3H
+	ADD R1, #-1
+	MOV R0, #3
 	MUL ER0, R1
-	ADD R2, #-1H
+	ADD R2, #-1
 	MOV R3, #0H
 	ADD ER2, ER0
 	POP R0
 	MOV R1, #9H
 	MUL ER0, R1
 	ADD R2, R0
-	MOV R0, #0AH
+	MOV R0, #10
 	MUL ER2, R0
-	MOV R0, #BYTE1 _calc_history
-	MOV R1, #BYTE2 _calc_history
+	MOV R0, #BYTE1 _mode_ram
+	MOV R1, #BYTE2 _mode_ram
 	ADD ER0, ER2
 	RT
 
 ; FUNCTION: GY454XE  Re 043CE
 ; FUNCTION: GY455XE  Im 044DA
-_f_043CE:
+; FUNCTION: GY460XF  Im 035F6
+_table_stat_get_cell_addr:
 	PUSH LR
 	PUSH XR8
 	MOV ER8, ER2
 	MOV ER10, ER0
-	BL _f_0441A
+	BL _table_stat_get_col_addr
 	CMP R0, R11
 	BLT _$j_04414
 	MOV R0, #1H
 	CMP R10, #3H
 	BEQ _$j_043e8
-	BL _get_num_stat_table_cols
+	BL _table_stat_get_num_cols
 _$j_043e8:
 	MOV R2, R11
 	ADD R2, #-1H
@@ -6582,11 +6489,12 @@ _$j_04414:
 
 ; FUNCTION: GY454XE  Re 0441A
 ; FUNCTION: GY455XE  Im 04526
-_f_0441A:
+; FUNCTION: GY460XF  Im 03642
+_table_stat_get_col_addr:
 	PUSH QR8
 	MOV ER10, ER2
-	MOV R8, #BYTE1 (_calc_history+80)
-	MOV R9, #BYTE2 (_calc_history+80)
+	MOV R8, #BYTE1 (_mode_ram+80)
+	MOV R9, #BYTE2 (_mode_ram+80)
 	L R12, _d_080DE
 	CMP R0, #3H
 	BEQ _$j_04432
@@ -6597,7 +6505,7 @@ _$j_0442a:
 	RT
 _$j_04432:
 	PUSH LR
-	BL _get_num_stat_table_cols
+	BL _table_stat_get_num_cols
 	MUL BP, R0
 	MOV R0, #0AH
 	MUL BP, R0
@@ -6608,7 +6516,8 @@ _$j_04432:
 
 ; FUNCTION: GY454XE  Re 04448
 ; FUNCTION: GY455XE  Im 04554
-_get_num_stat_table_cols:
+; FUNCTION: GY460XF  Im 03670
+_table_stat_get_num_cols:
 	MOV R0, #2H
 	L R1, _mode
 	CMP R1, #88H  ; If TABLE mode, return 2
@@ -6627,6 +6536,7 @@ _$j_04466:
 
 ; FUNCTION: GY454XE  Re 04468
 ; FUNCTION: GY455XE  Im 04574
+; FUNCTION: GY460XF  Im 03690
 _f_04468:
 	PUSH LR
 	ST R0, _d_080DE
@@ -6635,14 +6545,15 @@ _f_04468:
 	PUSH EA
 	MOV ER2, #0H
 	ST R2, _d_080DF
-	MOV R0, #BYTE1 _calc_history+80
-	MOV R1, #BYTE2 _calc_history
+	MOV R0, #BYTE1 (_mode_ram+80)
+	MOV R1, #BYTE2 (_mode_ram+80)
 	BL _memset_n
 	POP ER0
 	POP PC
 
 ; FUNCTION: GY454XE  Re 0448A
 ; FUNCTION: GY455XE  Im 04596
+; FUNCTION: GY460XF  Im 036B2
 _f_0448A:
 	PUSH LR
 	ADD ER0, #0H
@@ -6655,6 +6566,7 @@ _$j_04498:
 
 ; FUNCTION: GY454XE  Re 0449A
 ; FUNCTION: GY455XE  Im 045A6
+; FUNCTION: GY460XF  Im 036C2
 _clear_result:
 	PUSH LR
 	MOV ER2, #20
@@ -6665,6 +6577,7 @@ _clear_result:
 
 ; FUNCTION: GY454XE  Re 044A8
 ; FUNCTION: GY455XE  Im 045B4
+; FUNCTION: GY460XF  Im 036D0
 _memzero:
 	PUSH LR
 	PUSH ER2
@@ -6675,6 +6588,7 @@ _memzero:
 
 ; FUNCTION: GY454XE  Re 044B6
 ; FUNCTION: GY455XE  Im 045C2
+; FUNCTION: GY460XF  Im 036DE
 _f_044B6:
 	MOV R0, #0H
 	ST R0, _d_080FE
@@ -6688,18 +6602,21 @@ _$j_044c4:
 
 ; FUNCTION: GY454XE  Re 044CE
 ; FUNCTION: GY455XE  Im 045DA
+; FUNCTION: GY460XF  Im 036F6
 _f_044CE:
 	MOV R0, #0H
 	BAL _$j_044c0
 
 ; FUNCTION: GY454XE  Re 044D2
 ; FUNCTION: GY455XE  Im 045DE
+; FUNCTION: GY460XF  Im 036FA
 _f_044D2:
 	MOV R0, #0H
 	BAL _$j_044c4
 
 ; FUNCTION: GY454XE  Re 044D6
 ; FUNCTION: GY455XE  Im 045E2
+; FUNCTION: GY460XF  Im 036FE
 _set_keycode:
 	ST R0, _last_key_keycode
 	MOV R0, #1H
@@ -6708,6 +6625,7 @@ _set_keycode:
 
 ; FUNCTION: GY454XE  Re 044E2
 ; FUNCTION: GY455XE  Im 045EE
+; FUNCTION: GY460XF  Im 0370A
 _set_char_keycode:
 	ST R0, _last_key_keycode
 	MOV R0, #0H
@@ -6716,6 +6634,7 @@ _set_char_keycode:
 
 ; FUNCTION: GY454XE  Re 044EE
 ; FUNCTION: GY455XE  Im 045FA
+; FUNCTION: GY460XF  Im 03716
 _l_var:
 	PUSH LR
 	PUSH QR8
@@ -6765,6 +6684,7 @@ _$j_0454c:
 
 ; FUNCTION: GY454XE  Re 0454E
 ; FUNCTION: GY455XE  Im 0465A
+; FUNCTION: GY460XF  Im 03776
 _st_var:
 	PUSH LR
 	PUSH QR8
@@ -6797,12 +6717,14 @@ _$j_04584:
 ; Unused since ES
 ; FUNCTION: GY454XE  Re 04588
 ; FUNCTION: GY455XE  Im 04694
+; FUNCTION: GY460XF  Im 037B0
 _f_04588:
 	MOV ER0, SP
 	RT
 
 ; FUNCTION: GY454XE  Re 0458C
 ; FUNCTION: GY455XE  Im 04698
+; FUNCTION: GY460XF  Im 037B4
 _get_remaining_stack_space:
 	MOV R2, #BYTE1 _stack_start
 	MOV R3, #BYTE2 _stack_start
@@ -6813,6 +6735,7 @@ _get_remaining_stack_space:
 
 ; FUNCTION: GY454XE  Re 04598
 ; FUNCTION: GY455XE  Im 046A4
+; FUNCTION: GY460XF  Im 037C0
 _reset_magic_string:
 	LEA _magic_string
 	MOV R0, #0FH
@@ -6824,6 +6747,7 @@ _$rms_loop:
 
 ; FUNCTION: GY454XE  Re 045A6
 ; FUNCTION: GY455XE  Im 046B2
+; FUNCTION: GY460XF  Im 037CE
 _need_reset:
 	PUSH LR
 	PUSH XR4
@@ -6864,6 +6788,7 @@ _$nr_no:
 
 ; FUNCTION: GY454XE  Re 045EE
 ; FUNCTION: GY455XE  Im 046FA
+; FUNCTION: GY460XF  Im 03816
 _shutdown:
 	L R0, _cursor_noflash
 	BNE _$stop_exit
@@ -6897,6 +6822,7 @@ _shutdown:
 
 ; FUNCTION: GY454XE  Re 04640
 ; FUNCTION: GY455XE  Im 0474C
+; FUNCTION: GY460XF  Im 03868
 _delay:
 	MOV ER2, ER0
 	LEA TM0CON
@@ -6920,6 +6846,7 @@ _delay:
 
 ; FUNCTION: GY454XE  Re 04670
 ; FUNCTION: GY455XE  Im 0477C
+; FUNCTION: GY460XF  Im 03898
 _stop_enable:
 	LEA STPACP
 	MOV R2, #50H
@@ -6935,6 +6862,7 @@ _$stop_exit:
 	
 ; FUNCTION: GY454XE  Re 04686
 ; FUNCTION: GY455XE  Im 04792
+; FUNCTION: GY460XF  Im 038AE
 _waitkey:
 	LEA IRQ0
 	L R0, [EA]
@@ -6953,6 +6881,7 @@ _waitkey:
 	
 ; FUNCTION: GY454XE  Re 046A6
 ; FUNCTION: GY455XE  Im 047B2
+; FUNCTION: GY460XF  Im 038CE
 _get_IRQ0:
 	LEA IRQ0
 	L R0, [EA]
@@ -6960,6 +6889,7 @@ _get_IRQ0:
 	
 ; FUNCTION: GY454XE  Re 046AE
 ; FUNCTION: GY455XE  Im 047BA
+; FUNCTION: GY460XF  Im 038D6
 _f_046AE:
 	TB _d_080F4.7
 	BNE _$j_046bc
@@ -6973,12 +6903,14 @@ _$j_046bc:
 	
 ; FUNCTION: GY454XE  Re 046C0
 ; FUNCTION: GY455XE  Im 047CC
+; FUNCTION: GY460XF  Im 038E8
 _f_046C0:
 	MOV R0, #80H
 	BAL _$j_046b6
 	
 ; FUNCTION: GY454XE  Re 046C4
 ; FUNCTION: GY455XE  Im 047D0
+; FUNCTION: GY460XF  Im 038EC
 _f_046C4:
 	MOV R0, #0
 	ST R0, _d_080F4
@@ -6986,6 +6918,7 @@ _f_046C4:
 
 ; FUNCTION: GY454XE  Re 046CC
 ; FUNCTION: GY455XE  Im 047D8
+; FUNCTION: GY460XF  Im 038F4
 _f_046CC:
 	TB _d_080F4.7
 	BEQ _$j_046dc
@@ -6993,6 +6926,7 @@ _f_046CC:
 	
 ; FUNCTION: GY454XE  Re 046D4
 ; FUNCTION: GY455XE  Im 047E0
+; FUNCTION: GY460XF  Im 038FC
 _f_046D4:
 	TB _d_080F4.3
 	BEQ _$j_046dc
@@ -7003,6 +6937,7 @@ _$j_046dc:
 
 ; FUNCTION: GY454XE  Re 046E0
 ; FUNCTION: GY455XE  Im 047EC
+; FUNCTION: GY460XF  Im 03908
 _f_046E0:
 	PUSH LR
 	MOV ER2, #1H
@@ -7034,6 +6969,7 @@ _$j_046f2:
 
 ; FUNCTION: GY454XE  Re 04728
 ; FUNCTION: GY455XE  Im 04834
+; FUNCTION: GY460XF  Im 03950
 _clr_port0:
 	LEA P0D
 	MOV ER0, #0H
@@ -7045,6 +6981,7 @@ _clr_port0:
 
 ; FUNCTION: GY454XE  Re 04738
 ; FUNCTION: GY455XE  Im 04844
+; FUNCTION: GY460XF  Im 03960
 _f_04738:
 	LEA IE0
 	MOV ER0, #00100010B
@@ -7053,9 +6990,11 @@ _f_04738:
 	ST R0, EXICON0
 	RT
 
-; Used in ES. Segment 8 was repurposed for checksum calculation from ES PLUS LY onwards, so this function is not used anymore.
+; Used in ES. Segment 8 was repurposed for checksum calculation from ES PLUS LY onwards,
+; so this function is not used anymore.
 ; FUNCTION: GY454XE  Re 04748
 ; FUNCTION: GY455XE  Im 04854
+; FUNCTION: GY460XF  Im 03970
 _f_04748:
 	MOV ER0, #0H
 	LEA 40H
@@ -7072,6 +7011,7 @@ _$j_0475e:
 
 ; FUNCTION: GY454XE  Re 04760
 ; FUNCTION: GY455XE  Im 0486C
+; FUNCTION: GY460XF  Im 03988
 _f_04760:
 	MOV ER0, #3H
 	ST R0, 0F033H
@@ -7083,13 +7023,15 @@ _f_04760:
 
 ; FUNCTION: GY454XE  Re 04776
 ; FUNCTION: GY455XE  Im 04882
+; FUNCTION: GY460XF  Im 0399E
 _set_contrast_sfr:
 	ST R0, 0F032H
 	RT
 
-; No longer used since ES PLUS LY.
+; Used in ES and ES PLUS early GY.
 ; FUNCTION: GY454XE  Re 0477C
 ; FUNCTION: GY455XE  Im 04888
+; FUNCTION: GY460XF  Im 039A4
 _f_0477C:
 	L R0, 0F031H
 	AND R0, #11111011B
@@ -7100,6 +7042,7 @@ _f_0477C:
 
 ; FUNCTION: GY454XE  Re 0478E
 ; FUNCTION: GY455XE  Im 0489A
+; FUNCTION: GY460XF  Im 039B6
 _set_scr_normal:
 	MOV R0, #5H
 	ST R0, 0F031H
@@ -7107,12 +7050,14 @@ _set_scr_normal:
 
 ; FUNCTION: GY454XE  Re 04796
 ; FUNCTION: GY455XE  Im 048A2
+; FUNCTION: GY460XF  Im 039BE
 _f_04796:
 	TB _table_mode.4
 	BNE _$j_047a2
 
 ; FUNCTION: GY454XE  Re 0479C
 ; FUNCTION: GY455XE  Im 048A8
+; FUNCTION: GY460XF  Im 039C4
 _f_0479C:
 	MOV R0, #6H
 	ST R0, 0F031H
@@ -7129,6 +7074,7 @@ _$j_047ba:
 
 ; FUNCTION: GY454XE  Re 047C0
 ; FUNCTION: GY455XE  Im 048CC
+; FUNCTION: GY460XF  Im 039E8
 _set_disp_indicator:
 	CMP R0, #0H
 	BEQ _$j_047ba
@@ -7137,6 +7083,7 @@ _set_disp_indicator:
 
 ; FUNCTION: GY454XE  Re 047CA
 ; FUNCTION: GY455XE  Im 048D6
+; FUNCTION: GY460XF  Im 039F2
 _set_contrast2_0:
 	MOV R0, #0H
 	ST R0, 0F033H
@@ -7144,6 +7091,7 @@ _set_contrast2_0:
 
 ; FUNCTION: GY454XE  Re 047D2
 ; FUNCTION: GY455XE  Im 048DE
+; FUNCTION: GY460XF  Im 039FA
 _set_all_kimask:
 	MOV R0, #11111111B
 	ST R0, KIMASK
@@ -7151,6 +7099,7 @@ _set_all_kimask:
 
 ; FUNCTION: GY454XE  Re 047DA
 ; FUNCTION: GY455XE  Im 048E6
+; FUNCTION: GY460XF  Im 03A02
 _clr_all_kimask:
 	MOV R0, #0H
 	ST R0, KIMASK
@@ -7158,6 +7107,7 @@ _clr_all_kimask:
 
 ; FUNCTION: GY454XE  Re 047E2
 ; FUNCTION: GY455XE  Im 048EE
+; FUNCTION: GY460XF  Im 03A0A
 _set_all_ko:
 	MOV R0, #01111111B
 	ST R0, KOD0
@@ -7165,6 +7115,7 @@ _set_all_ko:
 
 ; FUNCTION: GY454XE  Re 047EA
 ; FUNCTION: GY455XE  Im 048F6
+; FUNCTION: GY460XF  Im 03A12
 _clr_all_ko:
 	MOV R2, #0H
 	ST R2, KOD0
@@ -7172,6 +7123,7 @@ _clr_all_ko:
 
 ; FUNCTION: GY454XE  Re 047F2
 ; FUNCTION: GY455XE  Im 048FE
+; FUNCTION: GY460XF  Im 03A1A
 _is_key_pressed:
 	MOV R0, #7FH
 	ST R0, KOD0
@@ -7184,6 +7136,7 @@ _is_key_pressed:
 
 ; FUNCTION: GY454XE  Re 04806
 ; FUNCTION: GY455XE  Im 04912
+; FUNCTION: GY460XF  Im 03A2E
 _check_ac:
 	PUSH LR
 IF REAL == 1
@@ -7231,15 +7184,28 @@ ENDIF
 
 ; FUNCTION: GY454XE  Re 04832
 ; FUNCTION: GY455XE  Im 04940
+; FUNCTION: GY460XF  Im 03A5C
 _interrupt_stub:
 	RTI
 
+PUBLIC _matrix_dims
+PUBLIC _unk_0078a
+PUBLIC _vector_dims
+PUBLIC _matvct_strings
+PUBLIC _unk_007e6
+PUBLIC _unk_0080a
+PUBLIC _unk_00812
+PUBLIC _table_param_ptrs
+PUBLIC _table_eqn_linel_params
+PUBLIC _table_eqn_liner_params
 PUBLIC _base_n_submodes
 PUBLIC _vars_list
 PUBLIC _s_table_x
 PUBLIC _s_table_y
 PUBLIC _s_table_freq
 PUBLIC _s_table_fx
+PUBLIC _s_table_a
+PUBLIC _s_table_1
 PUBLIC _s_blank_line
 PUBLIC _s_prompt_fix
 PUBLIC _s_prompt_sci
@@ -7262,10 +7228,18 @@ PUBLIC _menu_matrix
 PUBLIC _menu_matrix_data
 PUBLIC _menu_matrix_dim0
 PUBLIC _menu_matrix_dim1
+PUBLIC _menu_matrix_sel
+PUBLIC _menu_mata_dim_sel
+PUBLIC _menu_matb_dim_sel
+PUBLIC _menu_matc_dim_sel
 PUBLIC _menu_vector_table
 PUBLIC _menu_vector
 PUBLIC _menu_vector_data
 PUBLIC _menu_vector_dim
+PUBLIC _menu_vector_sel
+PUBLIC _menu_vcta_dim_sel
+PUBLIC _menu_vctb_dim_sel
+PUBLIC _menu_vctc_dim_sel
 PUBLIC _menu_cmplx
 PUBLIC _menu_base_n_0
 PUBLIC _menu_base_n_1
@@ -7359,7 +7333,8 @@ PUBLIC _f_03664
 PUBLIC _is_mov_keycode
 PUBLIC _is_mov_y_keycode
 PUBLIC _is_mov_x_keycode
-PUBLIC _f_036B8
+PUBLIC _is_sto_abc_keycode
+PUBLIC _is_func_table
 PUBLIC _filter_chars_stat_mat_vct
 PUBLIC _filter_chars
 PUBLIC _filter_chars_table
@@ -7370,9 +7345,9 @@ PUBLIC _f_03A72
 PUBLIC _f_03E72
 PUBLIC _f_042AA
 PUBLIC _f_043AC
-PUBLIC _f_043CE
-PUBLIC _f_0441A
-PUBLIC _get_num_stat_table_cols
+PUBLIC _table_stat_get_cell_addr
+PUBLIC _table_stat_get_col_addr
+PUBLIC _table_stat_get_num_cols
 PUBLIC _f_0448A
 PUBLIC _clear_result
 PUBLIC _memzero
@@ -7410,6 +7385,11 @@ PUBLIC _clr_all_ko
 PUBLIC _is_key_pressed
 PUBLIC _check_ac
 
+EXTRN TABLE	: _font_big_0
+EXTRN TABLE	: _font_small_0
+EXTRN TABLE	: _font_tiny
+EXTRN TABLE	: _font_big_1
+EXTRN TABLE	: _font_small_1
 EXTRN TABLE	: _s_continue_prompt
 EXTRN TABLE	: _num_0
 EXTRN TABLE	: _num_1
@@ -7502,6 +7482,7 @@ EXTRN DATA	: _input_area
 EXTRN DATA	: _vars_start
 EXTRN DATA	: _var_m
 EXTRN DATA	: _var_x
+EXTRN DATA	: _mode_ram
 EXTRN DATA	: _magic_string
 EXTRN DATA	: _screen_buffer
 EXTRN NUMBER: _screen_buffer_y1_neg

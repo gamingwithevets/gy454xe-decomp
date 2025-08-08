@@ -49,10 +49,18 @@ typedef struct {
 // Static declarations (placed first so we can define jump table)
 static char keyfunc_nop(f_09962_struct *a);
 static void copy_input_prompt(char idx, char is_solve, char is_init_str);
-static char f_0A24E(char a, char keycode);
+static char table_stat_nav(char a, char keycode);
 static void f_0A3B4(void);
-static void f_0A410(char *a);
-static void f_0AE14(char a);
+static void f_0A410(char *num);
+static void table_eqn_key_handler(void);
+static void table_eqn_draw_text(void);
+static void table_eqn_draw_lines(void);
+static char table_eqn_nav(char keycode);
+static char table_matvct_handler(char sm);
+static char table_matvct_nav(char sm, char keycode);
+static void table_matvct_draw_cols(char a, char b);
+static char f_0AC44(char *num, char sm, char ty, char tx);
+static char f_0AE14(char a);
 static void set_result(char *a);
 static void f_0B226(getscancode_struct *a);
 static void copy_cursor_from_scr(char *cursor, char *scr);
@@ -105,6 +113,7 @@ static char keyfunc_setup(f_09962_struct *a);
 
 // DATA: GY454XE  Re 01FB6
 // DATA: GY455XE  Im 01FB8
+// DATA: GY460XF  Im 01D14
 static char (* const keyfuncs[])(f_09962_struct *) = {
 	keyfunc_mov_y,		// K_UP
 	keyfunc_mov_y,		// K_DOWN
@@ -167,11 +176,15 @@ const char *init_unk_0[] = {
 const char **init_unk_1 = &d_080DC;
 
 // FUNCTION: GY454XE  Re 0995E
+// FUNCTION: GY455XE  Im 0A282
+// FUNCTION: GY460XF  Im 09C28
 static char keyfunc_nop(f_09962_struct *a) {
 	return 0;
 }
 
 // FUNCTION: GY454XE  Re 09962
+// FUNCTION: GY455XE  Im 0A286
+// FUNCTION: GY460XF  Im 09C2C
 char f_09962(char no_keyfunc) {
 	f_09962_struct v0;
 	char v1;
@@ -242,7 +255,9 @@ j_09b9c:
 }
 
 // FUNCTION: GY454XE  Re 09BDC
-char f_09BDC(char a) {
+// FUNCTION: GY455XE  Im 0A500
+// FUNCTION: GY460XF  Im 09EA6
+char calc_solve_handler(char a) {
 	char v0;
 	char v1;
 	char *v2;
@@ -315,6 +330,8 @@ j_09c7c:
 }
 
 // FUNCTION: GY454XE  Re 09D54
+// FUNCTION: GY455XE  Im 0A678
+// FUNCTION: GY460XF  Im 0A01E
 char f_09D54(char tmode) {
 	if (table_mode & (1 << 7)) smart_strcpy(input_area, cache_area);
 	table_mode = tmode;
@@ -324,6 +341,8 @@ char f_09D54(char tmode) {
 }
 
 // FUNCTION: GY454XE  Re 09D84
+// FUNCTION: GY455XE  Im 0A6A8
+// FUNCTION: GY460XF  Im 0A04E
 char f_09D84(void) {
 	char v0 = 0;
 
@@ -334,6 +353,8 @@ char f_09D84(void) {
 }
 
 // FUNCTION: GY454XE  Re 09DB6
+// FUNCTION: GY455XE  Im 0A6DA
+// FUNCTION: GY460XF  Im 0A080
 static void copy_input_prompt(char idx, char is_solve, char is_init_str) {
 	char v0;
 	char out[16];
@@ -366,6 +387,8 @@ static void copy_input_prompt(char idx, char is_solve, char is_init_str) {
 }
 
 // FUNCTION: GY454XE  Re 09E70
+// FUNCTION: GY455XE  Im 0A794
+// FUNCTION: GY460XF  Im 0A13A
 char display_menu(char *val, char *head) {
 	char v0;
 	char v00;
@@ -451,6 +474,8 @@ char display_menu(char *val, char *head) {
 }
 
 // FUNCTION: GY454XE  Re 0A010
+// FUNCTION: GY455XE  Im 0A934
+// FUNCTION: GY460XF  Im 0A2DA
 char display_token_menu(char m, char menu_idx) {
 	char loc_m1;
 
@@ -465,7 +490,9 @@ char display_token_menu(char m, char menu_idx) {
 }
 
 // FUNCTION: GY454XE  Re 0A050
-char f_0A050(char a) {
+// FUNCTION: GY455XE  Im 0A974
+// FUNCTION: GY460XF  Im 0A31A
+char table_range_handler(char a) {
 	char v0;
 
 	v0 = 1;
@@ -492,7 +519,9 @@ char f_0A050(char a) {
 }
 
 // FUNCTION: GY454XE  Re 0A0BC
-void draw_stat_table(void) {
+// FUNCTION: GY455XE  Im 0A9E0
+// FUNCTION: GY460XF  Im 0A386
+void table_stat_handler(void) {
 	char v0;
 	char v1;
 	char v2;
@@ -502,10 +531,10 @@ void draw_stat_table(void) {
 
 	memzero(loc_m18, 18);
 	v0 = d_080DE;
-	v1 = get_num_stat_table_cols();
+	v1 = table_stat_get_num_cols();
 	if (is_mov_keycode(last_key_keycode)) {
 		f_046AE();
-		if (f_0A24E(0, last_key_keycode)) {
+		if (table_stat_nav(0, last_key_keycode)) {
 			f_046C4();
 			goto j_0a242;
 		}
@@ -517,24 +546,19 @@ void draw_stat_table(void) {
 		} else goto j_0a242;
 	}
 	v2 = 0;
-	v3 = 0;
-	while (v3 < v1 - 1) {
+	for (v3 = 0; v3 <= v1 - 1; v3++) {
 		char tmp;
 		char tmp2;
 
 		tmp = 0;
-		tmp2 = table_viewport;
-		while (tmp2 < table_viewport + 3) {
-			f_043CE(v2, tmp, &loc_m20);
-			loc_m18[tmp][v3] = loc_m20;
-			++tmp;
-			++tmp2;
+		for (tmp2 = table_viewport; tmp2 < table_viewport + 3; tmp2++) {
+			table_stat_get_cell_addr(v2, tmp2, &loc_m20);
+			loc_m18[tmp++][v3] = loc_m20;
 		}
 		if (submode == SMODE_STAT_1VAR) ++v2;
 		++v2;
-		++v3;
 	}
-	loc_m20 = loc_m18[table_y][table_x];
+	loc_m20 = loc_m18[table_y - 1][table_x - 1];
 	set_result(loc_m20);
 	if (is_format_keycode(last_key_keycode)) {
 		if (loc_m20) f_09962(0);
@@ -548,7 +572,7 @@ void draw_stat_table(void) {
 	f_0336A(table_viewport);
 	f_0A3B4();
 	f_032A4(3, v1, table_y, table_x, loc_m18);
-	draw_stat_table_cols(v1);
+	table_stat_draw_cols(v1);
 	font_size = 7;
 	if (table_x <= v0) num_output_print(loc_m20);
 	else num_output_print(NULL);
@@ -556,13 +580,71 @@ j_0a242:
 	return;
 }
 
-// STUB: GY454XE  Re 0A24E
-static char f_0A24E(char a, char keycode) {
-	return 0;
+// FUNCTION: GY454XE  Re 0A24E
+// FUNCTION: GY455XE  Im 0AB72
+// FUNCTION: GY460XF  Im 0A518
+static char table_stat_nav(char a, char keycode) {
+	char v0;
+	char v1;
+	char v2;
+	char v3;
+
+	v0 = 1;
+	v1 = table_stat_get_num_cols();
+	v2 = d_080DE;
+	if ((char)(80 - (v2 * v1 + d_080DF)) < v1) --v2;
+	switch (keycode) {
+		case K_UP:
+			if (table_y == 1) {
+				if (table_viewport >= 2) --table_viewport;
+				else if (v2 < 3) table_y = v2 + 1;
+				else {
+					table_y = 3;
+					table_viewport = v2 - 1;
+				}
+			} else if (table_y > 1) --table_y;
+			else break;
+			v0 = 0;
+			break;
+		case K_DOWN:
+		case K_APPROX:
+			if (table_viewport + table_y <= v2 + 1) {
+				if (table_y == 3) {
+					if (table_viewport <= v2 - 2) {
+						++table_viewport;
+						v0 = 0;
+					}
+				} else {
+					++table_y;
+					v0 = 0;
+				}
+			} else if (keycode != K_APPROX) {
+				table_viewport = 1;
+				table_y = 1;
+				v0 = 0;
+			}
+			break;
+		case K_RIGHT:
+			if (table_x < v1) {
+				++table_x;
+				v0 = 0;
+			}
+			break;
+		case K_LEFT:
+			if (table_x > 1) {
+				--table_x;
+				v0 = 0;
+			}
+			break;
+	}
+	if (!v0) f_044CE();
+	return v0;
 }
 
 // FUNCTION: GY454XE  Re 0A372
-static void draw_stat_table_cols(char cols) {
+// FUNCTION: GY455XE  Im 0AC96
+// FUNCTION: GY460XF  Im 0A63C
+static void table_stat_draw_cols(char cols) {
 	draw_line_vert(10, 1, 24, 0);
 	draw_line_vert(38, 1, 24, 0);
 	if (cols >= 2) draw_line_vert(66, 1, 24, 0);
@@ -571,6 +653,8 @@ static void draw_stat_table_cols(char cols) {
 }
 
 // FUNCTION: GY454XE  Re 0A3B4
+// FUNCTION: GY455XE  Im 0ACD8
+// FUNCTION: GY460XF  Im 0A67E
 static void f_0A3B4(void) {
 	char v0;
 
@@ -596,115 +680,461 @@ static void f_0A3B4(void) {
 	return;
 }
 
-// STUB: GY454XE  Re 0A410
-static void f_0A410(char *a) {
+// FUNCTION: GY454XE  Re 0A410
+// FUNCTION: GY455XE  Im 0AD34
+// FUNCTION: GY460XF  Im 0A6DA
+static void f_0A410(char *num) {
+	char v0;
+	char v1;
+	char *v2;
+	int v3;
+
+	f_044CE();
+	switch (table_mode) {
+		case TABLE_STAT_TABLE:
+			v0 = table_viewport + table_y - 1;
+			if (v0 > d_080DE) f_0AD08(v0);
+			v1 = table_x - 1;
+			if (submode == SMODE_STAT_1VAR && v1 == 1) v1 = 2;
+			f_0AF30(v1, v0, num);
+			table_stat_nav(table_x - 1, K_APPROX);
+			d_08126 = 0;
+			break;
+		case TABLE_MATRIX:
+		case TABLE_VECTOR:
+			f_0AC44(num, submode, table_y, table_x);
+			table_matvct_nav(submode, K_APPROX);
+			break;
+		case TABLE_EQN:
+		case TABLE_RATIO:
+		case TABLE_INEQ:
+			v2 = num;
+			v3 = table_viewport * 18;
+			v3 += table_y * 6;
+			v3 += table_x * 2;
+			f_0448A(unk_007e6[v3 - 26], v2);
+			table_eqn_nav(K_APPROX);
+			d_080FD = 1;
+			break;
+		case TABLE_CALC:
+		case TABLE_SOLVE:
+			st_var(mode_ram[352 + mode_ram[351]], num);
+			++mode_ram[351];
+			return;
+		case TABLE_RANGE:
+			num_to_str_std_lineo(num);
+			f_0448A(table_param_ptrs[d_080FD - 1], num);
+			++d_080FD;
+	}
+	d_080FE = 3;
 	return;
 }
 
 // FUNCTION: GY454XE  Re 0A564
+// FUNCTION: GY455XE  Im 0AE88
+// FUNCTION: GY460XF  Im 0A82E
 char f_0A564(void) {
 	if (table_mode & (1 << 4) && d_080FE == 1) return 1;
 	else return 0;
 }
 
 // FUNCTION: GY454XE  Re 0A57A
+// FUNCTION: GY455XE  Im 0AE9E
+// FUNCTION: GY460XF  Im 0A844
 char f_0A57A(void) {
 	if (table_mode & (1 << 4) && (d_080FE == 3 || d_080FE == 0)) return 1;
 	return 0;
 }
 
-// STUB: GY454XE  Re 0A594
-void f_0A594(char a) {
+// FUNCTION: GY454XE  Re 0A594
+// FUNCTION: GY455XE  Im 0AEB8
+// FUNCTION: GY460XF  Im 0A85E
+char table_eqn_handler(char a) {
+	char v0;
+
+	v0 = 1;
+	arrow_state = 0;
+	if ((last_key_keycode == K_APPROX || last_key_keycode == K_EXECUTE) && !d_080FD) {
+		char tmp;
+		if (tmp = f_13BEA()) set_keycode(show_error(tmp));
+		else {
+			table_mode = TABLE_NONE;
+			d_080FD = 2;
+			v0 = 0;
+		}
+	} else {
+		d_080FD = 0;
+		table_eqn_key_handler();
+	}
+	return v0;
+}
+
+// FUNCTION: GY454XE  Re 0A5E4
+// FUNCTION: GY455XE  Im 0AF08
+// FUNCTION: GY460XF  Im 0A8AE
+static void table_eqn_key_handler(void) {
+	char v0;
+	int v1;
+	char *v2;
+
+	v0 = submode - 1;
+	if (is_mov_keycode(last_key_keycode)) {
+		f_046AE();
+		if (table_eqn_nav(last_key_keycode)) {
+			f_046C4();
+			goto j_0a6d4;
+		}
+	} else if (last_key_keycode == K_AC) {
+		f_044B6();
+		if (mode == MODE_INEQ) table_ineq_setup();
+		else if (mode == MODE_RATIO) table_ratio_setup();
+		else table_eqn_setup();
+	}
+	v1 = table_viewport * 18;
+	v1 += table_y * 6;
+	v1 += table_x * 2;
+	v2 = unk_007e6[v1 - 26];
+	set_result(v2);
+	if (is_format_keycode(last_key_keycode)) {
+		if (v2) f_09962(0);
+	} else {
+		buffer_clear();
+		table_eqn_draw_text();
+		table_eqn_draw_lines();
+		f_032A4(unk_0080a[v0].b.m, unk_0080a[v0].b.n, table_y, table_x, &unk_007e6[(table_viewport - 1) * 18]);
+		font_size = 7;
+		num_output_print(v2);
+	}
+j_0a6d4:
 	return;
 }
 
-// STUB: GY454XE  Re 0A5E4
-void f_0A5E4(void) {
+// FUNCTION: GY454XE  Re 0A6DA
+// FUNCTION: GY455XE  Im 0AFFE
+// FUNCTION: GY460XF  Im 0AA0E
+static void table_eqn_draw_text(void) {
+	char loc_m6[6];	
+
+	strcpy(loc_m6, s_table_a);
+	loc_m6[2] += table_viewport - 1;
+	font_size = 6;
+	line_print(12, 1, loc_m6);
+	++loc_m6[2];
+	line_print(40, 1, loc_m6);
+	++loc_m6[2];
+	line_print(68, 1, loc_m6);
+	if (submode <= SMODE_EQN_SIMUL3) {
+		strcpy(loc_m6, s_table_1);
+		line_print(5, 7, loc_m6);
+		++loc_m6[0];
+		line_print(5, 13, loc_m6);
+		if (submode == SMODE_EQN_SIMUL3) {
+			++loc_m6[0];
+			line_print(5, 19, loc_m6);
+		}
+	}
 	return;
 }
 
-// STUB: GY454XE  Re 0A6DA
-void f_0A6DA(void) {
+// FUNCTION: GY454XE  Re 0A782
+// FUNCTION: GY455XE  Im 0B0A6
+// FUNCTION: GY460XF  Im 0AACC
+static void table_eqn_draw_lines(void) {
+	char v0;
+	char v1;
+	char v2;
+	char v3;
+
+	v0 = table_eqn_linel_params[submode - 1][0];
+	v1 = table_eqn_linel_params[submode - 1][1];
+	v2 = table_eqn_linel_params[submode - 1][2];
+	v3 = table_eqn_linel_params[submode - 1][3];
+	if (table_viewport != 1) v3 = 0;
+	draw_line_vert(v0, v1, v2, v3);
+	v0 = table_eqn_liner_params[submode - 1][0];
+	v1 = table_eqn_liner_params[submode - 1][1];
+	v2 = table_eqn_liner_params[submode - 1][2];
+	v3 = table_eqn_liner_params[submode - 1][3];
+	if (table_viewport != 1 || (submode != SMODE_EQN_SIMUL3 && submode != SMODE_EQN_POLY3)) draw_line_vert(v0, v1, v2, v3);
 	return;
 }
 
-// STUB: GY454XE  Re 0A782
-void f_0A782(void) {
+// FUNCTION: GY454XE  Re 0A7FA
+// FUNCTION: GY455XE  Im 0B11E
+// FUNCTION: GY460XF  Im 0AB44
+static char table_eqn_nav(char keycode) {
+	char v0;
+	dim loc_m2;
+	dim loc_m4;
+
+	v0 = 1;
+	loc_m2.mn = unk_0080a[submode - 1].mn;
+	loc_m4.mn = unk_00812[submode - 1].mn;
+	switch (keycode) {
+		case K_UP:
+			if (table_y > 1) {
+				--table_y;
+				v0 = 0;
+			}
+			break;
+		case K_DOWN:
+			if (table_y < loc_m4.b.m) {
+				++table_y;
+				v0 = 0;
+			}
+			break;
+		case K_RIGHT:
+		case K_APPROX:
+			if (table_x == 3) {
+				if (table_viewport == 1) {
+					if (table_x + table_viewport < loc_m4.b.n + 1) ++table_viewport;
+					else if (table_y < loc_m4.b.m) {
+						++table_y;
+						table_x = 1;
+					}
+					v0 = 0;
+				} else if (table_y < loc_m4.b.m) {
+					++table_y;
+					table_viewport = 1;
+					table_x = 1;
+				}
+			} else if (table_x < loc_m4.b.n) {
+				++table_x;
+				v0 = 0;
+			}
+			break;
+		case K_LEFT:
+			if (table_x == 1) {
+				if (table_viewport == 2) {
+					--table_viewport;
+					v0 = 0;
+				} else if (table_y != 1) {
+					--table_y;
+					v0 = 0;
+					table_x = loc_m2.b.n;
+					if (loc_m4.b.n > 3) table_viewport = 2;
+				}
+			} else {
+				--table_x;
+				v0 = 0;
+			}
+			break;
+	}
+	if (!v0) f_044CE();
+	return v0;
+}
+
+// FUNCTION: GY454XE  Re 0A936
+// FUNCTION: GY455XE  Im 0B25A
+// FUNCTION: GY460XF  Im 0AC80
+char table_vct_handler(char a) {
+	return table_mat_handler(a);
+}
+
+// FUNCTION: GY454XE  Re 0A93A
+// FUNCTION: GY455XE  Im 0B25E
+// FUNCTION: GY460XF  Im 0AC84
+char table_mat_handler(char a) {
+	char v0;
+
+	if (!matvct_dims[submode].b.m || !matvct_dims[submode].b.n) {
+		screen_state = 0;
+		table_mode = TABLE_NONE;
+		f_0B8B8(2);
+		v0 = 0;
+	} else v0 = table_matvct_handler(submode);
+	return v0;
+}
+
+// FUNCTION: GY454XE  Re 0A978
+// FUNCTION: GY455XE  Im 0B29C
+// FUNCTION: GY460XF  Im 0ACC2
+static char table_matvct_handler(char sm) {
+	char v0;
+	char *v1;
+
+	if (is_sto_abc_keycode(last_key_keycode)) {
+		v0 = last_key_keycode - K_STO_A;
+		if (v0 != sm) f_1547E(v0, sm);
+		sm = v0;
+		submode = sm;
+		f_0AF0A();
+	} else if (is_mov_keycode(last_key_keycode)) {
+		f_046AE();
+		if (table_matvct_nav(sm, last_key_keycode)) {
+			f_046C4();
+			goto j_0aa46;
+		}
+	}
+	v1 = unk_0078a[sm * 9 + table_y * 3 + table_x - 4];
+	set_result(v1);
+	if (is_format_keycode(last_key_keycode)) {
+		if (v1) f_09962(0);
+	} else {
+		dim *tmp = &matvct_dims[sm];
+		buffer_clear();
+		matvct_string_print(sm);
+		table_matvct_draw_cols(tmp->b.m, tmp->b.n);
+		f_032A4(tmp->b.m, tmp->b.n, table_y, table_x, &unk_0078a[sm * 9]);
+		font_size = 7;
+		num_output_print(v1);
+	}
+j_0aa46:
+	return 1;
+}
+
+// FUNCTION: GY454XE  Re 0AA7C
+// FUNCTION: GY455XE  Im 0B3A0
+// FUNCTION: GY460XF  Im 0ADC6
+static char table_matvct_nav(char sm, char keycode) {
+	char v0;
+	char tmp;
+
+	v0 = 1;
+	switch (keycode) {
+		case K_UP:
+			if (table_y > 1) {
+				--table_y;
+				v0 = 0;
+			}
+			break;
+		case K_DOWN:
+			if (table_y < matvct_dims[sm].b.m) {
+				++table_y;
+				v0 = 0;
+			}
+			break;
+		case K_RIGHT:
+		case K_APPROX:
+			if (table_x < matvct_dims[sm].b.n) tmp = table_x + 1;
+			else if (table_y < matvct_dims[sm].b.m) {
+				++table_y;
+				tmp = 1;
+			} else break;
+			table_x = tmp;
+			v0 = 0;
+			break;
+		case K_LEFT:
+			if (table_x > 1) tmp = table_x - 1;
+			else if (table_y > 1) {
+				--table_y;
+				tmp = matvct_dims[sm].b.n;
+			} else break;
+			table_x = tmp;
+			v0 = 0;
+			break;
+	}
+	if (!v0) f_044CE();
+	return v0;
+}
+
+// FUNCTION: GY454XE  Re 0AB44
+// FUNCTION: GY455XE  Im 0B468
+// FUNCTION: GY460XF  Im 0AE8E
+static void matvct_string_print(char sm) {
+	font_size = 6;
+	line_print(1, 1, matvct_strings[sm]);
 	return;
 }
 
-// STUB: GY454XE  Re 0A7FA
-void f_0A7FA(void) {
+// FUNCTION: GY454XE  Re 0AB6A
+// FUNCTION: GY455XE  Im 0B48E
+// FUNCTION: GY460XF  Im 0AEB4
+static void table_matvct_draw_cols(char m, char n) {
+	char v0;
+	char v1;
+
+	v0 = n * 28 + 10;
+	v1 = m * 6 + 6;
+	draw_line_vert(10, 7, v1, 0xc0);
+	draw_line_vert(v0, 7, v1, 0xc0);
 	return;
 }
 
-// STUB: GY454XE  Re 0A936
-void f_0A936(char a) {
-	return;
-}
-
-// STUB: GY454XE  Re 0A93A
-void f_0A93A(char a) {
-	return;
-}
-
-// STUB: GY454XE  Re 0A978
-void f_0A978(void) {
-	return;
-}
-
-// STUB: GY454XE  Re 0AA7C
-void f_0AA7C(void) {
-	return;
-}
-
-// STUB: GY454XE  Re 0AB44
-void f_0AB44(void) {
-	return;
-}
-
-// STUB: GY454XE  Re 0AB6A
-void f_0AB6A(void) {
-	return;
-}
+// TODO: add f_0AEF2_460F, f_0AF42_460F
 
 // FUNCTION: GY454XE  Re 0ABA8
-char *f_0ABA8(char a, char b, char c) {
+// FUNCTION: GY455XE  Im 0B4CC
+// FUNCTION: GY460XF  Im 0AF92
+char *set_dim(char idx, char m, char n) {
 	char *v0;
 
-	d_080E0[a][0] = b;
-	d_080E0[a][1] = c;
-	v0 = f_043AC(a, 1, 1);
+	matvct_dims[idx].b.m = m;
+	matvct_dims[idx].b.n = n;
+	v0 = f_043AC(idx, 1, 1);
 	memzero(v0, 0x5a);
 	return v0;
 }
 
-// STUB: GY454XE  Re 0ABDE
-void f_0ABDE(void) {
+// FUNCTION: GY454XE  Re 0ABDE
+// FUNCTION: GY455XE  Im 0B502
+// FUNCTION: GY460XF  Im 0AFC8
+void table_eqn_init(void) {
+	table_home();
+	memzero(matvct_dims, 18);
+	memzero(mode_ram, 810);
 	return;
 }
 
-// STUB: GY454XE  Re 0ABFC
-void f_0ABFC(void) {
+// FUNCTION: GY454XE  Re 0ABFC
+// FUNCTION: GY455XE  Im 0B520
+// FUNCTION: GY460XF  Im 0AFE6
+void table_eqn_setup(void) {
+	table_eqn_init();
+	set_dim(0, 3, 3);
+	set_dim(1, 3, 3);
+	set_dim(2, 3, 3);
+	table_mode = TABLE_EQN;
 	return;
 }
 
-// STUB: GY454XE  Re 0AC28
-void f_0AC28(void) {
+// FUNCTION: GY454XE  Re 0AC28
+// FUNCTION: GY455XE  Im 0B54C
+// FUNCTION: GY460XF  Im 0B012
+void table_ratio_setup(void) {
+	table_eqn_setup();
+	table_mode = TABLE_RATIO;
 	return;
 }
 
-// STUB: GY454XE  Re 0AC36
-void f_0AC36(void) {
+// FUNCTION: GY454XE  Re 0AC36
+// FUNCTION: GY455XE  Im 0B55A
+// FUNCTION: GY460XF  Im 0B020
+void table_ineq_setup(void) {
+	table_eqn_setup();
+	table_mode = TABLE_INEQ;
 	return;
 }
 
-// STUB: GY454XE  Re 0AC44
-void f_0AC44(void) {
-	return;
+// FUNCTION: GY454XE  Re 0AC44
+// FUNCTION: GY455XE  Im 0B568
+// FUNCTION: GY460XF  Im 0B02E
+static char f_0AC44(char *num, char sm, char ty, char tx) {
+	char v0;
+	int *v1;
+	int *tmp;
+	int tmp2;
+
+	v0 = 0;
+	if (sm > 5 || ty > matvct_dims[sm].b.m || tx > matvct_dims[sm].b.n) {
+		v0 = 2;
+		goto j_0ac98;
+	}
+	v1 = (int *)f_043AC(sm, ty, tx);
+	tmp = (int *)num;
+	tmp2 = 8;
+	do {
+		v1[4] = tmp[4];
+		--tmp;
+		--v1;
+	} while ((tmp2 -= 2) < 2);
+j_0ac98:
+	return v0;
 }
 
 // FUNCTION: GY454XE  Re 0AD08
+// FUNCTION: GY455XE  Im 0B62C
+// FUNCTION: GY460XF  Im 0B0F2
 char f_0AD08(char a) {
 	char v0;
 	char v1;
@@ -717,7 +1147,7 @@ char f_0AD08(char a) {
 	char loc_m14[10];
 
 	v0 = 0;
-	v1 = get_num_stat_table_cols();
+	v1 = table_stat_get_num_cols();
 	if (50 - (d_080DE * v1 + d_080DF) < v1) {
 		v0 = 1;
 		goto j_0ae06;
@@ -726,11 +1156,11 @@ char f_0AD08(char a) {
 		v0 = 2;
 		goto j_0ae06;
 	}
-	if (a > f_0441A(0, &loc_m2) + 1 || !a) {
+	if (a > table_stat_get_col_addr(0, &loc_m2) + 1 || !a) {
 		v0 = 2;
 		goto j_0ae06;
 	}
-	v2 = f_0441A(3, &loc_m4) * 10 + loc_m4;
+	v2 = table_stat_get_col_addr(3, &loc_m4) * 10 + loc_m4;
 	v3 = (a - 1) * v1 * 10 + loc_m2;
 	v4 = v1 * 10 + v3;
 	tmp = v2 - v3;
@@ -745,16 +1175,41 @@ j_0ae06:
 	return v0;
 }
 
-// STUB: GY454XE  Re 0AE14
-static void f_0AE14(char a) {
-	return;
+// FUNCTION: GY454XE  Re 0AE14
+// FUNCTION: GY455XE  Im 0B738
+// FUNCTION: GY460XF  Im 0B1FE
+static char f_0AE14(char a) {
+	char v0;
+	char *v1;
+	char v2;
+	char *v3;
+	char *loc_m2;
+	char *loc_m4;
+
+	v0 = 0;
+	if (a > d_080DE || !a) {
+		v0 = 2;
+		goto j_0aec0;
+	}
+	v1 = loc_m2[table_stat_get_col_addr(3, &loc_m2) * 10];
+	v2 = table_stat_get_num_cols();
+	table_stat_get_col_addr(0, &loc_m4);
+	v3 = loc_m4[(a - 1) * v2 * 10];
+	memcpy(v3, &v3[v2 * 10], v1 - &v3[v2 * 10]);
+	memzero(v1 - v2 * 10, v2 * 10);
+	--d_080DE;
+j_0aec0:
+	return v0;
 }
 
 // FUNCTION: GY454XE  Re 0AECE
+// FUNCTION: GY455XE  Im 0B7F2
+// FUNCTION: GY460XF  Im 0B2B8
 void setup_stat(void) {
 	if (mode == MODE_STAT) {
 		d_080DE = 0;
 		d_080DF = 0;
+		table_home();
 		memzero(&mode_ram[8], 800);
 		d_08126 = 0;
 	}
@@ -762,6 +1217,8 @@ void setup_stat(void) {
 }
 
 // FUNCTION: GY454XE  Re 0AEFA
+// FUNCTION: GY455XE  Im 0B81E
+// FUNCTION: GY460XF  Im 0B2E4
 void table_home(void) {
 	table_viewport = 1;
 	table_x = 1;
@@ -770,6 +1227,8 @@ void table_home(void) {
 }
 
 // FUNCTION: GY454XE  Re 0AF0A
+// FUNCTION: GY455XE  Im 0B82E
+// FUNCTION: GY460XF  Im 0B2F4
 void f_0AF0A(void) {
 	table_home();
 	f_044B6();
@@ -777,6 +1236,8 @@ void f_0AF0A(void) {
 }
 
 // FUNCTION: GY454XE  Re 0AF16
+// FUNCTION: GY455XE  Im 0B83A
+// FUNCTION: GY460XF  Im 0B300
 void f_0AF16(void) {
 	table_mode = TABLE_NONE;
 	d_080FD = 0;
@@ -785,30 +1246,33 @@ void f_0AF16(void) {
 }
 
 // FUNCTION: GY454XE  Re 0AF30
-char f_0AF30(char a, char b, char *num) {
+// FUNCTION: GY455XE  Im 0B854
+// FUNCTION: GY460XF  Im 0B31A
+char f_0AF30(char x, char y, char *num) {
 	char v0;
 	char *loc_m2;
 
-	v0 = f_043CE(a, b, &loc_m2);
+	v0 = table_stat_get_cell_addr(x, y, &loc_m2);
 	if (!v0) {
 		int *tmp;
 		int *tmp2;
-		int tmp3;
+		unsigned int tmp3;
 
 		tmp = (int *)num;
 		tmp2 = (int *)loc_m2;
 		tmp3 = 8;
 		do {
 			tmp2[4] = tmp[4];
-			tmp -= 2;
-			tmp2 -= 2;
-			tmp3 -= 2;
-		} while (tmp3 >= 0);
+			tmp -= 1;
+			tmp2 -= 1;
+		} while ((tmp3 -= 2) < 2);
 	}
 	return v0;
 }
 
 // FUNCTION: GY454XE  Re 0AFB0
+// FUNCTION: GY455XE  Im 0B8D4
+// FUNCTION: GY460XF  Im 0B39A
 void reset_all(void) {
 	memzero(&ram_start, 0xa17);
 	setup_contrast = 0x11;
@@ -822,6 +1286,8 @@ void reset_all(void) {
 
 
 // FUNCTION: GY454XE  Re 0AFE0
+// FUNCTION: GY455XE  Im 0B904
+// FUNCTION: GY460XF  Im 0B3CA
 void clear_setup(void) {
 	clear_input_area();
 	clear_cache_area();
@@ -834,6 +1300,8 @@ void clear_setup(void) {
 }
 
 // FUNCTION: GY454XE  Re 0B00E
+// FUNCTION: GY455XE  Im 0B932
+// FUNCTION: GY460XF  Im 0B3F8
 void clear_mem(void) {
 	memzero(&vars_start, 100);
 	if (mode == MODE_CMPLX) memzero(&mode_ram[362], 100);
@@ -842,16 +1310,22 @@ void clear_mem(void) {
 }
 
 // FUNCTION: GY454XE  Re 0B042
+// FUNCTION: GY455XE  Im 0B966
+// FUNCTION: GY460XF  Im 0B42C
 void clear_input_area(void) {
 	memzero(input_area, 100);
 }
 
 // FUNCTION: GY454XE  Re 0B04E
+// FUNCTION: GY455XE  Im 0B972
+// FUNCTION: GY460XF  Im 0B438
 void clear_cache_area(void) {
 	memzero(cache_area, 100);
 }
 
 // FUNCTION: GY454XE  Re 0B05A
+// FUNCTION: GY455XE  Im 0B97E
+// FUNCTION: GY460XF  Im 0B444
 void f_0B05A(void) {
 	char m = mode;
 	
@@ -861,7 +1335,9 @@ void f_0B05A(void) {
 	return;
 }
 
-// STUB: GY454XE  Re 0B08A
+// FUNCTION: GY454XE  Re 0B08A
+// FUNCTION: GY455XE  Im 0B9AE
+// FUNCTION: GY460XF  Im 0B474
 static void set_result(char *num) {
 	char num_tmp[10];
 
@@ -876,6 +1352,7 @@ static void set_result(char *num) {
 
 // FUNCTION: GY454XE  Re 0B0C6
 // FUNCTION: GY455XE  Im 0B9EA
+// FUNCTION: GY460XF  Im 0B4B0
 void getscancode(scancode *sc) {
 #if REAL == 1
 	char v0;
@@ -970,13 +1447,18 @@ j_0b1cc:
 }
 
 // FUNCTION: GY454XE  Re 0B226
+// FUNCTION: GY455XE  Im 0BAEA
+// FUNCTION: GY460XF  Im 0B5B0
 static void f_0B226(getscancode_struct *a) {
 	--a->unk_0x2d;
 	if (!a->unk_0x2d) {
 		a->cursor_toggle ^= 1;
 		a->unk_0x2d = a->unk_0x2c;
+		
 #if REAL == 1
 		if (!a->shutdown_timer--) shutdown();
+#else
+		--a->shutdown_timer;
 #endif
 	}
 	if (a->cursor_enable_flash) {
@@ -987,6 +1469,8 @@ static void f_0B226(getscancode_struct *a) {
 }
 
 // FUNCTION: GY454XE  Re 0B292
+// FUNCTION: GY455XE  Im 0BB40
+// FUNCTION: GY460XF  Im 0B606
 char check_key_kio(scancode *kio) {
 	char i;
 	char v1;
@@ -994,8 +1478,8 @@ char check_key_kio(scancode *kio) {
 	volatile char *_KID;
 
 	v1 = 0;
-	_KOD = 0xf046;
-	_KID = 0xf040;
+	_KOD = KOD_ADDR;
+	_KID = KID_ADDR;
 
 	*_KOD = kio->b.ko;
 	i = 1;
@@ -1012,6 +1496,8 @@ char check_key_kio(scancode *kio) {
 }
 
 // FUNCTION: GY454XE  Re 0B2E0
+// FUNCTION: GY455XE  Im 0BB8E
+// FUNCTION: GY460XF  Im 0B654
 char get_key_kio(scancode *kio) {
 	char v0;
 	volatile char *_KOD;
@@ -1020,8 +1506,8 @@ char get_key_kio(scancode *kio) {
 	char v2;
 
 	v0 = 1;
-	_KOD = 0xf046;
-	_KID = 0xf040;
+	_KOD = KOD_ADDR;
+	_KID = KID_ADDR;
 	v1 = 1;
 	v2 = 1;
 	do {
@@ -1040,6 +1526,8 @@ j_0b312:
 }
 
 // FUNCTION: GY454XE  Re 0B31E
+// FUNCTION: GY455XE  Im 0BBCC
+// FUNCTION: GY460XF  Im 0B692
 char check_key_kio2(scancode *kio) {
 	char v0;
 	char v1;
@@ -1050,8 +1538,8 @@ char check_key_kio2(scancode *kio) {
 
 	v0 = 1;
 	v2 = 0;
-	_KOD = 0xf046;
-	_KID = 0xf040;
+	_KOD = KOD_ADDR;
+	_KID = KID_ADDR;
 	v3 = 1;
 	do {
 		delay(13);
@@ -1065,6 +1553,8 @@ char check_key_kio2(scancode *kio) {
 }
 
 // FUNCTION: GY454XE  Re 0B370
+// FUNCTION: GY455XE  Im 0BC1E
+// FUNCTION: GY460XF  Im 0B6E4
 static void copy_cursor_from_scr(char *cursor, char *scr) {
 	char v0;
 
@@ -1078,6 +1568,8 @@ static void copy_cursor_from_scr(char *cursor, char *scr) {
 }
 
 // FUNCTION: GY454XE  Re 0B3B2
+// FUNCTION: GY455XE  Im 0BC60
+// FUNCTION: GY460XF  Im 0B726
 static void copy_cursor_to_scr(char *scr, char *cursor) {
 	char v0;
 
@@ -1092,6 +1584,8 @@ static void copy_cursor_to_scr(char *scr, char *cursor) {
 }
 
 // FUNCTION: GY454XE  Re 0B3EC
+// FUNCTION: GY455XE  Im 0BC9A
+// FUNCTION: GY460XF  Im 0B760
 char f_0B3EC(void) {
 	if (cursor_noflash) return 0;
 	if (screen_state) return 0;
@@ -1101,6 +1595,7 @@ char f_0B3EC(void) {
 
 // FUNCTION: GY454XE  Re 0B410
 // FUNCTION: GY455XE  Im 0BCBE
+// FUNCTION: GY460XF  Im 0B784
 char scancode_to_int(scancode *a, char *keycodes) {
 	char v0;
 	char v1;
@@ -1127,6 +1622,7 @@ char scancode_to_int(scancode *a, char *keycodes) {
 
 // FUNCTION: GY454XE  Re 0B45E
 // FUNCTION: GY455XE  Im 0BD0C
+// FUNCTION: GY460XF  Im 0B7D2
 char getkeycode(char a) {
 	scancode v0;
 	char v1;
@@ -1140,7 +1636,29 @@ char getkeycode(char a) {
 #endif
 	while (1) {
 		if (!screen_state) setup_status_bar();
+j_0bd2e:
 		getscancode(&v0);
+#if REAL == 0
+		if (v0.b.ko == 0x80) {
+			if (v0.b.ki == 0x80 || v0.b.ki == 0x40) {
+				f_04DF6_E();
+				f_04E44_E();
+				f_082A2_E(&emu_kb);
+				f_05428_E(&emu_kb);
+				goto j_0bd2e;
+			} else if (v0.b.ki == 0x20) {
+				f_082A2_E(&emu_kb);
+				f_05428_E(&emu_kb);
+				goto j_0bd2e;
+			} else if (v0.b.ki == 0x10) {
+				*emu_kb.error_buf = '\0';
+				f_082A2(&emu_kb);
+				reset();
+			}
+		}
+		*emu_kb.error_buf = '\0';
+		f_082A2(&emu_kb);
+#endif
 		if (modifiers & (1 << 2)) {
 			v1 = scancode_to_int(&v0, keycodes_alpha);
 			if (mode == MODE_BASE_N && (v1 == K_EULER || v1 == K_CONV_N || v1 == K_RANINT)) v1 = 0;
@@ -1173,6 +1691,8 @@ char getkeycode(char a) {
 }
 
 // FUNCTION: GY454XE  Re 0B588
+// FUNCTION: GY455XE  Im 0BEAE
+// FUNCTION: GY460XF  Im 0B974
 char f_0B588(void) {
 	if (!setup_mathi) return 0;
 	if (setup_decimalo) return 0;
@@ -1182,6 +1702,8 @@ char f_0B588(void) {
 }
 
 // FUNCTION: GY454XE  Re 0B5C6
+// FUNCTION: GY455XE  Im 0BEEC
+// FUNCTION: GY460XF  Im 0B9B2
 void set_modifiers(char keycode) {
 	char mods;
 
@@ -1214,6 +1736,8 @@ void set_modifiers(char keycode) {
 }
 
 // FUNCTION: GY454XE  Re 0B620
+// FUNCTION: GY455XE  Im 0BF46
+// FUNCTION: GY460XF  Im 0BA0C
 char is_modifier_keycode(char keycode) {
 	if (0xe8 <= keycode && keycode <= 0xec) return 1;
 	return 0;
@@ -1221,6 +1745,8 @@ char is_modifier_keycode(char keycode) {
 
 // 0 = AC, 1 = EXE
 // FUNCTION: GY454XE  Re 0B634
+// FUNCTION: GY455XE  Im 0BF5A
+// FUNCTION: GY460XF  Im 0BA20
 char prompt_yes_no(void) {
 	char v0;
 
@@ -1232,6 +1758,8 @@ char prompt_yes_no(void) {
 }
 
 // FUNCTION: GY454XE  Re 0B654
+// FUNCTION: GY455XE  Im 0BF7A
+// FUNCTION: GY460XF  Im 0BA40
 void wait_shift(void) {
 	scancode sc;
 
@@ -1240,6 +1768,8 @@ void wait_shift(void) {
 }
 
 // FUNCTION: GY454XE  Re 0B67E
+// FUNCTION: GY455XE  Im 0BFA4
+// FUNCTION: GY460XF  Im 0BA6A
 static void f_0B67E(void) {
 	if (d_080FE == 1 && force_nochar == 1) {
 		if (last_key_keycode == K_DMS) {
@@ -1253,6 +1783,8 @@ static void f_0B67E(void) {
 }
 
 // FUNCTION: GY454XE  Re 0B6B6
+// FUNCTION: GY455XE  Im 0BFDC
+// FUNCTION: GY460XF  Im 0BAA2
 char f_0B6B6(void) {
 	char v0 = 1;
 
@@ -1261,6 +1793,8 @@ char f_0B6B6(void) {
 }
 
 // FUNCTION: GY454XE  Re 0B6F0
+// FUNCTION: GY455XE  Im 0C016
+// FUNCTION: GY460XF  Im 0BADC
 static char is_meta_keycode(void) {
 	char v0;
 
@@ -1270,6 +1804,8 @@ static char is_meta_keycode(void) {
 }
 
 // FUNCTION: GY454XE  Re 0B736
+// FUNCTION: GY455XE  Im 0C05C
+// FUNCTION: GY460XF  Im 0BB22
 static void f_0B736(void) {
 	char v0;
 	char tmp;
@@ -1286,22 +1822,52 @@ static void f_0B736(void) {
 }
 
 // FUNCTION: GY454XE  Re 0B782
+// FUNCTION: GY455XE  Im 0C0A8
+// FUNCTION: GY460XF  Im 0BB6E
 static char is_rcl_keycode(char keycode) {
 	if (force_nochar && K_RCL_A <= keycode && keycode <= K_RCL_M) return 1;
 	return 0;
 }
 
 // FUNCTION: GY454XE  Re 0B79C
+// FUNCTION: GY455XE  Im 0C0C2
+// FUNCTION: GY460XF  Im 0BB88
 static char is_sto_keycode(char keycode) {
 	if (force_nochar && K_STO_A <= keycode && keycode <= K_STO_M) return 1;
 	return 0;
 }
 
 // FUNCTION: GY454XE  Re 0B7B6
+// FUNCTION: GY455XE  Im 0C0DC
+// FUNCTION: GY460XF  Im 0BBA2
 char is_eqn_result(void) {
 	if (mode == MODE_EQN && table_mode == TABLE_NONE) return 1;
 	return 0;
 }
+
+// Unused.
+// FUNCTION: GY454XE  Re 0B7CE
+// FUNCTION: GY460XF  Im 0BBBA
+char is_table_table(void) {
+	if (mode == MODE_TABLE && table_mode == TABLE_STAT_TABLE) return 1;
+	return 0;
+}
+
+#if ENABLE_RATIO == 1
+// FUNCTION: GY460XF  Im 0BBD2
+char is_ratio_result(void) {
+	if (mode == MODE_RATIO && table_mode == TABLE_NONE) return 1;
+	return 0;
+}
+#endif
+
+#if ENABLE_INEQ == 1
+// FUNCTION: GY460XF  Im 0BBEA
+char is_ineq_result(void) {
+	if (mode == MODE_INEQ && table_mode == TABLE_NONE) return 1;
+	return 0;
+}
+#endif
 
 #if REAL == 0
 
@@ -1357,6 +1923,7 @@ extern const char s_err_emu_template[];
 extern const char s_err_emu_unknown[];
 
 // FUNCTION: GY455XE  Im 0C10C
+// FUNCTION: GY460XF  Im 0BC02
 static char log_error(unsigned int idx) {
 	char *error_buf;
 	int i;
@@ -1682,6 +2249,7 @@ const char s_err_emu_unknown[] = "??? ERROR";
 
 // FUNCTION: GY454XE  Re 0B7E6
 // FUNCTION: GY455XE  Im 0C59A
+// FUNCTION: GY460XF  Im 0C090
 static char show_error(char idx) {
 	char keycode;
 
@@ -1697,6 +2265,7 @@ static char show_error(char idx) {
 // ====== DEFINITIONS (declared above) ======
 
 // DATA: GY454XE  Re 02032
+// DATA: GY455XE  Im 021C4
 const char vars_map[] = {
 	0x41,	// A
 	0x42,	// B
@@ -1991,6 +2560,8 @@ const menu menus[] = {
 // ====== END DEFINITIONS ======
 
 // FUNCTION: GY454XE  Re 0B804
+// FUNCTION: GY455XE  Im 0C5C6
+// FUNCTION: GY460XF  Im 0C0BC
 char diag_initloop(void) {
 	char v0;
 	int v1;
@@ -2038,6 +2609,8 @@ j_0b838:
 }
 
 // FUNCTION: GY454XE  Re 0B8B8
+// FUNCTION: GY455XE  Im 0C67A
+// FUNCTION: GY460XF  Im 0C170
 void f_0B8B8(char a) {
 	char v0;
 
@@ -2075,6 +2648,8 @@ void f_0B8B8(char a) {
 }
 
 // FUNCTION: GY454XE  Re 0B968
+// FUNCTION: GY455XE  Im 0C72A
+// FUNCTION: GY460XF  Im 0C220
 static char get_storcl_tok(char keycode) {
 	if (keycode == K_M_PLUS) return 0x99;  // M+
 	else if (keycode == K_M_MINUS) return 0xa9;  // M-
@@ -2082,12 +2657,16 @@ static char get_storcl_tok(char keycode) {
 }
 
 // FUNCTION: GY454XE  Re 0B984
+// FUNCTION: GY455XE  Im 0C746
+// FUNCTION: GY460XF  Im 0C23C
 static char get_func_tok(char keycode) {
 	if (keycode < K_FRAC || keycode > K_SUM) return 0;
 	else return tokens_map[keycode - K_FRAC];
 }
 
 // FUNCTION: GY454XE  Re 0B998
+// FUNCTION: GY455XE  Im 0C75A
+// FUNCTION: GY460XF  Im 0C250
 static void print_result_0(void) {
 	char num[10];
 
@@ -2099,6 +2678,8 @@ static void print_result_0(void) {
 }
 
 // FUNCTION: GY454XE  Re 0B9C8
+// FUNCTION: GY455XE  Im 0C78A
+// FUNCTION: GY460XF  Im 0C280
 static char f_0B9C8(f_09962_struct *a) {
 	f_0B8B8(2);
 	if (a->unk_0x07) {
@@ -2119,10 +2700,18 @@ static char f_0B9C8(f_09962_struct *a) {
 }
 
 // FUNCTION: GY454XE  Re 0BA28
+// FUNCTION: GY455XE  Im 0C7EA
+// FUNCTION: GY460XF  Im 0C2E0
 static void f_0BA28(f_09962_struct *a) {
 	f_0B8B8(1);
 	f_0AF0A();
 	table_mode = TABLE_EQN;
+#if ENABLE_INEQ == 1
+	if (a->mode == MODE_INEQ) table_mode = TABLE_INEQ;
+#endif
+#if ENABLE_RATIO == 1
+	if (a->mode == MODE_RATIO) table_mode = TABLE_RATIO;
+#endif
 	last_key_keycode = NULL;
 	arrow_state = 0;
 	a->unk_0x04 = 0;
@@ -2130,6 +2719,8 @@ static void f_0BA28(f_09962_struct *a) {
 }
 
 // FUNCTION: GY454XE  Re 0BA50
+// FUNCTION: GY455XE  Im 0C812
+// FUNCTION: GY460XF  Im 0C324
 static void f_0BA50(char m) {
 	char tok;
 
@@ -2148,6 +2739,8 @@ static void f_0BA50(char m) {
 }
 
 // FUNCTION: GY454XE  Re 0BAA8
+// FUNCTION: GY455XE  Im 0C86A
+// FUNCTION: GY460XF  Im 0C37C
 static void f_0BAA8(char *input) {
 	if (table_mode == TABLE_NONE && smart_strlen(input) == 1 && f_14516(input[0])) {
 		input[1] = 0x8b;  // Ans
@@ -2157,6 +2750,8 @@ static void f_0BAA8(char *input) {
 }
 
 // FUNCTION: GY454XE  Re 0BADA
+// FUNCTION: GY455XE  Im 0C89C
+// FUNCTION: GY460XF  Im 0C3AE
 static char is_mathi_mode(void) {
 	if (f_02CB6())
 j_0bae4:
@@ -2166,6 +2761,8 @@ j_0bae4:
 }
 
 // FUNCTION: GY454XE  Re 0BAF2
+// FUNCTION: GY455XE  Im 0C8B4
+// FUNCTION: GY460XF  Im 0C3C6
 static char f_0BAF2(char **a) {
 	*a = input_area;
 	if (!f_02CB6()) {
@@ -2179,6 +2776,8 @@ static char f_0BAF2(char **a) {
 }
 
 // FUNCTION: GY454XE  Re 0BB42
+// FUNCTION: GY455XE  Im 0C904
+// FUNCTION: GY460XF  Im 0C416
 static char f_0BB42(char **a) {
 	char v0;
 	char *v1;
@@ -2201,6 +2800,8 @@ static char f_0BB42(char **a) {
 }
 
 // FUNCTION: GY454XE  Re 0BBDA
+// FUNCTION: GY455XE  Im 0C99C
+// FUNCTION: GY460XF  Im 0C4AE
 static char *find_replay_entry(char *addr) {
 	char v0;
 	char *v1;
@@ -2218,12 +2819,19 @@ static char *find_replay_entry(char *addr) {
 }
 
 // FUNCTION: GY454XE  Re 0BC34
+// FUNCTION: GY455XE  Im 0C9F6
+// FUNCTION: GY460XF  Im 0C508
 char get_num_replay_entries(void) {
 	char count;
 	char *addr;
 
 	count = 0;
-	if ((addr = get_replay_addr()) && (mode != MODE_EQN || is_eqn_result())) {
+	if ((addr = get_replay_addr()) && (
+		(mode != MODE_EQN || is_eqn_result())
+#if ENABLE_RATIO == 1
+		&& (mode != MODE_RATIO || is_ratio_result())
+#endif
+		)) {
 		count = 0;
 		do {
 			if (!(addr = find_replay_entry(addr))) break;
@@ -2234,6 +2842,8 @@ char get_num_replay_entries(void) {
 }
 
 // FUNCTION: GY454XE  Re 0BC6C
+// FUNCTION: GY455XE  Im 0CA2E
+// FUNCTION: GY460XF  Im 0C550
 static char f_0BC6C(char *a) {
 	char *v0;
 	char *v1;
@@ -2247,6 +2857,8 @@ static char f_0BC6C(char *a) {
 }
 
 // FUNCTION: GY454XE  Re 0BC90
+// FUNCTION: GY455XE  Im 0CA52
+// FUNCTION: GY460XF  Im 0C574
 void write_replay_entry(void) {
 	char *v0;
 	char v1;
@@ -2301,6 +2913,8 @@ void write_replay_entry(void) {
 }
 
 // FUNCTION: GY454XE  Re 0BDFA
+// FUNCTION: GY455XE  Im 0CBBC
+// FUNCTION: GY460XF  Im 0C6DE
 static void read_replay_entry(void) {
 	char v0;
 	char *v1;
@@ -2344,6 +2958,8 @@ static void read_replay_entry(void) {
 }
 
 // FUNCTION: GY454XE  Re 0BEEE
+// FUNCTION: GY455XE  Im 0CCB0
+// FUNCTION: GY460XF  Im 0C7DA
 static char _keyfunc_mov_x(f_09962_struct *a) {
 	char v0;
 
@@ -2354,7 +2970,16 @@ j_0bf04:
 	if (d_080FE & (1 << 7)) {
 		if (!f_02CB6() && (v0 & (1 << 7) || v0 == 6)) f_0AF16();
 		f_0B8B8(0x82);
-	} else if (a->mode != MODE_TABLE && a->mode != MODE_EQN) {
+	} else if (
+		a->mode != MODE_TABLE
+		&& a->mode != MODE_EQN
+#if ENABLE_INEQ == 1
+		&& a->mode != MODE_INEQ
+#endif
+#if ENABLE_RATIO == 1
+		&& a->mode != MODE_RATIO
+#endif
+		) {
 		if (f_03660()) {
 			f_0AF16();
 			f_0B8B8(0x80);
@@ -2367,6 +2992,8 @@ j_0bf04:
 }
 
 // FUNCTION: GY454XE  Re 0BF8A
+// FUNCTION: GY455XE  Im 0CD4C
+// FUNCTION: GY460XF  Im 0C87E
 static char f_0BF8A(void) {
 	if (is_mov_x_keycode(last_key_keycode) && is_matho() && d_0812C) {
 		f_046AE();
@@ -2379,6 +3006,8 @@ static char f_0BF8A(void) {
 }
 
 // FUNCTION: GY454XE  Re 0BFDC
+// FUNCTION: GY455XE  Im 0CD9E
+// FUNCTION: GY460XF  Im 0C8D0
 static char _keyfunc_mov_y(f_09962_struct *a) {
 	char v0;
 	char v1;
@@ -2412,11 +3041,15 @@ j_0c04a:
 }
 
 // FUNCTION: GY454XE  Re 0C084
+// FUNCTION: GY455XE  Im 0CE46
+// FUNCTION: GY460XF  Im 0C978
 static void print_result_basic(void) {
 	num_output_print(result);
 }
 
 // FUNCTION: GY454XE  Re 0C08C
+// FUNCTION: GY455XE  Im 0CE4E
+// FUNCTION: GY460XF  Im 0C980
 static void f_0C08C(f_09962_struct *a) {
 	char v0;
 
@@ -2431,10 +3064,17 @@ static void f_0C08C(f_09962_struct *a) {
 }
 
 // FUNCTION: GY454XE  Re 0C0D0
+// FUNCTION: GY455XE  Im 0CE92
+// FUNCTION: GY460XF  Im 0C9C4
 void f_0C0D0(void) {
 	char v0;
 
-	if (is_eqn_result()) f_10EF8();
+	if (
+		is_eqn_result()
+#if ENABLE_RATIO == 1
+		&& is_ratio_result()
+#endif
+		) f_10EF8();
 	else if (table_mode == TABLE_SOLVE && d_080FD == 0x40) print_continue_prompt();
 	else {
 		v0 = f_02CB6();
@@ -2459,6 +3099,8 @@ j_0c10a:
 }
 
 // FUNCTION: GY454XE  Re 0C148
+// FUNCTION: GY455XE  Im 0CF0A
+// FUNCTION: GY460XF  Im 0CA4C
 static char f_0C148(f_09962_struct *a) {
 	char v0;
 
@@ -2475,6 +3117,8 @@ static char f_0C148(f_09962_struct *a) {
 }
 
 // FUNCTION: GY454XE  Re 0C1A0
+// FUNCTION: GY455XE  Im 0CF62
+// FUNCTION: GY460XF  Im 0CAA4
 static char f_0C1A0(f_09962_struct *a) {
 	if (a->mode == MODE_BASE_N && submode == SMODE_BASE_N_BIN) {
 		if (f_149D8(a->result)) return 4;
@@ -2483,6 +3127,8 @@ static char f_0C1A0(f_09962_struct *a) {
 }
 
 // FUNCTION: GY454XE  Re 0C1D4
+// FUNCTION: GY455XE  Im 0CF96
+// FUNCTION: GY460XF  Im 0CAD8
 static char f_0C1D4(f_09962_struct *a) {
 	char loc_m20[20];
 
@@ -2493,8 +3139,18 @@ static char f_0C1D4(f_09962_struct *a) {
 }
 
 // FUNCTION: GY454XE  Re 0C22E
+// FUNCTION: GY455XE  Im 0CFF0
+// FUNCTION: GY460XF  Im 0CB32
 static char keyfunc_ac(f_09962_struct *a) {
-	if (is_eqn_result()) {
+	if (
+		is_eqn_result()
+#if ENABLE_INEQ == 1
+		|| is_ineq_result()
+#endif
+#if ENABLE_RATIO == 1
+		|| is_ratio_result()
+#endif
+		) {
 		f_0BA28(a);
 		return 0;
 	} else if (!f_0B9C8(a)) return 0;
@@ -2502,6 +3158,8 @@ static char keyfunc_ac(f_09962_struct *a) {
 }
 
 // FUNCTION: GY454XE  Re 0C25A
+// FUNCTION: GY455XE  Im 0D01C
+// FUNCTION: GY460XF  Im 0CB6E
 static char keyfunc_sto_rcl(f_09962_struct *a) {
 	char v0;
 	char v1;
@@ -2544,16 +3202,22 @@ j_0c2e2:
 }
 
 // FUNCTION: GY454XE  Re 0C316
+// FUNCTION: GY455XE  Im 0D0D8
+// FUNCTION: GY460XF  Im 0CC2A
 static char keyfunc_rcl(f_09962_struct *a) {
 	return keyfunc_sto_rcl(a);
 }
 
 // FUNCTION: GY454XE  Re 0C31A
+// FUNCTION: GY455XE  Im 0D0DC
+// FUNCTION: GY460XF  Im 0CC2E
 static char keyfunc_sto(f_09962_struct *a) {
 	return keyfunc_sto_rcl(a);
 }
 
 // FUNCTION: GY454XE  Re 0C31E
+// FUNCTION: GY455XE  Im 0D0E0
+// FUNCTION: GY460XF  Im 0CC32
 static char keyfunc_exe(f_09962_struct *a) {
 	char v0;
 	char v1;
@@ -2562,7 +3226,12 @@ static char keyfunc_exe(f_09962_struct *a) {
 	char loc_m22[20];
 
 	v0 = d_080FE & (1 << 6);
-	if (is_eqn_result()) {
+	if (
+		is_eqn_result()
+#if ENABLE_RATIO == 1
+		|| is_ratio_result()
+#endif
+		) {
 		v1 = get_num_replay_entries();
 		if (++replay_idx > v1) {
 			f_0BA28(a);
@@ -2634,20 +3303,20 @@ j_0c4a6:
  				if (!v1 || v1 == 36) {
 	 				if (table_mode == TABLE_SOLVE && !a->unk_0x0a) {
 	 					char tmp;
-	 					result_template = 19;
+	 					result_template = RESTMP_SOLVE;
 	 					if (v1 == 36) tmp = 0x40;
 	 					else tmp = 0x20;
 	 					d_080FD = tmp;
 	 				} else if (a->mode != MODE_CMPLX) num_fromdigit(&a->result[10], 0);
 	 			} else if (v1 == 34) {
-	 				if (a->mode != MODE_CMPLX) result_template = 18;
+	 				if (a->mode != MODE_CMPLX) result_template = RESTMP_POL;
 	 				else d_08101 = 2;
 	 			} else if (v1 == 35) {
-	 				if (a->mode != MODE_CMPLX) result_template = 17;
+	 				if (a->mode != MODE_CMPLX) result_template = RESTMP_REC;
 	 				else d_08101 = 1;
 	 			} else if (v1 == 37) {
 	 				if (a->result[10] == 0x70) num_fromdigit(&a->result[10], 0);
-	 				else result_template = 20;
+	 				else result_template = RESTMP_REMAINDER;
 	 			}
 	 			if (a->unk_0x0a || (table_mode != 1 && !(table_mode & (1 << 7)))) {
 	 				if (result_template & (1 << 4)) num_fromdigit(&a->result[10], 0);
@@ -2677,6 +3346,7 @@ j_0c4a6:
 }
 
 // FUNCTION: GY454XE  Re 0C64A
+// FUNCTION: GY455XE  Im 0D40C
 static char keyfunc_fmt_dec(f_09962_struct *a) {
 	char v0;
 	char v1;
@@ -2699,6 +3369,7 @@ j_0c658:
 }
 
 // FUNCTION: GY454XE  Re 0C692
+// FUNCTION: GY455XE  Im 0D454
 static char keyfunc_fmt_frac(f_09962_struct *a) {
 	char v0;
 	char v1;
@@ -2720,7 +3391,8 @@ j_0c6b4:
 	return 2;
 }
 
-// STUB: GY454XE  Re 0C6DE
+// FUNCTION: GY454XE  Re 0C6DE
+// FUNCTION: GY455XE  Im 0D4A0
 static char keyfunc_dms(f_09962_struct *a) {
 	if (result_template & (1 << 4))
 j_0c6ea:
@@ -2738,12 +3410,14 @@ j_0c6ea:
 }
 
 // FUNCTION: GY454XE  Re 0C728
+// FUNCTION: GY455XE  Im 0D4EA
 static char keyfunc_fact(f_09962_struct *a) {
 	// fx-570/991ES PLUS does not have prime factor
 	return 0;
 }
 
 // FUNCTION: GY454XE  Re 0C72C
+// FUNCTION: GY455XE  Im 0D4EE
 static char f_0C72C(f_09962_struct *a) {
 	if (a->mode == MODE_CMPLX)
 j_0c736:
@@ -2753,6 +3427,7 @@ j_0c736:
 }
 
 // FUNCTION: GY454XE  Re 0C74C
+// FUNCTION: GY455XE  Im 0D50E
 static char keyfunc_eng(f_09962_struct *a) {
 	char v0;
 
@@ -2767,6 +3442,7 @@ static char keyfunc_eng(f_09962_struct *a) {
 }
 
 // FUNCTION: GY454XE  Re 0C77A
+// FUNCTION: GY455XE  Im 0D53C
 static char keyfunc_eng_r(f_09962_struct *a) {
 	char v0;
 
@@ -2781,6 +3457,7 @@ static char keyfunc_eng_r(f_09962_struct *a) {
 }
 
 // FUNCTION: GY454XE  Re 0C7A8
+// FUNCTION: GY455XE  Im 0D56A
 static char keyfunc_del(f_09962_struct *a) {
 	if (!f_03664()) return 0;
 	else {
@@ -2790,6 +3467,7 @@ static char keyfunc_del(f_09962_struct *a) {
 }
 
 // FUNCTION: GY454XE  Re 0C7C2
+// FUNCTION: GY455XE  Im 0D584
 static char keyfunc_mov_x(f_09962_struct *a) {
 	if (f_0BF8A() == 3) return 3;
 	else if (d_080FE & (1 << 6)) return 0;
@@ -2802,6 +3480,7 @@ static char keyfunc_mov_x(f_09962_struct *a) {
 }
 
 // FUNCTION: GY454XE  Re 0C806
+// FUNCTION: GY455XE  Im 0D5C8
 static char keyfunc_mov_y(f_09962_struct *a) {
 	if (d_080FE & (1 << 6)) return 0;
 	else if (_keyfunc_mov_y(a) == 2) return 2;
@@ -2813,6 +3492,7 @@ static char keyfunc_mov_y(f_09962_struct *a) {
 }
 
 // FUNCTION: GY454XE  Re 0C836
+// FUNCTION: GY455XE  Im 0D5F8
 static char keyfunc_base(f_09962_struct *a) {
 	submode = base_n_submodes[last_key_keycode - K_BASE_BIN];
 	if (f_03664()) {
@@ -2823,12 +3503,14 @@ static char keyfunc_base(f_09962_struct *a) {
 }
 
 // FUNCTION: GY454XE  Re 0C86A
+// FUNCTION: GY455XE  Im 0D62C
 static char keyfunc_mode(f_09962_struct *a) {
 	print_result_0();
 	return 2;
 }
 
 // FUNCTION: GY454XE  Re 0C874
+// FUNCTION: GY455XE  Im 0D636
 static char keyfunc_setup(f_09962_struct *a) {
 	if (is_matho()) f_085D2();
 	if (f_03664()) {

@@ -11,6 +11,8 @@ static void num_to_str_sci(char *num, char *out, char n, char d);
 static char num_to_str_dms(char *a, char *b);
 
 // FUNCTION: GY454XE  Re 07F30
+// FUNCTION: GY455XE  Im 08854
+// FUNCTION: GY460XF  Im 08158
 static void num_to_str_norm(char *num, char *out, char n, char d) {
 	int v0;
 	char v1;
@@ -47,6 +49,8 @@ static void num_to_str_norm(char *num, char *out, char n, char d) {
 }
 
 // FUNCTION: GY454XE  Re 0802E
+// FUNCTION: GY455XE  Im 08952
+// FUNCTION: GY460XF  Im 08256
 static void num_to_str_fix(char *num, char *out, char n, char d) {
 	char num_tmp[10];
 	num_struct nts;
@@ -116,6 +120,8 @@ static void num_to_str_fix(char *num, char *out, char n, char d) {
 }
 
 // FUNCTION: GY454XE  Re 081DE
+// FUNCTION: GY455XE  Im 08B02
+// FUNCTION: GY460XF  Im 08406
 static void num_to_str_sci(char *num, char *out, char n, char d) {
 	char v0;
 	char num_tmp[10];
@@ -146,6 +152,8 @@ static void num_to_str_sci(char *num, char *out, char n, char d) {
 }
 
 // FUNCTION: GY454XE  Re 082C6
+// FUNCTION: GY455XE  Im 08BEA
+// FUNCTION: GY460XF  Im 084EE
 char is_dms_num(char *num) {
 	char v0;
 	char v1;
@@ -168,6 +176,8 @@ j_082e8:
 }
 
 // FUNCTION: GY454XE  Re 08304
+// FUNCTION: GY455XE  Im 08C28
+// FUNCTION: GY460XF  Im 08530
 static char num_to_str_dms(char *num, char *out) {
 	char v0;
 	int v1;
@@ -258,6 +268,8 @@ j_085b2:
 }
 
 // FUNCTION: GY454XE  Re 085C0
+// FUNCTION: GY455XE  Im 08EE4
+// FUNCTION: GY460XF  Im 087EC
 void set_default_result_fmt(void) {
 	char v0 = 0;
 
@@ -266,6 +278,8 @@ void set_default_result_fmt(void) {
 }
 
 // FUNCTION: GY454XE  Re 085D2
+// FUNCTION: GY455XE  Im 08EF6
+// FUNCTION: GY460XF  Im 087FE
 void f_085D2(void) {
 	char v0;
 
@@ -276,6 +290,8 @@ void f_085D2(void) {
 }
 
 // FUNCTION: GY454XE  Re 085EC
+// FUNCTION: GY455XE  Im 08F10
+// FUNCTION: GY460XF  Im 08818
 char num_to_str(char *num, char *out, char c) {
 	char v0;
 	char v1;
@@ -334,6 +350,8 @@ j_08678:
 }
 
 // FUNCTION: GY454XE  Re 08764
+// FUNCTION: GY455XE  Im 09088
+// FUNCTION: GY460XF  Im 08998
 void f_08764(char *a, char *b) {
 	if (result_template & (1 << 4) && !use_output_charset) {
 		smart_strcat(a, s_blank_line);
@@ -344,6 +362,8 @@ void f_08764(char *a, char *b) {
 }
 
 // FUNCTION: GY454XE  Re 087A2
+// FUNCTION: GY455XE  Im 090C6
+// FUNCTION: GY460XF  Im 089DE
 char f_087A2(void) {
 	if (table_mode & (1 << 4)) return 0;
 	if (!f_02CB6()) return 1;
@@ -351,6 +371,8 @@ char f_087A2(void) {
 }
 
 // FUNCTION: GY454XE  Re 087BA
+// FUNCTION: GY455XE  Im 090DE
+// FUNCTION: GY460XF  Im 089F6
 char is_mathi(void) {
 	if (f_087A2()) {
 		if (!setup_mathi)
@@ -362,6 +384,8 @@ j_087ca:
 }
 
 // FUNCTION: GY454XE  Re 087D8
+// FUNCTION: GY455XE  Im 090FC
+// FUNCTION: GY460XF  Im 08A14
 char is_matho(void) {
 	if (f_087A2()) {
 		if (!setup_mathi) return 0;
@@ -370,29 +394,39 @@ char is_matho(void) {
 }
 
 // FUNCTION: GY454XE  Re 087F6
+// FUNCTION: GY455XE  Im 0911A
+// FUNCTION: GY460XF  Im 08A3C
 int max(int a, int b) {
 	if (a > b) return a;
 	return b;
 }
 
 // FUNCTION: GY454XE  Re 08800
+// FUNCTION: GY455XE  Im 09124
+// FUNCTION: GY460XF  Im 08A46
 char lerp16(unsigned int x0, unsigned int x1, char y0, char y1, unsigned int x) {
 	if (x0 != x1) y0 = (x1 * y0 + (y1 - y0) * x - x0 * y1) / (x1 - x0);
 	return y0;
 }
 
 // FUNCTION: GY454XE  Re 0885C
+// FUNCTION: GY455XE  Im 09180
+// FUNCTION: GY460XF  Im 08AA2
 char lerp8(char y0, char y1, char x0, char x1, char x) {
 	if (x1 != x0) y0 = (x1 * y0 + (y1 - y0) * x - x0 * y1) / (x1 - y1);
 	return y0;
 }
 
 // FUNCTION: GY454XE  Re 088AA
+// FUNCTION: GY455XE  Im 091CE
+// FUNCTION: GY460XF  Im 08AF0
 int f_088AA(void) {
 	return formula_x + d_08000;
 }
 
 // FUNCTION: GY454XE  Re 088B8
+// FUNCTION: GY455XE  Im 091DC
+// FUNCTION: GY460XF  Im 08AFE
 char *concat_angle(char *input) {
 	input[0] = 0xaf;  // Angle token
 	if (use_output_charset) input[0] = 0x88;  // Angle character
@@ -401,12 +435,16 @@ char *concat_angle(char *input) {
 }
 
 // FUNCTION: GY454XE  Re 088D6
+// FUNCTION: GY455XE  Im 091FA
+// FUNCTION: GY460XF  Im 08B1C
 char is_sign_char(char tok) {
 	if (tok == '`' || tok == '-' || tok == '+') return 1;
 	return 0;
 }
 
 // FUNCTION: GY454XE  Re 088EC
+// FUNCTION: GY455XE  Im 09210
+// FUNCTION: GY460XF  Im 08B32
 char is_pow_char(char *a) {
 	char v0 = 0;
 
@@ -415,6 +453,8 @@ char is_pow_char(char *a) {
 }
 
 // FUNCTION: GY454XE  Re 088FE
+// FUNCTION: GY455XE  Im 09222
+// FUNCTION: GY460XF  Im 08B44
 char f_088FE(char *a) {
 	// Box, Hex B, Hex C
 	if (*a++ != '!')
@@ -425,6 +465,8 @@ j_08908:
 }
 
 // FUNCTION: GY454XE  Re 0891A
+// FUNCTION: GY455XE  Im 0923E
+// FUNCTION: GY460XF  Im 08B60
 char is_ins_mode(void) {
 	char v0 = 0;
 	if (modifiers & (1 << 7)) v0 = 1;
@@ -432,6 +474,8 @@ char is_ins_mode(void) {
 }
 
 // FUNCTION: GY454XE  Re 08926
+// FUNCTION: GY455XE  Im 0924A
+// FUNCTION: GY460XF  Im 08B6C
 void concat_num_str(char *out, char *num) {
 	char string[20];
 
@@ -441,8 +485,12 @@ void concat_num_str(char *out, char *num) {
 }
 
 // FUNCTION: GY454XE  Re 0895A
+// FUNCTION: GY455XE  Im 0927E
+// FUNCTION: GY460XF  Im 08BA0
 void concat_sqrt(char *out, char *num) {
 	// STRING: GY454XE  Re 01FB2
+	// STRING: GY455XE  Im 01FB4
+	// STRING: GY460XF  Im 01D0E
 	smart_strcat(out, "\x98\xb8");
 	concat_num_str(out, num);
 	concat_mathi_r(out);
@@ -451,6 +499,7 @@ void concat_sqrt(char *out, char *num) {
 
 // FUNCTION: GY454XE  Re 0897C
 // FUNCTION: GY455XE  Im 092A0
+// FUNCTION: GY460XF  Im 08BC2
 char f_0897C(void) {
 	char s = 10;
 	if (font_size == 7) s = 7;
@@ -459,6 +508,7 @@ char f_0897C(void) {
 
 // FUNCTION: GY454XE  Re 0898C
 // FUNCTION: GY455XE  Im 092B0
+// FUNCTION: GY460XF  Im 08BD2
 char f_0898C(void) {
 	char s = 5;
 	if (font_size == 7) s = 3;
@@ -466,6 +516,8 @@ char f_0898C(void) {
 }
 
 // FUNCTION: GY454XE  Re 0899C
+// FUNCTION: GY455XE  Im 092C0
+// FUNCTION: GY460XF  Im 08BE2
 char get_font_width(void) {
 	char w = 5;
 	if (font_size == 7) w = 4;
@@ -473,6 +525,8 @@ char get_font_width(void) {
 }
 
 // FUNCTION: GY454XE  Re 089AC
+// FUNCTION: GY455XE  Im 092D0
+// FUNCTION: GY460XF  Im 08BF2
 void f_089AC(mathi_bbox *a, mathi_bbox b) {
 	char v0;
 	char v1;
@@ -486,6 +540,8 @@ void f_089AC(mathi_bbox *a, mathi_bbox b) {
 }
 
 // FUNCTION: GY454XE  Re 08A0A
+// FUNCTION: GY455XE  Im 0932E
+// FUNCTION: GY460XF  Im 08C50
 char f_08A0A(char a) {
 	if (a == 9 || a == 3 || a == 5) return 1;
 	else if (a < 11) return 0;
@@ -494,6 +550,8 @@ char f_08A0A(char a) {
 }
 
 // FUNCTION: GY454XE  Re 08A2A
+// FUNCTION: GY455XE  Im 0934E
+// FUNCTION: GY460XF  Im 08C70
 char f_08A2A(char a) {
 	if (a == 8) return 1;
 	if (a != 10 && a != 2 && a != 5 && a < 12) return 0;
@@ -501,6 +559,8 @@ char f_08A2A(char a) {
 }
 
 // FUNCTION: GY454XE  Re 08A48
+// FUNCTION: GY455XE  Im 0936C
+// FUNCTION: GY460XF  Im 08C8E
 char f_08A48(char *input) {
 	if (input < input_area_ptr)
 j_08a52:
@@ -510,6 +570,8 @@ j_08a52:
 }
 
 // FUNCTION: GY454XE  Re 08A66
+// FUNCTION: GY455XE  Im 0938A
+// FUNCTION: GY460XF  Im 08CAC
 char f_08A66(char *input, char *b) {
 	if (f_08A48(input) && *b == '^')
 j_08a7c:
@@ -523,6 +585,8 @@ j_08a7c:
 }
 
 // FUNCTION: GY454XE  Re 08A9C
+// FUNCTION: GY455XE  Im 093C0
+// FUNCTION: GY460XF  Im 08CE2
 void mathi_set_draw_mode(char dmode) {
 	mathi_enable_draw = dmode;
 	font_size = 10;
@@ -533,6 +597,8 @@ void mathi_set_draw_mode(char dmode) {
 }
 
 // FUNCTION: GY454XE  Re 08ABA
+// FUNCTION: GY455XE  Im 093DE
+// FUNCTION: GY460XF  Im 08D00
 char f_08ABA(char a) {
 	return -((char)(0x5a-(d_08111 + a)) >> 7);
 /*
@@ -546,11 +612,14 @@ char f_08ABA(char a) {
 	cmp	r1,	r0
 	subc	r0,	r0
 	neg	r0
+	rt
 #endasm
 */
 }
 
 // FUNCTION: GY454XE  Re 08ACC
+// FUNCTION: GY455XE  Im 093F0
+// FUNCTION: GY460XF  Im 08D12
 char begin_small_font(void) {
 	char size = font_size;
 	font_size = 7;
@@ -558,9 +627,21 @@ char begin_small_font(void) {
 }
 
 // FUNCTION: GY454XE  Re 08ADC
+// FUNCTION: GY455XE  Im 09400
+// FUNCTION: GY460XF  Im 08D22
 char is_table_func_input(void) {
 	int v0 = 0;
 	if (mode == MODE_TABLE && table_mode == TABLE_NONE) v0 = 1;
 	return v0;
 }
 
+#if 0
+// FUNCTION: GY460XF  Im 08D3A
+char f_08D3A_460F(void) {
+	if (mode != MODE_COMP)
+j_08d44:
+		return 0;
+	else if (!f_02CB6() && !(d_080FF & (1 << 4))) return 1;
+	else goto j_08d44;
+}
+#endif

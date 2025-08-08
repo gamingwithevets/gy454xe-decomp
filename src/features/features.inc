@@ -17,3 +17,21 @@
 
 // Build real ROMs. Set to 0 to build emulator ROMs.
 REAL=1
+
+// ==== Functions ====
+
+// Enable the integral function.
+ENABLE_INTEGRAL=1
+// Enable the summation function.
+ENABLE_SUM=1
+// Enable the derivative function.
+ENABLE_DDX=1
+// Enable recurring decimal.
+ENABLE_RDEC=0
+
+// ==== Modes ====
+ENABLE_CMPLX=1
+ENABLE_MATRIX=1
+ENABLE_VECTOR=1
+ENABLE_INEQ=0
+ENABLE_RATIO=0
