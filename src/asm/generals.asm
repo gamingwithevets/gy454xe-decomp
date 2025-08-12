@@ -6,20 +6,6 @@ ROMWINDOW 0, 7FFFH
 ; generals may be partially written in C (at least 1 C source and 1 ASM source), however full assembly will be used for now.
 ; generals may be made up of multiple ASM files. For now, these are combined into a single ASM file.
 
-; TODO: Replace these with addresses relative to mode_ram
-_vars_im_start		EQU 8408H
-_var_m_im			EQU 8408H
-_d_0850A			EQU 850AH
-_d_08514			EQU 8514H
-_d_0851E			EQU 851EH
-_d_08528			EQU 8528H
-_d_08532			EQU 8532H
-_table_fx			EQU 8546H
-_d_085AA			EQU 85AAH
-_d_085B4			EQU 85B4H
-_d_085C8			EQU 85C8H
-_d_085CA			EQU 85CAH
-_d_085CD			EQU 85CDH
 _stop_type			EQU 8E00H
 
 _pd_val_emu			EQU 0F050H
@@ -38,6 +24,7 @@ RSEG $$NTABgenerals0
 
 ; DATA: GY454XE  Re 00778
 ; DATA: GY455XE  Im 00778
+; DATA: GY460XF  Im 007EA
 _matrix_dims:
 	DB 3, 3
 	DB 3, 2
@@ -51,6 +38,7 @@ _matrix_dims:
 
 ; DATA: GY454XE  Re 0078A
 ; DATA: GY455XE  Im 0078A
+; DATA: GY460XF  Im 007FC
 _unk_0078a:
 	DW _mode_ram+0
 	DW _mode_ram+10
@@ -91,12 +79,14 @@ _unk_0078a:
 
 ; DATA: GY454XE  Re 007D2
 ; DATA: GY455XE  Im 007D2
+; DATA: GY460XF  Im 00844
 _vector_dims:
 	DB 1, 3
 	DB 1, 2
 
 ; DATA: GY454XE  Re 007D6
 ; DATA: GY455XE  Im 007D6
+; DATA: GY460XF  Im 00848
 _matvct_strings:
 	DB "\xe0\x00\x00", 0	; "A"
 	DB "\xe1\x00\x00", 0	; "B"
@@ -105,6 +95,7 @@ _matvct_strings:
 
 ; DATA: GY454XE  Re 007E6
 ; DATA: GY455XE  Im 007E6
+; DATA: GY460XF  Im 00858
 _unk_007e6:
 	DW _mode_ram+0
 	DW _mode_ram+10
@@ -127,6 +118,7 @@ _unk_007e6:
 
 ; DATA: GY454XE  Re 0080A
 ; DATA: GY455XE  Im 0080A
+; DATA: GY460XF  Im 0087C
 _unk_0080a:
 	DB 2, 3
 	DB 3, 3
@@ -135,6 +127,7 @@ _unk_0080a:
 
 ; DATA: GY454XE  Re 0080A
 ; DATA: GY455XE  Im 0080A
+; DATA: GY460XF  Im 00884
 _unk_00812:
 	DB 2, 3
 	DB 3, 4
@@ -143,6 +136,7 @@ _unk_00812:
 
 ; DATA: GY454XE  Re 0081A
 ; DATA: GY455XE  Im 0081A
+; DATA: GY460XF  Im 0088C
 _table_param_ptrs:
 	DW _mode_ram+0		; Start
 	DW _mode_ram+10		; End
@@ -150,6 +144,7 @@ _table_param_ptrs:
 
 ; DATA: GY454XE  Re 00820
 ; DATA: GY455XE  Im 00820
+; DATA: GY460XF  Im 00892
 _table_eqn_linel_params:
 	DB  10, 7, 18, 11000000B
 	DB  10, 7, 24, 11000000B
@@ -158,6 +153,7 @@ _table_eqn_linel_params:
 
 ; DATA: GY454XE  Re 00830
 ; DATA: GY455XE  Im 00830
+; DATA: GY460XF  Im 008A2
 _table_eqn_liner_params:
 	DB  94, 7, 18, 00110000B
 	DB  94, 7, 24, 00110000B
@@ -166,6 +162,7 @@ _table_eqn_liner_params:
 
 ; DATA: GY454XE  Re 00840
 ; DATA: GY455XE  Im 00840
+; DATA: GY460XF  Im 008B2
 _base_n_submodes:
 	DB 1
 	DB 7
@@ -174,6 +171,7 @@ _base_n_submodes:
 
 ; DATA: GY454XE  Re 00844
 ; DATA: GY455XE  Im 00844
+; DATA: GY460XF  Im 008B6
 _vars_list:
 	DB 'M'
 	DB 'A'
@@ -190,7 +188,8 @@ _vars_list:
 
 ; DATA: GY454XE  Re 0084E
 ; DATA: GY455XE  Im 0084E
-_blacklist:
+; DATA: GY460XF  Im 008C0
+_blacklist_tables:
 	DB 6AH	; Integral function (∫)
 	DB 6BH	; Derivative function (d/dx)
 	DB 6CH	; Pol(
@@ -202,6 +201,7 @@ _blacklist:
 
 ; DATA: GY454XE  Re 00856
 ; DATA: GY455XE  Im 00856
+; DATA: GY460XF  Im 008C8
 _blacklist_stat_mat_vct:
 	DB 6AH	; Integral function (∫)
 	DB 6BH	; Derivative function (d/dx)
@@ -211,6 +211,7 @@ _blacklist_stat_mat_vct:
 
 ; DATA: GY454XE  Re 0085B
 ; DATA: GY455XE  Im 0085B
+; DATA: GY460XF  Im 008CD
 _blacklist_table:
 	DB 6AH	; Integral function (∫)
 	DB 6BH	; Derivative function (d/dx)
@@ -224,6 +225,7 @@ _blacklist_table:
 
 ; DATA: GY454XE  Re 00864
 ; DATA: GY455XE  Im 00864
+; DATA: GY460XF  Im 008D6
 _blacklist_cmplx:
 	DB 6AH	; Integral function (∫)
 	DB 6BH	; Derivative function (d/dx)
@@ -235,64 +237,89 @@ _blacklist_cmplx:
 	DB 05FH	; Remainder (÷R)
 	DB 0
 
+; Used in VERIF mode maybe?
+; DATA: GY454XE  Re 0086D
+; DATA: GY455XE  Im 0086D
+; DATA: GY460XF  Im 008DF
+_blacklist_verif__:
+	DB 6AH	; Integral function (∫)
+	DB 6BH	; Derivative function (d/dx)
+	DB 69H	; Summation function (∑)
+	DB 6CH	; Pol(
+	DB 6DH	; Rec(
+	DB 3AH	; Multi-statement colon
+	DB 05FH	; Remainder (÷R)
+
 ; DATA: GY454XE  Re 00875
 ; DATA: GY455XE  Im 00875
+; DATA: GY460XF  Im 008E7
 _s_err_acbreak:
 	DB "AC Break", 0
 
 ; DATA: GY454XE  Re 0087E
 ; DATA: GY455XE  Im 0087E
+; DATA: GY460XF  Im 008F0
 _s_err_syntax:
 	DB "Syntax ERROR", 0
 
 ; DATA: GY454XE  Re 0088B
 ; DATA: GY455XE  Im 0088B
+; DATA: GY460XF  Im 008FD
 _s_err_math:
 	DB "Math ERROR", 0
 
 ; DATA: GY454XE  Re 00896
 ; DATA: GY455XE  Im 00896
+; DATA: GY460XF  Im 00908
 _s_err_outofmem:
 	DB "Insufficient MEM", 0
 
 ; DATA: GY454XE  Re 008A7
 ; DATA: GY455XE  Im 008A7
+; DATA: GY460XF  Im 00919
 _s_err_stack:
 	DB "Stack ERROR", 0
 
 ; DATA: GY454XE  Re 008B3
 ; DATA: GY455XE  Im 008B3
+; DATA: GY460XF  Im 00925
 _s_err_argument:
 	DB "Argument ERROR", 0
 
 ; DATA: GY454XE  Re 008C2
 ; DATA: GY455XE  Im 008C2
+; DATA: GY460XF  Im 00934
 _s_err_dimension:
 	DB "Dimension ERROR", 0
 
 ; DATA: GY454XE  Re 008D2
 ; DATA: GY455XE  Im 008D2
+; DATA: GY460XF  Im 00944
 _s_err_solve:
 	DB "Can't Solve", 0
 
 ; DATA: GY454XE  Re 008DE
 ; DATA: GY455XE  Im 008DE
+; DATA: GY460XF  Im 00950
 _s_err_timeout:
 	DB "Time Out", 0
 
 ; DATA: GY454XE  Re 008E7
 ; DATA: GY455XE  Im 008E7
+; DATA: GY460XF  Im 00959
 _s_err_variable:
 	DB "Variable ERROR", 0
 
 ; DATA: GY454XE  Re 008F6
 ; DATA: GY455XE  Im 008F6
+; DATA: GY460XF  Im 00968
 _s_err_null:
 	DB "NULL ERROR", 0
 	DB 0
 
 ; DATA: GY454XE  Re 00902
 ; DATA: GY455XE  Im 00902
+; DATA: GY460XF  Im 0097E
 _errors:
 	DW _s_err_acbreak
 	DW _s_err_syntax
@@ -310,23 +337,27 @@ _errors:
 
 ; DATA: GY454XE  Re 0091C
 ; DATA: GY455XE  Im 0091C
+; DATA: GY460XF  Im 0098E
 _s_prompt_goto:
 	DB "[\x9f][\x9e]:Goto", 0
 
 ; DATA: GY454XE  Re 00928
 ; DATA: GY455XE  Im 00928
+; DATA: GY460XF  Im 0099A
 _s_table_x:
 	;  "  X"
 	DB "\xec\xec\xea", 0
 
 ; DATA: GY454XE  Re 0092C
 ; DATA: GY455XE  Im 0092C
+; DATA: GY460XF  Im 0099E
 _s_table_y:
 	;  "  Y"
 	DB "\xec\xec\xeb", 0
 	
 ; DATA: GY454XE  Re 00930
 ; DATA: GY455XE  Im 00930
+; DATA: GY460XF  Im 009A2
 _s_table_freq:
 	;  " FREQ"
 	DB "\xec\xe5\xe9\xe4\xe8", 0
@@ -334,50 +365,59 @@ _s_table_freq:
 	
 ; DATA: GY454XE  Re 00936
 ; DATA: GY455XE  Im 00936
+; DATA: GY460XF  Im 009A8
 _s_table_ans:
 	;  " Ans"
 	DB "\xec\xe0\xf4\xf5", 0
 
 ; DATA: GY454XE  Re 0093B
 ; DATA: GY455XE  Im 0093B
+; DATA: GY460XF  Im 009AD
 _s_table_fx:
 	;  " F(X)"
 	DB "\xec\xe5\xf6\xea\xf7", 0
 
 ; DATA: GY454XE  Re 00941
 ; DATA: GY455XE  Im 00941
+; DATA: GY460XF  Im 009B3
 _s_table_a:
 	;  "  a"
 	DB "\xec\xec\xf0", 0
 
 ; DATA: GY454XE  Re 00945
 ; DATA: GY455XE  Im 00945
+; DATA: GY460XF  Im 009B7
 _s_table_1:
 	;  "1"
 	DB "\xd1", 0
 
 ; DATA: GY454XE  Re 00947
 ; DATA: GY455XE  Im 00947
+; DATA: GY460XF  Im 009B9
 _s_blank_line:
 	DB "                ", 0
 
 ; DATA: GY454XE  Re 00958
 ; DATA: GY455XE  Im 00958
+; DATA: GY460XF  Im 009CA
 _s_prompt_fix:
 	DB "Fix 0~9?", 0
 	
 ; DATA: GY454XE  Re 00961
 ; DATA: GY455XE  Im 00961
+; DATA: GY460XF  Im 009D3
 _s_prompt_sci:
 	DB "Sci 0~9?", 0
 
 ; DATA: GY454XE  Re 0096A
 ; DATA: GY455XE  Im 0096A
+; DATA: GY460XF  Im 009DC
 _s_prompt_norm:
 	DB "Norm 1~2?", 0
 
 ; DATA: GY454XE  Re 00974
 ; DATA: GY455XE  Im 00974
+; DATA: GY460XF  Im 009E6
 _contrast_screen:
 	DB "CONTRAST", 0
 	DB "", 0
@@ -386,11 +426,13 @@ _contrast_screen:
 
 ; DATA: GY454XE  Re 0099F
 ; DATA: GY455XE  Im 0099F
+; DATA: GY460XF  Im 00A11
 _const_input_template:
 	DB "[__]", 0
 	
 ; DATA: GY454XE  Re 009A4
 ; DATA: GY455XE  Im 009A4
+; DATA: GY460XF  Im 00A16
 _const_screen:
 	DB "CONSTANT", 0
 	DB "Number 01~40?", 0
@@ -400,6 +442,7 @@ _const_screen:
 
 ; DATA: GY454XE  Re 009BE
 ; DATA: GY455XE  Im 009BE
+; DATA: GY460XF  Im 00A30
 _conv_screen:
 	DB "CONVERSION", 0
 	DB "Number 01~40?", 0
@@ -409,6 +452,7 @@ _conv_screen:
 
 ; DATA: GY454XE  Re 009DA
 ; DATA: GY455XE  Im 009DA
+; DATA: GY460XF  Im 00A4C
 _menu_clr:
 	DB "Clear?", 0
 	DB "1:Setup 2:Memory", 0
@@ -418,46 +462,55 @@ _menu_clr:
 	
 ; DATA: GY454XE  Re 009FA
 ; DATA: GY455XE  Im 009FA
+; DATA: GY460XF  Im 00A6C
 _s_clr_setup:
 	DB "Clear Setup?", 0
 
 ; DATA: GY454XE  Re 00A07
 ; DATA: GY455XE  Im 00A07
+; DATA: GY460XF  Im 00A79
 _s_clr_mem:
 	DB "Clear Memory?", 0
 
 ; DATA: GY454XE  Re 00A15
 ; DATA: GY455XE  Im 00A15
+; DATA: GY460XF  Im 00A87
 _s_reset_all:
 	DB "Reset All?", 0
 
 ; DATA: GY454XE  Re 00A20
 ; DATA: GY455XE  Im 00A20
+; DATA: GY460XF  Im 00A92
 _s_clr_done_all:
 	DB "   Reset All", 0
 
 ; DATA: GY454XE  Re 00A2D
 ; DATA: GY455XE  Im 00A2D
+; DATA: GY460XF  Im 00A9F
 _s_prompt_yes:
 	DB "[=]   :Yes", 0
 
 ; DATA: GY454XE  Re 00A38
 ; DATA: GY455XE  Im 00A38
+; DATA: GY460XF  Im 00AAA
 _s_prompt_cancel:
 	DB "[AC]  :Cancel", 0
 
 ; DATA: GY454XE  Re 00A46
 ; DATA: GY455XE  Im 00A46
+; DATA: GY460XF  Im 00AB8
 _s_clr_done:
 	DB "   Complete!", 0
 	
 ; DATA: GY454XE  Re 00A53
 ; DATA: GY455XE  Im 00A53
+; DATA: GY460XF  Im 00AC5
 _s_clr_prompt_ac:
 	DB " Press [AC] key", 0
 	
 ; DATA: GY454XE  Re 00A63
 ; DATA: GY455XE  Im 00A63
+; DATA: GY460XF  Im 00AD5
 _menu_matrix_table:
 	DB "1:Dim   2:Data", 0
 	DB "", 0
@@ -467,6 +520,7 @@ _menu_matrix_table:
 	
 ; DATA: GY454XE  Re 00A76
 ; DATA: GY455XE  Im 00A76
+; DATA: GY460XF  Im 00AE8
 _menu_matrix:
 	DB "1:Dim   2:Data", 0
 	DB "3:MatA  4:MatB", 0
@@ -476,6 +530,7 @@ _menu_matrix:
 	
 ; DATA: GY454XE  Re 00AB4
 ; DATA: GY455XE  Im 00AB4
+; DATA: GY460XF  Im 00B26
 _menu_matrix_data:
 	DB "1:MatA  2:MatB", 0
 	DB "3:MatC", 0
@@ -484,6 +539,7 @@ _menu_matrix_data:
 
 ; DATA: GY454XE  Re 00ACC
 ; DATA: GY455XE  Im 00ACC
+; DATA: GY460XF  Im 00B3E
 _menu_matrix_dim0:
 	DB "1:3$3   2:3$2", 0
 	DB "3:3$1   4:2$3", 0
@@ -491,6 +547,7 @@ _menu_matrix_dim0:
 
 ; DATA: GY454XE  Re 00AF6
 ; DATA: GY455XE  Im 00AF6
+; DATA: GY460XF  Im 00B68
 _menu_matrix_dim1:
 	DB "1:1$3   2:1$2", 0
 	DB "3:1$1", 0
@@ -498,26 +555,31 @@ _menu_matrix_dim1:
 
 ; DATA: GY454XE  Re 00B0C
 ; DATA: GY455XE  Im 00B0C
+; DATA: GY460XF  Im 00B7E
 _menu_matrix_sel:
 	DB "Matrix?", 0
 
 ; DATA: GY454XE  Re 00B14
 ; DATA: GY455XE  Im 00B14
+; DATA: GY460XF  Im 00B86
 _menu_mata_dim_sel:
 	DB "MatA(m$n) m$n?", 0
 
 ; DATA: GY454XE  Re 00B23
 ; DATA: GY455XE  Im 00B23
+; DATA: GY460XF  Im 00B95
 _menu_matb_dim_sel:
 	DB "MatB(m$n) m$n?", 0
 
 ; DATA: GY454XE  Re 00B32
 ; DATA: GY455XE  Im 00B32
+; DATA: GY460XF  Im 00BA4
 _menu_matc_dim_sel:
 	DB "MatC(m$n) m$n?", 0
 
 ; DATA: GY454XE  Re 00B41
 ; DATA: GY455XE  Im 00B41
+; DATA: GY460XF  Im 00BB3
 _menu_vector_table:
 	DB "1:Dim   2:Data", 0
 	DB "", 0
@@ -527,6 +589,7 @@ _menu_vector_table:
 	
 ; DATA: GY454XE  Re 00B54
 ; DATA: GY455XE  Im 00B54
+; DATA: GY460XF  Im 00BC6
 _menu_vector:
 	DB "1:Dim   2:Data", 0
 	DB "3:VctA  4:VctB", 0
@@ -536,6 +599,7 @@ _menu_vector:
 	
 ; DATA: GY454XE  Re 00B8A
 ; DATA: GY455XE  Im 00B8A
+; DATA: GY460XF  Im 00BFC
 _menu_vector_data:
 	DB "1:VctA  2:VctB", 0
 	DB "3:VctC", 0
@@ -544,6 +608,7 @@ _menu_vector_data:
 
 ; DATA: GY454XE  Re 00BA2
 ; DATA: GY455XE  Im 00BA2
+; DATA: GY460XF  Im 00C14
 _menu_vector_dim:
 	DB "1:3     2:2", 0
 	DB "", 0
@@ -551,26 +616,31 @@ _menu_vector_dim:
 
 ; DATA: GY454XE  Re 00BB1
 ; DATA: GY455XE  Im 00BB1
+; DATA: GY460XF  Im 00C23
 _menu_vector_sel:
 	DB "Vector?", 0
 
 ; DATA: GY454XE  Re 00BB9
 ; DATA: GY455XE  Im 00BB9
+; DATA: GY460XF  Im 00C2B
 _menu_vcta_dim_sel:
 	DB "VctA(m) m?", 0
 
 ; DATA: GY454XE  Re 00BC4
 ; DATA: GY455XE  Im 00BC4
+; DATA: GY460XF  Im 00C36
 _menu_vctb_dim_sel:
 	DB "VctB(m) m?", 0
 
 ; DATA: GY454XE  Re 00BCF
 ; DATA: GY455XE  Im 00BCF
+; DATA: GY460XF  Im 00C41
 _menu_vctc_dim_sel:
 	DB "VctC(m) m?", 0
 
 ; DATA: GY454XE  Re 00BDA
 ; DATA: GY455XE  Im 00BDA
+; DATA: GY460XF  Im 00C4C
 _menu_cmplx:
 	DB "1:arg   2:Conjg", 0
 	DB "3:\x9er\x88\xc4  4:\x9ea+b\x80", 0
@@ -579,6 +649,7 @@ _menu_cmplx:
 
 ; DATA: GY454XE  Re 00BFC
 ; DATA: GY455XE  Im 00BFC
+; DATA: GY460XF  Im 00C6E
 _menu_base_n_0:
 	DB "1:and   2:or", 0
 	DB "3:xor   4:xnor", 0
@@ -588,6 +659,7 @@ _menu_base_n_0:
 
 ; DATA: GY454XE  Re 00C28
 ; DATA: GY455XE  Im 00C28
+; DATA: GY460XF  Im 00C9A
 _menu_base_n_1:
 	DB "1:d     2:h", 0
 	DB "3:b     4:o", 0
@@ -597,6 +669,7 @@ _menu_base_n_1:
 
 ; DATA: GY454XE  Re 00C43
 ; DATA: GY455XE  Im 00C43
+; DATA: GY460XF  Im 00CB5
 _menu_drg:
 	DB "1:\x85     2:\x86", 0
 	DB "3:\x87", 0
@@ -606,6 +679,7 @@ _menu_drg:
 
 ; DATA: GY454XE  Re 00C56
 ; DATA: GY455XE  Im 00C56
+; DATA: GY460XF  Im 00CC8
 _menu_hyp:
 	DB "1:sinh  2:cosh", 0
 	DB "3:tanh  4:sinh\xaa", 0
@@ -615,6 +689,7 @@ _menu_hyp:
 
 ; DATA: GY454XE  Re 00C87
 ; DATA: GY455XE  Im 00C87
+; DATA: GY460XF  Im 00CF9
 _menu_stat_data_edit:
 	DB "1:Ins   2:Del-A", 0
 	DB "", 0
@@ -624,6 +699,7 @@ _menu_stat_data_edit:
 	
 ; DATA: GY454XE  Re 00C9B
 ; DATA: GY455XE  Im 00C9B
+; DATA: GY460XF  Im 00D0D
 _menu_stat_1var_sum:
 	DB "1:\xc0x\xa2   2:\xc0x\xa", 0
 	DB "", 0
@@ -633,6 +709,7 @@ _menu_stat_1var_sum:
 
 ; DATA: GY454XE  Re 00CAC
 ; DATA: GY455XE  Im 00CAC
+; DATA: GY460XF  Im 00D1E
 _menu_stat_2var_sum:
 	DB "1:\xc0x\xa2   2:\xc0x", 0
 	DB "3:\xc0y\xa2   4:\xc0y", 0
@@ -641,6 +718,7 @@ _menu_stat_2var_sum:
 
 ; DATA: GY454XE  Re 00CE2
 ; DATA: GY455XE  Im 00CE2
+; DATA: GY460XF  Im 00D54
 _menu_stat_1var_var:
 	DB "1:n     2:\x89", 0
 	DB "3:\xc8x    4:sx", 0
@@ -650,15 +728,16 @@ _menu_stat_1var_var:
 
 ; DATA: GY454XE  Re 00CFE
 ; DATA: GY455XE  Im 00CFE
+; DATA: GY460XF  Im 00D70
 _menu_stat_2var_var:
 	DB "1:n     2:\x89", 0
 	DB "3:\xc8x    4:sx", 0
 	DB "5:\x8a     6:\xc8y", 0
 	DB "7:sy", 0
-	DB 0
 	
 ; DATA: GY454XE  Re 00D29
 ; DATA: GY455XE  Im 00D29
+; DATA: GY460XF  Im 00D9B
 _menu_stat_1var_minmax:
 	DB "1:minX  2:maxX", 0
 	DB "", 0
@@ -668,6 +747,7 @@ _menu_stat_1var_minmax:
 
 ; DATA: GY454XE  Re 00D3C
 ; DATA: GY455XE  Im 00D3C
+; DATA: GY460XF  Im 00DAE
 _menu_stat_2var_minmax:
 	DB "1:minX  2:maxX", 0
 	DB "3:minY  4:maxY", 0
@@ -677,6 +757,7 @@ _menu_stat_2var_minmax:
 
 ; DATA: GY454XE  Re 00D5D
 ; DATA: GY455XE  Im 00D5D
+; DATA: GY460XF  Im 00DCF
 _menu_stat_distr:
 	DB "1:P(    2:Q(", 0
 	DB "3:R(    4:\x9et", 0
@@ -686,6 +767,7 @@ _menu_stat_distr:
 
 ; DATA: GY454XE  Re 00D7A
 ; DATA: GY455XE  Im 00D7A
+; DATA: GY460XF  Im 00DEC
 _menu_stat_reg:
 	DB "1:\x9a     2:\x9b", 0
 	DB "3:r     4:\x8b", 0
@@ -695,6 +777,7 @@ _menu_stat_reg:
 
 ; DATA: GY454XE  Re 00D98
 ; DATA: GY455XE  Im 00D98
+; DATA: GY460XF  Im 00E0A
 _menu_stat_reg_quad:
 	DB "1:\x9a     2:\x9b", 0
 	DB "3:\x9c     4:\x8b\xb1", 0
@@ -704,6 +787,7 @@ _menu_stat_reg_quad:
 
 ; DATA: GY454XE  Re 00DBF
 ; DATA: GY455XE  Im 00DBF
+; DATA: GY460XF  Im 00E31
 _menu_ratio:
 	DB "1:a:b=X:d", 0
 	DB "2:a:b=c:X", 0
@@ -713,6 +797,7 @@ _menu_ratio:
 
 ; DATA: GY454XE  Re 00DD6
 ; DATA: GY455XE  Im 00DD6
+; DATA: GY460XF  Im 00E48
 _menu_verify:
 	DB "1:=     2:\x95", 0
 	DB "3:>     4:<", 0
@@ -722,6 +807,7 @@ _menu_verify:
 
 ; DATA: GY454XE  Re 00DFC
 ; DATA: GY455XE  Im 00DFC
+; DATA: GY460XF  Im 00E6E
 _menu_ineq:
 	DB "1:aX\xa2+bX+c", 0
 	DB "2:aX\xa3+bX\xa2+cX+d", 0
@@ -731,6 +817,7 @@ _menu_ineq:
 
 ; DATA: GY454XE  Re 00E19
 ; DATA: GY455XE  Im 00E19
+; DATA: GY460XF  Im 00E8B
 _menu_ineq_poly2:
 	DB "1:aX\xa2+bX+c>0", 0
 	DB "2:aX\xa2+bX+c<0", 0
@@ -740,6 +827,7 @@ _menu_ineq_poly2:
 
 ; DATA: GY454XE  Re 00E4E
 ; DATA: GY455XE  Im 00E4E
+; DATA: GY460XF  Im 00EC0
 _menu_ineq_poly3:
 	DB "1:aX\xa3+bX\xa2+cX+d>0", 0
 	DB "2:aX\xa3+bX\xa2+cX+d<0", 0
@@ -749,6 +837,7 @@ _menu_ineq_poly3:
 
 ; DATA: GY454XE  Re 00E93
 ; DATA: GY455XE  Im 00E93
+; DATA: GY460XF  Im 00F05
 _menu_setup_stat_freq:
 	DB "Frequency?", 0
 	DB "1:ON    2:OFF", 0
@@ -758,6 +847,7 @@ _menu_setup_stat_freq:
 
 ; DATA: GY454XE  Re 00EAF
 ; DATA: GY455XE  Im 00EAF
+; DATA: GY460XF  Im 00F21
 _menu_setup_rdec:
 	DB "Recur Decimal?", 0
 	DB "1:ON    2:OFF", 0
@@ -767,6 +857,7 @@ _menu_setup_rdec:
 
 ; DATA: GY454XE  Re 00ECF
 ; DATA: GY455XE  Im 00ECF
+; DATA: GY460XF  Im 00F41
 _menu_setup_cmplx_result:
 	DB "Complex Result?", 0
 	DB "1:a+b\x80  2:r\x88\xc4", 0
@@ -776,6 +867,7 @@ _menu_setup_cmplx_result:
 
 ; DATA: GY454XE  Re 00EF0
 ; DATA: GY455XE  Im 00EF0
+; DATA: GY460XF  Im 00F62
 _menu_setup_decimal_mark:
 	DB "Decimal Point?", 0
 	DB "1:Dot   2:Comma", 0
@@ -785,6 +877,7 @@ _menu_setup_decimal_mark:
 
 ; DATA: GY454XE  Re 00F12
 ; DATA: GY455XE  Im 00F12
+; DATA: GY460XF  Im 00F84
 _menu_setup_decimalo:
 	DB "Result Format?", 0
 	DB "1:MathO 2:LineO", 0
@@ -794,51 +887,61 @@ _menu_setup_decimalo:
 
 ; DATA: GY454XE  Re 00F34
 ; DATA: GY455XE  Im 00F34
+; DATA: GY460XF  Im 00FA6
 _s_prompt_solve:
 	DB "Solve for ", 0
 
 ; DATA: GY454XE  Re 00F3F
 ; DATA: GY455XE  Im 00F3F
+; DATA: GY460XF  Im 00FB1
 _s_table_prompt_start:
 	DB "Start?", 0
 
 ; DATA: GY454XE  Re 00F45
 ; DATA: GY455XE  Im 00F45
+; DATA: GY460XF  Im 00FB8
 _s_table_prompt_end:
 	DB "End?  ", 0
 
 ; DATA: GY454XE  Re 00F4D
 ; DATA: GY455XE  Im 00F4D
+; DATA: GY460XF  Im 00FBF
 _s_table_prompt_step:
 	DB "Step? ", 0
 
 ; DATA: GY454XE  Re 00F54
 ; DATA: GY455XE  Im 00F54
+; DATA: GY460XF  Im 00FC6
 _s_ratio_optn_c:
 	DB "a:b=X:d", 0
 
 ; DATA: GY454XE  Re 00F5C
 ; DATA: GY455XE  Im 00F5C
+; DATA: GY460XF  Im 00FCE
 _s_ratio_optn_d:
 	DB "a:b=c:X", 0
 
 ; DATA: GY454XE  Re 00F64
 ; DATA: GY455XE  Im 00F64
+; DATA: GY460XF  Im 00FD6
 _s_verif_result_false:
 	DB "FALSE", 0
 
 ; DATA: GY454XE  Re 00F6A
 ; DATA: GY455XE  Im 00F6A
+; DATA: GY460XF  Im 00FDC
 _s_verif_result_true:
 	DB "TRUE", 0
 
 ; DATA: GY454XE  Re 00F6F
 ; DATA: GY455XE  Im 00F6F
+; DATA: GY460XF  Im 00FE1
 _s_ineq_allreal:
 	DB "All", 0
 
 ; DATA: GY454XE  Re 00F73
 ; DATA: GY455XE  Im 00F73
+; DATA: GY460XF  Im 00FE5
 _s_ineq_nosolution:
 	DB "No-Solution", 0
 
@@ -2546,6 +2649,11 @@ _get_mathi_draw_idx:
 	CMP R1, #9FH-5EH   ; nth root
 	BEQ _$j_0274e
 	MOV R0, #11
+IF ENABLE_RDEC == 1
+	CMP R1, #0A4H-5EH  ; Recurring decimal
+	BEQ _$j_0274e
+	MOV R0, #12
+ENDIF
 	CMP R1, #0AEH-5EH  ; Fraction
 	BEQ _$j_0274e
 	MOV R0, #13
@@ -3948,7 +4056,7 @@ _$j_03074:
 	AND R0, #01111100B
 	ST R0, [ER2]
 	ADD ER2, #1H
-	INC [EA]
+	INC [EA]            ; Increment ROM address, yeah right
 	ADD R5, #-1H
 	BNE _$j_03052
 	POP ER6
@@ -4151,8 +4259,8 @@ _$j_031d6:
 	CMP R0, #0C4H  ; CMPLX mode
 	BNE _$j_031f2
 	SB (_screen_buffer+4).7  ; CMPLX
-	MOV R0, #BYTE1 _var_m_im
-	MOV R1, #BYTE2 _var_m_im
+	MOV R0, #BYTE1 (_mode_ram+362)
+	MOV R1, #BYTE2 (_mode_ram+362)
 	BL _num_invalid__
 	CMP R0, #1H
 	BEQ _$j_031f2
@@ -4878,8 +4986,8 @@ _$j_036e2:
 ; FUNCTION: GY454XE  Re 036E8
 ; FUNCTION: GY455XE  Im 037F4
 ; FUNCTION: GY460XF  Im 0348E
-_filter_chars:
-	LEA _blacklist
+_filter_chars_tables:
+	LEA _blacklist_tables
 _$j_036ec:
 	L R1, [EA+]
 	BEQ _$j_036f6
@@ -5048,16 +5156,16 @@ _f_03814:
 	PUSH LR
 	PUSH ER0
 	MOV ER0, ER8
-	MOV R2, #BYTE1 _d_085B4
-	MOV R3, #BYTE2 _d_085B4
+	MOV R2, #BYTE1 (_mode_ram+790)
+	MOV R3, #BYTE2 (_mode_ram+790)
 	BL _f_1553C
 	MOV ER0, ER2
-	MOV R2, #BYTE1 _d_085AA
-	MOV R3, #BYTE2 _d_085AA
+	MOV R2, #BYTE1 (_mode_ram+780)
+	MOV R3, #BYTE2 (_mode_ram+780)
 	BL _f_1A438
 	POP ER0
-	MOV R2, #BYTE1 _d_085B4
-	MOV R3, #BYTE2 _d_085B4
+	MOV R2, #BYTE1 (_mode_ram+790)
+	MOV R3, #BYTE2 (_mode_ram+790)
 	BL _f_1A410
 	ADD ER8, #0AH
 	CMP R0, #0H
@@ -5071,26 +5179,26 @@ _f_0383C:
 	PUSH LR
 	PUSH FP
 	MOV ER0, ER8
-	MOV R2, #BYTE1 _d_085AA
-	MOV R3, #BYTE2 _d_085AA
+	MOV R2, #BYTE1 (_mode_ram+780)
+	MOV R3, #BYTE2 (_mode_ram+780)
 	BL _f_1553C
 	MOV ER0, ER2
-	MOV R2, #BYTE1 _table_fx+60
-	MOV R3, #BYTE2 _table_fx
+	MOV R2, #BYTE1 (_mode_ram+740)
+	MOV R3, #BYTE2 (_mode_ram+740)
 	BL _f_1A438
-	MOV R0, #BYTE1 _d_085AA
-	MOV R1, #BYTE2 _d_085AA
-	MOV R2, #BYTE1 _d_085B4
-	MOV R3, #BYTE2 _d_085B4
+	MOV R0, #BYTE1 (_mode_ram+780)
+	MOV R1, #BYTE2 (_mode_ram+780)
+	MOV R2, #BYTE1 (_mode_ram+790)
+	MOV R3, #BYTE2 (_mode_ram+790)
 	BL _f_1553C
-	MOV R2, #BYTE1 _table_fx+70
-	MOV R3, #BYTE2 _table_fx
+	MOV R2, #BYTE1 (_mode_ram+740)
+	MOV R3, #BYTE2 (_mode_ram+750)
 	BL _f_1A3FC
-	MOV R0, #BYTE1 _d_085AA
-	MOV R1, #BYTE2 _d_085AA
+	MOV R0, #BYTE1 (_mode_ram+780)
+	MOV R1, #BYTE2 (_mode_ram+780)
 	BL _num_negate
-	MOV R2, #BYTE1 _d_085AA
-	MOV R3, #BYTE2 _d_085AA
+	MOV R2, #BYTE1 (_mode_ram+780)
+	MOV R3, #BYTE2 (_mode_ram+780)
 _$j_03878:
 	MOV R0, #8H
 	BL _st_var
@@ -5101,27 +5209,27 @@ _$j_03878:
 	BNE _$j_038c0
 	SB R8.0
 	BNE _$j_038ac
-	MOV R0, #BYTE1 _d_085AA
-	MOV R1, #BYTE2 _d_085AA
+	MOV R0, #BYTE1 (_mode_ram+780)
+	MOV R1, #BYTE2 (_mode_ram+780)
 	BL _f_154F2
-	MOV R0, #BYTE1 _d_085B4
-	MOV R1, #BYTE2 _d_085B4
-	MOV R2, #BYTE1 _table_fx+70
-	MOV R3, #BYTE2 _table_fx
+	MOV R0, #BYTE1 (_mode_ram+790)
+	MOV R1, #BYTE2 (_mode_ram+790)
+	MOV R2, #BYTE1 (_mode_ram+740)
+	MOV R3, #BYTE2 (_mode_ram+750)
 	BL _f_1A410
 	CMP R0, #0H
 	BNE _$j_038c0
-	MOV R2, #BYTE1 _d_085B4
-	MOV R3, #BYTE2 _d_085B4
+	MOV R2, #BYTE1 (_mode_ram+790)
+	MOV R3, #BYTE2 (_mode_ram+790)
 	BAL _$j_03878
 _$j_038ac:
 	RB R8.0
-	MOV R0, #BYTE1 _d_085AA
-	MOV R1, #BYTE2 _d_085AA
+	MOV R0, #BYTE1 (_mode_ram+780)
+	MOV R1, #BYTE2 (_mode_ram+780)
 	MOV ER2, BP
 	BL _f_1A410
-	MOV R0, #BYTE1 _d_085AA
-	MOV R1, #BYTE2 _d_085AA
+	MOV R0, #BYTE1 (_mode_ram+780)
+	MOV R1, #BYTE2 (_mode_ram+780)
 	BL _f_1B238
 _$j_038c0:
 	ADD SP, #2H
@@ -5136,62 +5244,62 @@ _f_038C8:
 	PUSH FP
 	PUSH LR
 	PUSH FP
-	MOV R0, #BYTE1 _d_08532
-	MOV R1, #BYTE2 _d_08532
-	MOV R2, #BYTE1 _table_fx+60
-	MOV R3, #BYTE2 _table_fx
+	MOV R0, #BYTE1 (_mode_ram+660)
+	MOV R1, #BYTE2 (_mode_ram+660)
+	MOV R2, #BYTE1 (_mode_ram+740)
+	MOV R3, #BYTE2 (_mode_ram+740)
 	BL _f_1553C
 	MOV ER0, ER2
-	MOV R2, #BYTE1 _d_08528
-	MOV R3, #BYTE2 _d_08528
+	MOV R2, #BYTE1 (_mode_ram+650)
+	MOV R3, #BYTE2 (_mode_ram+650)
 	BL _f_1A3FC
-	MOV R0, #BYTE1 _table_fx+60
-	MOV R1, #BYTE2 _table_fx
+	MOV R0, #BYTE1 (_mode_ram+740)
+	MOV R1, #BYTE2 (_mode_ram+740)
 	MOV R2, #BYTE1 _num_2
 	MOV R3, #BYTE2 _num_2
 	BL _f_1A44C
-	MOV R0, #BYTE1 _table_fx+60
-	MOV R1, #BYTE2 _table_fx
+	MOV R0, #BYTE1 (_mode_ram+740)
+	MOV R1, #BYTE2 (_mode_ram+740)
 	BL _num_invalid__
 	CMP R0, #0F0H
 	BEQ _$j_039ac
 	CMP R0, #1H
 	BEQ _$j_039ac
-	MOV R0, #BYTE1 _d_08532
-	MOV R1, #BYTE2 _d_08532
-	MOV R2, #BYTE1 _table_fx+70
-	MOV R3, #BYTE2 _table_fx
+	MOV R0, #BYTE1 (_mode_ram+660)
+	MOV R1, #BYTE2 (_mode_ram+660)
+	MOV R2, #BYTE1 (_mode_ram+740)
+	MOV R3, #BYTE2 (_mode_ram+750)
 	BL _f_1553C
 	MOV ER0, ER2
-	MOV R2, #BYTE1 _d_08528
-	MOV R3, #BYTE2 _d_08528
+	MOV R2, #BYTE1 (_mode_ram+650)
+	MOV R3, #BYTE2 (_mode_ram+650)
 	BL _f_1A410
-	MOV R0, #BYTE1 _table_fx+70
-	MOV R1, #BYTE2 _table_fx
+	MOV R0, #BYTE1 (_mode_ram+740)
+	MOV R1, #BYTE2 (_mode_ram+750)
 	MOV R2, #BYTE1 _num_2
 	MOV R3, #BYTE2 _num_2
 	BL _f_1A44C
 	CMP R0, #3H
 	BEQ _$j_039ac
 	MOV R0, #8H
-	MOV R2, #BYTE1 _table_fx+70
-	MOV R3, #BYTE2 _table_fx
+	MOV R2, #BYTE1 (_mode_ram+740)
+	MOV R3, #BYTE2 (_mode_ram+750)
 	BL _st_var
 	MOV R6, #1H
 	BL _num_eval__
 	BNE _$j_039ac
 	MOV R0, #BYTE1 _num_gk_weight
 	MOV R1, #BYTE2 _num_gk_weight
-	MOV R2, #BYTE1 _table_fx+80
-	MOV R3, #BYTE2 _table_fx
+	MOV R2, #BYTE1 (_mode_ram+740)
+	MOV R3, #BYTE2 (_mode_ram+760)
 	BL _f_1553C
 	MOV ER0, ER2
 	MOV ER2, BP
 	BL _f_1A438
 	MOV R0, #BYTE1 _unk_01c8a
 	MOV R1, #BYTE2 _unk_01c8a
-	MOV R2, #BYTE1 _table_fx+90
-	MOV R3, #BYTE2 _table_fx
+	MOV R2, #BYTE1 (_mode_ram+740)
+	MOV R3, #BYTE2 (_mode_ram+770)
 	BL _f_1553C
 	MOV ER0, ER2
 	MOV ER2, BP
@@ -5205,12 +5313,12 @@ _$j_03968:
 	BNE _$j_039b0
 	BL _f_0383C
 	BNE _$j_039aa
-	MOV R0, #BYTE1 _table_fx+90
-	MOV R1, #BYTE2 _table_fx
+	MOV R0, #BYTE1 (_mode_ram+740)
+	MOV R1, #BYTE2 (_mode_ram+770)
 	BL _f_03814
 	BNE _$j_039aa
-	MOV R0, #BYTE1 _table_fx+80
-	MOV R1, #BYTE2 _table_fx
+	MOV R0, #BYTE1 (_mode_ram+740)
+	MOV R1, #BYTE2 (_mode_ram+760)
 	BL _f_03814
 	BNE _$j_039aa
 	MOV R0, #BYTE1 _num_gk_nodes_expanded
@@ -5223,8 +5331,8 @@ _$j_03992:
 	BNE _$j_039b0
 	BL _f_0383C
 	BNE _$j_039aa
-	MOV R0, #BYTE1 _table_fx+90
-	MOV R1, #BYTE2 _table_fx
+	MOV R0, #BYTE1 (_mode_ram+740)
+	MOV R1, #BYTE2 (_mode_ram+770)
 	BL _f_03814
 	BEQ _$j_039b4
 _$j_039aa:
@@ -5241,38 +5349,38 @@ _$j_039b4:
 	CMP ER8, ER0
 	BLE _$j_03992
 	POP ER8
-	MOV R0, #BYTE1 _table_fx+80
-	MOV R1, #BYTE2 _table_fx
+	MOV R0, #BYTE1 (_mode_ram+740)
+	MOV R1, #BYTE2 (_mode_ram+760)
 	BL _f_1B238
-	MOV R0, #BYTE1 _table_fx+80
-	MOV R1, #BYTE2 _table_fx
+	MOV R0, #BYTE1 (_mode_ram+740)
+	MOV R1, #BYTE2 (_mode_ram+760)
 	BL _num_to_str_std_lineo
-	MOV R2, #BYTE1 _table_fx+60
-	MOV R3, #BYTE2 _table_fx
+	MOV R2, #BYTE1 (_mode_ram+740)
+	MOV R3, #BYTE2 (_mode_ram+740)
 	BL _f_1A438
 	CMP R0, #0H
 	BNE _$j_039ac
-	MOV R0, #BYTE1 _table_fx+90
-	MOV R1, #BYTE2 _table_fx
+	MOV R0, #BYTE1 (_mode_ram+740)
+	MOV R1, #BYTE2 (_mode_ram+770)
 	BL _f_1B238
-	MOV R0, #BYTE1 _table_fx+90
-	MOV R1, #BYTE2 _table_fx
+	MOV R0, #BYTE1 (_mode_ram+740)
+	MOV R1, #BYTE2 (_mode_ram+770)
 	BL _num_to_str_std_lineo
-	MOV R2, #BYTE1 _table_fx+60
-	MOV R3, #BYTE2 _table_fx
+	MOV R2, #BYTE1 (_mode_ram+740)
+	MOV R3, #BYTE2 (_mode_ram+740)
 	BL _f_1A438
 	CMP R0, #0H
 	BNE _$j_039ac
-	MOV R0, #BYTE1 _table_fx+80
-	MOV R1, #BYTE2 _table_fx
-	MOV R2, #BYTE1 _table_fx+90
-	MOV R3, #BYTE2 _table_fx
+	MOV R0, #BYTE1 (_mode_ram+740)
+	MOV R1, #BYTE2 (_mode_ram+760)
+	MOV R2, #BYTE1 (_mode_ram+740)
+	MOV R3, #BYTE2 (_mode_ram+770)
 	BL _f_1A3FC
-	MOV R0, #BYTE1 _table_fx+80
-	MOV R1, #BYTE2 _table_fx
+	MOV R0, #BYTE1 (_mode_ram+740)
+	MOV R1, #BYTE2 (_mode_ram+760)
 	BL _num_abs
-	MOV R0, #BYTE1 _table_fx+80
-	MOV R1, #BYTE2 _table_fx
+	MOV R0, #BYTE1 (_mode_ram+740)
+	MOV R1, #BYTE2 (_mode_ram+760)
 	BL _f_1B238
 	MOV R0, #0H
 _$j_03a14:
@@ -5287,15 +5395,15 @@ _f_03A1A:
 	PUSH BP
 	ADD SP, #-0AH
 	MOV BP, SP
-	MOV R0, #BYTE1 _d_0851E
-	MOV R1, #BYTE2 _d_0851E
-	MOV R2, #BYTE1 _table_fx+80
-	MOV R3, #BYTE2 _table_fx
+	MOV R0, #BYTE1 (_mode_ram+640)
+	MOV R1, #BYTE2 (_mode_ram+640)
+	MOV R2, #BYTE1 (_mode_ram+740)
+	MOV R3, #BYTE2 (_mode_ram+760)
 	PUSH ER2
 	BL _f_15526
 	MOV ER0, BP
-	MOV R2, #BYTE1 _table_fx+90
-	MOV R3, #BYTE2 _table_fx
+	MOV R2, #BYTE1 (_mode_ram+740)
+	MOV R3, #BYTE2 (_mode_ram+770)
 	BL _f_1A438
 	CMP R0, #0H
 	BNE _$j_03a6c
@@ -5357,8 +5465,8 @@ _$j_03a9c:
 _$j_03aa2:
 	MOV ER0, BP
 	BL _num_to_str_std_lineo
-	MOV R0, #BYTE1 _d_0850A
-	MOV R1, #BYTE2 _d_0850A
+	MOV R0, #BYTE1 (_mode_ram+620)
+	MOV R1, #BYTE2 (_mode_ram+620)
 	BL _f_154F2
 	BL _num_eval__
 	BGE _$j_03aba
@@ -5367,8 +5475,8 @@ _$j_03aba:
 	MOV R2, R0
 	MOV ER0, BP
 	BL _num_to_str_std_lineo
-	MOV R0, #BYTE1 _d_08514
-	MOV R1, #BYTE2 _d_08514
+	MOV R0, #BYTE1 (_mode_ram+630)
+	MOV R1, #BYTE2 (_mode_ram+630)
 	BL _f_154F2
 	CMP R2, #-1H
 	BEQ _$j_03af0
@@ -5394,20 +5502,20 @@ _$j_03af0:
 	MOV R1, #0H
 	ST ER0, 8H[BP]
 _$j_03afe:
-	MOV R0, #BYTE1 _d_0851E
-	MOV R1, #BYTE2 _d_0851E
+	MOV R0, #BYTE1 (_mode_ram+640)
+	MOV R1, #BYTE2 (_mode_ram+640)
 	BL _f_154F2
-	ST FP, _d_085C8
-	MOV R0, #BYTE1 _d_0850A
-	MOV R1, #BYTE2 _d_0850A
-	MOV R2, #BYTE1 _d_08514
-	MOV R3, #BYTE2 _d_08514
+	ST FP, (_mode_ram+810)
+	MOV R0, #BYTE1 (_mode_ram+620)
+	MOV R1, #BYTE2 (_mode_ram+620)
+	MOV R2, #BYTE1 (_mode_ram+630)
+	MOV R3, #BYTE2 (_mode_ram+630)
 	BL _f_1B0DC
 	CMP R0, #1H
 	BNE _$j_03b5a
 	MOV R0, #8H
-	MOV R2, #BYTE1 _d_08514
-	MOV R3, #BYTE2 _d_08514
+	MOV R2, #BYTE1 (_mode_ram+630)
+	MOV R3, #BYTE2 (_mode_ram+630)
 	BL _st_var
 	POP FP
 	PUSH FP
@@ -5417,8 +5525,8 @@ _$j_03afe:
 	B _$j_03dda
 _$j_03b34:
 	MOV R0, #8H
-	MOV R2, #BYTE1 _d_0850A
-	MOV R3, #BYTE2 _d_0850A
+	MOV R2, #BYTE1 (_mode_ram+620)
+	MOV R3, #BYTE2 (_mode_ram+620)
 	BL _st_var
 	POP FP
 	PUSH FP
@@ -5433,8 +5541,8 @@ _$j_03b4e:
 	B _$j_03dc8
 _$j_03b5a:
 	MOV R0, #8H
-	MOV R2, #BYTE1 _d_0850A
-	MOV R3, #BYTE2 _d_0850A
+	MOV R2, #BYTE1 (_mode_ram+620)
+	MOV R3, #BYTE2 (_mode_ram+620)
 	BL _st_var
 	POP FP
 	PUSH FP
@@ -5444,8 +5552,8 @@ _$j_03b5a:
 	B _$j_03dda
 _$j_03b74:
 	MOV R0, #8H
-	MOV R2, #BYTE1 _d_08514
-	MOV R3, #BYTE2 _d_08514
+	MOV R2, #BYTE1 (_mode_ram+630)
+	MOV R3, #BYTE2 (_mode_ram+630)
 	BL _st_var
 	POP FP
 	PUSH FP
@@ -5454,41 +5562,41 @@ _$j_03b74:
 	BEQ _$j_03b8e
 	B _$j_03dda
 _$j_03b8e:
-	MOV R0, #BYTE1 _d_0850A
-	MOV R1, #BYTE2 _d_0850A
-	MOV R2, #BYTE1 _d_08528
-	MOV R3, #BYTE2 _d_08528
+	MOV R0, #BYTE1 (_mode_ram+620)
+	MOV R1, #BYTE2 (_mode_ram+620)
+	MOV R2, #BYTE1 (_mode_ram+650)
+	MOV R3, #BYTE2 (_mode_ram+650)
 	BL _f_1553C
 	ADD ER0, #0AH
 	ADD ER2, #0AH
 	BL _f_1553C
 	MOV R0, #BYTE1 _num_0
 	MOV R1, #BYTE2 _num_0
-	MOV R2, #BYTE1 _table_fx
-	MOV R3, #BYTE2 _table_fx
+	MOV R2, #BYTE1 (_mode_ram+680)
+	MOV R3, #BYTE2 (_mode_ram+680)
 	BL _f_1553C
 	ADD ER0, #0AH
 	ADD ER2, #14H
 	BL _f_1553C
 	ADD ER2, #0AH
 	BL _f_1553C
-	MOV R0, #BYTE1 _d_085CD
-	MOV R1, #BYTE2 _d_085CD
+	MOV R0, #BYTE1 (_mode_ram+815)
+	MOV R1, #BYTE2 (_mode_ram+815)
 	MOV R2, #2FH
 	ST R2, [ER0]
 	MOV R1, #1H
 	MOV R0, #44H
-	MOV R2, #BYTE1 _d_085CA
-	MOV R3, #BYTE2 _d_085CA
+	MOV R2, #BYTE1 (_mode_ram+812)
+	MOV R3, #BYTE2 (_mode_ram+812)
 	ST ER0, [ER2]
-	MOV R0, #BYTE1 _d_08514
-	MOV R1, #BYTE2 _d_08514
-	MOV R2, #BYTE1 _table_fx+50
-	MOV R3, #BYTE2 _table_fx
+	MOV R0, #BYTE1 (_mode_ram+630)
+	MOV R1, #BYTE2 (_mode_ram+630)
+	MOV R2, #BYTE1 (_mode_ram+740)
+	MOV R3, #BYTE2 (_mode_ram+730)
 	BL _f_1553C
 	MOV ER0, ER2
-	MOV R2, #BYTE1 _d_0850A
-	MOV R3, #BYTE2 _d_0850A
+	MOV R2, #BYTE1 (_mode_ram+620)
+	MOV R3, #BYTE2 (_mode_ram+620)
 	BL _f_1A3FC
 	CMP R0, #3H
 	BNE _$j_03bec
@@ -5501,12 +5609,12 @@ _$j_03bf6:
 	BL _f_03A1A
 	CMP R0, #4H
 	BNE _$j_03c0a
-	MOV R0, #BYTE1 _table_fx+90
-	MOV R1, #BYTE2 _table_fx
+	MOV R0, #BYTE1 (_mode_ram+740)
+	MOV R1, #BYTE2 (_mode_ram+770)
 	BL _f_15526
 	B _$j_03dc8
 _$j_03c0a:
-	LEA _d_085CA
+	LEA (_mode_ram+812)
 	L ER0, [EA]
 	ADD ER0, #-1H
 	ST ER0, [EA]
@@ -5518,27 +5626,27 @@ _$j_03c20:
 	BL _f_03A1A
 	CMP R0, #2H
 	BNE _$j_03cd2
-	MOV R0, #BYTE1 _table_fx+30
-	MOV R1, #BYTE2 _table_fx
+	MOV R0, #BYTE1 (_mode_ram+740)
+	MOV R1, #BYTE2 (_mode_ram+710)
 	MOV R2, #BYTE1 _num_2
 	MOV R3, #BYTE2 _num_2
 	BL _f_1A438
-	LEA _d_085CD
+	LEA (_mode_ram+815)
 	DEC [EA]
 	BNE _$j_03c68
-	MOV R0, #BYTE1 _table_fx
-	MOV R1, #BYTE2 _table_fx
-	MOV R2, #BYTE1 _d_085AA
-	MOV R3, #BYTE2 _d_085AA
+	MOV R0, #BYTE1 (_mode_ram+680)
+	MOV R1, #BYTE2 (_mode_ram+680)
+	MOV R2, #BYTE1 (_mode_ram+780)
+	MOV R3, #BYTE2 (_mode_ram+780)
 	BL _f_1553C
 	MOV ER0, ER2
-	MOV R2, #BYTE1 _table_fx+90
-	MOV R3, #BYTE2 _table_fx
+	MOV R2, #BYTE1 (_mode_ram+740)
+	MOV R3, #BYTE2 (_mode_ram+770)
 	BL _f_1A410
-	MOV R0, #BYTE1 _d_085AA
-	MOV R1, #BYTE2 _d_085AA
-	MOV R2, #BYTE1 _table_fx
-	MOV R3, #BYTE2 _table_fx
+	MOV R0, #BYTE1 (_mode_ram+780)
+	MOV R1, #BYTE2 (_mode_ram+780)
+	MOV R2, #BYTE1 (_mode_ram+680)
+	MOV R3, #BYTE2 (_mode_ram+680)
 	BL _num_cmp
 	CMP R0, #1H
 	BEQ _$j_03cc0
@@ -5546,37 +5654,37 @@ _$j_03c62:
 	MOV R0, #0BH
 	B _$j_03de0
 _$j_03c68:
-	MOV R0, #BYTE1 _table_fx+20
-	MOV R1, #BYTE2 _table_fx
+	MOV R0, #BYTE1 (_mode_ram+740)
+	MOV R1, #BYTE2 (_mode_ram+700)
 	MOV R2, #BYTE1 _num_2
 	MOV R3, #BYTE2 _num_2
 	BL _f_1A438
-	MOV R0, #BYTE1 _table_fx+20
-	MOV R1, #BYTE2 _table_fx
-	MOV R2, #BYTE1 _d_08532
-	MOV R3, #BYTE2 _d_08532
+	MOV R0, #BYTE1 (_mode_ram+740)
+	MOV R1, #BYTE2 (_mode_ram+700)
+	MOV R2, #BYTE1 (_mode_ram+660)
+	MOV R3, #BYTE2 (_mode_ram+660)
 	BL _f_1553C
 	MOV ER0, ER2
 	MOV R2, #BYTE1 _num_1
 	MOV R3, #BYTE2 _num_1
 	BL _f_1A410
-	MOV R0, #BYTE1 _d_08532
-	MOV R1, #BYTE2 _d_08532
-	MOV R2, #BYTE1 _table_fx+30
-	MOV R3, #BYTE2 _table_fx
+	MOV R0, #BYTE1 (_mode_ram+660)
+	MOV R1, #BYTE2 (_mode_ram+660)
+	MOV R2, #BYTE1 (_mode_ram+740)
+	MOV R3, #BYTE2 (_mode_ram+710)
 	PUSH XR0
 	BL _f_1A3FC
 	POP XR0
 	BL _f_1A44C
-	MOV R0, #BYTE1 _d_08532
-	MOV R1, #BYTE2 _d_08532
-	MOV R2, #BYTE1 _table_fx+50
-	MOV R3, #BYTE2 _table_fx
+	MOV R0, #BYTE1 (_mode_ram+660)
+	MOV R1, #BYTE2 (_mode_ram+660)
+	MOV R2, #BYTE1 (_mode_ram+740)
+	MOV R3, #BYTE2 (_mode_ram+730)
 	BL _f_1A438
-	MOV R0, #BYTE1 _d_08532
-	MOV R1, #BYTE2 _d_08532
-	MOV R2, #BYTE1 _d_0850A
-	MOV R3, #BYTE2 _d_0850A
+	MOV R0, #BYTE1 (_mode_ram+660)
+	MOV R1, #BYTE2 (_mode_ram+660)
+	MOV R2, #BYTE1 (_mode_ram+620)
+	MOV R3, #BYTE2 (_mode_ram+620)
 	BL _f_1A410
 	CMP R0, #3H
 	BNE _$j_03cbe
@@ -5584,48 +5692,48 @@ _$j_03c68:
 _$j_03cbe:
 	BAL _$j_03c0a
 _$j_03cc0:
-	LEA _d_085CD
+	LEA (_mode_ram+815)
 	INC [EA]
-	MOV R0, #BYTE1 _table_fx+30
-	MOV R1, #BYTE2 _table_fx
+	MOV R0, #BYTE1 (_mode_ram+740)
+	MOV R1, #BYTE2 (_mode_ram+710)
 	MOV R2, #BYTE1 _num_2
 	MOV R3, #BYTE2 _num_2
 	BL _f_1A44C
 _$j_03cd2:
-	MOV R0, #BYTE1 _table_fx
-	MOV R1, #BYTE2 _table_fx
-	MOV R2, #BYTE1 _table_fx+90
-	MOV R3, #BYTE2 _table_fx
+	MOV R0, #BYTE1 (_mode_ram+680)
+	MOV R1, #BYTE2 (_mode_ram+680)
+	MOV R2, #BYTE1 (_mode_ram+740)
+	MOV R3, #BYTE2 (_mode_ram+770)
 	BL _f_1A410
 	CMP R0, #3H
 	BEQ _$j_03dda
 _$j_03ce2:
-	MOV R0, #BYTE1 _table_fx+20
-	MOV R1, #BYTE2 _table_fx
+	MOV R0, #BYTE1 (_mode_ram+740)
+	MOV R1, #BYTE2 (_mode_ram+700)
 	MOV R2, #BYTE1 _num_1
 	MOV R3, #BYTE2 _num_1
 	BL _f_1B0DC
 	CMP R0, #1H
 	BNE _$j_03cfc
-	MOV R0, #BYTE1 _table_fx
-	MOV R1, #BYTE2 _table_fx
+	MOV R0, #BYTE1 (_mode_ram+680)
+	MOV R1, #BYTE2 (_mode_ram+680)
 	BL _f_15526
 	BAL _$j_03dc8
 _$j_03cfc:
-	MOV R0, #BYTE1 _table_fx+20
-	MOV R1, #BYTE2 _table_fx
+	MOV R0, #BYTE1 (_mode_ram+740)
+	MOV R1, #BYTE2 (_mode_ram+700)
 	BL _f_1B4D0
 	CMP R0, #0H
 	BEQ _$j_03d6c
-	LEA _d_085CD
+	LEA (_mode_ram+815)
 	INC [EA]
-	MOV R0, #BYTE1 _table_fx+30
-	MOV R1, #BYTE2 _table_fx
+	MOV R0, #BYTE1 (_mode_ram+740)
+	MOV R1, #BYTE2 (_mode_ram+710)
 	MOV R2, #BYTE1 _num_2
 	MOV R3, #BYTE2 _num_2
 	BL _f_1A44C
-	MOV R0, #BYTE1 _table_fx+20
-	MOV R1, #BYTE2 _table_fx
+	MOV R0, #BYTE1 (_mode_ram+740)
+	MOV R1, #BYTE2 (_mode_ram+700)
 	MOV R2, #BYTE1 _num_1
 	MOV R3, #BYTE2 _num_1
 	PUSH XR0
@@ -5633,67 +5741,67 @@ _$j_03cfc:
 	POP XR0
 	ADD ER2, #0AH
 	BL _f_1A44C
-	MOV R0, #BYTE1 _table_fx+20
-	MOV R1, #BYTE2 _table_fx
-	MOV R2, #BYTE1 _d_08528
-	MOV R3, #BYTE2 _d_08528
+	MOV R0, #BYTE1 (_mode_ram+740)
+	MOV R1, #BYTE2 (_mode_ram+700)
+	MOV R2, #BYTE1 (_mode_ram+650)
+	MOV R3, #BYTE2 (_mode_ram+650)
 	BL _f_1553C
 	MOV ER0, ER2
-	MOV R2, #BYTE1 _table_fx+30
-	MOV R3, #BYTE2 _table_fx
+	MOV R2, #BYTE1 (_mode_ram+740)
+	MOV R3, #BYTE2 (_mode_ram+710)
 	PUSH XR0
 	BL _f_1A3FC
 	POP XR0
 	BL _f_1A44C
-	MOV R0, #BYTE1 _d_08528
-	MOV R1, #BYTE2 _d_08528
-	MOV R2, #BYTE1 _table_fx+50
-	MOV R3, #BYTE2 _table_fx
+	MOV R0, #BYTE1 (_mode_ram+650)
+	MOV R1, #BYTE2 (_mode_ram+650)
+	MOV R2, #BYTE1 (_mode_ram+740)
+	MOV R3, #BYTE2 (_mode_ram+730)
 	BL _f_1A438
-	MOV R0, #BYTE1 _d_08528
-	MOV R1, #BYTE2 _d_08528
-	MOV R2, #BYTE1 _d_0850A
-	MOV R3, #BYTE2 _d_0850A
+	MOV R0, #BYTE1 (_mode_ram+650)
+	MOV R1, #BYTE2 (_mode_ram+650)
+	MOV R2, #BYTE1 (_mode_ram+620)
+	MOV R3, #BYTE2 (_mode_ram+620)
 	BL _f_1A410
 	CMP R0, #3H
 	BEQ _$j_03dda
 	BAL _$j_03ce2
 _$j_03d6c:
-	MOV R0, #BYTE1 _table_fx+20
-	MOV R1, #BYTE2 _table_fx
+	MOV R0, #BYTE1 (_mode_ram+740)
+	MOV R1, #BYTE2 (_mode_ram+700)
 	MOV R2, #BYTE1 _num_1
 	MOV R3, #BYTE2 _num_1
 	BL _f_1A410
-	MOV R0, #BYTE1 _d_08532
-	MOV R1, #BYTE2 _d_08532
-	MOV R2, #BYTE1 _d_08528
-	MOV R3, #BYTE2 _d_08528
+	MOV R0, #BYTE1 (_mode_ram+660)
+	MOV R1, #BYTE2 (_mode_ram+660)
+	MOV R2, #BYTE1 (_mode_ram+650)
+	MOV R3, #BYTE2 (_mode_ram+650)
 	BL _f_1553C
 	MOV ER2, ER0
-	MOV R0, #BYTE1 _table_fx+20
-	MOV R1, #BYTE2 _table_fx
+	MOV R0, #BYTE1 (_mode_ram+740)
+	MOV R1, #BYTE2 (_mode_ram+700)
 	BL _f_1553C
 	MOV ER0, ER2
 	MOV R2, #BYTE1 _num_1
 	MOV R3, #BYTE2 _num_1
 	BL _f_1A410
-	MOV R0, #BYTE1 _d_08532
-	MOV R1, #BYTE2 _d_08532
-	MOV R2, #BYTE1 _table_fx+30
-	MOV R3, #BYTE2 _table_fx
+	MOV R0, #BYTE1 (_mode_ram+660)
+	MOV R1, #BYTE2 (_mode_ram+660)
+	MOV R2, #BYTE1 (_mode_ram+740)
+	MOV R3, #BYTE2 (_mode_ram+710)
 	PUSH XR0
 	BL _f_1A3FC
 	POP XR0
 	BL _f_1A44C
-	MOV R0, #BYTE1 _d_08532
-	MOV R1, #BYTE2 _d_08532
-	MOV R2, #BYTE1 _table_fx+50
-	MOV R3, #BYTE2 _table_fx
+	MOV R0, #BYTE1 (_mode_ram+660)
+	MOV R1, #BYTE2 (_mode_ram+660)
+	MOV R2, #BYTE1 (_mode_ram+740)
+	MOV R3, #BYTE2 (_mode_ram+730)
 	BL _f_1A438
-	MOV R0, #BYTE1 _d_08532
-	MOV R1, #BYTE2 _d_08532
-	MOV R2, #BYTE1 _d_0850A
-	MOV R3, #BYTE2 _d_0850A
+	MOV R0, #BYTE1 (_mode_ram+660)
+	MOV R1, #BYTE2 (_mode_ram+660)
+	MOV R2, #BYTE1 (_mode_ram+620)
+	MOV R3, #BYTE2 (_mode_ram+620)
 	BL _f_1A410
 	B _$j_03c0a
 _$j_03dc8:
@@ -5701,7 +5809,7 @@ _$j_03dc8:
 	BL _f_1B238
 	MOV R0, #0H
 _$j_03dd0:
-	L FP, _d_085C8
+	L FP, (_mode_ram+810)
 	BAL _$j_03de0
 _$j_03dd6:
 	CMP R0, #1H
@@ -5798,8 +5906,8 @@ IF ENABLE_DDX == 1
 	POP PC
 _$j_03e7c:
 	PUSH ER8
-	MOV R8, #BYTE1 _d_085B4
-	MOV R9, #BYTE2 _d_085B4
+	MOV R8, #BYTE1 (_mode_ram+790)
+	MOV R9, #BYTE2 (_mode_ram+790)
 	PUSH FP
 	MOV R6, #-1H
 	BL _num_eval__
@@ -6382,11 +6490,11 @@ _$j_0435a:
 	MOV R1, R9
 	MOV R2, #BYTE1 _var_x
 	MOV R3, #BYTE2 _var_x
-	BL _f_0AF30
+	BL _table_stat_set_cell
 	MOV R0, #1H
 	MOV R1, R9
 	MOV ER2, BP
-	BL _f_0AF30
+	BL _table_stat_set_cell
 	CMP R9, R8
 	BEQ _$j_04394
 	ADD R9, #1H
@@ -6554,7 +6662,7 @@ _f_04468:
 ; FUNCTION: GY454XE  Re 0448A
 ; FUNCTION: GY455XE  Im 04596
 ; FUNCTION: GY460XF  Im 036B2
-_f_0448A:
+_smart_num_cpy:
 	PUSH LR
 	ADD ER0, #0H
 	BEQ _$j_04498
@@ -6671,8 +6779,8 @@ _$j_04532:
 	POP QR8
 	POP PC
 _$j_04538:
-	MOV R2, #BYTE1 _vars_im_start
-	MOV R3, #BYTE2 _vars_im_start
+	MOV R2, #BYTE1 (_mode_ram+362)
+	MOV R3, #BYTE2 (_mode_ram+362)
 	ADD ER2, ER8
 	BL _memcpy_nn
 	CMP R14, #1H
@@ -6705,8 +6813,8 @@ _st_var:
 	PUSH BP
 	MOV ER2, ER10
 	ADD ER2, #0AH
-	MOV R0, #BYTE1 _vars_im_start
-	MOV R1, #BYTE2 _vars_im_start
+	MOV R0, #BYTE1 (_mode_ram+362)
+	MOV R1, #BYTE2 (_mode_ram+362)
 	ADD ER0, ER8
 	BL _memcpy_nn
 	POP ER0
@@ -7336,7 +7444,7 @@ PUBLIC _is_mov_x_keycode
 PUBLIC _is_sto_abc_keycode
 PUBLIC _is_func_table
 PUBLIC _filter_chars_stat_mat_vct
-PUBLIC _filter_chars
+PUBLIC _filter_chars_tables
 PUBLIC _filter_chars_table
 PUBLIC _filter_chars_cmplx
 PUBLIC _f_03714
@@ -7348,7 +7456,7 @@ PUBLIC _f_043AC
 PUBLIC _table_stat_get_cell_addr
 PUBLIC _table_stat_get_col_addr
 PUBLIC _table_stat_get_num_cols
-PUBLIC _f_0448A
+PUBLIC _smart_num_cpy
 PUBLIC _clear_result
 PUBLIC _memzero
 PUBLIC _f_044B6
@@ -7407,7 +7515,7 @@ EXTRN CODE	: _strlen_n
 EXTRN CODE	: _strcat_nn
 EXTRN CODE	: _f_0AF0A
 EXTRN CODE	: _f_0AF16
-EXTRN CODE	: _f_0AF30
+EXTRN CODE	: _table_stat_set_cell
 EXTRN CODE	: _f_0B05A
 EXTRN CODE	: _is_eqn_result
 EXTRN CODE	: _f_0B8B8

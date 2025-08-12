@@ -36,6 +36,11 @@ static char (* const menu_funcs[])(void) = {
 	menufunc_verif 		// VERIF
 };
 
+#if ENABLE_INEQ == 1
+// DATA: GY460XF  Im 01C0E
+const char ineq_types[] = {0, 1, 2, 3};
+#endif
+
 // FUNCTION: GY454XE  Re 09014
 // FUNCTION: GY455XE  Im 09938
 // FUNCTION: GY460XF  Im 0931E
@@ -60,7 +65,7 @@ char f_09014(void) {
 // FUNCTION: GY455XE  Im 09974
 // FUNCTION: GY460XF  Im 0936A
 static char menufunc_base_n(void) {
-	return display_token_menu(MODE_BASE_N, 20);
+	return display_token_menu(MODE_BASE_N, BASE_N_MENU_START);
 }
 
 // FUNCTION: GY454XE  Re 09058
@@ -68,7 +73,7 @@ static char menufunc_base_n(void) {
 // FUNCTION: GY460XF  Im 09372
 static char menufunc_drg(void) {
 	if (is_func_table()) return 0;
-	return display_token_menu(NULL, 22);
+	return display_token_menu(NULL, DRG_MENU_START);
 }
 
 // FUNCTION: GY454XE  Re 09070
@@ -76,7 +81,7 @@ static char menufunc_drg(void) {
 // FUNCTION: GY460XF  Im 0938A
 static char menufunc_cmplx(void) {
 #if ENABLE_CMPLX == 1
-	return display_token_menu(MODE_CMPLX, 19);
+	return display_token_menu(MODE_CMPLX, CMPLX_MENU_START);
 #else
 	return 0;
 #endif
@@ -84,26 +89,29 @@ static char menufunc_cmplx(void) {
 
 // FUNCTION: GY454XE  Re 09078
 // FUNCTION: GY455XE  Im 0999C
+// FUNCTION: GY460XF  Im 0938E
 static char menufunc_hyp(void) {
 	if (is_func_table()) return 0;
-	return display_token_menu(NULL, 23);
+	return display_token_menu(NULL, HYP_MENU_START);
 }
 
 // FUNCTION: GY454XE  Re 09090
 // FUNCTION: GY455XE  Im 099B4
+// FUNCTION: GY460XF  Im 093A6
 static char menufunc_stat_dist(void) {
 	char v0;
 
 	if (mode != MODE_STAT) return 0;
-	if (table_mode == TABLE_STAT_TABLE) v0 = 24;
-	else if (submode == SMODE_STAT_1VAR) v0 = 25;
-	else v0 = 26;
+	if (table_mode == TABLE_STAT_TABLE) v0 = STAT_MENU_START;
+	else if (submode == SMODE_STAT_1VAR) v0 = STAT_MENU_START+1;
+	else v0 = STAT_MENU_START+2;
 
 	return stat_display_menu(v0, 0);
 }
 
 // FUNCTION: GY454XE  Re 090BC
 // FUNCTION: GY455XE  Im 099E0
+// FUNCTION: GY460XF  Im 093D2
 static char stat_prompt_clr_mem(char sm) {
 	char v0;
 	char v1;
@@ -126,6 +134,7 @@ static char stat_prompt_clr_mem(char sm) {
 
 // FUNCTION: GY454XE  Re 09118
 // FUNCTION: GY455XE  Im 09A3C
+// FUNCTION: GY460XF  Im 0942E
 char stat_display_menu(char val, char noclr) {
 	char v0;
 	char loc_m1;
@@ -187,15 +196,16 @@ j_0916e:
 
 // FUNCTION: GY454XE  Re 09210
 // FUNCTION: GY455XE  Im 09B34
+// FUNCTION: GY460XF  Im 09526
 static char menufunc_matrix(void) {
 #if ENABLE_MATRIX == 1
 	char v0;
 
 	if (mode != MODE_MATRIX) return 0;
 	if (table_mode == TABLE_MATRIX) {
-		if (submode == SMODE_MATVCT_ANS) v0 = 13;
-		else v0 = 8;
-	} else v0 = 13;
+		if (submode == SMODE_MATVCT_ANS) v0 = MATRIX_MENU_START+5;
+		else v0 = MATRIX_MENU_START;
+	} else v0 = MATRIX_MENU_START+5;
 	return show_menu_matvct(v0, 0);
 #else
 	return 0;
@@ -204,24 +214,25 @@ static char menufunc_matrix(void) {
 
 // FUNCTION: GY454XE  Re 0923C
 // FUNCTION: GY455XE  Im 09B60
+// FUNCTION: GY460XF  Im 0952A
 static char menufunc_vector(void) {
 #if ENABLE_VECTOR == 1
 	char v0;
 
 	if (mode != MODE_VECTOR) return 0;
 	if (table_mode == TABLE_VECTOR) {
-		if (submode == SMODE_MATVCT_ANS) v0 = 18;
-		else v0 = 14;
-	} else v0 = 18;
+		if (submode == SMODE_MATVCT_ANS) v0 = VECTOR_MENU_START+4;
+		else v0 = VECTOR_MENU_START;
+	} else v0 = VECTOR_MENU_START+4;
 	return show_menu_matvct(v0, 0);
 #else
 	return 0;
 #endif
 }
 
-#if ENABLE_MATRIX == 1 || ENABLE_VECTOR == 1
 // FUNCTION: GY454XE  Re 09268
 // FUNCTION: GY455XE  Im 09B8C
+// FUNCTION: GY460XF  Im 0952E
 char show_menu_matvct(char idx, char mode_enter) {
 	char v0;
 	char v1;
@@ -246,7 +257,7 @@ char show_menu_matvct(char idx, char mode_enter) {
 	v4 = 0;
 	if (mode_enter) {
 		char tmp;
-		if (idx == 39) {
+		if (idx == MATRIX_SMENU_START) {
 			prompt = menu_matrix_sel;
 			tmp = TABLE_MATRIX;
 		} else {
@@ -311,7 +322,7 @@ char show_menu_matvct(char idx, char mode_enter) {
 				continue;
 		}
 		if (mode_enter) {
-			if (v5 == 19) mode_init(MODE_MATRIX, SMODE_MATVCT_A);
+			if (v5 == TABLE_MATRIX) mode_init(MODE_MATRIX, SMODE_MATVCT_A);
 			else mode_init(MODE_VECTOR, SMODE_MATVCT_A);
 		}
 		last_key_keycode = NULL;
@@ -329,7 +340,6 @@ static void set_matvct_dim(char a, dim *b) {
 	if (v0->b.m != b->b.m && b->b.n != v0->b.n) set_dim(a, b->b.m, b->b.n);
 	return;
 }
-#endif
 
 // FUNCTION: GY454XE  Re 094AE
 // FUNCTION: GY455XE  Im 09DD2
@@ -483,4 +493,59 @@ static char menufunc_verif(void) {
 	return 0;
 }
 
-// TODO: add f_0988E_460F and f_098C8_460F
+#if ENABLE_RATIO == 1
+// FUNCTION: GY460XF  Im 0988E
+char show_menu_ratio(char idx, char mode_enter) {
+	char loc_m1;
+
+	loc_m1 = idx;
+	if (display_menu(&loc_m1, NULL) == 3) {
+		last_key_keycode = NULL;
+		d_0812E = loc_m1;
+	} else loc_m1 = 0;
+	mode_init(MODE_RATIO, loc_m1);
+	return 0xff;
+}
+#endif
+
+#if ENABLE_INEQ == 1
+// FUNCTION: GY460XF  Im 098C8
+char show_menu_ineq(char idx, char mode_enter) {
+	char v0;
+	char loc_m1;
+
+	loc_m1 = idx;
+	v0 = 0;
+	d_0812D = 0;
+	do {
+		switch (display_menu(&loc_m1, 0)) {
+			case 3:
+				if (loc_m1 == 9) {
+					v0 = SMODE_EQN_POLY2;
+					loc_m1 = INEQ_SMENU_START+1;
+					continue;
+				} else if (loc_m1 == 10) {
+					v0 = SMODE_EQN_POLY3;
+					loc_m1 = INEQ_SMENU_START+2;
+					continue;
+				} else if (1 <= loc_m1 && loc_m1 <= 4) {
+					d_0812D = ineq_types[loc_m1 - 1];
+					v0 = SMODE_EQN_POLY2;
+				} else if (5 <= loc_m1 && loc_m1 <= 8) {
+					d_0812D = ineq_types[loc_m1 - 5];
+					v0 = SMODE_EQN_POLY3;
+				}
+				break;
+			case 1:
+				if (loc_m1 == 0xff) {
+					v0 = 0;
+					v1 = INEQ_SMENU_START;
+					continue;
+				} else break;
+		break;
+	} while (1);
+	mode_init(MODE_INEQ, v0);
+	last_key_keycode = NULL;
+	return 0xff;
+}
+#endif

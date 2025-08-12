@@ -1,8 +1,13 @@
+#include "consts.h"
 #include "emu_kb.h"
 
 void input_print_linei(void);
+void mathi_draw_line_horz(int x1, int x2, char y);
+void mathi_plot_pixel(int x, char y);
+void mathi_line_print(char *string, int x, char y);
 char f_05658(char *input);
 void input_print_mathi(void);
+char *mathi_draw_expr(char *input, mathi_bbox *b, int x, char y);
 char f_06B52(char *a);
 void math2line(char *input, char *b, char c, char d);
 void insert_token(char token, char is_func);

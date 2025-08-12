@@ -98,6 +98,12 @@ void main(void) {
 			else if (tm == TABLE_RANGE) j = table_range_handler(i);
 			else if (tm == TABLE_CALC) j = calc_solve_handler(i);
 			else if (tm == TABLE_SOLVE) j = calc_solve_handler(i);
+#if ENABLE_INEQ == 1
+			else if (tm == TABLE_INEQ) j = table_ineq_handler(i);
+#endif
+#if ENABLE_RATIO == 1
+			else if (tm == TABLE_RATIO) j = table_ratio_handler(i);
+#endif
 		}
 		render();
 	}

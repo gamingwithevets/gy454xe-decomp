@@ -352,12 +352,12 @@ j_08678:
 // FUNCTION: GY454XE  Re 08764
 // FUNCTION: GY455XE  Im 09088
 // FUNCTION: GY460XF  Im 08998
-void f_08764(char *a, char *b) {
+void concat_result(char *out, char *res) {
 	if (result_template & (1 << 4) && !use_output_charset) {
-		smart_strcat(a, s_blank_line);
-		a[16 - smart_strlen(b)] = '\0';
+		smart_strcat(out, s_blank_line);
+		out[16 - smart_strlen(res)] = '\0';
 	}
-	smart_strcat(a, b);
+	smart_strcat(out, res);
 	return;
 }
 
@@ -635,13 +635,13 @@ char is_table_func_input(void) {
 	return v0;
 }
 
-#if 0
+#if ENABLE_RDEC == 1
 // FUNCTION: GY460XF  Im 08D3A
 char f_08D3A_460F(void) {
 	if (mode != MODE_COMP)
 j_08d44:
 		return 0;
-	else if (!f_02CB6() && !(d_080FF & (1 << 4))) return 1;
+	else if (!f_02CB6() && !(result_template & (1 << 4))) return 1;
 	else goto j_08d44;
 }
 #endif

@@ -1,15 +1,16 @@
 #include "generals.h"
 
 extern const char num_1[];
+extern const char num_256[];
 
-char f_10000(char **a, char *b);
+char num_solve(char **a, char *b);
 char f_10C1E(char *num);
 char f_10C2C(char *num);
 void f_10CC2(num_struct *nts);
 void f_10DA6(num_struct *nts);
 void f_10DCA(num_struct *nts);
 void num_to_str_error(char *num);
-char f_10E34(char a, char b);
+char select_result_format(char fmt1, char fmt2);
 void f_10E5C(char a);
 char *concat_result_template(char order, char *string);
 void f_10EF8(void);
@@ -20,7 +21,7 @@ void f_10FA2(void);
 void table_prompt_print(char row);
 void disable_ins(void);
 void update_cursor_char(void);
-char *f_11030(void);
+char *get_result_str_ptr(void);
 char *concat_mathi_l(char *input);
 char *concat_mathi_r(char *input);
 char *concat_mathi_rl(char *input);
@@ -30,9 +31,12 @@ char *concat_10pow(char *input);
 char *concat_plus(char *input);
 char *concat_negative(char *input);
 char *concat_argsep(char *input);
-char f_112B6(void);
+char get_disp_setting_noradical(void);
 void set_default_settings(void);
-void f_112EA(void);
+char f_112EA(void);
+char get_disp_setting_rdec(void);
+char f_131E8(void);
+char f_131EC(void);
 char f_143EA(char *input);
 char get_const_token(char num);
 char get_conv_token(char num);

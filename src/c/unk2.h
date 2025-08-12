@@ -2,7 +2,7 @@ char is_dms_num(char *num);
 void set_default_result_fmt(void);
 void f_085D2(void);
 char num_to_str(char *num, char *out, char c);
-void f_08764(char *a, char *b);
+void concat_result(char *out, char *res);
 char f_087A2(void);
 char is_mathi(void);
 char is_matho(void);

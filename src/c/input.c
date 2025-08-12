@@ -1,7 +1,9 @@
 #include "consts.h"
 #include "generals.h"
 #include "emu_kb.h"
+#include "rdec.h"
 #include "input.h"
+#include "ineq.h"
 #include "unk2.h"
 #include "unk4.h"
 #include "unk5.h"
@@ -53,18 +55,49 @@ static char is_num_1(char *num);
 
 // DATA: GY454XE  Re 01DDC
 // DATA: GY455XE  Im 01DDC
+// DATA: GY460XF  Im 01B2C
 const char unk_01ddc[] = {
-	0, 0, 1, 3, 3, 1, 0, 4, 0, 0, 2, 2
+	0,
+	0,
+	1,
+	3,
+	3,
+	1,
+	0,
+	4,
+	0,
+	0,
+	2,
+#if ENABLE_RDEC == 1
+	0,
+#endif
+	2
 };
 
 // DATA: GY454XE  Re 01DE8
 // DATA: GY455XE  Im 01DE8
+// DATA: GY460XF  Im 01B39
 const char unk_01de8[] = {
-	1, 2, 4, 2, 2, 4, 2, 1, 2, 1, 1, 1
+	1,
+	2,
+	4,
+	2,
+	2,
+	4,
+	2,
+	1,
+	2,
+	1,
+	1,
+#if ENABLE_RDEC == 1
+	1,
+#endif
+	1
 };
 
 // DATA: GY454XE  Re 01DF4
 // DATA: GY455XE  Im 01DF4
+// DATA: GY460XF  Im 01B46
 static char *(*const mathi_draw[])(char *, mathi_bbox *, int, char) = {
 	mathi_draw_pow,
 	mathi_draw_abs_sqrt,
@@ -77,11 +110,15 @@ static char *(*const mathi_draw[])(char *, mathi_bbox *, int, char) = {
 	mathi_draw_pow,
 	mathi_draw_abs_sqrt,
 	mathi_draw_nth_rt,
+#if ENABLE_RDEC == 1
+	mathi_draw_rdec,
+#endif
 	mathi_draw_frac,
 };
 
 // DATA: GY454XE  Re 01E24
 // DATA: GY455XE  Im 01E24
+// DATA: GY460XF  Im 01B7A
 const char unk_01e24[] = {
 	3, 5, 8, 7, 12
 };
@@ -265,7 +302,7 @@ j_05124:
 // FUNCTION: GY454XE  Re 05162
 // FUNCTION: GY455XE  Im 058A4
 // FUNCTION: GY460XF  Im 04D68
-static void mathi_draw_line_horz(int x1, int x2, char y) {
+void mathi_draw_line_horz(int x1, int x2, char y) {
 	int v0;
 
 	if (mathi_enable_draw && y >= d_08005) {
@@ -310,7 +347,7 @@ static void mathi_draw_line_vert(unsigned int x, char y0, char y1) {
 // FUNCTION: GY454XE  Re 05222
 // FUNCTION: GY455XE  Im 05964
 // FUNCTION: GY460XF  Im 04E28
-static void mathi_plot_pixel(int x, char y) {
+void mathi_plot_pixel(int x, char y) {
 	if (mathi_enable_draw && x >= f_088AA()) {
 		x -= d_08000;
 		if (x <= 95 && y >= d_08005) {
@@ -324,7 +361,7 @@ static void mathi_plot_pixel(int x, char y) {
 // FUNCTION: GY454XE  Re 05260
 // FUNCTION: GY455XE  Im 059A2
 // FUNCTION: GY460XF  Im 04E66
-static void mathi_line_print(char *string, int x, char y) {
+void mathi_line_print(char *string, int x, char y) {
 	int v0;
 
 	if (mathi_enable_draw) {
@@ -533,8 +570,8 @@ char f_05658(char *input) {
 		// Hex A, Hex D, Hex F
 		if (input[1] != 0xb8 && input[1] != 0xbb && input[1] != 0xbd) {
 			// Fraction / Mixed Fraction
-			if (input[0] == 0xae || input[0] == 0x7c) v0 = 13;
-			else v0 = 10;
+			if (input[0] == 0xae || input[0] == 0x7c) v0 = RESULT_STANDARD;
+			else v0 = RESULT_DECIMAL;
 		}
 	}
 	return v0;
@@ -755,7 +792,7 @@ void input_print_mathi(void) {
 	d_08005 = 0;
 	mathi_set_draw_mode(0);
 	if (!mathi_draw_expr(input, &arr, 0, 62) || arr.byte[2] > 62) {
-		smart_strcpy(input, f_11030());
+		smart_strcpy(input, get_result_str_ptr());
 		cursor_pos_byte = d_08006;
 		mathi_set_draw_mode(0);
 		mathi_draw_expr(input, &arr, 0, 62);
@@ -1022,6 +1059,7 @@ j_06028:
 			v1 = f_06E40(ip, 1, 1);
 			if (!v1) v1 = 1;
 			if (v1 == f_05766(ip) && (is_sign_char(*ip) || f_143EA(ip) || *ip == '(' || *ip == '!')) {
+				++x;
 				if (ip = mathi_draw_expr(ip, &loc_m4, x, y)) {
 					if (d_0800A) loc_m7 = 1;
 					x += loc_m4.word[0]++;
@@ -1286,7 +1324,7 @@ static char f_06914(char *input) {
 // FUNCTION: GY454XE  Re 06944
 // FUNCTION: GY455XE  Im 07086
 // FUNCTION: GY460XF  Im 0654A
-static char *mathi_draw_expr(char *input, mathi_bbox *b, int x, char y) {
+char *mathi_draw_expr(char *input, mathi_bbox *b, int x, char y) {
 	int v0;
 	mathi_bbox loc_m4;
 	char loc_m5;
@@ -1463,11 +1501,9 @@ static char math2line_frac(char *input) {
 // FUNCTION: GY454XE  Re 06C54
 // FUNCTION: GY455XE  Im 07396
 // FUNCTION: GY460XF  Im 0685A
-void math2line(char *input, char *b, char c, char d) {
+void math2line(char *input, char *out, char c, char d) {
 	char *v0;
 	char *v1;
-	char v2;
-	char *v3;
 #if ENABLE_RDEC == 1
 	char loc_m1_rdec;
 	char *tmp;
@@ -1476,7 +1512,7 @@ void math2line(char *input, char *b, char c, char d) {
 
 	loc_m1 = d_080FE & (1 << 6);
 	v0 = input;
-	v1 = b;
+	v1 = out;
 	do {
 		// SWITCH: GY454XE  Re 01DCE
 		// SWITCH: GY455XE  Im 01DCE
@@ -1486,10 +1522,15 @@ void math2line(char *input, char *b, char c, char d) {
 			// CASE: GY455XE  Im 0744C
 			// CASE: GY460XF  Im 06910
 			case 1:
-				v2 = f_056D0(input);
-				if (v2 != 2) {
-					if (v2 != 4) *b++ = *input;
-					else ++input;
+				switch (f_056D0(input)) {
+					case 2:
+						break;
+					case 4:
+						++input;
+						break;
+					default:
+						*out++ = *input;
+						break;
 				}
 				break;
 			// CASE: GY454XE  Re 06D20
@@ -1497,52 +1538,52 @@ void math2line(char *input, char *b, char c, char d) {
 			// CASE: GY460XF  Im 06926
 			case 2:
 				// Fraction
-				if (f_05652(&b[-1]) != 1 || b[-1] == 0xae) *b++ = '(';
+				if (f_05652(&out[-1]) != 1 || out[-1] == 0xae) *out++ = '(';
 				break;
 			// CASE: GY454XE  Re 06D42
 			// CASE: GY455XE  Im 07484
 			// CASE: GY460XF  Im 06948
 			case 4:
-				*b++ = ')';
-				if (d || c + v1 + 1 != b) *b++ = math2line_frac(input);
+				*out++ = ')';
+				if (d || c + v1 + 1 != out) *out++ = math2line_frac(input);
 				else return;
 				break;
 			// CASE: GY454XE  Re 06D68
 			// CASE: GY455XE  Im 074AA
 			// CASE: GY460XF  Im 0696E
 			case 6:
-				*b++ = '(';
+				*out++ = '(';
 				break;
 			// CASE: GY460XF  Im 06978
 			case 3:
 #if ENABLE_RDEC == 1
 				tmp = f_06D90(input, &loc_m1_rdec);
 				// Recurring decimal
-				if (*tmp != 0xa4) *b++ = ')';
+				if (*tmp != 0xa4) *out++ = ')';
 				break;
 #endif
 			// CASE: GY454XE  Re 06D72
 			// CASE: GY455XE  Im 074B4
 			// CASE: GY460XF  Im 06998
 			case 7:
-				*b++ = ')';
+				*out++ = ')';
 				break;
 			// CASE: GY454XE  Re 06D7C
 			// CASE: GY455XE  Im 074BE
 			// CASE: GY460XF  Im 069A2
 			case 5:
-				*b++ = ',';
+				*out++ = ',';
 				break;
 			// CASE: GY454XE  Re 06D86
 			// CASE: GY455XE  Im 074C8
 			// CASE: GY460XF  Im 069AC
 			default:
-				*b++ = *input;
+				*out++ = *input;
 				break;
 		}
 		if (d) {
-			if (loc_m1 && d_0812A == b && input_area_ptr == v0) input_area_ptr = input + 1;
-		} else if (c + v1 + 1 == b) {
+			if (loc_m1 && d_0812A == out && input_area_ptr == v0) input_area_ptr = input + 1;
+		} else if (c + v1 + 1 == out) {
 			// Hex E, Hex A
 			if (*input == 0xbc || *input == 0xb8) ++input;
 			// Hex D
@@ -1555,7 +1596,7 @@ j_06cf6:
 		}
 		++input;
 	} while (*input);
-	*b = '\0';
+	*out = '\0';
 	if (!d) goto j_06cf6;
 	return;
 }
@@ -1750,7 +1791,7 @@ static void _insert_token(char token, char is_func, char *input) {
 	count = 0;
 	v2 = &v0[pos];
 	if (mathi) {
-		smart_strcpy(f_11030(), v0);
+		smart_strcpy(get_result_str_ptr(), v0);
 		d_08006 = pos;
 		loc_m7 = is_pow_char(v2);
 		if (!is_func) {
@@ -1978,7 +2019,7 @@ void process_cursor_action(char keycode) {
 	loc_m10 = &input_area[v1];
 	v2 = is_ins_mode();
 	if (v3 = is_mathi()) {
-		smart_strcpy(f_11030(), v0);
+		smart_strcpy(get_result_str_ptr(), v0);
 		d_08006 = v1;
 	}
 	switch (keycode) {
@@ -2207,7 +2248,7 @@ j_0781e:
 						num_abs(loc_m50);
 					}
 					v0 = is_num_1(&loc_m50[10]);
-					if (is_num_1(loc_m50) == 1 && v0 == 1) concat_num_str(out, loc_m50);
+					if (is_num_1(loc_m50) != 1 || v0 == 1) concat_num_str(out, loc_m50);
 					if (v0 != 1) concat_sqrt(out, &loc_m50[10]);
 					if (v2 != 1) {
 						// STRING: GY454XE  Re 01E52
@@ -2228,8 +2269,12 @@ j_0781e:
 			} else if (num_get_exp(num) <= 9) {
 				if (v0 > RESULT_DECIMAL) v1 = f_10C1E(loc_m50);
 j_07b16:
-				if (v1 != 1) {
-					if (!f_112B6() && v0 >= RESULT_STANDARD && num_get_exp(num) >= -7 && v3) {
+				if (v1 == 1) {
+#if ENABLE_RDEC == 1
+					if (v0 == RESULT_RDEC) return num_to_str_rdec(out, loc_m50);
+#endif
+				} else {
+					if (!get_disp_setting_noradical() && v0 >= RESULT_STANDARD && num_get_exp(num) >= -7 && v3) {
 						v1 = f_10C2C(loc_m50);
 						if (!v1) goto j_0781e;
 					} else goto j_0781e;
@@ -2237,6 +2282,7 @@ j_07b16:
 				v4 = num_invalid__(&loc_m50[10]);
 				if (v4 == 1) {
 					if (v1 == -1) concat_num_str(out, loc_m50);
+					else goto j_0781e;
 				} else {
 					char tmp;
 					char tmp2;
@@ -2262,11 +2308,12 @@ j_07b16:
 						if (v3) concat_mathi_rl(out);
 						else concat_10pow(out);
 						tmp = RESULT_FRAC_MIX;
+					} else {
+						if (v3) concat_mathi_frac_startl(out);
+						tmp = RESULT_FRAC;
 					}
-					if (v3) concat_mathi_frac_startl(out);
-					else tmp = RESULT_FRAC;
 					v0 = tmp;
-					if (v1 == -1) v0 = 13;
+					if (v1 == -1) v0 = RESULT_STANDARD;
 					concat_num_str(out, &loc_m50[10]);
 					if (v3) concat_mathi_rl(out);
 					else concat_10pow(out);
@@ -2378,6 +2425,9 @@ void print_result(char *result) {
 	init_emu_kb(&kb);
 #endif
 	if (f_0A57A()) num_output_print(result);
+#if ENABLE_INEQ == 1
+	else if (is_ineq_result()) f_07F10_460F();
+#endif
 	else {
 		v0 = 0;
 		loc_m129 = 0;
@@ -2388,7 +2438,7 @@ void print_result(char *result) {
 		v5 = 0;
 		if (v3 || is_mathi()) v4 = 1;
 		v5 = v4;
-		v6 = f_11030();
+		v6 = get_result_str_ptr();
 		if (!v6 || !v4) v6 = loc_m36;
 		v7 = get_result_store_fmt();
 		v4 = 0;
@@ -2436,7 +2486,7 @@ j_07bfe:
 				}
 				if (v4) {
 					concat_result_template(0, v6);
-					f_08764(v6, loc_m92);
+					concat_result(v6, loc_m92);
 				}
 				if (v1 == 1 && !v4) {
 					set_result_store2disp(loc_m130);
@@ -2468,10 +2518,10 @@ j_07bfe:
 						} else concat_angle(loc_m92);
 					}
 					if (v7) {
-						loc_m130 = f_10E34(loc_m130, v1);
+						loc_m130 = select_result_format(loc_m130, v1);
 						set_result_store2disp(loc_m130);
 					}
-					f_08764(loc_m92, loc_m128);
+					concat_result(loc_m92, loc_m128);
 					if (v0) goto j_07e4e;
 				}
 				if (v5) {
@@ -2510,6 +2560,7 @@ j_07e64:
 		if (v7 > 13) f_0832A_E(v6, kb.error_buf);
 		f_082A2_E(&kb);
 #endif
+		if (!is_mathi()) buffer_clear_lastnline(22);  // This line doesn't appear in fx-570ES+ VerE real for some reason...???
 		d_08122 = 1;
 		loc_m134 = input_area_ptr;
 		input_area_ptr = v6;

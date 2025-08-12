@@ -76,12 +76,12 @@ void mode_init(char m, char sm) {
 			break;
 #endif
 		case MODE_TABLE:
-			// Load in the default Start, End and Step values, I guess
+			// Load in the default Start, End and Step values
 			num_fromdigit(num, 1);
-			f_0448A(table_param_ptrs[0], num);
-			f_0448A(table_param_ptrs[2], num);
+			smart_num_cpy(table_param_ptrs[0], num);
+			smart_num_cpy(table_param_ptrs[2], num);
 			num_fromdigit(num, 5);
-			f_0448A(table_param_ptrs[1], num);
+			smart_num_cpy(table_param_ptrs[1], num);
 			break;
 	}
 	return;
@@ -104,17 +104,17 @@ char mode_menu(void) {
 				mode_init(m, 0);
 				break;
 			case MODE_STAT:
-				i = stat_display_menu(41, 1);
+				i = stat_display_menu(STAT_SMENU_START, 1);
 				mode_init(MODE_STAT, i);
 				break;
 #if ENABLE_MATRIX == 1
 			case MODE_MATRIX:
-				i = show_menu_matvct(39, 1);
+				i = show_menu_matvct(MATRIX_SMENU_START, 1);
 				break;
 #endif
 #if ENABLE_VECTOR == 1
 			case MODE_VECTOR:
-				i = show_menu_matvct(40, 1);
+				i = show_menu_matvct(VECTOR_SMENU_START, 1);
 				break;
 #endif
 			case MODE_EQN:
@@ -122,13 +122,13 @@ char mode_menu(void) {
 				i = submode;
 				break;
 #if ENABLE_RATIO == 1
-			case MODE_INEQ:
-				i = f_0988E_460F(27, 1);
+			case MODE_RATIO:
+				i = show_menu_ratio(RATIO_SMENU_START, 1);
 				break;
 #endif
 #if ENABLE_INEQ == 1
-			case MODE_RATIO:
-				i = f_098C8_460F(28, 1);
+			case MODE_INEQ:
+				i = show_menu_ineq(INEQ_SMENU_START, 1);
 				break;
 #endif
 			case MODE_BASE_N:
@@ -151,7 +151,7 @@ char show_mode_menu(void) {
 	char v0;
 	char v1;
 
-	v1 = 42;
+	v1 = MODE_MENU_START;
 	if (display_menu(&v1, -1) == 3) return v1;
 	else return 0;
 }
@@ -162,7 +162,7 @@ char show_mode_menu(void) {
 static char show_eqn_select(void) {
 	char loc_m1;
 
-	loc_m1 = 38;  // EQN submode select
+	loc_m1 = EQN_SMENU_START;
 	if (display_menu(&loc_m1, 0) == 3) return loc_m1;
 	else return 0;
 }

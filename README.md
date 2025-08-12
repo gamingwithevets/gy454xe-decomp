@@ -1,12 +1,10 @@
-This is a **WIP** decompilation of the Casio fx-570/991ES PLUS (`GY454X VerE`, `SUM 8929`) real calculator ROM.
-
-## Why this ROM?
-Casio fx-570/991ES PLUS VerE real ROM was chosen because it has been very well documented.
-After this ROM is fully decompiled, the codebase may be expanded to include features in other GY models that are not in the fx-570/991ES PLUS (e.g. `VERIF` mode), and potentially expand the code to other Casio model families.
+This is a **WIP** decompilation of the Casio ES PLUS **GY** firmware.
 
 ## General information
-The fx-570/991ES PLUS uses the nX-U8/100 architecture by ROHM Co., Ltd.
+All ES PLUS models use the nX-U8/100 architecture by ROHM Co., Ltd.
 The code is a mix of hand-written U8 assembly code, ANSI-C code compiled to U8 assembly with the **CCU8** compiler from the U8/U16 Development Tools, U8 implementations for some C library functions and the MCU's entry/startup code.
+
+Due to different models having different features, a full decompilation of the firmware will need to have code sourced from multiple ROMs.
 
 ## About the code
 In order to create an accurate decompilation, the code will need to be separated into 4 categories:
@@ -29,10 +27,12 @@ This may not be related to this decomp at all, but it is worth mentioning.
 As of now, we have not decided on a real naming scheme for the decomp. Scripts and headers that have not been given actual named are named `unk[n]`, where `[n]` is the order of the file's code in the final binary.
 
 ### Building custom ROMs
-Currently, this decomp only includes code sourced from the fx-570ES PLUS `VerE` real ROM and the fx-991ES PLUS `VerE` emulator ROM.
-However, we plan to expand the decomp to include features from all released ES PLUS models.
+Currently, this decomp includes code sourced from these ROMs:
+- fx-570ES PLUS `GY454X VerE` (real)
+- fx-991ES PLUS `GY455X VerE` (emulator)
+- fx-500VN PLUS `GY460X VerF` (emulator)
 
-To configure ROMs, edit `src/asm/features.inc`.
+To configure ROMs, edit `src/asm/features.inc`. Note that this is just for feature toggles; you will need to edit other scripts to modify menus, key layouts, etc. See the comment in the aforementioned file for more information.
 
 ## Building
 As the U8/U16 SDK only officially supports Windows, these instructions below assume a Windows environment.

@@ -17,6 +17,12 @@ void f_0A6DA(void);
 void f_0A782(void);
 char table_mat_handler(char a);
 char table_vct_handler(char a);
+#if ENABLE_INEQ == 1
+char table_ineq_handler(char a);
+#endif
+#if ENABLE_RATIO == 1
+char table_ratio_handler(char a);
+#endif
 char *set_dim(char idx, char m, char n);
 void table_eqn_init(void);
 void table_eqn_setup(void);
@@ -27,7 +33,7 @@ void setup_stat(void);
 void table_home(void);
 void f_0AF0A(void);
 void f_0AF16(void);
-char f_0AF30(char a, char b, char *num);
+char table_stat_set_cell(char a, char b, char *num);
 void reset_all(void);
 void clear_setup(void);
 void clear_mem(void);

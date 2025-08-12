@@ -9,7 +9,7 @@
 // - This file does not allow you to change the MODE and SETUP menu options,
 //   as well as keyboard layouts and tokens.
 //   + To modify the menus and keyboard layouts, edit unk4.c.
-//   + To modify tokens, edit generals.asm.
+//   + To modify tokens, edit generals.asm and unk5.asm.
 
 // For default ROM settings and version info configuration, see config.asm.
 
@@ -28,8 +28,11 @@ ENABLE_SUM=1
 ENABLE_DDX=1
 // Enable recurring decimal.
 ENABLE_RDEC=0
+// Enable SOLVE.
+ENABLE_SOLVE=1
 
 // ==== Modes ====
+ENABLE_BASE_N=1
 ENABLE_CMPLX=1
 ENABLE_MATRIX=1
 ENABLE_VECTOR=1

@@ -1,4 +1,5 @@
 #include <string.h>
+#include "init.h"
 #include "consts.h"
 #include "generals.h"
 #include "emu_kb.h"
@@ -46,12 +47,19 @@ typedef struct {
 	char keycode;		// Keycode associated with this menu.
 } menu;
 
+// Struct used in emulator ROM's log_error.
+typedef struct {
+	int index;
+	int add_template;
+	char *string;
+} error_emu;
+
 // Static declarations (placed first so we can define jump table)
 static char keyfunc_nop(f_09962_struct *a);
 static void copy_input_prompt(char idx, char is_solve, char is_init_str);
 static char table_stat_nav(char a, char keycode);
 static void f_0A3B4(void);
-static void f_0A410(char *num);
+static void table_set_cur_cell(char *num);
 static void table_eqn_key_handler(void);
 static void table_eqn_draw_text(void);
 static void table_eqn_draw_lines(void);
@@ -59,7 +67,7 @@ static char table_eqn_nav(char keycode);
 static char table_matvct_handler(char sm);
 static char table_matvct_nav(char sm, char keycode);
 static void table_matvct_draw_cols(char a, char b);
-static char f_0AC44(char *num, char sm, char ty, char tx);
+static char table_matvct_set_cell(char *num, char sm, char ty, char tx);
 static char f_0AE14(char a);
 static void set_result(char *a);
 static void f_0B226(getscancode_struct *a);
@@ -148,32 +156,448 @@ static char (* const keyfuncs[])(f_09962_struct *) = {
 	keyfunc_del			// K_DEL
 };
 
-// As the emulator ROM's switch-case table for show_error and the error string table comes after the function table above,
-// forward definitions are needed for keycode and menu arrays.
+#if REAL == 0
+// DATA: GY455XE  Im 0204C
+const char s_err_emu_acbreak[] = "ACBREAK";
 
-extern const char keycodes[64];
-extern const char keycodes_shift[64];
-extern const char keycodes_alpha[64];
-extern const char keycodes_rcl[64];
-extern const char keycodes_sto[64];
-extern const char keycodes_base_n[64];
-extern const char keycodes_shift_base_n[64];
-extern const menu menus[];
+// DATA: GY455XE  Im 02054
+const char s_err_emu_syntax[] = "Syntax";
 
-// These tables are initialized into RAM.
-const char *init_unk_0[] = {
-	s_table_prompt_start,
-	s_table_prompt_end,
-	s_table_prompt_step,
-	s_ratio_optn_c,
-	s_ratio_optn_d,
-	s_verif_result_false,
-	s_verif_result_true,
-	s_ineq_allreal,
-	s_ineq_nosolution
+// DATA: GY455XE  Im 0205B
+const char s_err_emu_math[] = "Ma";
+
+// DATA: GY455XE  Im 0205E
+const char s_err_emu_mem[] = "Memory";
+
+// DATA: GY455XE  Im 02065
+const char s_err_emu_go[] = "Go";
+
+// DATA: GY455XE  Im 02068
+const char s_err_emu_nesting[] = "Nesting";
+
+// DATA: GY455XE  Im 02070
+const char s_err_emu_stack[] = "Stack";
+
+// DATA: GY455XE  Im 02076
+const char s_err_emu_argument[] = "Argument";
+
+// DATA: GY455XE  Im 0207F
+const char s_err_emu_dimension[] = "Dimension";
+
+// DATA: GY455XE  Im 02089
+const char s_err_emu_com[] = "Com";
+
+// DATA: GY455XE  Im 0208D
+const char s_err_emu_transmit[] = "Transmit";
+
+// DATA: GY455XE  Im 02096
+const char s_err_emu_receive[] = "Receive";
+
+// DATA: GY455XE  Im 0209E
+const char s_err_emu_outofmem[] = "Memory Full";
+
+// DATA: GY455XE  Im 020AA
+const char s_err_emu_undefined[] = "Undefined";
+
+// DATA: GY455XE  Im 020B4
+const char s_err_emu_overflow[] = "Overflow";
+
+// DATA: GY455XE  Im 020BD
+const char s_err_emu_domain[] = "Domain";
+
+// DATA: GY455XE  Im 020C4
+const char s_err_emu_nonreal[] = "Non-Real";
+
+// DATA: GY455XE  Im 020CD
+const char s_err_emu_nosolution[] = "No Solution";
+
+// DATA: GY455XE  Im 020D9
+const char s_err_emu_mismatch[] = "Mismatch";
+
+// DATA: GY455XE  Im 020E2
+const char s_err_emu_novar[] = "No Variable";
+
+// DATA: GY455XE  Im 020EE
+const char s_err_emu_notfound[] = "Not Found";
+
+// DATA: GY455XE  Im 020F8
+const char s_err_emu_app[] = "Application";
+
+// DATA: GY455XE  Im 02104
+const char s_err_emu_sys[] = "System";
+
+// DATA: GY455XE  Im 0210B
+const char s_err_emu_exists[] = "Already Exists";
+
+// DATA: GY455XE  Im 0211A
+const char s_err_emu_cmplx[] = "Complex Number In List";
+
+// DATA: GY455XE  Im 02131
+const char s_err_emu_solve[] = "Can't Solve!";
+
+// DATA: GY455XE  Im 0213E
+const char s_err_emu_range[] = "Range";
+
+// DATA: GY455XE  Im 02144
+const char s_err_emu_iter[] = "Iteration";
+
+// DATA: GY455XE  Im 0214E
+const char s_err_emu_cond[] = "Condition";
+
+// DATA: GY455XE  Im 02158
+const char s_err_emu_blank[] = "";
+
+// DATA: GY455XE  Im 02159
+const char s_err_emu_circular[] = "Circular";
+
+// DATA: GY455XE  Im 02162
+const char s_err_emu_imroot[] = "No Real Roots";
+
+// DATA: GY455XE  Im 02170
+const char s_err_emu_ver[] = "Version";
+
+// DATA: GY455XE  Im 02178
+const char s_err_emu_sd[] = "SD Card";
+
+// DATA: GY455XE  Im 02180
+const char s_err_emu_sdro[] = "SD Card is protected";
+
+// DATA: GY455XE  Im 02195
+const char s_err_emu_sdinvalid[] = "invarid Card";
+
+// DATA: GY455XE  Im 021A2
+const char s_err_emu_nosd[] = "No Card";
+
+// DATA: GY455XE  Im 021AA
+const char s_err_emu_timeout[] = "Time out";
+
+// DATA: GY455XE  Im 021B3
+const char s_err_emu_template[] = "ERROR";
+
+// DATA: GY455XE  Im 021B9
+const char s_err_emu_unknown[] = "??? ERROR";
+#endif
+
+// DATA: GY454XE  Re 02032
+// DATA: GY455XE  Im 021C4
+const char vars_map[] = {
+	0x41,	// A
+	0x42,	// B
+	0x43,	// C
+	0x44,	// D
+	0x45,	// E
+	0x46,	// F
+	0x58,	// X
+	0x59,	// Y
+	0x54,	// M
+	0x47,	// ->A
+	0x48,	// ->B
+	0x49,	// ->C
+	0x4a,	// ->D
+	0x83,	// ->E
+	0x84,	// ->F
+	0x4c,	// ->X
+	0x4d,	// ->Y
+	0x4b	// ->M
 };
 
-const char **init_unk_1 = &d_080DC;
+// DATA: GY454XE  Re 02044
+// DATA: GY455XE  Im 021D6
+const char tokens_map[] = {
+	0xAE,	// K_FRAC
+	0x7C,	// K_FRAC_ABC
+	0x5E,	// K_POW
+	0x98,	// K_SQRT
+	0x77,	// K_POW_M1
+	0x75,	// K_POW_2
+	0x76,	// K_POW_3
+	0xA8,	// K_CBRT
+	0x9F,	// K_NTH_RT
+	0x73,	// K_E_POW
+	0x93,	// K_10_POW
+	0x68,	// K_LOGAB
+	0x63,	// K_ABS
+	0x6A,	// K_INTEGRAL
+	0x6B,	// K_DDX
+	0x69	// K_SUM
+};
+
+// DATA: GY454XE  Re 02054
+// DATA: GY455XE  Im 021E6
+const char s_colon[] = ":";
+
+// For keycode lists, every row is KI(1-8), every column is KO(1-8)
+
+// DATA: GY454XE  Re 02056
+// DATA: GY455XE  Im 021E8
+const char keycodes[64] = {
+	K_1,		K_2,		K_3,		K_PLUS,		K_MINUS,	NULL,		K_EXECUTE,	NULL,
+	K_4,		K_5,		K_6,		K_MUL,		K_DIV,		NULL,		K_ANS,		NULL,
+	K_7,		K_8,		K_9,		K_DEL,		K_AC,		NULL,		K_EXP,		NULL,
+	K_RCL,		K_ENG,		K_PAREN_L,	K_PAREN_R,	K_FMT_DEC,	K_M_PLUS,	K_PERIOD,	NULL,
+	K_NEGATIVE,	K_DMS,		K_HYP,		K_SIN,		K_COS,		K_TAN,		K_0,		NULL,
+	K_FRAC,		K_SQRT,		K_POW_2,	K_POW,		K_LOG,		K_LN,		NULL,		NULL,
+	K_CALC,		K_INTEGRAL,	K_LEFT,		K_DOWN,		K_POW_M1,	K_LOGAB,	NULL,		NULL,
+	K_SHIFT,	K_ALPHA,	K_UP,		K_RIGHT,	K_MODE,		NULL,		NULL,		NULL
+};
+
+// DATA: GY454XE  Re 02096
+// DATA: GY455XE  Im 02228
+const char keycodes_shift[64] = {
+	K_SD,		K_CMPLX,	K_BASE,		K_POL,		K_REC,		NULL,		K_APPROX,	NULL,
+	K_MATRIX,	K_VECTOR,	NULL,		K_PERMU,	K_COMBI,	NULL,		K_DRG,		NULL,
+	K_CONST,	K_CONV,		K_CLR,		K_INS,		K_OFF,		NULL,		K_PI,		NULL,
+	K_STO,		K_ENG_R,	K_PERCENT,	K_COMMA,	K_FMT_FRAC,	K_M_MINUS,	K_RAN,		NULL,
+	K_NEGATIVE,	K_DMS_R,	K_ABS,		K_ARCSIN,	K_ARCCOS,	K_ARCTAN,	K_RND,		NULL,
+	K_FRAC_ABC,	K_CBRT,		K_POW_3,	K_NTH_RT,	K_10_POW,	K_E_POW,	NULL,		NULL,
+	K_SOLVE,	K_DDX,		K_LEFT,		K_DOWN,		K_FCTRIAL,	K_SUM,		NULL,		NULL,
+	K_SHIFT,	K_ALPHA,	K_UP,		K_RIGHT,	K_SETUP,	NULL,		NULL,		NULL
+};
+
+// DATA: GY454XE  Re 020D6
+// DATA: GY455XE  Im 02268
+const char keycodes_alpha[64] = {
+	NULL,		NULL,		NULL,		NULL,		NULL,		NULL,		K_EXECUTE,	K_APPROX,
+	NULL,		NULL,		NULL,		NULL,		NULL,		NULL,		NULL,		NULL,
+	NULL,		NULL,		NULL,		K_DEL,		K_AC,		NULL,		K_EULER,	NULL,
+	K_RCL,		NULL,		NULL,		K_VAR_X,	K_VAR_Y,	K_VAR_M,	K_RANINT,	NULL,
+	K_VAR_A,	K_VAR_B,	K_VAR_C,	K_VAR_D,	K_VAR_E,	K_VAR_F,	NULL,		NULL,
+	NULL,		NULL,		NULL,		NULL,		NULL,		NULL,		NULL,		NULL,
+	K_EQUALS,	K_COLON,	K_LEFT,		K_DOWN,		NULL,		NULL,		NULL,		NULL,
+	K_SHIFT,	K_ALPHA,	K_UP,		K_RIGHT,	K_MODE,		K_COLON,	K_EQUALS,	NULL
+};
+
+// DATA: GY454XE  Re 02116
+// DATA: GY455XE  Im 022A8
+const char keycodes_rcl[64] = {
+	NULL,		NULL,		NULL,		NULL,		NULL,		NULL,		K_EXECUTE,	K_APPROX,
+	NULL,		NULL,		NULL,		NULL,		NULL,		NULL,		NULL,		NULL,
+	NULL,		NULL,		NULL,		K_DEL,		K_AC,		NULL,		NULL,		NULL,
+	K_RCL,		NULL,		NULL,		K_RCL_X,	K_RCL_Y,	K_RCL_M,	NULL,		NULL,
+	K_RCL_A,	K_RCL_B,	K_RCL_C,	K_RCL_D,	K_RCL_E,	K_RCL_F,	NULL,		NULL,
+	NULL,		NULL,		NULL,		NULL,		NULL,		NULL,		NULL,		NULL,
+	NULL,		NULL,		K_LEFT,		K_DOWN,		NULL,		NULL,		NULL,		NULL,
+	K_SHIFT,	K_ALPHA,	K_UP,		K_RIGHT,	K_MODE,		NULL,		K_CALC,		NULL
+};
+
+// DATA: GY454XE  Re 02156
+// DATA: GY455XE  Im 022E8
+const char keycodes_sto[64] = {
+	NULL,		NULL,		NULL,		NULL,		NULL,		NULL,		K_EXECUTE,	K_APPROX,
+	NULL,		NULL,		NULL,		NULL,		NULL,		NULL,		NULL,		NULL,
+	NULL,		NULL,		NULL,		K_DEL,		K_AC,		NULL,		NULL,		NULL,
+	K_RCL,		NULL,		NULL,		K_STO_X,	K_STO_Y,	K_STO_M,	NULL,		NULL,
+	K_STO_A,	K_STO_B,	K_STO_C,	K_STO_D,	K_STO_E,	K_STO_F,	NULL,		NULL,
+	NULL,		NULL,		NULL,		NULL,		NULL,		NULL,		NULL,		NULL,
+	NULL,		NULL,		K_LEFT,		K_DOWN,		NULL,		NULL,		NULL,		NULL,
+	K_SHIFT,	K_ALPHA,	K_UP,		K_RIGHT,	K_MODE,		NULL,		K_CALC,		NULL
+};
+
+// DATA: GY454XE  Re 02196
+// DATA: GY455XE  Im 02328
+const char keycodes_base_n[64] = {
+	K_1,		K_2,		K_3,		K_PLUS,		K_MINUS,	NULL,		K_APPROX,	K_APPROX,
+	K_4,		K_5,		K_6,		K_MUL,		K_DIV,		NULL,		K_ANS,		NULL,
+	K_7,		K_8,		K_9,		K_DEL,		K_AC,		NULL,		NULL,		NULL,
+	K_RCL,		NULL,		K_PAREN_L,	K_PAREN_R,	NULL,		K_M_PLUS,	NULL,		NULL,
+	K_HEX_A,	K_HEX_B,	K_HEX_C,	K_HEX_D,	K_HEX_E,	K_HEX_F,	K_0,		NULL,
+	NULL,		NULL,		K_BASE_DEC,	K_BASE_HEX,	K_BASE_BIN,	K_BASE_OCT,	NULL,		NULL,
+	K_CALC,		NULL,		K_LEFT,		K_DOWN,		NULL,		NULL,		NULL,		NULL,
+	K_SHIFT,	K_ALPHA,	K_UP,		K_RIGHT,	K_MODE,		NULL,		NULL,		NULL
+};
+
+// DATA: GY454XE  Re 021D6
+// DATA: GY455XE  Im 02368
+const char keycodes_shift_base_n[64] = {
+	NULL,		NULL,		K_BASE,		NULL,		NULL,		NULL,		K_APPROX,	NULL,
+	NULL,		K_VECTOR,	NULL,		NULL,		NULL,		NULL,		NULL,		NULL,
+	NULL,		NULL,		K_CLR,		K_INS,		K_OFF,		NULL,		NULL,		NULL,
+	K_STO,		NULL,		NULL,		NULL,		NULL,		K_M_MINUS,	NULL,		NULL,
+	K_HEX_A,	K_HEX_B,	K_HEX_C,	K_HEX_D,	K_HEX_E,	K_HEX_F,	NULL,		NULL,
+	NULL,		NULL,		K_BASE_DEC,	K_BASE_HEX,	K_BASE_BIN,	K_BASE_OCT,	NULL,		NULL,
+	K_SOLVE,	NULL,		K_LEFT,		K_DOWN,		NULL,		NULL,		NULL,		NULL,
+	K_SHIFT,	K_ALPHA,	K_UP,		K_RIGHT,	K_SETUP,	NULL,		NULL,		NULL
+};
+
+// DATA: GY454XE  Re 02216
+// DATA: GY455XE  Im 023A8
+const char menu_mode[] = {
+	"1:COMP  2:CMPLX \0"
+	"3:STAT  4:BASE-N\0"
+	"5:EQN   6:MATRIX\0"
+	"7:TABLE 8:VECTOR"
+};
+
+// DATA: GY454XE  Re 0225A
+// DATA: GY455XE  Im 023EC
+const char menu_setup_0[] = {
+	"1:MthIO 2:LineIO\0"
+	"3:Deg   4:Rad   \0"
+	"5:Gra   6:Fix   \0"
+	"7:Sci   8:Norm  \0"
+};
+
+// DATA: GY454XE  Re 0229F
+// DATA: GY455XE  Im 02431
+const char menu_setup_1[] = {
+	"1:ab/c  2:d/c   \0"
+	"3:CMPLX 4:STAT  \0"
+	"5:Disp  6:" "\x9f" "CONT" "\x9e" "\0"
+	"\0"
+};
+
+// DATA: GY454XE  Re 022D4
+// DATA: GY455XE  Im 02466
+const char menu_stat_type[] = {
+	"1:1-VAR 2:" "\x9a" "+" "\x9b" "X\0"
+	"3:" "\x5f" "+" "\x9c" "X" "\xa2" " 4:ln X\0"
+	"5:" "\x81" "^X   6:" "\x9a" "*" "\x9b" "^X\0"
+	"7:" "\x9a" "*X^" "\x9b" " 8:1/X"
+};
+
+// DATA: GY454XE  Re 02310
+// DATA: GY455XE  Im 024A2
+const char menu_stat_table[] = {
+	"1:Type  2:Data\0"
+	"3:Edit\0"
+	"\0"
+	"\0"
+};
+
+// DATA: GY454XE  Re 02329
+// DATA: GY455XE  Im 024BB
+const char menu_stat_1var[] = {
+	"1:Type  2:Data\0"
+	"3:Sum   4:Var\0"
+	"5:Distr 6:MinMax\0"
+	"\0"
+};
+
+// DATA: GY454XE  Re 02359
+// DATA: GY455XE  Im 024EB
+const char menu_stat_2var[] = {
+	"1:Type  2:Data\0"
+	"3:Sum   4:Var\0"
+	"5:Reg   6:MinMax\0"
+	"\0"
+};
+
+// DATA: GY454XE  Re 02389
+// DATA: GY455XE  Im 0251B
+const char menu_eqn[] = {
+	"1:a" "\x9d" "X+b" "\x9d" "Y=c" "\x9d" "\0"
+	"2:a" "\x9d" "X+b" "\x9d" "Y+c" "\x9d" "Z=d" "\x9d" "\0"
+	"3:aX" "\xa2" "+bX+c=0\0"
+	"4:aX" "\xa3" "+bX" "\xa2" "+cX+d=0\0"
+};
+
+// DATA: GY454XE  Re 023C6
+// DATA: GY455XE  Im 02558
+// DATA: GY460XF  Im 022AC
+const menu menus[] = {
+// n		 String						Return	Char	Option values/Menu indexes/Tokens (up to 8)			Up		Down	Left	Keycode
+// Placeholder
+/* 0  */	{NULL,						0xff,	0,		{0},												NULL,	NULL,	NULL,	NULL},
+
+// CLR menu (SHIFT 9)
+/* 1  */	{menu_clr,					0xff,	0,		{1, 2, 3},											NULL,	NULL,	NULL,	K_CLR},
+
+// SETUP menu (SHIFT MODE)
+/* 2  */	{menu_setup_0,				0x7f,	0,		{4, 2, 3, 4, 5, 6, 7, 8},							NULL,	3,		NULL,	K_SETUP},
+/* 3  */	{menu_setup_1,				0xc7,	0,		{9, 10, 5, 6, MENU_IDX_SETUP_DEC_MARK, 11},			2,		NULL,	NULL,	K_SETUP},
+/* 4  */	{menu_setup_decimalo,		0xff,	0,		{22, 23},											NULL,	NULL,	2,		K_SETUP},
+/* 5  */	{menu_setup_cmplx_result,	0xff,	0,		{12, 13},											NULL,	NULL,	3,		K_SETUP},
+/* 6  */	{menu_setup_stat_freq,		0xff,	0,		{14, 15},											NULL,	NULL,	3,		K_SETUP},
+#if ENABLE_RDEC == 1
+			{menu_setup_rdec,			0xff,	0,		{16, 17},											NULL,	NULL,	3,		K_SETUP},
+#endif
+/* 7  */	{menu_setup_decimal_mark,	0xff,	0,		{18, 19},											NULL,	NULL,	3,		K_SETUP},
+
+#if ENABLE_MATRIX == 1
+// MATRIX mode (SHIFT 4)
+/* 8  */	{menu_matrix_table,			0xff,	0,		{1, 2},												NULL,	NULL,	NULL,	K_MATRIX},
+/* 9  */	{menu_matrix_data,			0xff,	0,		{3, 4, 5},											NULL,	NULL,	0xfd,	K_MATRIX},
+/* 10 */	{menu_matrix_data,			0x1f,	0,		{6, 7, 8},											NULL,	NULL,	0xfd,	K_MATRIX},
+/* 11 */	{menu_matrix_dim0,			0xff,	0,		{9, 10, 11, 12, 13, 14},							NULL,	MATRIX_MENU_START+4,0xff, K_MATRIX},
+/* 12 */	{menu_matrix_dim1,			0xff,	0,		{15, 16, 17},										MATRIX_MENU_START+3, NULL,	0xff, K_MATRIX},
+/* 13 */	{menu_matrix,				0xff,	0x3f,	{1, 2, 0xc8, 0xc9, 0xca, 0xcb, 0xc0, 0xc1},			NULL,	NULL,	NULL,	K_MATRIX},
+#endif
+
+#if ENABLE_VECTOR == 1
+// VECTOR mode (SHIFT 5)
+/* 14 */	{menu_vector_table,			0xff,	0,		{18, 19},											NULL,	NULL,	NULL,	K_VECTOR},
+/* 15 */	{menu_vector_data,			0xff,	0,		{20, 21, 22},										NULL,	NULL,	0xfa,	K_VECTOR},
+/* 16 */	{menu_vector_data,			0x1f,	0,		{23, 24, 25},										NULL,	NULL,	0xfa,	K_VECTOR},
+/* 17 */	{menu_vector_dim,			0xff,	0,		{26, 27},											NULL,	NULL,	0xfc,	K_VECTOR},
+/* 18 */	{menu_vector,				0xff,	0x3f,	{18, 19, 0xcc, 0xcd, 0xce, 0xcf, 0x9e},				NULL,	NULL,	NULL,	K_VECTOR},
+#endif
+
+#if ENABLE_CMPLX == 1
+// CMPLX mode (SHIFT 2)
+/* 19 */	{menu_cmplx,				0xff,	0xf0,	{0xc3, 0x88, 0x56, 0x55},							NULL,	NULL,	NULL,	K_CMPLX},
+#endif
+
+#if ENABLE_BASE_N == 1
+// BASE-N mode (SHIFT 3)
+/* 20 */	{menu_base_n_0,				0xff,	0xfc,	{0x6e, 0x6f, 0x7e, 0x7f, 0xc1, 0x62},				NULL,	BASE_N_MENU_START+1,NULL, K_BASE},
+/* 21 */	{menu_base_n_1,				0xff,	0xfc,	{0x51, 0x50, 0x53, 0x52},							BASE_N_MENU_START,			NULL, NULL, K_BASE},
+#endif
+
+// Angle unit (DRG>) menu (SHIFT Ans)
+/* 22 */	{menu_drg,					0xff,	0xe0,	{0x85, 0x86, 0x87},									NULL,	NULL,	NULL,	K_DRG},
+
+// Hyperbolic functions (hyp) menu
+/* 23 */	{menu_hyp,					0xff,	0xfc,	{0x70, 0x71, 0x72, 0x90, 0x91, 0x92},				NULL,	NULL,	NULL,	K_HYP},
+
+// STAT mode (SHIFT 1)
+/* 24 */	{menu_stat_table,			0x5f,	0,		{27, 20, 28},										NULL,	NULL,	NULL,	K_SD},
+/* 25 */	{menu_stat_1var,			0x43,	0,		{27, 20, 29, 31, 35, 33},							NULL,	NULL,	NULL,	K_SD},
+/* 26 */	{menu_stat_2var,			0x4b,	0,		{27, 20, 30, 32, 23, 34},							NULL,	NULL,	NULL,	K_SD},
+/* 27 */	{menu_stat_type,			0xff,	0,		{1, 2, 3, 4, 5, 6, 7, 8},							NULL,	NULL,	0xff,	K_SD},
+/* 28 */	{menu_stat_data_edit,		0xff,	0,		{21, 22},											NULL,	NULL,	24,		K_SD},
+/* 29 */	{menu_stat_1var_sum,		0xff,	0,		{0x10, 0x11},										NULL,	NULL,	25,		K_SD},
+/* 30 */	{menu_stat_2var_sum,		0xff,	0,		{0x10, 0x11, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18},	NULL,	NULL,	26,		K_SD},
+/* 31 */	{menu_stat_1var_var,		0xff,	0,		{0x12, 0x89, 0xaa, 0xab},							NULL,	NULL,	25,		K_SD},
+/* 32 */	{menu_stat_2var_var,		0xff,	0,		{0x12, 0x89, 0xaa, 0xab, 0x8a, 0xac, 0xad},			NULL,	NULL,	26,		K_SD},
+/* 33 */	{menu_stat_1var_minmax,		0xff,	0xc0,	{0x19, 0x1a},										NULL,	NULL,	25,		K_SD},
+/* 34 */	{menu_stat_2var_minmax,		0xff,	0xf0,	{0x19, 0x1a, 0x1b, 0x1c},							NULL,	NULL,	26,		K_SD},
+/* 35 */	{menu_stat_distr,			0xff,	0xf0,	{0xd0, 0xd1, 0xd2, 0xd3},							NULL,	NULL,	25,		K_SD},
+/* 36 */	{menu_stat_reg,				0xff,	0xf8,	{0x9a, 0x9b, 0x9d, 0x65, 0x66},						NULL,	NULL,	26,		K_SD},
+/* 37 */	{menu_stat_reg_quad,		0xff,	0xfc,	{0x9a, 0x9b, 0x9c, 0x64, 0x67, 0x66},				NULL,	NULL,	26,		K_SD},
+
+// EQN mode
+/* 38 */	{menu_eqn,					0xff,	0,		{1, 2, 3, 4},										NULL,	NULL,	NULL,	NULL},
+
+#if ENABLE_MATRIX == 1
+// MATRIX mode (submode select)
+/* 39 */	{menu_matrix_data,			0xff,	0,		{3, 4, 5},											NULL,	NULL,	NULL,	NULL},
+#endif
+
+#if ENABLE_VECTOR == 1
+// VECTOR mode (submode select)
+/* 40 */	{menu_vector_data,			0xff,	0,		{20, 21, 22},										NULL,	NULL,	NULL,	NULL},
+#endif
+
+// STAT mode (submode select)
+/* 41 */	{menu_stat_type,			0xff,	0,		{1, 2, 3, 4, 5, 6, 7, 8},							NULL,	NULL,	NULL,	NULL},
+
+// MODE menu
+/* 42 */	{menu_mode,					0xff,	0,		{MODE_COMP, MODE_CMPLX, MODE_STAT, MODE_BASE_N,
+														MODE_EQN, MODE_MATRIX, MODE_TABLE, MODE_VECTOR},	NULL,	NULL,	NULL,	K_MODE}, 
+
+#if ENABLE_RATIO == 1
+// RATIO mode (submode select)
+			{menu_ratio,				0xff,	0,		{1, 2},												NULL,	NULL,	NULL,	NULL},
+#endif
+
+#if ENABLE_INEQ == 1
+// INEQ mode (submode select)
+			{menu_ineq,					0xff,	0,		{9, 10},											NULL,	NULL,	NULL,	K_MODE},
+			{menu_ineq_poly2,			0xff,	0,		{1, 2, 3, 4},										NULL,	NULL,	0xff,	K_MODE},
+			{menu_ineq_poly3,			0xff,	0,		{5, 6, 7, 8},										NULL,	NULL,	0xff,	K_MODE},
+#endif
+
+};
 
 // FUNCTION: GY454XE  Re 0995E
 // FUNCTION: GY455XE  Im 0A282
@@ -223,7 +647,7 @@ char f_09962(char no_keyfunc) {
 		if (!(d_080FE & (1 << 6))) {
 			if (table_mode & (1 << 7) && d_080FD == 2 && (last_key_keycode == K_COLON || last_key_keycode == 0xa4)) last_key_keycode = 0;
 			else if (table_mode & (1 << 7) && d_080FD == 2 && last_key_keycode == K_EQUALS) last_key_keycode = 0;
-			else if (table_mode & (1 << 4)) last_key_keycode = filter_chars(last_key_keycode);
+			else if (table_mode & (1 << 4)) last_key_keycode = filter_chars_tables(last_key_keycode);
 			else if (v0.mode == MODE_STAT || v0.mode == MODE_MATRIX || v0.mode == MODE_VECTOR) last_key_keycode = filter_chars_stat_mat_vct(last_key_keycode);
 			else if (v0.mode == MODE_TABLE) last_key_keycode = filter_chars_table(last_key_keycode);
 			else if (v0.mode == MODE_CMPLX) last_key_keycode = filter_chars_cmplx(last_key_keycode);
@@ -355,15 +779,15 @@ char f_09D84(void) {
 // FUNCTION: GY454XE  Re 09DB6
 // FUNCTION: GY455XE  Im 0A6DA
 // FUNCTION: GY460XF  Im 0A080
-static void copy_input_prompt(char idx, char is_solve, char is_init_str) {
+static void copy_input_prompt(char idx, char is_solve, char is_table_prompt) {
 	char v0;
 	char out[16];
 	char varstr[4];
 
 	v0 = 0;
 	if (!is_format_keycode(last_key_keycode)) v0 = 1;
-	if (is_init_str) {
-		strcpy(out, init_unk_0[idx-1]);
+	if (is_table_prompt) {
+		strcpy(out, table_prompts[idx-1]);
 		set_result(&mode_ram[(idx-1)*10]);
 	} else {
 		varstr[0] = vars_list[idx];
@@ -683,11 +1107,9 @@ static void f_0A3B4(void) {
 // FUNCTION: GY454XE  Re 0A410
 // FUNCTION: GY455XE  Im 0AD34
 // FUNCTION: GY460XF  Im 0A6DA
-static void f_0A410(char *num) {
+static void table_set_cur_cell(char *num) {
 	char v0;
 	char v1;
-	char *v2;
-	int v3;
 
 	f_044CE();
 	switch (table_mode) {
@@ -696,23 +1118,19 @@ static void f_0A410(char *num) {
 			if (v0 > d_080DE) f_0AD08(v0);
 			v1 = table_x - 1;
 			if (submode == SMODE_STAT_1VAR && v1 == 1) v1 = 2;
-			f_0AF30(v1, v0, num);
+			table_stat_set_cell(v1, v0, num);
 			table_stat_nav(table_x - 1, K_APPROX);
 			d_08126 = 0;
 			break;
 		case TABLE_MATRIX:
 		case TABLE_VECTOR:
-			f_0AC44(num, submode, table_y, table_x);
+			table_matvct_set_cell(num, submode, table_y, table_x);
 			table_matvct_nav(submode, K_APPROX);
 			break;
 		case TABLE_EQN:
 		case TABLE_RATIO:
 		case TABLE_INEQ:
-			v2 = num;
-			v3 = table_viewport * 18;
-			v3 += table_y * 6;
-			v3 += table_x * 2;
-			f_0448A(unk_007e6[v3 - 26], v2);
+			smart_num_cpy(unk_007e6[table_viewport * 9 + table_y * 3 + table_x - 13], num);
 			table_eqn_nav(K_APPROX);
 			d_080FD = 1;
 			break;
@@ -723,8 +1141,9 @@ static void f_0A410(char *num) {
 			return;
 		case TABLE_RANGE:
 			num_to_str_std_lineo(num);
-			f_0448A(table_param_ptrs[d_080FD - 1], num);
+			smart_num_cpy(table_param_ptrs[d_080FD - 1], num);
 			++d_080FD;
+			break;
 	}
 	d_080FE = 3;
 	return;
@@ -750,9 +1169,8 @@ char f_0A57A(void) {
 // FUNCTION: GY455XE  Im 0AEB8
 // FUNCTION: GY460XF  Im 0A85E
 char table_eqn_handler(char a) {
-	char v0;
+	char v0 = 1;
 
-	v0 = 1;
 	arrow_state = 0;
 	if ((last_key_keycode == K_APPROX || last_key_keycode == K_EXECUTE) && !d_080FD) {
 		char tmp;
@@ -1047,11 +1465,53 @@ static void table_matvct_draw_cols(char m, char n) {
 	v0 = n * 28 + 10;
 	v1 = m * 6 + 6;
 	draw_line_vert(10, 7, v1, 0xc0);
-	draw_line_vert(v0, 7, v1, 0xc0);
+	draw_line_vert(v0, 7, v1, 0x30);
 	return;
 }
 
-// TODO: add f_0AEF2_460F, f_0AF42_460F
+#if ENABLE_INEQ == 1
+// FUNCTION: GY460XF  Im 0AEF2
+char table_ineq_handler(char a) {
+	char v0 = 1;
+
+	arrow_state = 0;
+	if ((last_key_keycode == K_APPROX || last_key_keycode == K_EXECUTE) && !d_080FD) {
+		char tmp = f_131EC();
+		if (tmp) set_keycode(show_error(tmp));
+		else {
+			table_mode = TABLE_NONE;
+			d_080FD = 2;
+			v0 = 0;
+		}
+	} else {
+		d_080FD = 0;
+		table_eqn_key_handler();
+	}
+	return v0;
+}
+#endif
+
+#if ENABLE_RATIO == 1
+// FUNCTION: GY460XF  Im 0AF42
+char table_ratio_handler(char a) {
+	char v0 = 1;
+
+	arrow_state = 0;
+	if ((last_key_keycode == K_APPROX || last_key_keycode == K_EXECUTE) && !d_080FD) {
+		char tmp = f_131E8();
+		if (tmp) set_keycode(show_error(tmp));
+		else {
+			table_mode = TABLE_NONE;
+			d_080FD = 2;
+			v0 = 0;
+		}
+	} else {
+		d_080FD = 0;
+		table_eqn_key_handler();
+	}
+	return v0;
+}
+#endif
 
 // FUNCTION: GY454XE  Re 0ABA8
 // FUNCTION: GY455XE  Im 0B4CC
@@ -1109,7 +1569,7 @@ void table_ineq_setup(void) {
 // FUNCTION: GY454XE  Re 0AC44
 // FUNCTION: GY455XE  Im 0B568
 // FUNCTION: GY460XF  Im 0B02E
-static char f_0AC44(char *num, char sm, char ty, char tx) {
+static char table_matvct_set_cell(char *num, char sm, char ty, char tx) {
 	char v0;
 	int *v1;
 	int *tmp;
@@ -1127,7 +1587,7 @@ static char f_0AC44(char *num, char sm, char ty, char tx) {
 		v1[4] = tmp[4];
 		--tmp;
 		--v1;
-	} while ((tmp2 -= 2) < 2);
+	} while ((tmp2 -= 2) >= 0);
 j_0ac98:
 	return v0;
 }
@@ -1169,7 +1629,7 @@ char f_0AD08(char a) {
 	memzero(v3, v1 * 10);
 	if (setup_stat_freq) {
 		num_fromdigit(&loc_m14, 1);
-		f_0AF30(2, a, &loc_m14);
+		table_stat_set_cell(2, a, &loc_m14);
 	}
 j_0ae06:
 	return v0;
@@ -1248,7 +1708,7 @@ void f_0AF16(void) {
 // FUNCTION: GY454XE  Re 0AF30
 // FUNCTION: GY455XE  Im 0B854
 // FUNCTION: GY460XF  Im 0B31A
-char f_0AF30(char x, char y, char *num) {
+char table_stat_set_cell(char x, char y, char *num) {
 	char v0;
 	char *loc_m2;
 
@@ -1256,7 +1716,7 @@ char f_0AF30(char x, char y, char *num) {
 	if (!v0) {
 		int *tmp;
 		int *tmp2;
-		unsigned int tmp3;
+		int tmp3;
 
 		tmp = (int *)num;
 		tmp2 = (int *)loc_m2;
@@ -1265,7 +1725,7 @@ char f_0AF30(char x, char y, char *num) {
 			tmp2[4] = tmp[4];
 			tmp -= 1;
 			tmp2 -= 1;
-		} while ((tmp3 -= 2) < 2);
+		} while ((tmp3 -= 2) >= 0);
 	}
 	return v0;
 }
@@ -1870,58 +2330,6 @@ char is_ineq_result(void) {
 #endif
 
 #if REAL == 0
-
-// Struct used in emulator ROM's log_error.
-typedef struct {
-	int index;
-	int add_template;
-	char *string;
-} error_emu;
-
-// We can't define these yet because there is a switch-case in log_error.
-// We need the jump table to appear before the strings.
-
-extern const char s_err_emu_acbreak[];
-extern const char s_err_emu_syntax[];
-extern const char s_err_emu_math[];
-extern const char s_err_emu_mem[];
-extern const char s_err_emu_go[];
-extern const char s_err_emu_nesting[];
-extern const char s_err_emu_stack[];
-extern const char s_err_emu_argument[];
-extern const char s_err_emu_dimension[];
-extern const char s_err_emu_com[];
-extern const char s_err_emu_transmit[];
-extern const char s_err_emu_receive[];
-extern const char s_err_emu_outofmem[];
-extern const char s_err_emu_undefined[];
-extern const char s_err_emu_overflow[];
-extern const char s_err_emu_domain[];
-extern const char s_err_emu_nonreal[];
-extern const char s_err_emu_nosolution[];
-extern const char s_err_emu_mismatch[];
-extern const char s_err_emu_novar[];
-extern const char s_err_emu_notfound[];
-extern const char s_err_emu_app[];
-extern const char s_err_emu_sys[];
-extern const char s_err_emu_exists[];
-extern const char s_err_emu_cmplx[];
-extern const char s_err_emu_solve[];
-extern const char s_err_emu_range[];
-extern const char s_err_emu_iter[];
-extern const char s_err_emu_cond[];
-extern const char s_err_emu_blank[];
-extern const char s_err_emu_circular[];
-extern const char s_err_emu_imroot[];
-extern const char s_err_emu_ver[];
-extern const char s_err_emu_sd[];
-extern const char s_err_emu_sdro[];
-extern const char s_err_emu_sdinvalid[];
-extern const char s_err_emu_nosd[];
-extern const char s_err_emu_timeout[];
-extern const char s_err_emu_template[];
-extern const char s_err_emu_unknown[];
-
 // FUNCTION: GY455XE  Im 0C10C
 // FUNCTION: GY460XF  Im 0BC02
 static char log_error(unsigned int idx) {
@@ -2119,132 +2527,11 @@ static char log_error(unsigned int idx) {
 				return;
 			}
 		}
-		smart_strcpy(error_buf, s_err_emu_unknown);  // ??? ERROR (impossible)
+		smart_strcpy(error_buf, s_err_emu_unknown);  // ??? ERROR (unused failsafe)
 		f_082A2_E(&kb);
 	}
 	return;
 }
-
-// DATA: GY455XE  Im 0204C
-const char s_err_emu_acbreak[] = "ACBREAK";
-
-// DATA: GY455XE  Im 02054
-const char s_err_emu_syntax[] = "Syntax";
-
-// DATA: GY455XE  Im 0205B
-const char s_err_emu_math[] = "Ma";
-
-// DATA: GY455XE  Im 0205E
-const char s_err_emu_mem[] = "Memory";
-
-// DATA: GY455XE  Im 02065
-const char s_err_emu_go[] = "Go";
-
-// DATA: GY455XE  Im 02068
-const char s_err_emu_nesting[] = "Nesting";
-
-// DATA: GY455XE  Im 02070
-const char s_err_emu_stack[] = "Stack";
-
-// DATA: GY455XE  Im 02076
-const char s_err_emu_argument[] = "Argument";
-
-// DATA: GY455XE  Im 0207F
-const char s_err_emu_dimension[] = "Dimension";
-
-// DATA: GY455XE  Im 02089
-const char s_err_emu_com[] = "Com";
-
-// DATA: GY455XE  Im 0208D
-const char s_err_emu_transmit[] = "Transmit";
-
-// DATA: GY455XE  Im 02096
-const char s_err_emu_receive[] = "Receive";
-
-// DATA: GY455XE  Im 0209E
-const char s_err_emu_outofmem[] = "Memory Full";
-
-// DATA: GY455XE  Im 020AA
-const char s_err_emu_undefined[] = "Undefined";
-
-// DATA: GY455XE  Im 020B4
-const char s_err_emu_overflow[] = "Overflow";
-
-// DATA: GY455XE  Im 020BD
-const char s_err_emu_domain[] = "Domain";
-
-// DATA: GY455XE  Im 020C4
-const char s_err_emu_nonreal[] = "Non-Real";
-
-// DATA: GY455XE  Im 020CD
-const char s_err_emu_nosolution[] = "No Solution";
-
-// DATA: GY455XE  Im 020D9
-const char s_err_emu_mismatch[] = "Mismatch";
-
-// DATA: GY455XE  Im 020E2
-const char s_err_emu_novar[] = "No Variable";
-
-// DATA: GY455XE  Im 020EE
-const char s_err_emu_notfound[] = "Not Found";
-
-// DATA: GY455XE  Im 020F8
-const char s_err_emu_app[] = "Application";
-
-// DATA: GY455XE  Im 02104
-const char s_err_emu_sys[] = "System";
-
-// DATA: GY455XE  Im 0210B
-const char s_err_emu_exists[] = "Already Exists";
-
-// DATA: GY455XE  Im 0211A
-const char s_err_emu_cmplx[] = "Complex Number In List";
-
-// DATA: GY455XE  Im 02131
-const char s_err_emu_solve[] = "Can't Solve!";
-
-// DATA: GY455XE  Im 0213E
-const char s_err_emu_range[] = "Range";
-
-// DATA: GY455XE  Im 02144
-const char s_err_emu_iter[] = "Iteration";
-
-// DATA: GY455XE  Im 0214E
-const char s_err_emu_cond[] = "Condition";
-
-// DATA: GY455XE  Im 02158
-const char s_err_emu_blank[] = "";
-
-// DATA: GY455XE  Im 02159
-const char s_err_emu_circular[] = "Circular";
-
-// DATA: GY455XE  Im 02162
-const char s_err_emu_imroot[] = "No Real Roots";
-
-// DATA: GY455XE  Im 02170
-const char s_err_emu_ver[] = "Version";
-
-// DATA: GY455XE  Im 02178
-const char s_err_emu_sd[] = "SD Card";
-
-// DATA: GY455XE  Im 02180
-const char s_err_emu_sdro[] = "SD Card is protected";
-
-// DATA: GY455XE  Im 02195
-const char s_err_emu_sdinvalid[] = "invarid Card";
-
-// DATA: GY455XE  Im 021A2
-const char s_err_emu_nosd[] = "No Card";
-
-// DATA: GY455XE  Im 021AA
-const char s_err_emu_timeout[] = "Time out";
-
-// DATA: GY455XE  Im 021B3
-const char s_err_emu_template[] = "ERROR";
-
-// DATA: GY455XE  Im 021B9
-const char s_err_emu_unknown[] = "??? ERROR";
-
 #endif
 
 // FUNCTION: GY454XE  Re 0B7E6
@@ -2261,303 +2548,6 @@ static char show_error(char idx) {
 	while (!is_ac_keycode(keycode));
 	return keycode;
 }
-
-// ====== DEFINITIONS (declared above) ======
-
-// DATA: GY454XE  Re 02032
-// DATA: GY455XE  Im 021C4
-const char vars_map[] = {
-	0x41,	// A
-	0x42,	// B
-	0x43,	// C
-	0x44,	// D
-	0x45,	// E
-	0x46,	// F
-	0x58,	// X
-	0x59,	// Y
-	0x54,	// M
-	0x47,	// ->A
-	0x48,	// ->B
-	0x49,	// ->C
-	0x4a,	// ->D
-	0x83,	// ->E
-	0x84,	// ->F
-	0x4c,	// ->X
-	0x4d,	// ->Y
-	0x4b	// ->M
-};
-
-// DATA: GY454XE  Re 02044
-// DATA: GY455XE  Im 021D6
-const char tokens_map[] = {
-	0xAE,	// K_FRAC
-	0x7C,	// K_FRAC_ABC
-	0x5E,	// K_POW
-	0x98,	// K_SQRT
-	0x77,	// K_POW_M1
-	0x75,	// K_POW_2
-	0x76,	// K_POW_3
-	0xA8,	// K_CBRT
-	0x9F,	// K_NTH_RT
-	0x73,	// K_E_POW
-	0x93,	// K_10_POW
-	0x68,	// K_LOGAB
-	0x63,	// K_ABS
-	0x6A,	// K_INTEGRAL
-	0x6B,	// K_DDX
-	0x69	// K_SUM
-};
-
-// DATA: GY454XE  Re 02054
-// DATA: GY455XE  Im 021E6
-const char s_colon[] = ":";
-
-// For keycode lists, every row is KI(1-8), every column is KO(1-8)
-
-// DATA: GY454XE  Re 02056
-// DATA: GY455XE  Im 021E8
-const char keycodes[64] = {
-	K_1,		K_2,		K_3,		K_PLUS,		K_MINUS,	NULL,		K_EXECUTE,	NULL,
-	K_4,		K_5,		K_6,		K_MUL,		K_DIV,		NULL,		K_ANS,		NULL,
-	K_7,		K_8,		K_9,		K_DEL,		K_AC,		NULL,		K_EXP,		NULL,
-	K_RCL,		K_ENG,		K_PAREN_L,	K_PAREN_R,	K_FMT_DEC,	K_M_PLUS,	K_PERIOD,	NULL,
-	K_NEGATIVE,	K_DMS,		K_HYP,		K_SIN,		K_COS,		K_TAN,		K_0,		NULL,
-	K_FRAC,		K_SQRT,		K_POW_2,	K_POW,		K_LOG,		K_LN,		NULL,		NULL,
-	K_CALC,		K_INTEGRAL,	K_LEFT,		K_DOWN,		K_POW_M1,	K_LOGAB,	NULL,		NULL,
-	K_SHIFT,	K_ALPHA,	K_UP,		K_RIGHT,	K_MODE,		NULL,		NULL,		NULL
-};
-
-// DATA: GY454XE  Re 02096
-// DATA: GY455XE  Im 02228
-const char keycodes_shift[64] = {
-	K_SD,		K_CMPLX,	K_BASE,		K_POL,		K_REC,		NULL,		K_APPROX,	NULL,
-	K_MATRIX,	K_VECTOR,	NULL,		K_PERMU,	K_COMBI,	NULL,		K_DRG,		NULL,
-	K_CONST,	K_CONV,		K_CLR,		K_INS,		K_OFF,		NULL,		K_PI,		NULL,
-	K_STO,		K_ENG_R,	K_PERCENT,	K_COMMA,	K_FMT_FRAC,	K_M_MINUS,	K_RAN,		NULL,
-	K_NEGATIVE,	K_DMS_R,	K_ABS,		K_ARCSIN,	K_ARCCOS,	K_ARCTAN,	K_RND,		NULL,
-	K_FRAC_ABC,	K_CBRT,		K_POW_3,	K_NTH_RT,	K_10_POW,	K_E_POW,	NULL,		NULL,
-	K_SOLVE,	K_DDX,		K_LEFT,		K_DOWN,		K_FCTRIAL,	K_SUM,		NULL,		NULL,
-	K_SHIFT,	K_ALPHA,	K_UP,		K_RIGHT,	K_SETUP,	NULL,		NULL,		NULL
-};
-
-// DATA: GY454XE  Re 020D6
-// DATA: GY455XE  Im 02268
-const char keycodes_alpha[64] = {
-	NULL,		NULL,		NULL,		NULL,		NULL,		NULL,		K_EXECUTE,	K_APPROX,
-	NULL,		NULL,		NULL,		NULL,		NULL,		NULL,		NULL,		NULL,
-	NULL,		NULL,		NULL,		K_DEL,		K_AC,		NULL,		K_EULER,	NULL,
-	K_RCL,		NULL,		NULL,		K_VAR_X,	K_VAR_Y,	K_VAR_M,	K_RANINT,	NULL,
-	K_VAR_A,	K_VAR_B,	K_VAR_C,	K_VAR_D,	K_VAR_E,	K_VAR_F,	NULL,		NULL,
-	NULL,		NULL,		NULL,		NULL,		NULL,		NULL,		NULL,		NULL,
-	K_EQUALS,	K_COLON,	K_LEFT,		K_DOWN,		NULL,		NULL,		NULL,		NULL,
-	K_SHIFT,	K_ALPHA,	K_UP,		K_RIGHT,	K_MODE,		K_COLON,	K_EQUALS,	NULL
-};
-
-// DATA: GY454XE  Re 02116
-// DATA: GY455XE  Im 022A8
-const char keycodes_rcl[64] = {
-	NULL,		NULL,		NULL,		NULL,		NULL,		NULL,		K_EXECUTE,	K_APPROX,
-	NULL,		NULL,		NULL,		NULL,		NULL,		NULL,		NULL,		NULL,
-	NULL,		NULL,		NULL,		K_DEL,		K_AC,		NULL,		NULL,		NULL,
-	K_RCL,		NULL,		NULL,		K_RCL_X,	K_RCL_Y,	K_RCL_M,	NULL,		NULL,
-	K_RCL_A,	K_RCL_B,	K_RCL_C,	K_RCL_D,	K_RCL_E,	K_RCL_F,	NULL,		NULL,
-	NULL,		NULL,		NULL,		NULL,		NULL,		NULL,		NULL,		NULL,
-	NULL,		NULL,		K_LEFT,		K_DOWN,		NULL,		NULL,		NULL,		NULL,
-	K_SHIFT,	K_ALPHA,	K_UP,		K_RIGHT,	K_MODE,		NULL,		K_CALC,		NULL
-};
-
-// DATA: GY454XE  Re 02156
-// DATA: GY455XE  Im 022E8
-const char keycodes_sto[64] = {
-	NULL,		NULL,		NULL,		NULL,		NULL,		NULL,		K_EXECUTE,	K_APPROX,
-	NULL,		NULL,		NULL,		NULL,		NULL,		NULL,		NULL,		NULL,
-	NULL,		NULL,		NULL,		K_DEL,		K_AC,		NULL,		NULL,		NULL,
-	K_RCL,		NULL,		NULL,		K_STO_X,	K_STO_Y,	K_STO_M,	NULL,		NULL,
-	K_STO_A,	K_STO_B,	K_STO_C,	K_STO_D,	K_STO_E,	K_STO_F,	NULL,		NULL,
-	NULL,		NULL,		NULL,		NULL,		NULL,		NULL,		NULL,		NULL,
-	NULL,		NULL,		K_LEFT,		K_DOWN,		NULL,		NULL,		NULL,		NULL,
-	K_SHIFT,	K_ALPHA,	K_UP,		K_RIGHT,	K_MODE,		NULL,		K_CALC,		NULL
-};
-
-// DATA: GY454XE  Re 02196
-// DATA: GY455XE  Im 02328
-const char keycodes_base_n[64] = {
-	K_1,		K_2,		K_3,		K_PLUS,		K_MINUS,	NULL,		K_APPROX,	K_APPROX,
-	K_4,		K_5,		K_6,		K_MUL,		K_DIV,		NULL,		K_ANS,		NULL,
-	K_7,		K_8,		K_9,		K_DEL,		K_AC,		NULL,		NULL,		NULL,
-	K_RCL,		NULL,		K_PAREN_L,	K_PAREN_R,	NULL,		K_M_PLUS,	NULL,		NULL,
-	K_HEX_A,	K_HEX_B,	K_HEX_C,	K_HEX_D,	K_HEX_E,	K_HEX_F,	K_0,		NULL,
-	NULL,		NULL,		K_BASE_DEC,	K_BASE_HEX,	K_BASE_BIN,	K_BASE_OCT,	NULL,		NULL,
-	K_CALC,		NULL,		K_LEFT,		K_DOWN,		NULL,		NULL,		NULL,		NULL,
-	K_SHIFT,	K_ALPHA,	K_UP,		K_RIGHT,	K_MODE,		NULL,		NULL,		NULL
-};
-
-// DATA: GY454XE  Re 021D6
-// DATA: GY455XE  Im 02368
-const char keycodes_shift_base_n[64] = {
-	NULL,		NULL,		K_BASE,		NULL,		NULL,		NULL,		K_APPROX,	NULL,
-	NULL,		K_VECTOR,	NULL,		NULL,		NULL,		NULL,		NULL,		NULL,
-	NULL,		NULL,		K_CLR,		K_INS,		K_OFF,		NULL,		NULL,		NULL,
-	K_STO,		NULL,		NULL,		NULL,		NULL,		K_M_MINUS,	NULL,		NULL,
-	K_HEX_A,	K_HEX_B,	K_HEX_C,	K_HEX_D,	K_HEX_E,	K_HEX_F,	NULL,		NULL,
-	NULL,		NULL,		K_BASE_DEC,	K_BASE_HEX,	K_BASE_BIN,	K_BASE_OCT,	NULL,		NULL,
-	K_SOLVE,	NULL,		K_LEFT,		K_DOWN,		NULL,		NULL,		NULL,		NULL,
-	K_SHIFT,	K_ALPHA,	K_UP,		K_RIGHT,	K_SETUP,	NULL,		NULL,		NULL
-};
-
-// DATA: GY454XE  Re 02216
-// DATA: GY455XE  Im 023A8
-const char menu_mode[] = {
-	"1:COMP  2:CMPLX \0"
-	"3:STAT  4:BASE-N\0"
-	"5:EQN   6:MATRIX\0"
-	"7:TABLE 8:VECTOR"
-};
-
-// DATA: GY454XE  Re 0225A
-// DATA: GY455XE  Im 023EC
-const char menu_setup_0[] = {
-	"1:MthIO 2:LineIO\0"
-	"3:Deg   4:Rad   \0"
-	"5:Gra   6:Fix   \0"
-	"7:Sci   8:Norm  \0"
-};
-
-// DATA: GY454XE  Re 0229F
-// DATA: GY455XE  Im 02431
-const char menu_setup_1[] = {
-	"1:ab/c  2:d/c   \0"
-	"3:CMPLX 4:STAT  \0"
-	"5:Disp  6:" "\x9f" "CONT" "\x9e" "\0"
-	"\0"
-};
-
-// DATA: GY454XE  Re 022D4
-// DATA: GY455XE  Im 02466
-const char menu_stat_type[] = {
-	"1:1-VAR 2:" "\x9a" "+" "\x9b" "X\0"
-	"3:" "\x5f" "+" "\x9c" "X" "\xa2" " 4:ln X\0"
-	"5:" "\x81" "^X   6:" "\x9a" "*" "\x9b" "^X\0"
-	"7:" "\x9a" "*X^" "\x9b" " 8:1/X"
-};
-
-// DATA: GY454XE  Re 02310
-// DATA: GY455XE  Im 024A2
-const char menu_stat_table[] = {
-	"1:Type  2:Data\0"
-	"3:Edit\0"
-	"\0"
-	"\0"
-};
-
-// DATA: GY454XE  Re 02329
-// DATA: GY455XE  Im 024BB
-const char menu_stat_1var[] = {
-	"1:Type  2:Data\0"
-	"3:Sum   4:Var\0"
-	"5:Distr 6:MinMax\0"
-	"\0"
-};
-
-// DATA: GY454XE  Re 02359
-// DATA: GY455XE  Im 024EB
-const char menu_stat_2var[] = {
-	"1:Type  2:Data\0"
-	"3:Sum   4:Var\0"
-	"5:Reg   6:MinMax\0"
-	"\0"
-};
-
-// DATA: GY454XE  Re 02389
-// DATA: GY455XE  Im 0251B
-const char menu_eqn[] = {
-	"1:a" "\x9d" "X+b" "\x9d" "Y=c" "\x9d" "\0"
-	"2:a" "\x9d" "X+b" "\x9d" "Y+c" "\x9d" "Z=d" "\x9d" "\0"
-	"3:aX" "\xa2" "+bX+c=0\0"
-	"4:aX" "\xa3" "+bX" "\xa2" "+cX+d=0\0"
-};
-
-// DATA: GY454XE  Re 023C6
-// DATA: GY455XE  Im 02558
-const menu menus[] = {
-// n		 String						Return	Char	Option values/Menu indexes/Tokens (up to 8)			Up		Down	Left	Keycode
-// Placeholder
-/* 0  */	{NULL,						0xff,	0,		{0},												NULL,	NULL,	NULL,	NULL},
-
-// CLR menu (SHIFT 9)
-/* 1  */	{menu_clr,					0xff,	0,		{1, 2, 3},											NULL,	NULL,	NULL,	K_CLR},
-
-// SETUP menu (SHIFT MODE)
-/* 2  */	{menu_setup_0,				0x7f,	0,		{4, 2, 3, 4, 5, 6, 7, 8},							NULL,	3,		NULL,	K_SETUP},
-/* 3  */	{menu_setup_1,				0xc7,	0,		{9, 10, 5, 6, 7, 11},								2,		NULL,	NULL,	K_SETUP},
-/* 4  */	{menu_setup_decimalo,		0xff,	0,		{22, 23},											NULL,	NULL,	2,		K_SETUP},
-/* 5  */	{menu_setup_cmplx_result,	0xff,	0,		{12, 13},											NULL,	NULL,	3,		K_SETUP},
-/* 6  */	{menu_setup_stat_freq,		0xff,	0,		{14, 15},											NULL,	NULL,	3,		K_SETUP},
-/* 7  */	{menu_setup_decimal_mark,	0xff,	0,		{18, 19},											NULL,	NULL,	3,		K_SETUP},
-
-// MATRIX mode (SHIFT 4)
-/* 8  */	{menu_matrix_table,			0xff,	0,		{1, 2},												NULL,	NULL,	NULL,	K_MATRIX},
-/* 9  */	{menu_matrix_data,			0xff,	0,		{3, 4, 5},											NULL,	NULL,	0xfd,	K_MATRIX},
-/* 10 */	{menu_matrix_data,			0x1f,	0,		{6, 7, 8},											NULL,	NULL,	0xfd,	K_MATRIX},
-/* 11 */	{menu_matrix_dim0,			0xff,	0,		{9, 10, 11, 12, 13, 14},							NULL,	12,		0xff,	K_MATRIX},
-/* 12 */	{menu_matrix_dim1,			0xff,	0,		{15, 16, 17},										11,		NULL,	0xff,	K_MATRIX},
-/* 13 */	{menu_matrix,				0xff,	0x3f,	{1, 2, 0xc8, 0xc9, 0xca, 0xcb, 0xc0, 0xc1},			NULL,	NULL,	NULL,	K_MATRIX},
-
-// VECTOR mode (SHIFT 5)
-/* 14 */	{menu_vector_table,			0xff,	0,		{18, 19},											NULL,	NULL,	NULL,	K_VECTOR},
-/* 15 */	{menu_vector_data,			0xff,	0,		{20, 21, 22},										NULL,	NULL,	0xfa,	K_VECTOR},
-/* 16 */	{menu_vector_data,			0x1f,	0,		{23, 24, 25},										NULL,	NULL,	0xfa,	K_VECTOR},
-/* 17 */	{menu_vector_dim,			0xff,	0,		{26, 27},											NULL,	NULL,	0xfc,	K_VECTOR},
-/* 18 */	{menu_vector,				0xff,	0x3f,	{18, 19, 0xcc, 0xcd, 0xce, 0xcf, 0x9e},				NULL,	NULL,	NULL,	K_VECTOR},
-
-// CMPLX mode (SHIFT 2)
-/* 19 */	{menu_cmplx,				0xff,	0xf0,	{0xc3, 0x88, 0x56, 0x55},							NULL,	NULL,	NULL,	K_CMPLX},
-
-// BASE-N mode (SHIFT 3)
-/* 20 */	{menu_base_n_0,				0xff,	0xfc,	{0x6e, 0x6f, 0x7e, 0x7f, 0xc1, 0x62},				NULL,	21,		NULL,	K_BASE},
-/* 21 */	{menu_base_n_1,				0xff,	0xfc,	{0x51, 0x50, 0x53, 0x52},							20,		NULL,	NULL,	K_BASE},
-
-// Angle unit (DRG>) menu (SHIFT Ans)
-/* 22 */	{menu_drg,					0xff,	0xe0,	{0x85, 0x86, 0x87},									NULL,	NULL,	NULL,	K_DRG},
-
-// Hyperbolic functions (hyp) menu
-/* 23 */	{menu_hyp,					0xff,	0xfc,	{0x70, 0x71, 0x72, 0x90, 0x91, 0x92},				NULL,	NULL,	NULL,	K_HYP},
-
-// STAT mode (SHIFT 1)
-/* 24 */	{menu_stat_table,			0x5f,	0,		{27, 20, 28},										NULL,	NULL,	NULL,	K_SD},
-/* 25 */	{menu_stat_1var,			0x43,	0,		{27, 20, 29, 31, 35, 33},							NULL,	NULL,	NULL,	K_SD},
-/* 26 */	{menu_stat_2var,			0x4b,	0,		{27, 20, 30, 32, 23, 34},							NULL,	NULL,	NULL,	K_SD},
-/* 27 */	{menu_stat_type,			0xff,	0,		{1, 2, 3, 4, 5, 6, 7, 8},							NULL,	NULL,	0xff,	K_SD},
-/* 28 */	{menu_stat_data_edit,		0xff,	0,		{21, 22},											NULL,	NULL,	24,		K_SD},
-/* 29 */	{menu_stat_1var_sum,		0xff,	0,		{0x10, 0x11},										NULL,	NULL,	25,		K_SD},
-/* 30 */	{menu_stat_2var_sum,		0xff,	0,		{0x10, 0x11, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18},	NULL,	NULL,	26,		K_SD},
-/* 31 */	{menu_stat_1var_var,		0xff,	0,		{0x12, 0x89, 0xaa, 0xab},							NULL,	NULL,	25,		K_SD},
-/* 32 */	{menu_stat_2var_var,		0xff,	0,		{0x12, 0x89, 0xaa, 0xab, 0x8a, 0xac, 0xad},			NULL,	NULL,	26,		K_SD},
-/* 33 */	{menu_stat_1var_minmax,		0xff,	0xc0,	{0x19, 0x1a},										NULL,	NULL,	25,		K_SD},
-/* 34 */	{menu_stat_2var_minmax,		0xff,	0xf0,	{0x19, 0x1a, 0x1b, 0x1c},							NULL,	NULL,	26,		K_SD},
-/* 35 */	{menu_stat_distr,			0xff,	0xf0,	{0xd0, 0xd1, 0xd2, 0xd3},							NULL,	NULL,	25,		K_SD},
-/* 36 */	{menu_stat_reg,				0xff,	0xf8,	{0x9a, 0x9b, 0x9d, 0x65, 0x66},						NULL,	NULL,	26,		K_SD},
-/* 37 */	{menu_stat_reg_quad,		0xff,	0xfc,	{0x9a, 0x9b, 0x9c, 0x64, 0x67, 0x66},				NULL,	NULL,	26,		K_SD},
-
-// EQN mode
-/* 38 */	{menu_eqn,					0xff,	0,		{1, 2, 3, 4},										NULL,	NULL,	NULL,	NULL},
-
-// MATRIX mode (submode select)
-/* 39 */	{menu_matrix_data,			0xff,	0,		{3, 4, 5},											NULL,	NULL,	NULL,	NULL},
-
-// VECTOR mode (submode select)
-/* 40 */	{menu_vector_data,			0xff,	0,		{20, 21, 22},										NULL,	NULL,	NULL,	NULL},
-
-
-// STAT mode (submode select)
-/* 41 */	{menu_stat_type,			0xff,	0,		{1, 2, 3, 4, 5, 6, 7, 8},							NULL,	NULL,	NULL,	NULL},
-
-// MENU mode
-/* 42 */	{menu_mode,					0xff,	0,		{MODE_COMP, MODE_CMPLX, MODE_STAT, MODE_BASE_N,
-														MODE_EQN, MODE_MATRIX, MODE_TABLE, MODE_VECTOR},	NULL,	NULL,	NULL,	K_MODE}, 
-};
-
-// ====== END DEFINITIONS ======
 
 // FUNCTION: GY454XE  Re 0B804
 // FUNCTION: GY455XE  Im 0C5C6
@@ -2784,7 +2774,7 @@ static char f_0BB42(char **a) {
 
 	v0 = 1;
 	v1 = input_area;
-	*a = f_11030();
+	*a = get_result_str_ptr();
 	if (table_mode == TABLE_RANGE && d_080FD == 4) smart_strcpy(v1, cache_area);
 	else if (!(d_080FE & (1 << 6))) {
 		f_0BAA8(v1);
@@ -3240,6 +3230,16 @@ static char keyfunc_exe(f_09962_struct *a) {
 			read_replay_entry();
 			set_default_result_fmt();
 		}
+#if ENABLE_INEQ == 1
+	} else if (is_ineq_result()) {
+		if (get_result_disp_fmt()) {
+			f_0BA28(a);
+			goto j_0c396;
+		} else {
+			d_080FE = 3;
+			set_default_result_fmt();
+		}
+#endif
 	} else if (*a->input_area) {
 		if (is_table_func_input()) {
 			table_mode = TABLE_RANGE;
@@ -3259,7 +3259,7 @@ j_0c396:
 			num_cpy_im(loc_m22, a->result);
 			if (v1) {	
 				f_04796();
-				if (table_mode == TABLE_SOLVE && d_080FD == 4) v1 = f_10000(&loc_m2, a->result);
+				if (table_mode == TABLE_SOLVE && d_080FD == 4) v1 = num_solve(&loc_m2, a->result);
 				else if (a->mode == MODE_TABLE && d_080FD == 4) {
 					v1 = f_042AA(&loc_m2);
 					if (!v1) {
@@ -3321,7 +3321,7 @@ j_0c4a6:
 	 			if (a->unk_0x0a || (table_mode != 1 && !(table_mode & (1 << 7)))) {
 	 				if (result_template & (1 << 4)) num_fromdigit(&a->result[10], 0);
 	 				result_template = 0;
-	 				f_0A410(a->result);
+	 				table_set_cur_cell(a->result);
  					goto j_0c390;
 	 			} else {
 	 				if (result_template & (1 << 4)) {
@@ -3347,6 +3347,7 @@ j_0c4a6:
 
 // FUNCTION: GY454XE  Re 0C64A
 // FUNCTION: GY455XE  Im 0D40C
+// FUNCTION: GY460XF  Im 0CF8C
 static char keyfunc_fmt_dec(f_09962_struct *a) {
 	char v0;
 	char v1;
@@ -3364,12 +3365,18 @@ j_0c658:
 			if (!a->is_matho) goto j_0c658;
 		} else v1 = RESULT_STANDARD;
 	}
+#if ENABLE_RDEC == 1
+	else if (f_045C2_460F()) {
+		if (v0 == RESULT_FRAC || v0 == RESULT_FRAC_MIX) v1 = RESULT_RDEC;
+	}
+#endif
 	set_result_store_fmt(v1);
 	return 2;
 }
 
 // FUNCTION: GY454XE  Re 0C692
 // FUNCTION: GY455XE  Im 0D454
+// FUNCTION: GY460XF  Im 0CFE8
 static char keyfunc_fmt_frac(f_09962_struct *a) {
 	char v0;
 	char v1;
@@ -3393,6 +3400,7 @@ j_0c6b4:
 
 // FUNCTION: GY454XE  Re 0C6DE
 // FUNCTION: GY455XE  Im 0D4A0
+// FUNCTION: GY460XF  Im 0D034
 static char keyfunc_dms(f_09962_struct *a) {
 	if (result_template & (1 << 4))
 j_0c6ea:
@@ -3411,23 +3419,32 @@ j_0c6ea:
 
 // FUNCTION: GY454XE  Re 0C728
 // FUNCTION: GY455XE  Im 0D4EA
+// FUNCTION: GY460XF  Im 0D086
 static char keyfunc_fact(f_09962_struct *a) {
-	// fx-570/991ES PLUS does not have prime factor
+	// TODO: Add code from a ROM with prime factor
 	return 0;
 }
 
 // FUNCTION: GY454XE  Re 0C72C
 // FUNCTION: GY455XE  Im 0D4EE
+// FUNCTION: GY460XF  Im 0D08A
 static char f_0C72C(f_09962_struct *a) {
 	if (a->mode == MODE_CMPLX)
 j_0c736:
 		return 1;
-	if (!(result_template & (1 << 4)) && !is_eqn_result()) return 0;
+	if (
+		!(result_template & (1 << 4))
+		&& !is_eqn_result()
+#if ENABLE_INEQ == 1
+		&& !is_ineq_result()
+#endif
+		) return 0;
 	else goto j_0c736;
 }
 
 // FUNCTION: GY454XE  Re 0C74C
 // FUNCTION: GY455XE  Im 0D50E
+// FUNCTION: GY460XF  Im 0D0B2
 static char keyfunc_eng(f_09962_struct *a) {
 	char v0;
 
@@ -3443,6 +3460,7 @@ static char keyfunc_eng(f_09962_struct *a) {
 
 // FUNCTION: GY454XE  Re 0C77A
 // FUNCTION: GY455XE  Im 0D53C
+// FUNCTION: GY460XF  Im 0D0E0
 static char keyfunc_eng_r(f_09962_struct *a) {
 	char v0;
 
@@ -3458,6 +3476,7 @@ static char keyfunc_eng_r(f_09962_struct *a) {
 
 // FUNCTION: GY454XE  Re 0C7A8
 // FUNCTION: GY455XE  Im 0D56A
+// FUNCTION: GY460XF  Im 0D10E
 static char keyfunc_del(f_09962_struct *a) {
 	if (!f_03664()) return 0;
 	else {
@@ -3468,6 +3487,7 @@ static char keyfunc_del(f_09962_struct *a) {
 
 // FUNCTION: GY454XE  Re 0C7C2
 // FUNCTION: GY455XE  Im 0D584
+// FUNCTION: GY460XF  Im 0D128
 static char keyfunc_mov_x(f_09962_struct *a) {
 	if (f_0BF8A() == 3) return 3;
 	else if (d_080FE & (1 << 6)) return 0;
@@ -3481,6 +3501,7 @@ static char keyfunc_mov_x(f_09962_struct *a) {
 
 // FUNCTION: GY454XE  Re 0C806
 // FUNCTION: GY455XE  Im 0D5C8
+// FUNCTION: GY460XF  Im 0D16C
 static char keyfunc_mov_y(f_09962_struct *a) {
 	if (d_080FE & (1 << 6)) return 0;
 	else if (_keyfunc_mov_y(a) == 2) return 2;
@@ -3493,6 +3514,7 @@ static char keyfunc_mov_y(f_09962_struct *a) {
 
 // FUNCTION: GY454XE  Re 0C836
 // FUNCTION: GY455XE  Im 0D5F8
+// FUNCTION: GY460XF  Im 0D19C
 static char keyfunc_base(f_09962_struct *a) {
 	submode = base_n_submodes[last_key_keycode - K_BASE_BIN];
 	if (f_03664()) {
@@ -3504,6 +3526,7 @@ static char keyfunc_base(f_09962_struct *a) {
 
 // FUNCTION: GY454XE  Re 0C86A
 // FUNCTION: GY455XE  Im 0D62C
+// FUNCTION: GY460XF  Im 0D1D0
 static char keyfunc_mode(f_09962_struct *a) {
 	print_result_0();
 	return 2;
@@ -3511,6 +3534,7 @@ static char keyfunc_mode(f_09962_struct *a) {
 
 // FUNCTION: GY454XE  Re 0C874
 // FUNCTION: GY455XE  Im 0D636
+// FUNCTION: GY460XF  Im 0D1DA
 static char keyfunc_setup(f_09962_struct *a) {
 	if (is_matho()) f_085D2();
 	if (f_03664()) {

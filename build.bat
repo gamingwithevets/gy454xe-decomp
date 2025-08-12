@@ -36,8 +36,8 @@ call %p%\setenv.bat "%l%\Bin;%p%\Bin" "%p%\Inc;%l%\Inc" "%l%\Dcl" "%p%\Lib"
 
 del /f /s /q ~*.c 2>nul
 
-echo C definitions: !cdefs!
-echo ASM definitions: !asmdefs!
+::echo C definitions: !cdefs!
+::echo ASM definitions: !asmdefs!
 
 echo Compiling...
 for /r %%a in (*.c) do (
