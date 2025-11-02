@@ -1,7 +1,8 @@
-#include "consts.h"
-#include "generals.h"
-#include "input.h"
+#include "../consts.h"
+#include "../generals.h"
+#include "../io/input.h"
 #include "unk2.h"
+#include "unk4.h"
 #include "unk5.h"
 
 // Static functions
@@ -309,6 +310,12 @@ char num_to_str(char *num, char *out, char c) {
 		num_to_str_base_n(num, out);
 		return 0;
 	}
+#if ENABLE_VERIF == 1
+	if (mode == MODE_VERIF) {
+		num_to_str_verif(num, out);
+		return 0;
+	}
+#endif
 	v1 = get_result_store_fmt();
 	if (is_dms_num(num)) {
 		v1 = num_to_str_dms(num, out);
@@ -353,9 +360,14 @@ j_08678:
 // FUNCTION: GY455XE  Im 09088
 // FUNCTION: GY460XF  Im 08998
 void concat_result(char *out, char *res) {
-	if (result_template & (1 << 4) && !use_output_charset) {
+	if (
+		(result_template & (1 << 4) && !use_output_charset)
+#if ENABLE_INEQ == 1
+		|| is_ineq_result()
+#endif
+		) {
 		smart_strcat(out, s_blank_line);
-		out[16 - smart_strlen(res)] = '\0';
+		out[(char)(16 - smart_strlen(res))] = '\0';
 	}
 	smart_strcat(out, res);
 	return;
@@ -629,6 +641,7 @@ char begin_small_font(void) {
 // FUNCTION: GY454XE  Re 08ADC
 // FUNCTION: GY455XE  Im 09400
 // FUNCTION: GY460XF  Im 08D22
+// FUNCTION: GY465XG  Im 08AE0
 char is_table_func_input(void) {
 	int v0 = 0;
 	if (mode == MODE_TABLE && table_mode == TABLE_NONE) v0 = 1;
@@ -637,6 +650,7 @@ char is_table_func_input(void) {
 
 #if ENABLE_RDEC == 1
 // FUNCTION: GY460XF  Im 08D3A
+// FUNCTION: GY465XG  Im 08AF8
 char f_08D3A_460F(void) {
 	if (mode != MODE_COMP)
 j_08d44:

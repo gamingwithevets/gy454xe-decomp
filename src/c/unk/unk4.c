@@ -1,9 +1,10 @@
 #include <string.h>
-#include "init.h"
-#include "consts.h"
-#include "generals.h"
-#include "emu_kb.h"
-#include "input.h"
+#include "../init.h"
+#include "../consts.h"
+#include "../generals.h"
+#include "../emu/emu_kb.h"
+#include "../io/input.h"
+#include "../modes/verif.h"
 #include "unk2.h"
 #include "unk4.h"
 #include "unk5.h"
@@ -301,9 +302,16 @@ const char vars_map[] = {
 	0x4b	// ->M
 };
 
+
 // DATA: GY454XE  Re 02044
 // DATA: GY455XE  Im 021D6
 const char tokens_map[] = {
+#if ENABLE_RDEC == 1
+#define TOKENS_MAP_START K_RDEC
+	0xA4,	// K_RDEC
+#else
+#define TOKENS_MAP_START K_FRAC
+#endif
 	0xAE,	// K_FRAC
 	0x7C,	// K_FRAC_ABC
 	0x5E,	// K_POW
@@ -345,10 +353,10 @@ const char keycodes[64] = {
 // DATA: GY455XE  Im 02228
 const char keycodes_shift[64] = {
 	K_SD,		K_CMPLX,	K_BASE,		K_POL,		K_REC,		NULL,		K_APPROX,	NULL,
-	K_MATRIX,	K_VECTOR,	NULL,		K_PERMU,	K_COMBI,	NULL,		K_DRG,		NULL,
+	K_MATRIX,	K_VECTOR,	K_VERIFY,	K_PERMU,	K_COMBI,	NULL,		K_DRG,		NULL,
 	K_CONST,	K_CONV,		K_CLR,		K_INS,		K_OFF,		NULL,		K_PI,		NULL,
 	K_STO,		K_ENG_R,	K_PERCENT,	K_COMMA,	K_FMT_FRAC,	K_M_MINUS,	K_RAN,		NULL,
-	K_NEGATIVE,	K_DMS_R,	K_ABS,		K_ARCSIN,	K_ARCCOS,	K_ARCTAN,	K_RND,		NULL,
+	K_NEGATIVE,	K_FACT,		K_ABS,		K_ARCSIN,	K_ARCCOS,	K_ARCTAN,	K_RND,		NULL,
 	K_FRAC_ABC,	K_CBRT,		K_POW_3,	K_NTH_RT,	K_10_POW,	K_E_POW,	NULL,		NULL,
 	K_SOLVE,	K_DDX,		K_LEFT,		K_DOWN,		K_FCTRIAL,	K_SUM,		NULL,		NULL,
 	K_SHIFT,	K_ALPHA,	K_UP,		K_RIGHT,	K_SETUP,	NULL,		NULL,		NULL
@@ -362,7 +370,7 @@ const char keycodes_alpha[64] = {
 	NULL,		NULL,		NULL,		K_DEL,		K_AC,		NULL,		K_EULER,	NULL,
 	K_RCL,		NULL,		NULL,		K_VAR_X,	K_VAR_Y,	K_VAR_M,	K_RANINT,	NULL,
 	K_VAR_A,	K_VAR_B,	K_VAR_C,	K_VAR_D,	K_VAR_E,	K_VAR_F,	NULL,		NULL,
-	NULL,		NULL,		NULL,		NULL,		NULL,		NULL,		NULL,		NULL,
+	NULL,		K_RDEC,		NULL,		NULL,		NULL,		NULL,		NULL,		NULL,
 	K_EQUALS,	K_COLON,	K_LEFT,		K_DOWN,		NULL,		NULL,		NULL,		NULL,
 	K_SHIFT,	K_ALPHA,	K_UP,		K_RIGHT,	K_MODE,		K_COLON,	K_EQUALS,	NULL
 };
@@ -426,6 +434,13 @@ const char menu_mode[] = {
 	"3:STAT  4:BASE-N\0"
 	"5:EQN   6:MATRIX\0"
 	"7:TABLE 8:VECTOR"
+};
+
+const char menu_mode_1[] = {
+	"1:INEQ  2:VERIF \0"
+	"3:RATIO         \0"
+	"\0"
+	"\0"
 };
 
 // DATA: GY454XE  Re 0225A
@@ -494,6 +509,8 @@ const char menu_eqn[] = {
 // DATA: GY454XE  Re 023C6
 // DATA: GY455XE  Im 02558
 // DATA: GY460XF  Im 022AC
+// DATA: GY465XG  Im 0222A
+// DATA: GY468XB  Im 022CC
 const menu menus[] = {
 // n		 String						Return	Char	Option values/Menu indexes/Tokens (up to 8)			Up		Down	Left	Keycode
 // Placeholder
@@ -583,7 +600,8 @@ const menu menus[] = {
 
 // MODE menu
 /* 42 */	{menu_mode,					0xff,	0,		{MODE_COMP, MODE_CMPLX, MODE_STAT, MODE_BASE_N,
-														MODE_EQN, MODE_MATRIX, MODE_TABLE, MODE_VECTOR},	NULL,	NULL,	NULL,	K_MODE}, 
+														MODE_EQN, MODE_MATRIX, MODE_TABLE, MODE_VECTOR},	NULL,	MODE_MENU_START+1,	NULL,	K_MODE},
+			{menu_mode_1,				0xff,	0,		{MODE_INEQ, MODE_VERIF, MODE_RATIO},				MODE_MENU_START,	NULL,	NULL,	K_MODE},
 
 #if ENABLE_RATIO == 1
 // RATIO mode (submode select)
@@ -595,6 +613,11 @@ const menu menus[] = {
 			{menu_ineq,					0xff,	0,		{9, 10},											NULL,	NULL,	NULL,	K_MODE},
 			{menu_ineq_poly2,			0xff,	0,		{1, 2, 3, 4},										NULL,	NULL,	0xff,	K_MODE},
 			{menu_ineq_poly3,			0xff,	0,		{5, 6, 7, 8},										NULL,	NULL,	0xff,	K_MODE},
+#endif
+
+#if ENABLE_VERIF == 1
+// VERIF mode (SHIFT 6)
+			{menu_verify,				0xff,	0xfc,	{0x3d, 0x95, 0x3e, 0x3c, 0x96, 0x94},				NULL,	NULL,	NULL,	K_VERIFY},
 #endif
 
 };
@@ -651,7 +674,7 @@ char f_09962(char no_keyfunc) {
 			else if (v0.mode == MODE_STAT || v0.mode == MODE_MATRIX || v0.mode == MODE_VECTOR) last_key_keycode = filter_chars_stat_mat_vct(last_key_keycode);
 			else if (v0.mode == MODE_TABLE) last_key_keycode = filter_chars_table(last_key_keycode);
 			else if (v0.mode == MODE_CMPLX) last_key_keycode = filter_chars_cmplx(last_key_keycode);
-			else if (v0.mode == MODE_VERIF) last_key_keycode = f_03714(last_key_keycode);
+			else if (v0.mode == MODE_VERIF) last_key_keycode = filter_chars_verif(last_key_keycode);
 			if (last_key_keycode == K_EQUALS && v0.mode != MODE_COMP && v0.mode != MODE_CMPLX && v0.mode != MODE_VERIF) last_key_keycode = 0;
 			if (last_key_keycode == 0xa4 && !setup_mathi) last_key_keycode = 0;
 			if (last_key_keycode) {
@@ -1221,6 +1244,25 @@ static void table_eqn_key_handler(void) {
 		table_eqn_draw_lines();
 		f_032A4(unk_0080a[v0].b.m, unk_0080a[v0].b.n, table_y, table_x, &unk_007e6[(table_viewport - 1) * 18]);
 		font_size = 7;
+#if ENABLE_RATIO == 1
+		if (mode == MODE_RATIO) line_print(54, 13, ratio_optn[ratio_mode - 1]);
+#endif
+#if ENABLE_INEQ == 1
+		if (mode == MODE_INEQ) {
+			int y;
+			char *string;
+			int i;
+			if (submode == SMODE_EQN_POLY2) {
+				y = 36;
+				string = menu_ineq_poly2;
+			} else {
+				y = 13;
+				string = menu_ineq_poly3;
+			}
+			for (i = 0; i < ineq_mode; i++) string += strlen(string) + 1;
+			line_print(y, 13, string + 2);
+		}
+#endif
 		num_output_print(v2);
 	}
 j_0a6d4:
@@ -1240,6 +1282,9 @@ static void table_eqn_draw_text(void) {
 	++loc_m6[2];
 	line_print(40, 1, loc_m6);
 	++loc_m6[2];
+#if ENABLE_RATIO == 1
+	if (mode == MODE_RATIO && ratio_mode == 1) ++loc_m6[2];
+#endif
 	line_print(68, 1, loc_m6);
 	if (submode <= SMODE_EQN_SIMUL3) {
 		strcpy(loc_m6, s_table_1);
@@ -1522,7 +1567,7 @@ char *set_dim(char idx, char m, char n) {
 	matvct_dims[idx].b.m = m;
 	matvct_dims[idx].b.n = n;
 	v0 = f_043AC(idx, 1, 1);
-	memzero(v0, 0x5a);
+	memzero(v0, 90);
 	return v0;
 }
 
@@ -2103,21 +2148,21 @@ j_0bd2e:
 			if (v0.b.ki == 0x80 || v0.b.ki == 0x40) {
 				f_04DF6_E();
 				f_04E44_E();
-				f_082A2_E(&emu_kb);
-				f_05428_E(&emu_kb);
+				f_082A2_E(&kb);
+				f_05428_E(&kb);
 				goto j_0bd2e;
 			} else if (v0.b.ki == 0x20) {
-				f_082A2_E(&emu_kb);
-				f_05428_E(&emu_kb);
+				f_082A2_E(&kb);
+				f_05428_E(&kb);
 				goto j_0bd2e;
 			} else if (v0.b.ki == 0x10) {
-				*emu_kb.error_buf = '\0';
-				f_082A2(&emu_kb);
+				*kb.error_buf = '\0';
+				f_082A2_E(&kb);
 				reset();
 			}
 		}
-		*emu_kb.error_buf = '\0';
-		f_082A2(&emu_kb);
+		*kb.error_buf = '\0';
+		f_082A2_E(&kb);
 #endif
 		if (modifiers & (1 << 2)) {
 			v1 = scancode_to_int(&v0, keycodes_alpha);
@@ -2650,8 +2695,8 @@ static char get_storcl_tok(char keycode) {
 // FUNCTION: GY455XE  Im 0C746
 // FUNCTION: GY460XF  Im 0C23C
 static char get_func_tok(char keycode) {
-	if (keycode < K_FRAC || keycode > K_SUM) return 0;
-	else return tokens_map[keycode - K_FRAC];
+	if (keycode < TOKENS_MAP_START || keycode > K_SUM) return 0;
+	else return tokens_map[keycode - TOKENS_MAP_START];
 }
 
 // FUNCTION: GY454XE  Re 0B998
@@ -2660,9 +2705,16 @@ static char get_func_tok(char keycode) {
 static void print_result_0(void) {
 	char num[10];
 
-	if (!is_table_func_input() && !is_mathi()) {
-		num_fromdigit(&num, 0);
-		num_output_print(&num);
+	if (!is_table_func_input()) {
+#if ENABLE_VERIF == 1
+		if (mode == MODE_VERIF) verif_draw_truefalse();
+		else
+#endif
+		if (!is_mathi()) {
+			num_fromdigit(&num, 0);
+			num_output_print(&num);
+
+		}
 	}
 	return;
 }
@@ -2778,6 +2830,9 @@ static char f_0BB42(char **a) {
 	if (table_mode == TABLE_RANGE && d_080FD == 4) smart_strcpy(v1, cache_area);
 	else if (!(d_080FE & (1 << 6))) {
 		f_0BAA8(v1);
+#if ENABLE_VERIF == 1
+		verif_try_insert_eq0(v1);
+#endif
 		smart_strcpy(cache_area, v1);
 	}
 	if (!is_mathi()) {
@@ -3041,15 +3096,18 @@ static void print_result_basic(void) {
 // FUNCTION: GY455XE  Im 0CE4E
 // FUNCTION: GY460XF  Im 0C980
 static void f_0C08C(f_09962_struct *a) {
-	char v0;
 
-	if (is_table_func_input() && !a->unk_0x07) {
+	if (is_table_func_input()) return;
+	if (!a->unk_0x07) {
+		char v0;
+#if ENABLE_VERIF == 1
+		if (mode == MODE_VERIF && !input_area[0] && !cache_area[0] && !mode_ram[0]) verif_draw_truefalse();
+#endif
 		if (a->mode != MODE_CMPLX) num_fromdigit(&a->result[10], 0);
 		v0 = cursor_pos_byte;
 		print_result(a->result);
 		cursor_pos_byte = v0;
 	}
-
 	return;
 }
 
@@ -3062,7 +3120,7 @@ void f_0C0D0(void) {
 	if (
 		is_eqn_result()
 #if ENABLE_RATIO == 1
-		&& is_ratio_result()
+		|| is_ratio_result()
 #endif
 		) f_10EF8();
 	else if (table_mode == TABLE_SOLVE && d_080FD == 0x40) print_continue_prompt();
@@ -3074,7 +3132,10 @@ j_0c10a:
 			if (!is_mathi()) input_print_linei();
 			else {
 				disable_ins();
-				input_print_mathi();
+#if ENABLE_VERIF == 1
+				if (mode != MODE_VERIF || input_area[0] || last_key_keycode == K_DEL)
+#endif
+					input_print_mathi();
 			}
 		} else {
 			d_08122 = 0;
@@ -3091,6 +3152,7 @@ j_0c10a:
 // FUNCTION: GY454XE  Re 0C148
 // FUNCTION: GY455XE  Im 0CF0A
 // FUNCTION: GY460XF  Im 0CA4C
+// FUNCTION: GY465XG  Im 0C4C8
 static char f_0C148(f_09962_struct *a) {
 	char v0;
 
@@ -3163,8 +3225,13 @@ static char keyfunc_sto_rcl(f_09962_struct *a) {
 		if (a->unk_0x07)
 j_0c27a:
 			return 0;
-		else if (a->mode != MODE_TABLE && a->unk_0x0a) {
-		} goto j_0c27a;
+		else if (
+			a->mode != MODE_TABLE
+#if ENABLE_VERIF == 1
+			&& a->mode != MODE_VERIF
+#endif
+			&& !a->unk_0x0a) {
+		} else goto j_0c27a;
 	}
 	set_char_keycode(get_storcl_tok(v1));
 	f_0B736();
@@ -3181,7 +3248,12 @@ j_0c27a:
 			if (v0 == 1)
 j_0c2e2:
 				return 1;
-			else if (a->mode != MODE_TABLE && !a->unk_0x07 && !a->unk_0x0a) {
+			else if (
+				a->mode != MODE_TABLE
+#if ENABLE_VERIF == 1
+				&& a->mode != MODE_VERIF
+#endif
+				&& !a->unk_0x07 && !a->unk_0x0a) {
 			} else goto j_0c2e2;
 		}
 		v0 = K_APPROX;
@@ -3267,7 +3339,11 @@ j_0c396:
 						f_0AF0A();
 						goto j_0c390;
 					}
-				} else v1 = num_parse(&loc_m2, a->result);
+				}
+#if ENABLE_VERIF == 1
+				else if (a->mode == MODE_VERIF) v1 = num_parse_verif(&loc_m2, a->result);
+#endif
+				else v1 = num_parse(&loc_m2, a->result);
 				if (v1 > 0 && v1 < 32) {
 					char tmp = loc_m2 - v2;
 					if (a->is_mathi) math2line(a->input_area, v2, tmp, 0);
@@ -3420,9 +3496,26 @@ j_0c6ea:
 // FUNCTION: GY454XE  Re 0C728
 // FUNCTION: GY455XE  Im 0D4EA
 // FUNCTION: GY460XF  Im 0D086
+// FUNCTION: GY465XG  Im 0CAE8
 static char keyfunc_fact(f_09962_struct *a) {
-	// TODO: Add code from a ROM with prime factor
+#if ENABLE_FACT == 1
+	if (!f_08D3A_460F())
+j_0caf8_465g:
+		return 0;
+	else if (f_1ADB6(a->result)) return f_0C148(a);
+	else {
+		char tmp, tmp2, tmp3;
+		tmp = RESULT_FACT;
+		tmp2 = get_result_disp_fmt();
+		tmp3 = get_result_store_fmt();
+		if (tmp2 == RESULT_FACT) tmp = RESULT_DECIMAL;
+		else if (tmp3 == RESULT_FACT) goto j_0caf8_465g;
+		set_result_store_fmt(tmp);
+		return 2;
+	}
+#else
 	return 0;
+#endif
 }
 
 // FUNCTION: GY454XE  Re 0C72C

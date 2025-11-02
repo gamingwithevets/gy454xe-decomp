@@ -1,8 +1,8 @@
-#include "consts.h"
+#include "../consts.h"
 #include "setup.h"
 #include "menufuncs.h"
-#include "unk4.h"
-#include "unk5.h"
+#include "../unk/unk4.h"
+#include "../unk/unk5.h"
 
 static char menufunc_base_n(void);
 static char menufunc_drg(void);
@@ -421,6 +421,7 @@ static char menufunc_conv(void) {
 
 // FUNCTION: GY454XE  Re 095C2
 // FUNCTION: GY455XE  Im 09EE6
+// FUNCTION: GY465XG  Im 0940C
 static char menufunc_clr(void) {
 	char v0;
 	char v1;
@@ -488,9 +489,15 @@ j_0965c:
 
 // FUNCTION: GY454XE  Re 096E4
 // FUNCTION: GY455XE  Im 0A008
+// FUNCTION: GY465XG  Im 0952E
 static char menufunc_verif(void) {
-	// TODO: Add code from a ROM with VERIF mode
+#if ENABLE_VERIF == 1
+	if (mode != MODE_VERIF) return 0;
+	if (is_func_table()) return 0;
+	return display_token_menu(NULL, VERIF_SMENU_START);
+#else
 	return 0;
+#endif
 }
 
 #if ENABLE_RATIO == 1
@@ -501,7 +508,7 @@ char show_menu_ratio(char idx, char mode_enter) {
 	loc_m1 = idx;
 	if (display_menu(&loc_m1, NULL) == 3) {
 		last_key_keycode = NULL;
-		d_0812E = loc_m1;
+		ratio_mode = loc_m1;
 	} else loc_m1 = 0;
 	mode_init(MODE_RATIO, loc_m1);
 	return 0xff;
@@ -516,7 +523,7 @@ char show_menu_ineq(char idx, char mode_enter) {
 
 	loc_m1 = idx;
 	v0 = 0;
-	d_0812D = 0;
+	ineq_mode = 0;
 	do {
 		switch (display_menu(&loc_m1, 0)) {
 			case 3:
@@ -529,19 +536,20 @@ char show_menu_ineq(char idx, char mode_enter) {
 					loc_m1 = INEQ_SMENU_START+2;
 					continue;
 				} else if (1 <= loc_m1 && loc_m1 <= 4) {
-					d_0812D = ineq_types[loc_m1 - 1];
+					ineq_mode = ineq_types[loc_m1 - 1];
 					v0 = SMODE_EQN_POLY2;
 				} else if (5 <= loc_m1 && loc_m1 <= 8) {
-					d_0812D = ineq_types[loc_m1 - 5];
+					ineq_mode = ineq_types[loc_m1 - 5];
 					v0 = SMODE_EQN_POLY3;
 				}
 				break;
 			case 1:
 				if (loc_m1 == 0xff) {
 					v0 = 0;
-					v1 = INEQ_SMENU_START;
+					loc_m1 = INEQ_SMENU_START;
 					continue;
 				} else break;
+		}
 		break;
 	} while (1);
 	mode_init(MODE_INEQ, v0);

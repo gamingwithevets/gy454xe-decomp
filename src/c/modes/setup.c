@@ -1,10 +1,10 @@
 #include <string.h>
-#include "consts.h"
-#include "generals.h"
-#include "diagnostic.h"
+#include "../consts.h"
+#include "../generals.h"
+#include "../diagnostic.h"
 #include "setup.h"
 #include "menufuncs.h"
-#include "unk4.h"
+#include "../unk/unk4.h"
 
 static void f_08EBA(char a);
 static char show_eqn_select(void);
@@ -56,7 +56,7 @@ void mode_init(char m, char sm) {
 			break;
 #if ENABLE_RATIO == 1
 		case MODE_RATIO:
-			if (!submode) d_0812E = 1;
+			if (!submode) ratio_mode = 1;
 			submode = SMODE_EQN_POLY2;
 			table_ratio_setup();
 			break;
@@ -65,7 +65,7 @@ void mode_init(char m, char sm) {
 		case MODE_INEQ:
 			if (!submode) {
 				submode = SMODE_EQN_POLY2;
-				d_0812D = 0;
+				ineq_mode = 0;
 			}
 			table_ineq_setup();
 			if (_m == MODE_INEQ && submode == _sm) {

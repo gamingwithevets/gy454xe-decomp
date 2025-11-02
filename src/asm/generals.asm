@@ -237,11 +237,11 @@ _blacklist_cmplx:
 	DB 05FH	; Remainder (÷R)
 	DB 0
 
-; Used in VERIF mode maybe?
 ; DATA: GY454XE  Re 0086D
 ; DATA: GY455XE  Im 0086D
 ; DATA: GY460XF  Im 008DF
-_blacklist_verif__:
+; DATA: GY465XG  Im 00864
+_blacklist_verif:
 	DB 6AH	; Integral function (∫)
 	DB 6BH	; Derivative function (d/dx)
 	DB 69H	; Summation function (∑)
@@ -249,6 +249,7 @@ _blacklist_verif__:
 	DB 6DH	; Rec(
 	DB 3AH	; Multi-statement colon
 	DB 05FH	; Remainder (÷R)
+	DB 0
 
 ; DATA: GY454XE  Re 00875
 ; DATA: GY455XE  Im 00875
@@ -2586,6 +2587,8 @@ RSEG $$NCODgenerals
 ; FUNCTION: GY454XE  Re 02676
 ; FUNCTION: GY455XE  Im 02808
 ; FUNCTION: GY460XF  Im 0249C
+; FUNCTION: GY465XG  Im 023DA
+; FUNCTION: GY468XB  Im 0247C
 _f_02676:
 	MOV R1, #0H
 	SRL R0, #1
@@ -3774,6 +3777,7 @@ _line_print_col_0:
 ; FUNCTION: GY454XE  Re 02E7A
 ; FUNCTION: GY455XE  Im 0300C
 ; FUNCTION: GY460XF  Im 02CA6
+; FUNCTION: GY465XG  Im 02BE4
 _line_print:
 	PUSH LR
 	PUSH QR8
@@ -5016,6 +5020,18 @@ _filter_chars_cmplx:
 	BNE _$j_036f6
 	LEA _blacklist_cmplx
 	BAL _$j_036ec
+
+; FUNCTION: GY465XG  Im 033F8
+_filter_chars_verif:
+; Casio didn't add an else clause here so in ROMs without VERIF it runs
+; the very next function instead. What a joke!
+IF ENABLE_VERIF == 1
+	L R1, _mode
+	CMP R1, #89H
+	BNE _$j_036f6
+	LEA _blacklist_verif
+	BAL _$j_036ec
+ENDIF
 
 ; FUNCTION: GY454XE  Re 03714
 ; FUNCTION: GY455XE  Im 03820
@@ -7447,6 +7463,7 @@ PUBLIC _filter_chars_stat_mat_vct
 PUBLIC _filter_chars_tables
 PUBLIC _filter_chars_table
 PUBLIC _filter_chars_cmplx
+PUBLIC _filter_chars_verif
 PUBLIC _f_03714
 PUBLIC _num_sum_1__
 PUBLIC _f_03A72

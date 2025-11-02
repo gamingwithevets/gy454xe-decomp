@@ -1,10 +1,11 @@
 #if ENABLE_INEQ == 1
 
-#include "generals.h"
-#include "init.h"
-#include "input.h"
-#include "unk2.h"
-#include "unk5.h"
+#include "ineq.h"
+#include "../generals.h"
+#include "../init.h"
+#include "../io/input.h"
+#include "../unk/unk2.h"
+#include "../unk/unk5.h"
 
 // FUNCTION: GY460XF  Im 07D8A
 static char *concat_x_eq(char *str) {
@@ -78,8 +79,8 @@ static char *concat_ineq_result_template(char *out, char b, char c) {
 				case 20:
 					concat_x_le(out);
 					break;
-			break;
 			}
+			break;
 		case 1:
 			switch (c) {
 				case 7:
@@ -115,8 +116,9 @@ static char *concat_ineq_result_template(char *out, char b, char c) {
 				case 15:
 					concat_argsep(out);
 					concat_x_eq(out);
-			break;
+					break;
 			}
+			break;
 		case 2:
 			switch (c) {
 				case 11:
@@ -149,7 +151,7 @@ static char *concat_ineq_result_template(char *out, char b, char c) {
 }
 
 // FUNCTION: GY460XF  Im 07F10
-void f_07F10_460F(void) {
+void print_result_ineq(void) {
 	char v0;
 	char v1;
 	char v2;
@@ -160,7 +162,7 @@ void f_07F10_460F(void) {
 	char v7;
 	char loc_m36[36];
 	char loc_m72[36];
-	char **loc_m74;
+	char loc_m74[2];
 	char loc_m90[16];
 
 	v0 = mode_ram[360];
@@ -183,7 +185,7 @@ void f_07F10_460F(void) {
 		if (!v4 || !v3) v4 = loc_m72;
 		font_size = 7;
 		// STRING: GY460XF  Im 007E6
-		smart_strcpy(loc_m74, "@");
+		smart_strcpy(loc_m74, "\x40");
 		if (v3) {
 			if (v1 != RESULT_DECIMAL) {
 				v2 = 1;
@@ -211,9 +213,8 @@ j_07fcc_460f:
 		v7 = 1;
 		if (v0 >= 9) v7 = 2;
 		if (v0 >= 17) v7 = 3;
-		for (i = 0; i <= v7; i++) {
-			char tmp;
-			v6 = select_result_format(v6, num_to_str(&mode_ram[370 + i * 10], loc_m36, 0));
+		for (i = 1; i <= v7; i++) {
+			v6 = select_result_format(v6, num_to_str(&mode_ram[370 + i * 10 - 10], loc_m36, 0));
 			++*loc_m74;
 			smart_strcat(loc_m90, loc_m74);
 			loc_m72[0] = '\0';
@@ -233,8 +234,8 @@ j_07fcc_460f:
 		}
 		line_print(0, 1, loc_m90);
 		set_result_store2disp(v6);
-		if (!v2) return;
-		else goto j_07fcc_460f;
+		if (v2) goto j_07fcc_460f;
+		else return;
 	}
 }
 

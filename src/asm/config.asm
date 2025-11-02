@@ -43,7 +43,7 @@ TSEG #1 AT 0FFD4H
 ; Disable radical format.
 	DB 0
 ; Recurring decimal display.
-;   0 = Dot above first and last repeating digit. Used in UK models.
+;   0 = Dot above first and last repeating digit. Used in JP and UK models.
 ;   1 = Overline. Used in American models.
 ;   2 = Underline. Unused.
 ;   3 = Parentheses. Used in VN models.
@@ -59,12 +59,12 @@ TSEG #1 AT 0FFF4H
 ; == Version Info ==
 
 ; Version string. Must be exactly 6 characters.
-	DB "GY454X"
+	DB "GY45DX"
 ; Revision string. Must be exactly 2 characters.
-	DB "E "
+	DB "--"
 ; ROM checksum (see diag_get_checksum for checksum algorithm).
 ; Must be manually filled in. (Seriously though, does Casio use an auto checksum calculator? I doubt it)
-	DW 8929H
+	DW 1BBAH
 
 ; Filler bytes. They don't do anything.
 DB 1, 1

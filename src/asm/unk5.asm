@@ -473,21 +473,25 @@ _num_parsers:
 
 ; DATA: GY454XE  Re 017BE
 ; DATA: GY455XE  Im 017BE
+; DATA: GY460XF  Im 01830
 _num_0:
 	DB 00H, 00H, 00H, 00H, 00H, 00H, 00H, 00H, 00H, 00H
 
 ; DATA: GY454XE  Re 017C8
 ; DATA: GY455XE  Im 017C8
+; DATA: GY460XF  Im 0183A
 _num_1:
 	DB 01H, 00H, 00H, 00H, 00H, 00H, 00H, 00H, 00H, 01H
 
 ; DATA: GY454XE  Re 017D2
 ; DATA: GY455XE  Im 017D2
+; DATA: GY460XF  Im 01844
 _num_2:
 	DB 02H, 00H, 00H, 00H, 00H, 00H, 00H, 00H, 00H, 01H
 
 ; DATA: GY454XE  Re 017DC
 ; DATA: GY455XE  Im 017DC
+; DATA: GY460XF  Im 0184E
 _num_3:
 	DB 03H, 00H, 00H, 00H, 00H, 00H, 00H, 00H, 00H, 01H
 
@@ -499,24 +503,29 @@ _num_4:
 
 ; DATA: GY454XE  Re 017F0
 ; DATA: GY455XE  Im 017F0
+; DATA: GY460XF  Im 01862
 _num_32:
 	DB 03H, 20H, 00H, 00H, 00H, 00H, 00H, 00H, 01H, 01H
 
 ; DATA: GY454XE  Re 017FA
 ; DATA: GY455XE  Im 017FA
+; DATA: GY460XF  Im 0186B
 _num_100:
 	DB 01H, 00H, 00H, 00H, 00H, 00H, 00H, 00H, 02H, 01H
 
 ; DATA: GY454XE  Re 01804
 ; DATA: GY455XE  Im 01804
+; DATA: GY460XF  Im 01876
 _num_256:
 	DB 02H, 56H, 00H, 00H, 00H, 00H, 00H, 00H, 02H, 01H
 
 ; DATA: GY454XE  Re 0180E
 ; DATA: GY455XE  Im 0180E
+; DATA: GY460XF  Im 01880
 _num_25200:
 	DB 02H, 52H, 00H, 00H, 00H, 00H, 00H, 00H, 04H, 01H
 
+IF ENABLE_CONST == 1
 ; DATA: GY454XE  Re 01818
 ; DATA: GY455XE  Im 01818
 _num_consts:
@@ -560,11 +569,13 @@ _num_consts:
 	DB 02H, 73H, 15H, 00H, 00H, 00H, 00H, 00H, 02H, 01H  ; t   | 273.15
 	DB 06H, 67H, 42H, 80H, 00H, 00H, 00H, 00H, 89H, 00H  ; G   | 6.67428E-11
 	DB 01H, 01H, 32H, 50H, 00H, 00H, 00H, 00H, 05H, 01H  ; atm | 101325
+ENDIF
 
 RSEG $$NTABunk5_2
 
 ; DATA: GY454XE  Re 019A8
 ; DATA: GY455XE  Im 019A8
+; DATA: GY460XF  Im 0188A
 _jmp_019a8:
 	DW _f_1B4A0
  	DW _f_1B4B6
@@ -593,6 +604,7 @@ _jmp_019a8:
 	DW _f_1305A
 	DW _num_random
 
+IF ENABLE_CONV == 1
 ; DATA: GY454XE  Re 019DC
 ; DATA: GY455XE  Im 019DC
 _num_convs:
@@ -616,19 +628,29 @@ _num_convs:
 	DB 06H, 89H, 47H, 57H, 00H, 00H, 00H, 00H, 00H, 01H  ; lbf/in²>kPa | 6.894757
 	DB 01H, 80H, 00H, 00H, 00H, 00H, 00H, 00H, 00H, 01H  ; °C>°F (+32) | 1.8
 	DB 04H, 18H, 58H, 00H, 00H, 00H, 00H, 00H, 00H, 01H  ; cal>J       | 4.1858
+ENDIF
+
+; DATA: GY454XE  Re 01AA4
+; DATA: GY455XE  Im 01AA4
+; DATA: GY460XF  Im 018BE
+_unk_01aa4:
+	DB 2, 1, 4, 7, 4, 8, 3, 6, 4, 7
 
 ; DATA: GY454XE  Re 01AAE
 ; DATA: GY455XE  Im 01AAE
+; DATA: GY460XF  Im 018C8
 _num_2147483648:
 	DB 02H, 14H, 74H, 83H, 64H, 80H, 00H, 00H, 09H, 01H
 
 ; DATA: GY454XE  Re 01AB8
 ; DATA: GY455XE  Im 01AB8
+; DATA: GY460XF  Im 018D2
 _num_32768:
 	DB 03H, 27H, 68H, 00H, 00H, 00H, 00H, 00H, 04H, 01H
 
 ; DATA: GY454XE  Re 01AC2
 ; DATA: GY455XE  Im 01AC2
+; DATA: GY460XF  Im 018DC
 _bcd_weights:
 	DW WORD1 1000000000
 	DW WORD2 1000000000
@@ -651,6 +673,7 @@ _bcd_weights:
 
 ; DATA: GY454XE  Re 01AE6
 ; DATA: GY455XE  Im 01AE6
+; DATA: GY460XF  Im 01900
 _jmp_01ae6:
 	DW _f_13B4A
 	DW _f_135C6
@@ -756,6 +779,7 @@ _jmp_01ae6:
 
 ; DATA: GY454XE  Re 01BB0
 ; DATA: GY455XE  Im 01BB0
+; DATA: GY460XF  Im 019CA
 _num_sin_consts:
 	DB 02H, 58H, 81H, 90H, 45H, 10H, 25H, 21H, 99H, 00H  ;  sin(15°) | (sqrt(6) - sqrt(2))/4
 	DB 05H, 00H, 00H, 00H, 00H, 00H, 00H, 00H, 99H, 00H  ;  sin(30°) | 1/2
@@ -770,6 +794,7 @@ _num_sin_consts:
 
 ; DATA: GY454XE  Re 01C14
 ; DATA: GY455XE  Im 01C14
+; DATA: GY460XF  Im 01A2E
 _num_tan_consts:
 	DB 02H, 67H, 94H, 91H, 92H, 43H, 11H, 23H, 99H, 00H  ;  tan(15°) | 2 - sqrt(3)
 	DB 05H, 77H, 35H, 02H, 69H, 18H, 96H, 26H, 99H, 00H  ;  tan(30°) | sqrt(3)/3
@@ -2582,11 +2607,11 @@ _$j_10e3e:
 	MOV R0, R9      ; Swap the result formats
 	MOV R1, R8
 _$j_10e4e:
-	CMP R0, #0DH    ; If result format 1 is standard...
+	CMP R0, #0DH    ; If result format 1 is not standard, return it
 	BNE _$j_10e58
-	CMP R1, #0AH    ; and result format 2 is decimal...
+	CMP R1, #0AH    ; If result format 2 is decimal, return result format 1
 	BEQ _$j_10e58
-	MOV R0, R1      ; return the decimal one
+	MOV R0, R1      ; Otherwise, return result format 2
 _$j_10e58:
 	POP ER8
 	RT
@@ -3101,7 +3126,7 @@ _f_11142:
 	BGE _$j_111c2
 	CMP R0, #20H
 	BEQ _$j_111a6
-	L ER0, 8H[ER12]  ;  Unnecessary Disp16 used instead of Disp6!
+	L ER0, 8H[BP]  ;  Unnecessary Disp16 used instead of Disp6!
 	CMP R1, #4H
 	BLT _$j_111a6
 	MOV ER0, ER8
@@ -5217,7 +5242,7 @@ _$j_121c6:
 	MOV ER0, ER10
 	MOV R2, #1H
 	BL _num_fromdigit
-	L ER0, 8H[ER12]  ;  Unnecessary Disp16 used instead of Disp6!
+	L ER0, 8H[BP]  ;  Unnecessary Disp16 used instead of Disp6!
 	CMP R1, #4H
 	BGE _$j_122a6
 	MOV ER2, ER10
@@ -7226,13 +7251,13 @@ IF ENABLE_RATIO == 1
 	ADD ER10, #14H
 	MOV R0, #BYTE1 _mode_ram
 	MOV R1, #BYTE2 _mode_ram
-	L R2, _d_0812E
+	L R2, _ratio_mode
 	CMP R2, #2H
-	BC EQ, _$j_128ac_460f
+	BEQ _$j_128ac_460f
 	MOV ER2, FP
 	BL _f_154E0
 	MOV ER2, BP
-	BC AL, _$j_128b4_460f
+	BAL _$j_128b4_460f
 _$j_128ac_460f:
 	MOV ER2, BP
 	BL _f_154E0
@@ -7245,7 +7270,7 @@ _$j_128b4_460f:
 	BL _f_154E0
 	BL _f_16CF0
 	CMP R0, #1H
-	BC EQ, _$j_128dc_460f
+	BEQ _$j_128dc_460f
 	MOV ER0, FP
 	BL _f_15EE4
 	MOV ER0, BP
@@ -7255,45 +7280,45 @@ _$j_128b4_460f:
 _$j_128dc_460f:
 	L R0, [FP]
 	TB R0.5
-	BC NE, _$j_1293c_460f
+	BNE _$j_1293c_460f
 	TB R0.7
-	BC NE, _$j_1293c_460f
+	BNE _$j_1293c_460f
 	L R0, [ER10]
 	TB R0.5
-	BC NE, _$j_1293c_460f
+	BNE _$j_1293c_460f
 	TB R0.7
-	BC NE, _$j_1293c_460f
+	BNE _$j_1293c_460f
 	L ER0, 8H[FP]
 	CMP R1, #5H
-	BC LT, _$j_128f8_460f
+	BLT _$j_128f8_460f
 	ADD R1, #-5H
 _$j_128f8_460f:
 	CMP R1, #0H
-	BC EQ, _$j_12914_460f
+	BEQ _$j_12914_460f
 	CMP R0, #50H
-	BC LT, _$j_1293c_460f
+	BLT _$j_1293c_460f
 	L ER0, 8H[ER10]
 	CMP R1, #5H
-	BC LT, _$j_1290a_460f
+	BLT _$j_1290a_460f
 	ADD R1, #-5H
 _$j_1290a_460f:
 	CMP R1, #0H
-	BC EQ, _$j_1293c_460f
+	BEQ _$j_1293c_460f
 	CMP R0, #50H
-	BC LT, _$j_1293c_460f
-	BC AL, _$j_1292a_460f
+	BLT _$j_1293c_460f
+	BAL _$j_1292a_460f
 _$j_12914_460f:
 	CMP R0, #51H
-	BC GE, _$j_1293c_460f
+	BGE _$j_1293c_460f
 	L ER0, 8H[ER10]
 	CMP R1, #5H
-	BC LT, _$j_12922_460f
+	BLT _$j_12922_460f
 	ADD R1, #-5H
 _$j_12922_460f:
 	CMP R1, #0H
-	BC NE, _$j_1293c_460f
+	BNE _$j_1293c_460f
 	CMP R0, #51H
-	BC GE, _$j_1293c_460f
+	BGE _$j_1293c_460f
 _$j_1292a_460f:
 	MOV ER2, BP
 	MOV ER0, FP
@@ -7301,7 +7326,7 @@ _$j_1292a_460f:
 	MOV ER2, ER10
 	MOV ER0, FP
 	BL _num_mul_1
-	BC AL, _$j_1294c_460f
+	BAL _$j_1294c_460f
 _$j_1293c_460f:
 	MOV ER2, ER10
 	MOV ER0, FP
@@ -7313,11 +7338,11 @@ _$j_1294c_460f:
 	MOV ER0, FP
 	BL _f_17202
 	CMP R0, #0H
-	BC NE, _$j_129a6_460f
+	BNE _$j_129a6_460f
 	MOV ER0, FP
 	BL _f_1B208
 	L R0, [FP]
-	BC EQ, _$j_129ac_460f
+	BEQ _$j_129ac_460f
 	MOV R2, #0H
 	MOV ER0, BP
 	BL _num_fromdigit
@@ -7339,7 +7364,7 @@ _$j_1294c_460f:
 	MOV R2, #0EH
 	BL _memzero
 	MOV R10, #BYTE1 _result
-	MOV R11, #BYTE1 _result
+	MOV R11, #BYTE2 _result
 	MOV ER2, FP
 	MOV ER0, ER10
 	BL _num_cpy_im
@@ -7351,7 +7376,7 @@ _$j_129a6_460f:
 	POP PC
 _$j_129ac_460f:
 	MOV R0, #3H
-	BC AL, _$j_129a6_460f
+	BAL _$j_129a6_460f
 ELSE
 	RT
 ENDIF
@@ -7359,8 +7384,103 @@ ENDIF
 ; FUNCTION: GY454XE  Re 131EA
 ; FUNCTION: GY455XE  Im 131EA
 ; FUNCTION: GY460XF  Im 129B0
-_f_131EA:
+; FUNCTION: GY465XG  Im 12884
+_num_parse_verif:
+IF ENABLE_VERIF == 1
+	PUSH LR
+	PUSH XR4
+	PUSH QR8
+	ADD SP, #-28H
+	MOV FP, SP
+	MOV ER4, ER0
+	MOV ER6, ER2
+	MOV BP, FP
+	ADD BP, #14H
+	MOV R8, #1H
+	MOV ER2, FP
+	BL _num_parse
+	CMP R0, #0H
+	BNE _$j_12938_465g
+	LEA [ER4]
+	DEC [EA]
+	L ER10, [ER4]
+	L R10, [ER10]
+	BEQ _$j_12934_465g
+	AND R10, #00001111B
+	MOV R9, R10
+	CMP R9, #0DH
+	BEQ _$j_128b6_465g
+	RB R9.3
+_$j_128b6_465g:
+	BL _check_ac
+	CMP R0, #0H
+	BNE _$j_12938_465g
+	LEA [ER4]
+	INC [EA]
+	MOV ER0, ER4
+	MOV ER2, BP
+	BL _num_parse
+	CMP R0, #0H
+	BNE _$j_12938_465g
+	RB R10.3
+	BEQ _$j_128d4_465g
+	ADD R10, #3H
+_$j_128d4_465g:
+	ADD R10, #-4H
+	SLL R10, #1
+	MOV R11, #0H
+	ADD R10, #BYTE1 _jmp_19afa_465g
+	ADDC R11, #BYTE2 _jmp_19afa_465g
+	L ER10, 1H:[ER10]
+	MOV ER0, FP
+	MOV ER2, BP
+	BL ER10
+	CMP R0, #0H
+	BNE _$j_12938_465g
+	AND R8, R1
+	LEA [ER4]
+	DEC [EA]
+	L ER10, [ER4]
+	L R10, [ER10]
+	BEQ _$j_1291a_465g
+	MOV ER0, BP
+	MOV ER2, FP
+	BL _f_154E0
+	AND R10, #00001111B
+	CMP R10, #0DH
+	BEQ _$j_128b6_465g
+	CMP R9, #0DH
+	BNE _$j_12910_465g
+	MOV R9, R10
+	RB R9.3
+	BAL _$j_128b6_465g
+_$j_12910_465g:
+	MOV R0, R10
+	RB R0.3
+	CMP R0, R9
+	BEQ _$j_128b6_465g
+	BAL _$j_12934_465g
+_$j_1291a_465g:
+	MOV R2, R8
+	MOV ER0, ER6
+	BL _num_fromdigit
+	MOV R2, #0H
+	MOV ER0, ER6
+	ADD ER0, #0AH
+	BL _num_fromdigit
+_$j_1292c_465g:
+	ADD SP, #28H
+	POP QR8
+	POP XR4
+	POP PC
+_$j_12934_465g:
+	MOV R0, #2H
+	BAL _$j_1292c_465g
+_$j_12938_465g:
+	BAL _$j_1292c_465g
+ELSE
 	RT
+ENDIF
 
 ; FUNCTION: GY454XE  Re 131EC
 ; FUNCTION: GY455XE  Im 131EC
@@ -7373,80 +7493,80 @@ IF ENABLE_INEQ == 1
 	MOV FP, SP
 	BL _f_13BEA
 	CMP R0, #0H
-	BC NE, _$j_12a7e_460f
+	BNE _$j_12a7e_460f
 	MOV R8, R1
 	L R0, _submode
 	CMP R0, #3H
-	BC NE, _$j_129fa_460f
+	BNE _$j_129fa_460f
 	CMP R1, #1H
-	BC EQ, _$j_129d4_460f
-	BC GE, _$j_129da_460f
-	BC AL, _$j_129de_460f
+	BEQ _$j_129d4_460f
+	BGE _$j_129da_460f
+	BAL _$j_129de_460f
 _$j_129d4_460f:
 	BL _f_12C62_460F
-	BC AL, _$j_129de_460f
+	BAL _$j_129de_460f
 _$j_129da_460f:
 	BL _f_12C06_460F
 _$j_129de_460f:
-	L R12, _d_0812D
+	L R12, _ineq_mode
 	MOV R13, #0H
 	BL _f_12AF0_460F
-	BC NE, _$j_129ec_460f
+	BNE _$j_129ec_460f
 	ADD BP, #4H
 _$j_129ec_460f:
 	MOV R0, R8
 	MOV R1, #0H
 	SLL R0, #3
 	ADD BP, ER0
-	ADD R12, #5EH
-	ADDC R13, #0ACH
-	BC AL, _$j_12a26_460f
+	ADD R12, #BYTE1 _unk_1ac5e_460f
+	ADDC R13, #BYTE2 _unk_1ac5e_460f
+	BAL _$j_12a26_460f
 _$j_129fa_460f:
 	CMP R1, #2H
-	BC EQ, _$j_12a34_460f
-	BC GE, _$j_12a06_460f
+	BEQ _$j_12a34_460f
+	BGE _$j_12a06_460f
 	BL _f_12C62_460F
-	BC AL, _$j_12a0a_460f
+	BAL _$j_12a0a_460f
 _$j_12a06_460f:
 	BL _f_12AFE_460F
 _$j_12a0a_460f:
-	L R12, _d_0812D
+	L R12, _ineq_mode
 	MOV R13, #0H
 	BL _f_12AF0_460F
-	BC NE, _$j_12a18_460f
+	BNE _$j_12a18_460f
 	ADD BP, #4H
 _$j_12a18_460f:
 	MOV ER0, #0H
 	CMP R8, #1H
-	BC EQ, _$j_12a20_460f
+	BEQ _$j_12a20_460f
 	MOV R0, #8H
 _$j_12a20_460f:
 	ADD BP, ER0
-	ADD R12, #76H
-	ADDC R13, #0ACH
+	ADD R12, #BYTE1 _unk_1ac76_460f
+	ADDC R13, #BYTE2 _unk_1ac76_460f
 _$j_12a26_460f:
 	L R0, 1H:[BP]
 	LEA (_mode_ram+360)
 	ST R0, [EA+]
 	ST R8, [EA+]
-	BC AL, _$j_12a7c_460f
+	BAL _$j_12a7c_460f
 _$j_12a34_460f:
 	BL _f_12C06_460F
-	L R12, _d_0812D
+	L R12, _ineq_mode
 	MOV R13, #0H
 	BL _f_12AF0_460F
-	BC NE, _$j_12a46_460f
+	BNE _$j_12a46_460f
 	ADD BP, #4H
 _$j_12a46_460f:
 	BL _f_12A84_460F
-	BC NE, _$j_12a4e_460f
+	BNE _$j_12a4e_460f
 	ADD BP, #8H
 _$j_12a4e_460f:
-	ADD R12, #86H
-	ADDC R13, #0ACH
+	ADD R12, #BYTE1 _unk_1ac86_460f
+	ADDC R13, #BYTE2 _unk_1ac86_460f
 	L R0, 1H:[BP]
 	RB R0.7
-	BC EQ, _$j_12a70_460f
+	BEQ _$j_12a70_460f
 	PUSH R0
 	MOV R2, #BYTE1 (_mode_ram+360)
 	MOV R3, #BYTE2 (_mode_ram+360)
@@ -7457,10 +7577,10 @@ _$j_12a4e_460f:
 	POP R0
 _$j_12a6c_460f:
 	MOV R8, #1H
-	BC AL, _$j_12a74_460f
+	BAL _$j_12a74_460f
 _$j_12a70_460f:
 	RB R0.6
-	BC NE, _$j_12a6c_460f
+	BNE _$j_12a6c_460f
 _$j_12a74_460f:
 	LEA (_mode_ram+360)
 	ST R0, [EA+]
@@ -7480,18 +7600,18 @@ _f_12A84_460F:
 	MOV FP, SP
 	MOV BP, FP
 	ADD BP, #0AH
-	MOV R0, #0F8H
-	MOV R1, #82H
+	MOV R0, #BYTE1 (_mode_ram+90)
+	MOV R1, #BYTE2 (_mode_ram+90)
 	BL _num_invalid__
 	CMP R0, #1H
-	BC NE, _$j_12ac2_460f
-	MOV R0, #0B2H
-	MOV R1, #82H
+	BNE _$j_12ac2_460f
+	MOV R0, #BYTE1 (_mode_ram+20)
+	MOV R1, #BYTE2 (_mode_ram+20)
 	BL _num_invalid__
 	CMP R0, #1H
-	BC EQ, _$j_12ac2_460f
-	MOV R0, #60H
-	MOV R1, #84H
+	BEQ _$j_12ac2_460f
+	MOV R0, #BYTE1 (_mode_ram+450)
+	MOV R1, #BYTE2 (_mode_ram+450)
 	MOV ER2, FP
 	BL _f_154E0
 	MOV ER2, ER0
@@ -7501,8 +7621,8 @@ _f_12A84_460F:
 	MOV ER0, FP
 	BL _f_154E0
 _$j_12ac2_460f:
-	MOV R0, #60H
-	MOV R1, #84H
+	MOV R0, #BYTE1 (_mode_ram+450)
+	MOV R1, #BYTE2 (_mode_ram+450)
 	MOV ER2, FP
 	BL _f_154E0
 	ADD ER0, #1EH
@@ -7523,8 +7643,8 @@ _$j_12ac2_460f:
 ; FUNCTION: GY460XF  Im 12AF0
 _f_12AF0_460F:
 	PUSH LR
-	MOV R0, #9EH
-	MOV R1, #82H
+	MOV R0, #BYTE1 _mode_ram
+	MOV R1, #BYTE2 _mode_ram
 	BL _num_invalid__
 	CMP R0, #2H
 	POP PC
@@ -7538,11 +7658,11 @@ _f_12AFE_460F:
 	ADD BP, #0AH
 	MOV ER10, FP
 	ADD ER10, #14H
-	MOV R8, #6H
-	MOV R9, #84H
+	MOV R8, #BYTE1 (_mode_ram+360)
+	MOV R9, #BYTE2 (_mode_ram+360)
 	ADD ER8, #0AH
-	MOV R6, #60H
-	MOV R7, #84H
+	MOV R6, #BYTE1 (_mode_ram+450)
+	MOV R7, #BYTE2 (_mode_ram+450)
 	MOV ER0, ER6
 	MOV ER2, FP
 	BL _f_154E0
@@ -7562,12 +7682,12 @@ _f_12AFE_460F:
 	MOV ER0, FP
 	BL _num_cmp
 	CMP R0, #4H
-	BC EQ, _$j_12ba6_460f
+	BEQ _$j_12ba6_460f
 	MOV ER2, ER10
 	MOV ER0, FP
 	BL _num_cmp
 	CMP R0, #2H
-	BC EQ, _$j_12b6e_460f
+	BEQ _$j_12b6e_460f
 	MOV ER0, ER6
 	ADD ER0, #3CH
 	MOV ER2, ER8
@@ -7576,7 +7696,7 @@ _f_12AFE_460F:
 	ADD ER2, #0AH
 	BL _f_154E0
 	ADD ER0, #1EH
-	BC AL, _$j_12bfa_460f
+	BAL _$j_12bfa_460f
 _$j_12b6e_460f:
 	MOV ER0, ER6
 	MOV ER2, ER8
@@ -7585,14 +7705,14 @@ _$j_12b6e_460f:
 	MOV ER0, BP
 	BL _num_cmp
 	CMP R0, #2H
-	BC EQ, _$j_12b92_460f
+	BEQ _$j_12b92_460f
 	MOV ER0, ER6
 	ADD ER0, #3CH
 	MOV ER2, ER8
 	ADD ER2, #0AH
 	BL _f_154E0
 	ADD ER0, #-1EH
-	BC AL, _$j_12bfa_460f
+	BAL _$j_12bfa_460f
 _$j_12b92_460f:
 	MOV ER0, ER6
 	MOV ER2, ER8
@@ -7601,13 +7721,13 @@ _$j_12b92_460f:
 	ADD ER2, #0AH
 	BL _f_154E0
 	ADD ER0, #1EH
-	BC AL, _$j_12bfa_460f
+	BAL _$j_12bfa_460f
 _$j_12ba6_460f:
 	MOV ER2, ER10
 	MOV ER0, BP
 	BL _num_cmp
 	CMP R0, #2H
-	BC EQ, _$j_12bc8_460f
+	BEQ _$j_12bc8_460f
 	MOV ER0, ER6
 	ADD ER0, #3CH
 	MOV ER2, ER8
@@ -7616,7 +7736,7 @@ _$j_12ba6_460f:
 	ADD ER2, #0AH
 	BL _f_154E0
 	ADD ER0, #-1EH
-	BC AL, _$j_12bfa_460f
+	BAL _$j_12bfa_460f
 _$j_12bc8_460f:
 	MOV ER0, ER6
 	ADD ER0, #1EH
@@ -7626,14 +7746,14 @@ _$j_12bc8_460f:
 	MOV ER0, FP
 	BL _num_cmp
 	CMP R0, #2H
-	BC EQ, _$j_12bee_460f
+	BEQ _$j_12bee_460f
 	MOV ER0, ER6
 	ADD ER0, #3CH
 	MOV ER2, ER8
 	ADD ER2, #0AH
 	BL _f_154E0
 	ADD ER0, #-3CH
-	BC AL, _$j_12bfa_460f
+	BAL _$j_12bfa_460f
 _$j_12bee_460f:
 	MOV ER0, ER6
 	MOV ER2, ER8
@@ -7653,11 +7773,11 @@ _f_12C06_460F:
 	PUSH QR8
 	MOV BP, FP
 	ADD BP, #0AH
-	MOV R10, #6H
-	MOV R11, #84H
+	MOV R10, #BYTE1 (_mode_ram+360)
+	MOV R11, #BYTE2 (_mode_ram+360)
 	ADD ER10, #0AH
-	MOV R8, #60H
-	MOV R9, #84H
+	MOV R8, #BYTE1 (_mode_ram+450)
+	MOV R9, #BYTE2 (_mode_ram+450)
 	MOV ER0, ER8
 	MOV ER2, FP
 	BL _f_154E0
@@ -7672,12 +7792,12 @@ _f_12C06_460F:
 	MOV ER0, FP
 	BL _num_cmp
 	CMP R0, #4H
-	BC EQ, _$j_12c4c_460f
+	BEQ _$j_12c4c_460f
 	MOV ER0, ER8
 	MOV ER2, ER10
 	BL _f_154E0
 	ADD ER0, #1EH
-	BC AL, _$j_12c58_460f
+	BAL _$j_12c58_460f
 _$j_12c4c_460f:
 	MOV ER0, ER8
 	ADD ER0, #1EH
@@ -7693,11 +7813,11 @@ _$j_12c58_460f:
 ; FUNCTION: GY460XF  Im 12C62
 _f_12C62_460F:
 	PUSH LR
-	MOV R2, #6H
-	MOV R3, #84H
+	MOV R2, #BYTE1 (_mode_ram+360)
+	MOV R3, #BYTE2 (_mode_ram+360)
 	ADD ER2, #0AH
-	MOV R0, #60H
-	MOV R1, #84H
+	MOV R0, #BYTE1 (_mode_ram+450)
+	MOV R1, #BYTE2 (_mode_ram+450)
 	BL _f_154E0
 	POP PC
 ELSE
@@ -7706,8 +7826,142 @@ ENDIF
 
 ; FUNCTION: GY454XE  Re 131EE
 ; FUNCTION: GY455XE  Im 131EE
+; FUNCTION: GY465XG  Im 1293C
 _f_131EE:
+IF ENABLE_FACT == 1
+	PUSH LR
+	PUSH XR4
+	PUSH QR8
+	ADD SP, #-1EH
+	MOV FP, SP
+	ADD SP, #-1EH
+	MOV BP, SP
+	MOV ER6, ER0
+	MOV R0, #6H
+	MOV R1, #9BH
+	ST ER0, 14H[BP]
+	MOV R0, #BYTE1 _num_2
+	MOV R1, #BYTE2 _num_2
+	MOV ER2, BP
+	BL _f_154E0
+	MOV ER2, FP
+	ADD ER2, #14H
+	BL _f_154E0
+	MOV ER0, ER6
+	MOV ER2, BP
+	ADD ER2, #0AH
+	BL _f_154E0
+	MOV R8, #0A8H
+	MOV R10, #4H
+	MOV R11, #5H
+	MOV R4, #BYTE1 (_mode_ram+476)
+	MOV R5, #BYTE2 (_mode_ram+476)
+	MOV R6, #BYTE1 (_mode_ram+463)
+	MOV R7, #BYTE2 (_mode_ram+463)
+	MOV R0, #0H
+	ST R0, [ER6]
+	MOV R0, #0H
+	ST R0, _mode_ram+462
+_$j_12986_465g:
+	MOV ER0, BP
+	ADD ER0, #0AH
+	MOV ER2, FP
+	BL _f_154E0
+	MOV ER0, BP
+	ADD ER2, #0AH
+	BL _f_154E0
+	MOV ER0, FP
+	MOV ER2, FP
+	ADD ER2, #0AH
+	BL _num_unk_1_1__
+	L R0, [FP]
+	BC NE, _$j_129ce_465g
+	L R0, [ER6]
+	BC NE, _$j_129b8_465g
+	MOV ER0, BP
+	MOV ER2, ER4
+	BL _f_154E0
+	LEA _mode_ram+462
+	INC [EA]
+_$j_129b8_465g:
+	LEA [ER6]
+	INC [EA]
+	MOV ER0, FP
+	ADD ER0, #0AH
+	MOV ER2, BP
+	ADD ER2, #0AH
+	BL _f_154E0
+	L R0, 0AH[FP]
+	BC NE, _$j_12986_465g
+	BC AL, _$j_12a28_465g
+_$j_129ce_465g:
+	L R0, 0AH[FP]
+	BC EQ, _$j_12a28_465g
+	L R0, [ER6]
+	BC EQ, _$j_129de_465g
+	ADD ER4, #0AH
+	ADD ER6, #1H
+	MOV R0, #0H
+	ST R0, [ER6]
+_$j_129de_465g:
+	ADD R8, #-1H
+	BC EQ, _$j_12a32_465g
+	CMP R8, #0A6H
+	BC LT, _$j_129f2_465g
+	MOV R0, #0A7H
+	SUB R0, R8
+	SLL R0, #1
+	ADD R0, #3H
+	ST R0, [BP]
+	BC AL, _$j_12986_465g
+_$j_129f2_465g:
+	XOR R10, #00000110B
+	ST R10, 14H[FP]
+	MOV ER0, BP
+	MOV ER2, FP
+	ADD ER2, #14H
+	BL _f_1A460
+	ADD R11, R10
+	DAA R11
+	AND R11, #00001111B
+	CMP R11, #5H
+	BC EQ, _$j_129f2_465g
+	PUSH QR0
+	L ER4, 14H[BP]
+	L ER0, 1H:[ER4]
+	L ER2, [BP]
+	CMP R0, R3
+	BC NE, _$j_12a24_465g
+	CMP R1, R2
+	BC NE, _$j_12a24_465g
+	ADD ER4, #2H
+	ST ER4, 14H[BP]
+	POP QR0
+	BC AL, _$j_129f2_465g
+_$j_12a24_465g:
+	POP QR0
+	BC AL, _$j_12986_465g
+_$j_12a28_465g:
+	MOV R0, #0H
+_$j_12a2a_465g:
+	ADD SP, #3CH
+	POP QR8
+	POP XR4
+	POP PC
+_$j_12a32_465g:
+	MOV ER0, BP
+	ADD ER0, #0AH
+	MOV ER2, ER4
+	BL _f_154E0
+	LEA [ER6]
+	INC [EA]
+	LEA _mode_ram+462
+	INC [EA]
+	MOV R0, #1H
+	BC AL, _$j_12a2a_465g
+ELSE
 	RT
+ENDIF
 
 ; FUNCTION: GY454XE  Re 131F0
 ; FUNCTION: GY455XE  Im 131F0
@@ -8704,7 +8958,7 @@ _$j_138d4:
 	BL _f_139AE
 	POP XR8
 	BL _check_ac
-	BC EQ, _$j_13908
+	BEQ _$j_13908
 	B _$j_136b0
 _$j_13908:
 	PUSH XR8
@@ -8725,7 +8979,7 @@ _$j_13908:
 	BL _f_139AE
 	POP XR8
 	BL _check_ac
-	BC EQ, _$j_1393a
+	BEQ _$j_1393a
 	B _$j_136b0
 _$j_1393a:
 	PUSH XR8
@@ -8746,14 +9000,14 @@ _$j_1393a:
 	BL _f_139AE
 	POP XR8
 	BL _check_ac
-	BC EQ, _$j_1396c
+	BEQ _$j_1396c
 	B _$j_136b0
 _$j_1396c:
 	MOV ER0, ER10
 	L ER2, -8H[FP]
 	BL _f_1353A
 	CMP R0, #0H
-	BC EQ, _$j_1397c
+	BEQ _$j_1397c
 	B _$j_136b0
 _$j_1397c:
 	MOV R0, #0H
@@ -9921,6 +10175,15 @@ _$j_142c4:
 _$j_14312:
 	BL _f_044B6
 	BL _f_085D2
+IF ENABLE_INEQ == 1
+	L R0, _mode
+	CMP R0, #4BH
+	BNE _$j_1431a
+	MOV R1, R8
+	MOV R0, #0H
+	B _$j_136a8
+_$j_1431a:
+ENDIF
 	MOV R0, #BYTE1 _input_area
 	MOV R1, #BYTE2 _input_area
 	MOV ER10, ER0
@@ -12431,7 +12694,7 @@ _$j_1539e:
 	BGE _$j_153e6
 	BAL _$j_153da
 _$j_153b8:
-	LEA 1AA4H
+	LEA _unk_01aa4
 	MOV R1, #9H
 	PUSH BP
 _$j_153c0:
@@ -14322,22 +14585,22 @@ _f_16100:
 	L R10, [FP]
 	BEQ _$j_161b0
 _$j_16118:
-	L R10, 8H[ER14]  ;  Unnecessary Disp16 used instead of Disp6!
+	L R10, 8H[FP]  ;  Unnecessary Disp16 used instead of Disp6!
 	CMP R10, #2H
 	BGE _$j_161ea
-	L R10, 12H[ER14]  ;  Unnecessary Disp16 used instead of Disp6!
+	L R10, 12H[FP]  ;  Unnecessary Disp16 used instead of Disp6!
 	CMP R10, #3H
 	BGE _$j_161ea
-	L R10, 1CH[ER14]  ;  Unnecessary Disp16 used instead of Disp6!
+	L R10, 1CH[FP]  ;  Unnecessary Disp16 used instead of Disp6!
 	CMP R10, #2H
 	BGE _$j_161ea
-	L R10, 26H[ER14]
+	L R10, 26H[FP]
 	CMP R10, #2H
 	BGE _$j_161ea
-	L R10, 30H[ER14]
+	L R10, 30H[FP]
 	CMP R10, #3H
 	BGE _$j_161ea
-	L R10, 3AH[ER14]
+	L R10, 3AH[FP]
 	CMP R10, #2H
 	BGE _$j_161ea
 	MOV BP, FP
@@ -14367,8 +14630,8 @@ _$j_16168:
 	BL _f_161F6
 	MOV R2, R11
 	OR R9, #10000000B
-	L R1, 9H[ER14]  ;  Unnecessary Disp16 used instead of Disp6!
-	L R0, 27H[ER14]
+	L R1, 9H[FP]  ;  Unnecessary Disp16 used instead of Disp6!
+	L R0, 27H[FP]
 	LEA _reg1
 	ST QR0, [EA+]
 	ST ER8, [EA+]
@@ -14385,11 +14648,11 @@ _$j_161aa:
 	MOV ER6, #1H
 	BAL _$j_16168
 _$j_161b0:
-	L R10, 1EH[ER14]  ;  Unnecessary Disp16 used instead of Disp6!
+	L R10, 1EH[FP]  ;  Unnecessary Disp16 used instead of Disp6!
 	BEQ _$j_161da
-	L R10, 30H[ER14]
+	L R10, 30H[FP]
 	BNE _$j_16118
-	L R10, 28H[ER14]
+	L R10, 28H[FP]
 	CMP R10, #1H
 	BNE _$j_16118
 	MOV ER0, FP
@@ -14420,8 +14683,8 @@ _$j_161ea:
 _f_161F6:
 	PUSH LR
 	L R11, [BP]
-	L R10, 1H[ER12]  ;  Unnecessary Disp16 used instead of Disp6!
-	L R0, 8H[ER12]  ;  Unnecessary Disp16 used instead of Disp6!
+	L R10, 1H[BP]  ;  Unnecessary Disp16 used instead of Disp6!
+	L R0, 8H[BP]  ;  Unnecessary Disp16 used instead of Disp6!
 	BEQ _$j_16206
 	SLLC R11, #4
 _$j_16206:
@@ -14433,8 +14696,8 @@ _$j_16206:
 _f_16208:
 	PUSH LR
 	L R11, [BP]
-	L R10, 1H[ER12]  ;  Unnecessary Disp16 used instead of Disp6!
-	L R0, 8H[ER12]  ;  Unnecessary Disp16 used instead of Disp6!
+	L R10, 1H[BP]  ;  Unnecessary Disp16 used instead of Disp6!
+	L R0, 8H[BP]  ;  Unnecessary Disp16 used instead of Disp6!
 	BEQ _$j_1621e
 	CMP R0, #2H
 	BEQ _$j_16222
@@ -14626,38 +14889,38 @@ _f_16398:
 	MOV R0, R2
 	BL _f_16CE4
 	MOV FP, ER0
-	L R10, 2H[ER12]  ;  Unnecessary Disp16 used instead of Disp6!
+	L R10, 2H[BP]  ;  Unnecessary Disp16 used instead of Disp6!
 	BEQ _$j_1641e
 	BL _f_16454
-	L R9, 9H[ER12]  ;  Unnecessary Disp16 used instead of Disp6!
+	L R9, 9H[BP]  ;  Unnecessary Disp16 used instead of Disp6!
 	LEA [FP]
 	ST QR0, [EA+]
 	ST ER8, [EA+]
-	L R11, 0H[ER12]  ;  Unnecessary Disp16 used instead of Disp6!
-	L R10, 1H[ER12]  ;  Unnecessary Disp16 used instead of Disp6!
+	L R11, 0H[BP]  ;  Unnecessary Disp16 used instead of Disp6!
+	L R10, 1H[BP]  ;  Unnecessary Disp16 used instead of Disp6!
 	BL _f_16424
 	LEA 0AH[FP]
 	ST QR0, [EA+]
 	ST ER8, [EA+]
-	L R10, 3H[ER12]  ;  Unnecessary Disp16 used instead of Disp6!
+	L R10, 3H[BP]  ;  Unnecessary Disp16 used instead of Disp6!
 	BL _f_16454
 	LEA 14H[FP]
 	ST QR0, [EA+]
 	ST ER8, [EA+]
 _$j_163e0:
-	L R10, 6H[ER12]  ;  Unnecessary Disp16 used instead of Disp6!
+	L R10, 6H[BP]  ;  Unnecessary Disp16 used instead of Disp6!
 	BL _f_16454
-	L R9, 8H[ER12]  ;  Unnecessary Disp16 used instead of Disp6!
+	L R9, 8H[BP]  ;  Unnecessary Disp16 used instead of Disp6!
 	LEA 1EH[FP]
 	ST QR0, [EA+]
 	ST ER8, [EA+]
-	L R11, 4H[ER12]  ;  Unnecessary Disp16 used instead of Disp6!
-	L R10, 5H[ER12]  ;  Unnecessary Disp16 used instead of Disp6!
+	L R11, 4H[BP]  ;  Unnecessary Disp16 used instead of Disp6!
+	L R10, 5H[BP]  ;  Unnecessary Disp16 used instead of Disp6!
 	BL _f_16424
 	LEA 28H[FP]
 	ST QR0, [EA+]
 	ST ER8, [EA+]
-	L R10, 7H[ER12]  ;  Unnecessary Disp16 used instead of Disp6!
+	L R10, 7H[BP]  ;  Unnecessary Disp16 used instead of Disp6!
 	BL _f_16454
 	LEA 32H[FP]
 	ST QR0, [EA+]
@@ -15500,22 +15763,22 @@ _f_16A24:
 	BL _f_1678A
 	MOV R0, #10H
 	BL _f_16612
-	BC NE, _$j_16a42
+	BNE _$j_16a42
 _$j_16a32:
 	MOV ER0, #12H
 	BL _f_16728
 	MOV R0, #15H
 	MOV R1, #3H
 	BL _f_16728
-	BC AL, _$j_16b40
+	BAL _$j_16b40
 _$j_16a42:
 	MOV R0, #0DH
 	BL _f_16612
-	BC NE, _$j_16a84
+	BNE _$j_16a84
 	MOV R0, #10H
 	MOV R1, #13H
 	BL _f_1661C
-	BC NE, _$j_16a68
+	BNE _$j_16a68
 	MOV R0, #0FH
 	MOV R1, #12H
 	MOV R2, #0H
@@ -15523,24 +15786,24 @@ _$j_16a42:
 	MOV R0, #15H
 	MOV R1, #3H
 	BL _f_16728
-	BC AL, _$j_16b40
+	BAL _$j_16b40
 _$j_16a68:
 	MOV R0, #13H
 	MOV R1, #16H
 	BL _f_1661C
-	BC NE, _$j_16b62
+	BNE _$j_16b62
 	MOV ER0, #0FH
 	BL _f_16728
 	MOV R0, #12H
 	MOV R1, #15H
 	MOV R2, #3H
 	BL _f_1680A
-	BC AL, _$j_16b40
+	BAL _$j_16b40
 _$j_16a84:
 	MOV R0, #0DH
 	MOV R1, #10H
 	BL _f_1661C
-	BC NE, _$j_16ad4
+	BNE _$j_16ad4
 	MOV R0, #0CH
 	MOV R1, #0FH
 	MOV R2, #0H
@@ -15548,34 +15811,34 @@ _$j_16a84:
 	MOV R0, #0DH
 	MOV R1, #13H
 	BL _f_1661C
-	BC NE, _$j_16ab4
+	BNE _$j_16ab4
 	MOV ER0, #12H
 	MOV R2, #0H
 	BL _f_1680A
 	MOV R0, #15H
 	MOV R1, #3H
 	BL _f_16728
-	BC AL, _$j_16b40
+	BAL _$j_16b40
 _$j_16ab4:
 	MOV R0, #13H
 	MOV R1, #16H
 	BL _f_1661C
-	BC NE, _$j_16aca
+	BNE _$j_16aca
 	MOV R0, #12H
 	MOV R1, #15H
 	MOV R2, #3H
 	BL _f_1680A
-	BC AL, _$j_16b40
+	BAL _$j_16b40
 _$j_16aca:
 	MOV R0, #0H
 	BL _f_16612
-	BC NE, _$j_16b62
-	BC AL, _$j_16a32
+	BNE _$j_16b62
+	BAL _$j_16a32
 _$j_16ad4:
 	MOV R0, #10H
 	MOV R1, #13H
 	BL _f_1661C
-	BC NE, _$j_16b16
+	BNE _$j_16b16
 	MOV ER0, #0CH
 	BL _f_16728
 	MOV R0, #0FH
@@ -15585,32 +15848,32 @@ _$j_16ad4:
 	MOV R0, #10H
 	MOV R1, #16H
 	BL _f_1661C
-	BC NE, _$j_16b04
+	BNE _$j_16b04
 	MOV R0, #3H
 	MOV R1, #15H
 	MOV R2, #3H
 	BL _f_1680A
-	BC AL, _$j_16b40
+	BAL _$j_16b40
 _$j_16b04:
 	MOV R0, #3H
 	BL _f_16612
-	BC NE, _$j_16b62
+	BNE _$j_16b62
 	MOV R0, #15H
 	MOV R1, #3H
 	BL _f_16728
-	BC AL, _$j_16b40
+	BAL _$j_16b40
 _$j_16b16:
 	MOV R0, #13H
 	MOV R1, #16H
 	BL _f_1661C
-	BC NE, _$j_16b62
+	BNE _$j_16b62
 	MOV R0, #12H
 	MOV R1, #15H
 	MOV R2, #0H
 	BL _f_1680A
 	MOV R0, #0H
 	BL _f_16612
-	BC NE, _$j_16b62
+	BNE _$j_16b62
 	MOV ER0, #0CH
 	BL _f_16728
 	MOV R0, #0FH
@@ -15621,7 +15884,7 @@ _$j_16b40:
 	MOV R0, #1H
 	MOV R1, #4H
 	BL _f_1661C
-	BC NE, _$j_16b5c
+	BNE _$j_16b5c
 	MOV ER0, #3H
 	MOV R2, #3H
 	BL _f_1680A
@@ -15634,7 +15897,7 @@ _$j_16b5e:
 	POP PC
 _$j_16b62:
 	MOV R0, #1H
-	BC AL, _$j_16b5e
+	BAL _$j_16b5e
 
 ; FUNCTION: GY454XE  Re 16B66
 ; FUNCTION: GY455XE  Im 16B66
@@ -16570,12 +16833,144 @@ _$j_17264:
 	POP ER4
 	POP PC
 
-; Possibly a dummied out function
+IF ENABLE_VERIF == 1
+; FUNCTION: GY465XG  Im 1577E
+_f_1577E_465G:
+	PUSH LR
+	PUSH XR4
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-0AH
+	MOV R6, #01H
+	MOV R7, #04H
+	BAL _$j_157cc_465g
+
+; FUNCTION: GY465XG  Im 1578E
+_f_1578E_465G:
+	PUSH LR
+	PUSH XR4
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-0AH
+	MOV R6, #01H
+	MOV R7, #02H
+	BAL _$j_157cc_465g
+
+; FUNCTION: GY465XG  Im 1579E
+_f_1579E_465G:
+	PUSH LR
+	PUSH XR4
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-0AH
+	MOV R6, #04H
+	MOV R7, #04H
+	BAL _$j_157cc_465g
+
+; FUNCTION: GY465XG  Im 157AE
+_f_157AE_465G:
+	PUSH LR
+	PUSH XR4
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-0AH
+	MOV R6, #02H
+	MOV R7, #02H
+	BAL _$j_157cc_465g
+
+; FUNCTION: GY465XG  Im 157BE
+_f_157BE_465G:
+	PUSH LR
+	PUSH XR4
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-0AH
+	MOV R6, #01H
+	MOV R7, #01H
+_$j_157cc_465g:
+	MOV ER4, ER0
+	MOV BP, FP
+	ADD BP, #-0AH
+	MOV ER0, BP
+	BL _num_cpy
+	MOV ER0, BP
+	BL _num_to_str_std_lineo
+	MOV ER0, ER4
+	BL _num_to_str_std_lineo
+	MOV ER2, BP
+	MOV ER0, ER4
+	BL _f_1B0DC
+	CMP R0, #0F0H
+	BEQ _$j_1583c_465g
+	CMP R6, #01H
+	BNE _$j_1581e_465g
+	MOV R6, R0
+	CMP R0, #01H
+	BEQ _$j_15838_465g
+	MOV ER2, BP
+	MOV ER0, ER4
+	BL _f_1A44C
+	CMP R0, #00H
+	BNE _$j_1581a_465g
+	MOV R2, #01H
+	MOV ER0, BP
+	BL _num_fromdigit
+	MOV ER2, BP
+	MOV ER0, ER4
+	BL _f_1B0DC
+	CMP R0, #01H
+	BEQ _$j_15838_465g
+_$j_1581a_465g:
+	MOV R0, R6
+	BAL _$j_15822_465g
+_$j_1581e_465g:
+	CMP R0, R6
+	BEQ _$j_15838_465g
+_$j_15822_465g:
+	CMP R0, R7
+	BEQ _$j_15838_465g
+_$j_15826_465g:
+	MOV R2, #00H
+_$j_15828_465g:
+	MOV ER0, ER4
+	BL _num_fromdigit
+_$j_1582e_465g:
+	L R1, [ER4]
+	MOV SP, FP
+	POP QR8
+	POP XR4
+	POP PC
+_$j_15838_465g:
+	MOV R2, #01H
+	BAL _$j_15828_465g
+_$j_1583c_465g:
+	MOV ER0, ER4
+	MOV R2, #03H
+	BL _init_num
+	MOV R0, #03H
+	BAL _$j_1582e_465g
+
+; FUNCTION: GY465XG  Im 15848
+_f_15848_465G:
+	PUSH LR
+	PUSH XR4
+	PUSH QR8
+	MOV FP, SP
+	ADD SP, #-0AH
+	MOV ER4, ER0
+	BL _f_157BE_465G
+	CMP R1, #00H
+	BEQ _$j_15838_465g
+	CMP R1, #01H
+	BEQ _$j_15826_465g
+	BAL _$j_1583c_465g
+ELSE
 ; FUNCTION: GY454XE  Re 17268
 ; FUNCTION: GY455XE  Im 17268
 ; FUNCTION: GY460XF  Im 169C4
 _f_17268:
 	RT
+ENDIF
 
 ; FUNCTION: GY454XE  Re 1726A
 ; FUNCTION: GY455XE  Im 1726A
@@ -24387,6 +24782,7 @@ _$j_1b038:
 ; FUNCTION: GY454XE  Re 1B03E
 ; FUNCTION: GY455XE  Im 1B03E
 ; FUNCTION: GY460XF  Im 1A79A
+; FUNCTION: GY465XG  Im 19636
 _num_invalid__:
 	PUSH LR
 	LEA _arg0_ref
@@ -25052,6 +25448,47 @@ _$j_1b4fe:
 	MOV R0, #1H
 	RT
 
+IF ENABLE_INEQ == 1
+; DATA: GY460XF  Im 1AC5E
+_unk_1ac5e_460f:
+	DB 01H, 02H, 01H, 02H, 02H, 01H, 02H, 01H
+	DB 04H, 02H, 01H, 03H, 02H, 04H, 03H, 01H
+	DB 0BH, 09H, 0CH, 0AH, 09H, 0BH, 0AH, 0CH
+
+; DATA: GY460XF  Im 1AC76
+_unk_1ac76_460f:
+	DB 07H, 05H
+	DB 08H, 06H
+	DB 05H, 07H
+	DB 06H, 08H
+	DB 11H, 13H
+	DB 12H, 14H
+	DB 13H, 11H
+	DB 14H, 12H
+
+; DATA: GY460XF  Im 1AC86
+_unk_1ac86_460f:
+	DB 10H, 45H
+	DB 48H, 0FH
+	DB 45H, 10H
+	DB 0FH, 48H
+	DB 87H, 0EH
+	DB 0DH, 86H
+	DB 0EH, 87H
+	DB 86H, 0DH
+ENDIF
+
+IF ENABLE_VERIF == 1
+; DATA: GY465XG  Im 19AFA
+_jmp_19afa_465g:
+	DW _f_1578E_465G
+	DW _f_15848_465G
+	DW _f_1577E_465G
+	DW _f_157AE_465G
+	DW _f_157BE_465G
+	DW _f_1579E_465G
+ENDIF
+
 PUBLIC _s_continue_prompt
 PUBLIC _num_0
 PUBLIC _num_1
@@ -25094,6 +25531,8 @@ PUBLIC _get_disp_setting_noradical
 PUBLIC _set_default_settings
 PUBLIC _f_112EA
 PUBLIC _f_131E8
+PUBLIC _f_131EE
+PUBLIC _num_parse_verif
 PUBLIC _f_131EC
 PUBLIC _f_13BEA
 PUBLIC _f_143EA
@@ -25132,6 +25571,7 @@ PUBLIC _num_add_1
 PUBLIC _f_1AC6A
 PUBLIC _f_1AC7E
 PUBLIC _f_1AC92
+PUBLIC _f_1ADB6
 PUBLIC _f_1AE06
 PUBLIC _cmplx_abs
 PUBLIC _f_1AFB8
@@ -25259,8 +25699,8 @@ EXTRN DATA	: _use_output_charset
 EXTRN DATA	: _d_08124
 EXTRN DATA	: _d_08126
 EXTRN DATA	: _input_area_ptr
-EXTRN DATA	: _d_0812D
-EXTRN DATA	: _d_0812E
+EXTRN DATA	: _ineq_mode
+EXTRN DATA	: _ratio_mode
 EXTRN DATA	: _result
 EXTRN DATA	: _input_area
 EXTRN DATA	: _random_seed

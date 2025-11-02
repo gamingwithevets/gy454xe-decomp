@@ -146,6 +146,7 @@ extern char filter_chars_stat_mat_vct(char keycode);
 extern char filter_chars_tables(char keycode);
 extern char filter_chars_table(char keycode);
 extern char filter_chars_cmplx(char keycode);
+extern char filter_chars_verif(char keycode);
 extern char f_03714(char keycode);
 extern char need_reset(void);
 extern char f_042AA(char **a);

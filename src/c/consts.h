@@ -38,11 +38,14 @@
 #endif
 
 #define DRG_MENU_START BASE_N_MENU_START+BASE_N_MENU_COUNT
-#define HYP_MENU_START BASE_N_MENU_START+BASE_N_MENU_COUNT+1
-#define STAT_MENU_START BASE_N_MENU_START+BASE_N_MENU_COUNT+2
-#define EQN_SMENU_START BASE_N_MENU_START+BASE_N_MENU_COUNT+16
 
-#define MATRIX_SMENU_START BASE_N_MENU_START+BASE_N_MENU_COUNT+17
+#define HYP_MENU_START DRG_MENU_START+1
+
+#define STAT_MENU_START HYP_MENU_START+1
+
+#define EQN_SMENU_START STAT_MENU_START+14
+
+#define MATRIX_SMENU_START EQN_SMENU_START+1
 #if ENABLE_MATRIX == 1
 #define MATRIX_SMENU_COUNT 1
 #else
@@ -57,9 +60,11 @@
 #endif
 
 #define STAT_SMENU_START VECTOR_SMENU_START+VECTOR_SMENU_COUNT
-#define MODE_MENU_START VECTOR_SMENU_START+VECTOR_SMENU_COUNT+1
 
-#define RATIO_SMENU_START VECTOR_SMENU_START+VECTOR_SMENU_COUNT+2
+#define MODE_MENU_START VECTOR_SMENU_START+VECTOR_SMENU_COUNT+1
+#define MODE_MENU_COUNT 2
+
+#define RATIO_SMENU_START MODE_MENU_START+MODE_MENU_COUNT
 #if ENABLE_RATIO == 1
 #define RATIO_SMENU_COUNT 1
 #else
@@ -67,6 +72,13 @@
 #endif
 
 #define INEQ_SMENU_START RATIO_SMENU_START+RATIO_SMENU_COUNT
+#if ENABLE_INEQ == 1
+#define INEQ_SMENU_COUNT 3
+#else
+#define INEQ_SMENU_COUNT 0
+#endif
+
+#define VERIF_SMENU_START INEQ_SMENU_START+INEQ_SMENU_COUNT
 
 // Possibly a coordinate-related union?
 typedef union {
@@ -260,6 +272,7 @@ enum keycode {
 	K_PERMU		= 0xBE,  // nPr
 	K_COMBI		= 0xBF,  // nCr
 	K_RANINT	= 0xC2,  // RanInt#( function
+	K_RDEC		= 0xCF,  // Recurring decimal
 	K_FRAC		= 0xD0,  // Fraction
 	K_FRAC_ABC	= 0xD1,  // Mixed fraction
 	K_POW		= 0xD2,  // xⁿ
@@ -465,13 +478,14 @@ extern char d_08126;
 extern char *input_area_ptr;
 extern char *d_0812A;
 extern char d_0812C;
-extern char d_0812D;
-extern char d_0812E;
+extern char ineq_mode;
+extern char ratio_mode;
 extern char result[20];
 extern char input_area[100];
 extern char cache_area[100];
 extern int timer;
 extern void *vars_start;
+extern char var_ans[10];
 extern char mode_ram[880];
 extern char magic_string[16];
 extern mathi_bbox d_08640[100];

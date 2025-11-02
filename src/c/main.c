@@ -2,13 +2,14 @@
 #include "consts.h"
 #include "generals.h"
 #include "diagnostic.h"
-#include "setup.h"
-#include "menufuncs.h"
-#include "unk4.h"
+#include "modes/setup.h"
+#include "modes/menufuncs.h"
+#include "unk/unk4.h"
 
 // FUNCTION: GY454XE  Re 09712
 // FUNCTION: GY455XE  Im 0A036
 // FUNCTION: GY460XF  Im 099BE
+// FUNCTION: GY465XG  Im 095AA
 void main(void) {
 	char i, j;
 
@@ -16,16 +17,12 @@ void main(void) {
 	f_046E0();
 	delay(952);
 	cursor_noflash = 0;
-	if (need_reset()) {
-		reset_all();
-	}
+	if (need_reset()) reset_all();
 	f_03558();
 	set_contrast2_0();
 	set_scr_normal();
 	diag_factory_test();
-	if (!diag_init_check()) {
-		diagnostic_mode();
-	}
+	if (!diag_init_check()) diagnostic_mode();
 	if (mode == MODE_EQN || mode == MODE_INEQ || mode == MODE_RATIO) {
 		d_080FE = 0;
 		last_key_keycode = 0;

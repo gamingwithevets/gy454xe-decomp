@@ -1,10 +1,10 @@
 #if ENABLE_RDEC == 1
 
-#include "consts.h"
-#include "unk0.h"
+#include "../consts.h"
+#include "../unk/unk0.h"
 #include "input.h"
-#include "unk2.h"
-#include "unk5.h"
+#include "../unk/unk2.h"
+#include "../unk/unk5.h"
 
 // FUNCTION: GY460XF  Im 045C2
 char f_045C2_460F(void) {

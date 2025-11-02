@@ -1,5 +1,5 @@
-#include "consts.h"
-#include "emu_kb.h"
+#include "../consts.h"
+#include "../emu/emu_kb.h"
 
 void input_print_linei(void);
 void mathi_draw_line_horz(int x1, int x2, char y);

@@ -1,4 +1,4 @@
-#include "generals.h"
+#include "../generals.h"
 
 extern const char num_1[];
 extern const char num_256[];
@@ -36,6 +36,8 @@ void set_default_settings(void);
 char f_112EA(void);
 char get_disp_setting_rdec(void);
 char f_131E8(void);
+char f_131EE(char *num);
+char num_parse_verif(char **input, char *numout);
 char f_131EC(void);
 char f_143EA(char *input);
 char get_const_token(char num);
@@ -54,7 +56,7 @@ void f_15526(void);
 void f_15532(void);
 void f_1553C(void);
 void num_eval__(void);
-void num_parse(char **input, char *numout);
+char num_parse(char **input, char *numout);
 char f_15DE8(void);
 void f_15EE4(void);
 void reset(void);
@@ -73,6 +75,7 @@ void num_add_1(void);
 void f_1AC6A(char *num);
 void f_1AC7E(char *num);
 void f_1AC92(char *num);
+char f_1ADB6(char *num);
 void f_1AE06(void);
 char cmplx_abs(char *num);
 void f_1AFB8(char *num);

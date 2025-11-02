@@ -676,10 +676,10 @@ _d_0812A:
 _d_0812C:
 	DS 1
 ; 0812D
-_d_0812D:
+_ineq_mode:
 	DS 1
 ; 0812E
-_d_0812E:
+_ratio_mode:
 	DS 1
 ; 0812F
 _d_0812F:
@@ -1601,8 +1601,8 @@ PUBLIC _d_08126
 PUBLIC _input_area_ptr
 PUBLIC _d_0812A
 PUBLIC _d_0812C
-PUBLIC _d_0812D
-PUBLIC _d_0812E
+PUBLIC _ineq_mode
+PUBLIC _ratio_mode
 PUBLIC _result
 PUBLIC _input_area
 PUBLIC _cache_area
@@ -1610,6 +1610,7 @@ PUBLIC _random_seed
 PUBLIC _timer
 PUBLIC _vars_start
 PUBLIC _var_m
+PUBLIC _var_ans
 PUBLIC _var_x
 PUBLIC _mode_ram
 PUBLIC _magic_string

@@ -153,7 +153,7 @@ class ParamInput(tk.Toplevel):
 
         self.columnconfigure(0, weight=1)
 
-        ttk.Label(self, text="ROM File:").grid(row=0, column=0, sticky='w', padx=10, pady=(10, 0))
+        ttk.Label(self, text="ROM file").grid(row=0, column=0, sticky='w', padx=10, pady=(10, 0))
         self.rom_path_var = tk.StringVar()
         rom_frame = ttk.Frame(self)
         rom_frame.grid(row=1, column=0, sticky='ew', padx=10)
@@ -162,18 +162,18 @@ class ParamInput(tk.Toplevel):
         self.rom_entry.grid(row=0, column=0, sticky='ew')
         ttk.Button(rom_frame, text="Browse", command=self.browse_file).grid(row=0, column=1, padx=5)
 
-        ttk.Label(self, text="Menus Address (hex or dec):").grid(row=2, column=0, sticky='w', padx=10, pady=(10, 0))
+        ttk.Label(self, text="Menu array address").grid(row=2, column=0, sticky='w', padx=10, pady=(10, 0))
         self.addr_var = tk.StringVar(value="0x23c6")
         ttk.Entry(self, textvariable=self.addr_var).grid(row=3, column=0, sticky='ew', padx=10)
 
-        ttk.Label(self, text="Menu Count (decimal):").grid(row=4, column=0, sticky='w', padx=10, pady=(10, 0))
+        ttk.Label(self, text="Menu count").grid(row=4, column=0, sticky='w', padx=10, pady=(10, 0))
         self.count_var = tk.StringVar(value="43")
         ttk.Entry(self, textvariable=self.count_var).grid(row=5, column=0, sticky='ew', padx=10)
 
-        ttk.Button(self, text="Start Viewer", command=self.validate_and_start).grid(row=6, column=0, pady=15)
+        ttk.Button(self, text="Load", command=self.validate_and_start).grid(row=6, column=0, pady=15)
 
     def browse_file(self):
-        file_path = filedialog.askopenfilename(title="Select ROM file")
+        file_path = filedialog.askopenfilename(title="Select ROM")
         if file_path:
             self.rom_path_var.set(file_path)
 
@@ -181,12 +181,12 @@ class ParamInput(tk.Toplevel):
         path = self.rom_path_var.get()
         try:
             menus_addr = int(self.addr_var.get(), 0)
-            count = int(self.count_var.get())
+            count = int(self.count_var.get(), 0)
         except ValueError:
-            messagebox.showerror("Invalid input", "Menus address must be a hex or decimal number.\nCount must be an integer.")
+            messagebox.showerror("Invalid input", "Menu address or count is invalid.")
             return
         if not path:
-            messagebox.showerror("Missing ROM", "Please select a ROM file!")
+            messagebox.showerror("Missing ROM", "ROM file not selected.")
             return
 
         try:

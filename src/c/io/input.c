@@ -1,12 +1,12 @@
-#include "consts.h"
-#include "generals.h"
-#include "emu_kb.h"
+#include "../consts.h"
+#include "../generals.h"
+#include "../emu/emu_kb.h"
 #include "rdec.h"
 #include "input.h"
-#include "ineq.h"
-#include "unk2.h"
-#include "unk4.h"
-#include "unk5.h"
+#include "../modes/ineq.h"
+#include "../unk/unk2.h"
+#include "../unk/unk4.h"
+#include "../unk/unk5.h"
 
 // Static declarations
 static void update_cursor(char x, char y);
@@ -1826,7 +1826,7 @@ static void _insert_token(char token, char is_func, char *input) {
 			}
 			loc_m11 = unk_01e24[loc_m2];
 			if ((char)(unk_01e24[loc_m2] + count + loc_m7 + v3) < 100) {
-				// x^2, x^3, x^-1, x^n
+				// x^2, x^3, x^-1, x^n, recurring decimal
 				if (loc_m2 == 0) {
 					concat_mathi_l(input);
 					// STRING: GY454XE  Re 01E3A
@@ -2200,6 +2200,9 @@ char num_to_str_std(char *out, char *num, char c) {
 		num_cpy(loc_m50, num);
 		out[0] = '\0';
 		v0 = get_result_store_fmt();
+#if ENABLE_FACT == 1
+		if (v0 == RESULT_FACT) return num_to_str_fact(out, num);
+#endif
 		f_1B378(loc_m50);
 		if (num_invalid__(loc_m50) == 1)
 j_0781e:
@@ -2374,10 +2377,10 @@ static void f_0832A_E(char *result_str, char *error_buf) {
 				}
 				++result_str;
 				break;
-			case 3:
+			case 3: {
 				char tmp;
 				*error_buf++ = '\x7f';
-				switch (*f_06D90(&tmp)) {
+				switch (*f_06D90(result_str, &tmp)) {
 					case 0x5e:
 						*error_buf++ = 0x5b;
 						break;
@@ -2386,11 +2389,13 @@ static void f_0832A_E(char *result_str, char *error_buf) {
 						break;
 				}
 				break;
-			default:
+			}
+			default: {
 				char tmp = *result_str;
 				if (*result_str >= 0xe0) tmp -= 0x50;
 				*error_buf++ = tmp;
 				break;
+			}
 		}
 	} while (*++result_str);
 	return;
@@ -2426,7 +2431,7 @@ void print_result(char *result) {
 #endif
 	if (f_0A57A()) num_output_print(result);
 #if ENABLE_INEQ == 1
-	else if (is_ineq_result()) f_07F10_460F();
+	else if (is_ineq_result()) print_result_ineq();
 #endif
 	else {
 		v0 = 0;

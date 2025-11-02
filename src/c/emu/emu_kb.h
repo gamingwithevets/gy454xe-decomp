@@ -1,4 +1,4 @@
-#include "consts.h"
+#include "../consts.h"
 
 #ifndef EMU_KB_H
 #define EMU_KB_H
@@ -8,8 +8,8 @@ typedef struct {
 	char *stop_type;		// 8E00H
 	char *ki;				// 8E01H
 	char *ko;				// 8E02H
-	char *d_08E10;			// 8E10H
-	char *d_09000;			// 9000H
+	char **d_08E10;			// 8E10H
+	char *screen_buf;		// 9000H
 	char *d_09800;			// 9800H
 	char *d_09804;			// 9804H
 	char *d_09808;			// 9808H

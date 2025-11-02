@@ -37,7 +37,7 @@ def map_to_label(mapfile, outfile):
 
 	# --- Process Public Symbols ---
 	for line in symbol_lines:
-		m = re.fullmatch(r'(.{30})0(.):(.{4})    (.{5})   .+', line)
+		m = re.fullmatch(r'(.{30}) 0(.):(.{4})    (.{5})   .+', line)
 		if not m:
 			continue
 		name = m.group(1).strip()

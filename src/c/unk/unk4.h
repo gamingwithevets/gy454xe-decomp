@@ -1,6 +1,6 @@
 #include <string.h>
-#include "consts.h"
-#include "generals.h"
+#include "../consts.h"
+#include "../generals.h"
 
 char f_09962(char no_keyfunc);
 char f_09BDC(char a);
