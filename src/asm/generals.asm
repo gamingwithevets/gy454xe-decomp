@@ -5072,7 +5072,7 @@ _$j_03730:
 	BNE _$j_0380c
 	MOV ER0, ER8
 	ADD ER0, #0AH
-	BL _f_154F2
+	BL _num_cpy_bp_er0
 	BL _num_eval__
 	BLT _$j_0380c
 	BNE _$j_0375e
@@ -5102,9 +5102,9 @@ _$j_0378e:
 	BL _f_0479C
 	MOV ER0, ER8
 	ADD ER0, #14H
-	BL _f_154F2
-	MOV R0, #-42H
-	MOV R1, #17H
+	BL _num_cpy_bp_er0
+	MOV R0, #BYTE1 _num_0
+	MOV R1, #BYTE2 _num_0
 	MOV ER2, ER8
 	BL _f_1553C
 	POP ER0
@@ -5146,7 +5146,7 @@ _$j_037b4:
 _$j_037f8:
 	ADD SP, #2H
 	MOV ER0, ER8
-	BL _f_15526
+	BL _num_cpy_er0_bp
 	MOV R0, #0H
 _$j_03802:
 	ADD SP, #2H
@@ -5227,7 +5227,7 @@ _$j_03878:
 	BNE _$j_038ac
 	MOV R0, #BYTE1 (_mode_ram+780)
 	MOV R1, #BYTE2 (_mode_ram+780)
-	BL _f_154F2
+	BL _num_cpy_bp_er0
 	MOV R0, #BYTE1 (_mode_ram+790)
 	MOV R1, #BYTE2 (_mode_ram+790)
 	MOV R2, #BYTE1 (_mode_ram+740)
@@ -5416,7 +5416,7 @@ _f_03A1A:
 	MOV R2, #BYTE1 (_mode_ram+740)
 	MOV R3, #BYTE2 (_mode_ram+760)
 	PUSH ER2
-	BL _f_15526
+	BL _num_cpy_er0_bp
 	MOV ER0, BP
 	MOV R2, #BYTE1 (_mode_ram+740)
 	MOV R3, #BYTE2 (_mode_ram+770)
@@ -5483,7 +5483,7 @@ _$j_03aa2:
 	BL _num_to_str_std_lineo
 	MOV R0, #BYTE1 (_mode_ram+620)
 	MOV R1, #BYTE2 (_mode_ram+620)
-	BL _f_154F2
+	BL _num_cpy_bp_er0
 	BL _num_eval__
 	BGE _$j_03aba
 	B _$j_03de0
@@ -5493,7 +5493,7 @@ _$j_03aba:
 	BL _num_to_str_std_lineo
 	MOV R0, #BYTE1 (_mode_ram+630)
 	MOV R1, #BYTE2 (_mode_ram+630)
-	BL _f_154F2
+	BL _num_cpy_bp_er0
 	CMP R2, #-1H
 	BEQ _$j_03af0
 	BL _num_eval__
@@ -5513,14 +5513,14 @@ _$j_03adc:
 _$j_03af0:
 	MOV R0, #BYTE1 _num_1
 	MOV R1, #BYTE2 _num_1
-	BL _f_15526
+	BL _num_cpy_er0_bp
 	MOV R0, #95H
 	MOV R1, #0H
 	ST ER0, 8H[BP]
 _$j_03afe:
 	MOV R0, #BYTE1 (_mode_ram+640)
 	MOV R1, #BYTE2 (_mode_ram+640)
-	BL _f_154F2
+	BL _num_cpy_bp_er0
 	ST FP, (_mode_ram+810)
 	MOV R0, #BYTE1 (_mode_ram+620)
 	MOV R1, #BYTE2 (_mode_ram+620)
@@ -5553,7 +5553,7 @@ _$j_03b34:
 _$j_03b4e:
 	MOV R0, #BYTE1 _num_0
 	MOV R1, #BYTE2 _num_0
-	BL _f_15526
+	BL _num_cpy_er0_bp
 	B _$j_03dc8
 _$j_03b5a:
 	MOV R0, #8H
@@ -5627,7 +5627,7 @@ _$j_03bf6:
 	BNE _$j_03c0a
 	MOV R0, #BYTE1 (_mode_ram+740)
 	MOV R1, #BYTE2 (_mode_ram+770)
-	BL _f_15526
+	BL _num_cpy_er0_bp
 	B _$j_03dc8
 _$j_03c0a:
 	LEA (_mode_ram+812)
@@ -5733,7 +5733,7 @@ _$j_03ce2:
 	BNE _$j_03cfc
 	MOV R0, #BYTE1 (_mode_ram+680)
 	MOV R1, #BYTE2 (_mode_ram+680)
-	BL _f_15526
+	BL _num_cpy_er0_bp
 	BAL _$j_03dc8
 _$j_03cfc:
 	MOV R0, #BYTE1 (_mode_ram+740)
@@ -5868,7 +5868,7 @@ _f_03DE6:
 	BNE _$j_03e68
 	POP ER0
 	PUSH ER0
-	BL _f_154F2
+	BL _num_cpy_bp_er0
 	MOV R0, #8H
 	MOV ER2, ER8
 	ADD ER2, #-4H
@@ -5943,7 +5943,7 @@ _$j_03ea2:
 	BL _num_to_str_std_lineo
 	MOV ER0, ER8
 	ADD ER0, #-4H
-	BL _f_154F2
+	BL _num_cpy_bp_er0
 	CMP R2, #-1H
 	BEQ _$j_03eee
 	BL _num_eval__
@@ -5964,7 +5964,7 @@ _$j_03ec4:
 _$j_03eda:
 	MOV ER0, ER8
 	ADD ER0, #32H
-	BL _f_154F2
+	BL _num_cpy_bp_er0
 	MOV ER0, ER8
 	ADD R0, #46H
 	ADDC R1, #0H
@@ -5974,19 +5974,19 @@ _$j_03eda:
 _$j_03eee:
 	MOV R0, #BYTE1 _num_1
 	MOV R1, #BYTE2 _num_1
-	BL _f_15526
+	BL _num_cpy_er0_bp
 	MOV R0, #90H
 	MOV R1, #0H
 	ST ER0, 8H[BP]
 	MOV ER0, ER8
 	ADD ER0, #32H
-	BL _f_154F2
+	BL _num_cpy_bp_er0
 	MOV R0, #93H
 	ST R0, 8H[BP]
 	MOV ER0, ER8
 	ADD R0, #46H
 	ADDC R1, #0H
-	BL _f_154F2
+	BL _num_cpy_bp_er0
 	MOV R2, #-1H
 	ADD ER0, #0AH
 	ST R2, [ER0]
@@ -6007,7 +6007,7 @@ _$j_03f18:
 _$j_03f38:
 	MOV ER0, ER8
 	ADD ER0, #-4H
-	BL _f_15526
+	BL _num_cpy_er0_bp
 	MOV ER0, BP
 	BL _num_invalid__
 	MOV R2, #98H
@@ -6015,7 +6015,7 @@ _$j_03f38:
 	BEQ _$j_03f82
 	MOV R0, #BYTE1 _num_1
 	MOV R1, #BYTE2 _num_1
-	BL _f_15532
+	BL _num_cpy_er0_bpp20
 	MOV R2, #97H
 	MOV R3, #0H
 	ST ER2, 1CH[BP]
@@ -6046,7 +6046,7 @@ _$j_03f82:
 _$j_03f88:
 	MOV ER0, ER8
 	ADD ER0, #-18H
-	BL _f_154F2
+	BL _num_cpy_bp_er0
 	B _$j_04150
 _$j_03f94:
 	MOV ER0, ER8
@@ -6248,7 +6248,7 @@ _$j_04132:
 _$j_04138:
 	MOV ER0, ER8
 _$j_0413a:
-	BL _f_15526
+	BL _num_cpy_er0_bp
 	MOV R0, #0H
 _$j_04140:
 	ADD SP, #2H
@@ -6298,7 +6298,7 @@ _$j_0419c:
 	BL _num_to_str_std_lineo
 	MOV ER0, ER8
 	ADD ER0, #0EH
-	BL _f_154F2
+	BL _num_cpy_bp_er0
 	MOV ER0, ER8
 	ADD ER0, #4H
 	MOV R2, #0H
@@ -6309,7 +6309,7 @@ _$j_041b6:
 	ADD ER0, #-4H
 	MOV ER2, ER8
 	ADD ER2, #18H
-	BL _f_154E0
+	BL _num_cpy_er2_er0
 	MOV ER0, ER2
 	MOV ER2, ER8
 	ADD ER2, #-18H
@@ -6343,7 +6343,7 @@ _$j_041ec:
 	BL _num_to_str_std_lineo
 	MOV ER0, ER8
 	ADD ER0, #4H
-	BL _f_154F2
+	BL _num_cpy_bp_er0
 	MOV ER0, ER8
 	ADD ER0, #4H
 	BL _get_num_err_type
@@ -6365,7 +6365,7 @@ _$j_04224:
 	BEQ _$j_042a6
 	MOV ER0, ER8
 	ADD ER0, #4H
-	BL _f_15526
+	BL _num_cpy_er0_bp
 	MOV ER2, ER8
 	ADD ER2, #0EH
 	MOV ER0, BP
@@ -6445,7 +6445,7 @@ _f_042AA:
 	BNE _$j_043a4
 	MOV R0, #BYTE1 (_mode_ram+10)
 	MOV R1, #BYTE2 (_mode_ram+10)
-	BL _f_15526
+	BL _num_cpy_er0_bp
 	MOV ER0, BP
 	MOV R2, #BYTE1 _mode_ram
 	MOV R3, #BYTE2 _mode_ram
@@ -6500,7 +6500,7 @@ _$j_04338:
 	BNE _$j_04396
 	MOV R2, #3H
 	MOV ER0, BP
-	BL _init_num
+	BL _num_errorval
 _$j_0435a:
 	MOV R0, #0H
 	MOV R1, R9
@@ -7537,10 +7537,10 @@ EXTRN CODE	: _f_0B05A
 EXTRN CODE	: _is_eqn_result
 EXTRN CODE	: _f_0B8B8
 EXTRN CODE	: _num_to_str_std_lineo
-EXTRN CODE	: _f_154E0
-EXTRN CODE	: _f_154F2
-EXTRN CODE	: _f_15526
-EXTRN CODE	: _f_15532
+EXTRN CODE	: _num_cpy_er2_er0
+EXTRN CODE	: _num_cpy_bp_er0
+EXTRN CODE	: _num_cpy_er0_bp
+EXTRN CODE	: _num_cpy_er0_bpp20
 EXTRN CODE	: _f_1553C
 EXTRN CODE	: _num_eval__
 EXTRN CODE	: _f_15EE4
@@ -7559,7 +7559,7 @@ EXTRN CODE	: _num_invalid__
 EXTRN CODE	: _num_cmp
 EXTRN CODE	: _f_1B0DC
 EXTRN CODE	: _num_fromdigit
-EXTRN CODE	: _init_num
+EXTRN CODE	: _num_errorval
 EXTRN CODE	: _num_negate
 EXTRN CODE	: _f_1B238
 EXTRN CODE	: _get_num_err_type

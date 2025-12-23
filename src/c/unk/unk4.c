@@ -457,7 +457,8 @@ const char menu_setup_0[] = {
 const char menu_setup_1[] = {
 	"1:ab/c  2:d/c   \0"
 	"3:CMPLX 4:STAT  \0"
-	"5:Disp  6:" "\x9f" "CONT" "\x9e" "\0"
+	"5:Rdec  6:Disp  \0"
+	"7:" "\x9f" "CONT" "\x9e" "        \0"
 	"\0"
 };
 
@@ -521,7 +522,8 @@ const menu menus[] = {
 
 // SETUP menu (SHIFT MODE)
 /* 2  */	{menu_setup_0,				0x7f,	0,		{4, 2, 3, 4, 5, 6, 7, 8},							NULL,	3,		NULL,	K_SETUP},
-/* 3  */	{menu_setup_1,				0xc7,	0,		{9, 10, 5, 6, MENU_IDX_SETUP_DEC_MARK, 11},			2,		NULL,	NULL,	K_SETUP},
+/* 3  */	{menu_setup_1,				0xc3,	0,		{9, 10, 5, 6, MENU_IDX_SETUP_RDEC,
+																		MENU_IDX_SETUP_DEC_MARK, 11},		2,		NULL,	NULL,	K_SETUP},
 /* 4  */	{menu_setup_decimalo,		0xff,	0,		{22, 23},											NULL,	NULL,	2,		K_SETUP},
 /* 5  */	{menu_setup_cmplx_result,	0xff,	0,		{12, 13},											NULL,	NULL,	3,		K_SETUP},
 /* 6  */	{menu_setup_stat_freq,		0xff,	0,		{14, 15},											NULL,	NULL,	3,		K_SETUP},
@@ -535,8 +537,10 @@ const menu menus[] = {
 /* 8  */	{menu_matrix_table,			0xff,	0,		{1, 2},												NULL,	NULL,	NULL,	K_MATRIX},
 /* 9  */	{menu_matrix_data,			0xff,	0,		{3, 4, 5},											NULL,	NULL,	0xfd,	K_MATRIX},
 /* 10 */	{menu_matrix_data,			0x1f,	0,		{6, 7, 8},											NULL,	NULL,	0xfd,	K_MATRIX},
-/* 11 */	{menu_matrix_dim0,			0xff,	0,		{9, 10, 11, 12, 13, 14},							NULL,	MATRIX_MENU_START+4,0xff, K_MATRIX},
-/* 12 */	{menu_matrix_dim1,			0xff,	0,		{15, 16, 17},										MATRIX_MENU_START+3, NULL,	0xff, K_MATRIX},
+/* 11 */	{menu_matrix_dim0,			0xff,	0,		{9, 10, 11, 12, 13, 14},							NULL,	MATRIX_MENU_START+4,
+																															0xff,	K_MATRIX},
+/* 12 */	{menu_matrix_dim1,			0xff,	0,		{15, 16, 17},										MATRIX_MENU_START+3,
+																													NULL,	0xff,	K_MATRIX},
 /* 13 */	{menu_matrix,				0xff,	0x3f,	{1, 2, 0xc8, 0xc9, 0xca, 0xcb, 0xc0, 0xc1},			NULL,	NULL,	NULL,	K_MATRIX},
 #endif
 
@@ -556,8 +560,10 @@ const menu menus[] = {
 
 #if ENABLE_BASE_N == 1
 // BASE-N mode (SHIFT 3)
-/* 20 */	{menu_base_n_0,				0xff,	0xfc,	{0x6e, 0x6f, 0x7e, 0x7f, 0xc1, 0x62},				NULL,	BASE_N_MENU_START+1,NULL, K_BASE},
-/* 21 */	{menu_base_n_1,				0xff,	0xfc,	{0x51, 0x50, 0x53, 0x52},							BASE_N_MENU_START,			NULL, NULL, K_BASE},
+/* 20 */	{menu_base_n_0,				0xff,	0xfc,	{0x6e, 0x6f, 0x7e, 0x7f, 0xc1, 0x62},				NULL,	BASE_N_MENU_START+1,
+																															NULL,	K_BASE},
+/* 21 */	{menu_base_n_1,				0xff,	0xfc,	{0x51, 0x50, 0x53, 0x52},							BASE_N_MENU_START,
+																													NULL,	NULL,	K_BASE},
 #endif
 
 // Angle unit (DRG>) menu (SHIFT Ans)
@@ -600,8 +606,10 @@ const menu menus[] = {
 
 // MODE menu
 /* 42 */	{menu_mode,					0xff,	0,		{MODE_COMP, MODE_CMPLX, MODE_STAT, MODE_BASE_N,
-														MODE_EQN, MODE_MATRIX, MODE_TABLE, MODE_VECTOR},	NULL,	MODE_MENU_START+1,	NULL,	K_MODE},
-			{menu_mode_1,				0xff,	0,		{MODE_INEQ, MODE_VERIF, MODE_RATIO},				MODE_MENU_START,	NULL,	NULL,	K_MODE},
+														MODE_EQN, MODE_MATRIX, MODE_TABLE, MODE_VECTOR},	NULL,	MODE_MENU_START+1,
+																															NULL,	K_MODE},
+			{menu_mode_1,				0xff,	0,		{MODE_INEQ, MODE_VERIF, MODE_RATIO},				MODE_MENU_START,
+																													NULL,	NULL,	K_MODE},
 
 #if ENABLE_RATIO == 1
 // RATIO mode (submode select)
@@ -723,7 +731,7 @@ char calc_solve_handler(char a) {
 				case 1:
 					input_area_ptr = input_area;
 					if (!f_0BB42(&loc_m2)) {
-						v1 = 2;
+						v1 = ERROR_SYNTAX;
 						goto j_09c7c;
 					} else if (v1 = f_15DE8()) {
 j_09c7c:
@@ -1849,7 +1857,7 @@ static void set_result(char *num) {
 	num_fromdigit(&result[10], 0);
 	if (!num) {
 		num = num_tmp;
-		init_num(num_tmp, RESULT_STANDARD);
+		num_errorval(num_tmp, ERROR_NULL);
 	}
 	num_cpy(result, num);
 	return;
@@ -3329,7 +3337,7 @@ j_0c396:
 			v2 = loc_m2;
 			if (v0) loc_m2 = d_0812A;
 			num_cpy_im(loc_m22, a->result);
-			if (v1) {	
+			if (v1) {
 				f_04796();
 				if (table_mode == TABLE_SOLVE && d_080FD == 4) v1 = num_solve(&loc_m2, a->result);
 				else if (a->mode == MODE_TABLE && d_080FD == 4) {

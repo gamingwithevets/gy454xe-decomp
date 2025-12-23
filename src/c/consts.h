@@ -4,8 +4,10 @@
 // Macro definitions for menus
 
 #if ENABLE_RDEC == 1
+#define MENU_IDX_SETUP_RDEC 7
 #define MENU_IDX_SETUP_DEC_MARK 8
 #else
+#define MENU_IDX_SETUP_RDEC 0
 #define MENU_IDX_SETUP_DEC_MARK 7
 #endif
 
@@ -327,7 +329,7 @@ enum keycode {
 * The decimal result function ([SHIFT] [=]) is present since ES models, but up until ClassWiz models, it is not
 labeled on the calculator's front side, and is only mentioned in the User's Guide for some reason. 
 
-** The Execute key is labeled as [=] on most ES, ES PLUS and ClassWiz EX models, and labeled as [EXE] on French . However,
+** The Execute key is labeled as [=] on most ES, ES PLUS and ClassWiz EX models, and labeled as [EXE] on French models. However,
 most ClassWiz CW models had this key renamed to [EXE] to avoid confusion with the equals sign.
 
 */

@@ -60,6 +60,22 @@ def num_conv(numb):
 			return sympy.factor(neg1 * sympy.sqrt(int(area2[:3])) * sympy.Rational(int(area2[3:5]), int(area2[5:7])) \
 						+ neg2 * sympy.sqrt(int(area2[8:11])) * sympy.Rational(int(area2[11:13]), int(area2[13:15])))
 
+		# Error
+		case 0xf:
+			match area2[0]:
+				case 1: return 'AC Break'
+				case 2: return 'Syntax ERROR'
+				case 3: return 'Math ERROR'
+				case 4: return 'Insufficient MEM'
+				case 7: return 'Stack ERROR'
+				case 8: return 'Argument ERROR'
+				case 9: return 'Dimension ERROR'
+				case 10: return "Can't Solve"
+				case 11: return 'Time Out'
+				case 12: return 'Variable ERROR'
+				case 13: return 'NULL ERROR'
+				case _: return '<invalid error>'
+
 		# Invalid/Unsupported
 		case _: return sympy.nan
 

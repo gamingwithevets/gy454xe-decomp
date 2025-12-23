@@ -20,7 +20,7 @@ The code was compiled with the LARGE memory model and NEAR data model options.
 ### Compiler
 As (technically) corporate tools, CCU8 and the MACU8 Assembler Package (which, in combination, allows for compiling C code as a U8/U16 binary file) do not leave any traces or metadata in the final product. As such, the exact CCU8 version Casio used, as well as the exact compiler flags, cannot be determined, and will have to be guessed.
 
-Additionally, the ClassWiz series is technically a fork of ES PLUS, however all the data is shuffled in a way that we have not been able to replicate.
+Additionally, the ClassWiz series is technically a fork of ES PLUS with the `/Zc` option disabled (which makes each constant its own relocatable segment).
 
 #### Compiler entropy
 A term coined by [the LEGO Island modding/decompiling community](https://youtu.be/gthm-0Av93Q?t=542), "compiler entropy" is a quirk with compilers where changing minor elements in the source code that shouldn't affect anything causes the compiler to generate different results, usually for the same function. This usually results in functions randomly dropping or rising in accuracy as more functions are implemented in a decomp. As of now, there is no real workaround for this phenomenon, nor is it known what exactly influences it.
@@ -44,6 +44,8 @@ fx-570/991ES PLUS `GY454XE VerF`/`GY455XE VerF` adds the debug menu from ES PLUS
 
 ### Building custom ROMs
 To configure ROMs, edit `src/asm/features.inc`. Note that this is just for feature toggles; you will need to edit other scripts to modify menus, key layouts, etc. See the comment in the aforementioned file for more information.
+
+As of currently, not all toggles have been implemented.
 
 ## Building
 As the U8/U16 SDK only officially supports Windows, these instructions below assume a Windows environment.

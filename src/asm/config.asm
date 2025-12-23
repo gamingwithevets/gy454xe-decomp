@@ -47,7 +47,7 @@ TSEG #1 AT 0FFD4H
 ;   1 = Overline. Used in American models.
 ;   2 = Underline. Unused.
 ;   3 = Parentheses. Used in VN models.
-	DB 0
+	DB 3
 ; Unknown.
 	DB 0
 
@@ -62,8 +62,8 @@ TSEG #1 AT 0FFF4H
 	DB "GY45DX"
 ; Revision string. Must be exactly 2 characters.
 	DB "--"
-; ROM checksum (see diag_get_checksum for checksum algorithm).
-; Must be manually filled in. (Seriously though, does Casio use an auto checksum calculator? I doubt it)
+; ROM checksum (see _diag_get_checksum for checksum algorithm).
+; Must be manually filled in.
 	DW 1BBAH
 
 ; Filler bytes. They don't do anything.

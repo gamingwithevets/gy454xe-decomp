@@ -16,7 +16,7 @@
 // ==================================================================================
 
 // Build real ROMs. Set to 0 to build emulator ROMs.
-REAL=0
+REAL=1
 
 // ==== Functions ====
 
