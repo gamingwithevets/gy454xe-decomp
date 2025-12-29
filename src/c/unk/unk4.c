@@ -458,7 +458,7 @@ const char menu_setup_1[] = {
 	"1:ab/c  2:d/c   \0"
 	"3:CMPLX 4:STAT  \0"
 	"5:Rdec  6:Disp  \0"
-	"7:" "\x9f" "CONT" "\x9e" "        \0"
+	"7:" "\x9f" "CONT" "\x9e" "\0"
 	"\0"
 };
 

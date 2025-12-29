@@ -79,10 +79,10 @@ if %nopython% equ 1 (
 pip show intelhex >nul 2>&1
 if %errorlevel% equ 1 (
 	echo Installing Intel HEX module first.
-	pip install ..\assets\intelhex
+	pip install intelhex
 )
 echo Converting to binary file...
-python ..\assets\intelhex\intelhex\scripts\hex2bin.py -p %pad% rom.hex rom.bin
+python -m intelhex.scripts. -p %pad% rom.hex rom.bin
 if %errorlevel% equ 1 goto exit
 echo Generating label file...
 python ..\assets\map_to_label.py rom.map labels
