@@ -82,7 +82,7 @@ if %errorlevel% equ 1 (
 	pip install intelhex
 )
 echo Converting to binary file...
-python -m intelhex.scripts. -p %pad% rom.hex rom.bin
+python -m intelhex.scripts.hex2bin -p %pad% rom.hex rom.bin
 if %errorlevel% equ 1 goto exit
 echo Generating label file...
 python ..\assets\map_to_label.py rom.map labels
