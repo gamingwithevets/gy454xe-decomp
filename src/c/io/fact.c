@@ -6,7 +6,7 @@
 #include "../unk/unk2.h"
 #include "../unk/unk5.h"
 
-// STUB: GY465XG  Im 048B6
+// FUNCTION: GY465XG  Im 048B6
 static void f_048B6_465G(char *out, char b) {
 	char v0;
 	char v1;
@@ -23,7 +23,7 @@ static void f_048B6_465G(char *out, char b) {
 	return;
 }
 
-// STUB: GY465XG  Im 04912
+// FUNCTION: GY465XG  Im 04912
 char num_to_str_fact(char *out, char *num) {
 	char v0;
 	char v1;

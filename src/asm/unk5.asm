@@ -14168,8 +14168,8 @@ _$j_15db2:
 	POP QR8
 _$j_15dbc:
 	RB _d_08120.0      ; Clear bit 0 of 8120H
-	CMP R0, #-2H       ; Subtract 0xFE from (Add 2 to) R0 temporarily, set PSW flags
-	POP PC
+	CMP R0, #-2H       ; Subtract 0xFE from (Add 2 to) R0 temporarily, set PSW flags, return
+	POP PC             ; (no function here actually does a conditional jump after calling num_parse so this is useless)
 _$j_15dc4:
 	MOV R2, #2H
 	BAL _$j_15d38      ; Throw Syntax ERROR
