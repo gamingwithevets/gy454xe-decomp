@@ -3515,7 +3515,7 @@ _$j_02cca:
 _$j_02cce:
 	CMP R8, #6H  ; TABLE_RANGE
 	BNE _$j_02cdc
-	CMP R9, #1H
+	CMP R9, #1H  ; return 1 <= [80FDH] <= 3 ? 1 : 0;
 	BLT _$j_02cdc
 	CMP R9, #3H
 	BGT _$j_02cdc
@@ -3523,6 +3523,9 @@ _$j_02cce:
 _$j_02cdc:
 	MOV R0, #0H
 	BAL _$j_02cca
+
+; ==== POTENTIAL SPLIT ===
+; Extra code found at this area in LY710XA. Needs more investigation.
 
 ; FUNCTION: GY454XE  Re 02CE0
 ; FUNCTION: GY455XE  Im 02E72
@@ -3771,6 +3774,7 @@ _$j_02e70:
 ; FUNCTION: GY454XE  Re 02E78
 ; FUNCTION: GY455XE  Im 0300A
 ; FUNCTION: GY460XF  Im 02CA4
+; FUNCTION: GY465XG  Im 02BE2
 _line_print_col_0:
 	MOV R0, #0H
 
@@ -3822,7 +3826,7 @@ _char_print:
 	PUSH XR4
 	PUSH QR8
 	MOV FP, SP
-	ADD SP, #-15H
+	ADD SP, #-15H  ; Oddity: Odd number subtracted from SP
 	CMP R0, #5FH
 	BGT _$j_02fac
 	CMP R1, #20H
@@ -4060,7 +4064,7 @@ _$j_03074:
 	AND R0, #01111100B
 	ST R0, [ER2]
 	ADD ER2, #1H
-	INC [EA]            ; Increment ROM address, yeah right
+	INC [EA]            ; Random ROM address increment?
 	ADD R5, #-1H
 	BNE _$j_03052
 	POP ER6
@@ -4702,7 +4706,7 @@ _$j_0350e:
 	POP PC
 ELSE
 	PUSH ER2
-	MOV R3, #BYTE2 _pd_val_emu  ; read F050H, thats it lol
+	MOV R3, #BYTE2 _pd_val_emu  ; These are probably the P pins on ES boards
 	MOV R2, #BYTE1 _pd_val_emu
 	L R0, [ER2]
 	POP ER2
@@ -5050,7 +5054,7 @@ _$j_03724:
 ; FUNCTION: GY454XE  Re 03726
 ; FUNCTION: GY455XE  Im 03832
 ; FUNCTION: GY460XF  Im 034CC
-_num_sum_1__:
+_num_sum:
 IF ENABLE_SUM == 1
 	PUSH LR
 	CMP R6, #0H
@@ -5072,7 +5076,7 @@ _$j_03730:
 	BNE _$j_0380c
 	MOV ER0, ER8
 	ADD ER0, #0AH
-	BL _num_cpy_bp_er0
+	BL _num_cpy_cmplx_er0_bp
 	BL _num_eval__
 	BLT _$j_0380c
 	BNE _$j_0375e
@@ -5102,11 +5106,11 @@ _$j_0378e:
 	BL _f_0479C
 	MOV ER0, ER8
 	ADD ER0, #14H
-	BL _num_cpy_bp_er0
+	BL _num_cpy_cmplx_er0_bp
 	MOV R0, #BYTE1 _num_0
 	MOV R1, #BYTE2 _num_0
 	MOV ER2, ER8
-	BL _f_1553C
+	BL _num_cpy_cmplx
 	POP ER0
 	PUSH FP
 	PUSH ER0
@@ -5146,7 +5150,7 @@ _$j_037b4:
 _$j_037f8:
 	ADD SP, #2H
 	MOV ER0, ER8
-	BL _num_cpy_er0_bp
+	BL _num_cpy_cmplx_bp_er0
 	MOV R0, #0H
 _$j_03802:
 	ADD SP, #2H
@@ -5174,7 +5178,7 @@ _f_03814:
 	MOV ER0, ER8
 	MOV R2, #BYTE1 (_mode_ram+790)
 	MOV R3, #BYTE2 (_mode_ram+790)
-	BL _f_1553C
+	BL _num_cpy_cmplx
 	MOV ER0, ER2
 	MOV R2, #BYTE1 (_mode_ram+780)
 	MOV R3, #BYTE2 (_mode_ram+780)
@@ -5197,7 +5201,7 @@ _f_0383C:
 	MOV ER0, ER8
 	MOV R2, #BYTE1 (_mode_ram+780)
 	MOV R3, #BYTE2 (_mode_ram+780)
-	BL _f_1553C
+	BL _num_cpy_cmplx
 	MOV ER0, ER2
 	MOV R2, #BYTE1 (_mode_ram+740)
 	MOV R3, #BYTE2 (_mode_ram+740)
@@ -5206,7 +5210,7 @@ _f_0383C:
 	MOV R1, #BYTE2 (_mode_ram+780)
 	MOV R2, #BYTE1 (_mode_ram+790)
 	MOV R3, #BYTE2 (_mode_ram+790)
-	BL _f_1553C
+	BL _num_cpy_cmplx
 	MOV R2, #BYTE1 (_mode_ram+740)
 	MOV R3, #BYTE2 (_mode_ram+750)
 	BL _f_1A3FC
@@ -5227,7 +5231,7 @@ _$j_03878:
 	BNE _$j_038ac
 	MOV R0, #BYTE1 (_mode_ram+780)
 	MOV R1, #BYTE2 (_mode_ram+780)
-	BL _num_cpy_bp_er0
+	BL _num_cpy_cmplx_er0_bp
 	MOV R0, #BYTE1 (_mode_ram+790)
 	MOV R1, #BYTE2 (_mode_ram+790)
 	MOV R2, #BYTE1 (_mode_ram+740)
@@ -5264,7 +5268,7 @@ _f_038C8:
 	MOV R1, #BYTE2 (_mode_ram+660)
 	MOV R2, #BYTE1 (_mode_ram+740)
 	MOV R3, #BYTE2 (_mode_ram+740)
-	BL _f_1553C
+	BL _num_cpy_cmplx
 	MOV ER0, ER2
 	MOV R2, #BYTE1 (_mode_ram+650)
 	MOV R3, #BYTE2 (_mode_ram+650)
@@ -5285,7 +5289,7 @@ _f_038C8:
 	MOV R1, #BYTE2 (_mode_ram+660)
 	MOV R2, #BYTE1 (_mode_ram+740)
 	MOV R3, #BYTE2 (_mode_ram+750)
-	BL _f_1553C
+	BL _num_cpy_cmplx
 	MOV ER0, ER2
 	MOV R2, #BYTE1 (_mode_ram+650)
 	MOV R3, #BYTE2 (_mode_ram+650)
@@ -5308,7 +5312,7 @@ _f_038C8:
 	MOV R1, #BYTE2 _num_gk_weight
 	MOV R2, #BYTE1 (_mode_ram+740)
 	MOV R3, #BYTE2 (_mode_ram+760)
-	BL _f_1553C
+	BL _num_cpy_cmplx
 	MOV ER0, ER2
 	MOV ER2, BP
 	BL _f_1A438
@@ -5316,7 +5320,7 @@ _f_038C8:
 	MOV R1, #BYTE2 _unk_01c8a
 	MOV R2, #BYTE1 (_mode_ram+740)
 	MOV R3, #BYTE2 (_mode_ram+770)
-	BL _f_1553C
+	BL _num_cpy_cmplx
 	MOV ER0, ER2
 	MOV ER2, BP
 	BL _f_1A438
@@ -5416,7 +5420,7 @@ _f_03A1A:
 	MOV R2, #BYTE1 (_mode_ram+740)
 	MOV R3, #BYTE2 (_mode_ram+760)
 	PUSH ER2
-	BL _num_cpy_er0_bp
+	BL _num_cpy_cmplx_bp_er0
 	MOV ER0, BP
 	MOV R2, #BYTE1 (_mode_ram+740)
 	MOV R3, #BYTE2 (_mode_ram+770)
@@ -5433,7 +5437,7 @@ _f_03A1A:
 	MOV R0, #BYTE1 _num_1
 	MOV R1, #BYTE2 _num_1
 	MOV ER2, BP
-	BL _f_1553C
+	BL _num_cpy_cmplx
 	MOV R0, #90H
 	MOV R1, #0H
 	ST ER0, 8H[BP]
@@ -5454,7 +5458,7 @@ ENDIF
 ; FUNCTION: GY454XE  Re 03A72
 ; FUNCTION: GY455XE  Im 03B7E
 ; FUNCTION: GY460XF  Im 034CE
-_f_03A72:
+_num_integral:
 IF ENABLE_INTEGRAL == 1
 	PUSH LR
 	CMP R6, #0H
@@ -5483,7 +5487,7 @@ _$j_03aa2:
 	BL _num_to_str_std_lineo
 	MOV R0, #BYTE1 (_mode_ram+620)
 	MOV R1, #BYTE2 (_mode_ram+620)
-	BL _num_cpy_bp_er0
+	BL _num_cpy_cmplx_er0_bp
 	BL _num_eval__
 	BGE _$j_03aba
 	B _$j_03de0
@@ -5493,7 +5497,7 @@ _$j_03aba:
 	BL _num_to_str_std_lineo
 	MOV R0, #BYTE1 (_mode_ram+630)
 	MOV R1, #BYTE2 (_mode_ram+630)
-	BL _num_cpy_bp_er0
+	BL _num_cpy_cmplx_er0_bp
 	CMP R2, #-1H
 	BEQ _$j_03af0
 	BL _num_eval__
@@ -5513,14 +5517,14 @@ _$j_03adc:
 _$j_03af0:
 	MOV R0, #BYTE1 _num_1
 	MOV R1, #BYTE2 _num_1
-	BL _num_cpy_er0_bp
+	BL _num_cpy_cmplx_bp_er0
 	MOV R0, #95H
 	MOV R1, #0H
 	ST ER0, 8H[BP]
 _$j_03afe:
 	MOV R0, #BYTE1 (_mode_ram+640)
 	MOV R1, #BYTE2 (_mode_ram+640)
-	BL _num_cpy_bp_er0
+	BL _num_cpy_cmplx_er0_bp
 	ST FP, (_mode_ram+810)
 	MOV R0, #BYTE1 (_mode_ram+620)
 	MOV R1, #BYTE2 (_mode_ram+620)
@@ -5553,7 +5557,7 @@ _$j_03b34:
 _$j_03b4e:
 	MOV R0, #BYTE1 _num_0
 	MOV R1, #BYTE2 _num_0
-	BL _num_cpy_er0_bp
+	BL _num_cpy_cmplx_bp_er0
 	B _$j_03dc8
 _$j_03b5a:
 	MOV R0, #8H
@@ -5582,20 +5586,20 @@ _$j_03b8e:
 	MOV R1, #BYTE2 (_mode_ram+620)
 	MOV R2, #BYTE1 (_mode_ram+650)
 	MOV R3, #BYTE2 (_mode_ram+650)
-	BL _f_1553C
+	BL _num_cpy_cmplx
 	ADD ER0, #0AH
 	ADD ER2, #0AH
-	BL _f_1553C
+	BL _num_cpy_cmplx
 	MOV R0, #BYTE1 _num_0
 	MOV R1, #BYTE2 _num_0
 	MOV R2, #BYTE1 (_mode_ram+680)
 	MOV R3, #BYTE2 (_mode_ram+680)
-	BL _f_1553C
+	BL _num_cpy_cmplx
 	ADD ER0, #0AH
 	ADD ER2, #14H
-	BL _f_1553C
+	BL _num_cpy_cmplx
 	ADD ER2, #0AH
-	BL _f_1553C
+	BL _num_cpy_cmplx
 	MOV R0, #BYTE1 (_mode_ram+815)
 	MOV R1, #BYTE2 (_mode_ram+815)
 	MOV R2, #2FH
@@ -5609,7 +5613,7 @@ _$j_03b8e:
 	MOV R1, #BYTE2 (_mode_ram+630)
 	MOV R2, #BYTE1 (_mode_ram+740)
 	MOV R3, #BYTE2 (_mode_ram+730)
-	BL _f_1553C
+	BL _num_cpy_cmplx
 	MOV ER0, ER2
 	MOV R2, #BYTE1 (_mode_ram+620)
 	MOV R3, #BYTE2 (_mode_ram+620)
@@ -5627,7 +5631,7 @@ _$j_03bf6:
 	BNE _$j_03c0a
 	MOV R0, #BYTE1 (_mode_ram+740)
 	MOV R1, #BYTE2 (_mode_ram+770)
-	BL _num_cpy_er0_bp
+	BL _num_cpy_cmplx_bp_er0
 	B _$j_03dc8
 _$j_03c0a:
 	LEA (_mode_ram+812)
@@ -5654,7 +5658,7 @@ _$j_03c20:
 	MOV R1, #BYTE2 (_mode_ram+680)
 	MOV R2, #BYTE1 (_mode_ram+780)
 	MOV R3, #BYTE2 (_mode_ram+780)
-	BL _f_1553C
+	BL _num_cpy_cmplx
 	MOV ER0, ER2
 	MOV R2, #BYTE1 (_mode_ram+740)
 	MOV R3, #BYTE2 (_mode_ram+770)
@@ -5679,7 +5683,7 @@ _$j_03c68:
 	MOV R1, #BYTE2 (_mode_ram+700)
 	MOV R2, #BYTE1 (_mode_ram+660)
 	MOV R3, #BYTE2 (_mode_ram+660)
-	BL _f_1553C
+	BL _num_cpy_cmplx
 	MOV ER0, ER2
 	MOV R2, #BYTE1 _num_1
 	MOV R3, #BYTE2 _num_1
@@ -5733,7 +5737,7 @@ _$j_03ce2:
 	BNE _$j_03cfc
 	MOV R0, #BYTE1 (_mode_ram+680)
 	MOV R1, #BYTE2 (_mode_ram+680)
-	BL _num_cpy_er0_bp
+	BL _num_cpy_cmplx_bp_er0
 	BAL _$j_03dc8
 _$j_03cfc:
 	MOV R0, #BYTE1 (_mode_ram+740)
@@ -5761,7 +5765,7 @@ _$j_03cfc:
 	MOV R1, #BYTE2 (_mode_ram+700)
 	MOV R2, #BYTE1 (_mode_ram+650)
 	MOV R3, #BYTE2 (_mode_ram+650)
-	BL _f_1553C
+	BL _num_cpy_cmplx
 	MOV ER0, ER2
 	MOV R2, #BYTE1 (_mode_ram+740)
 	MOV R3, #BYTE2 (_mode_ram+710)
@@ -5792,11 +5796,11 @@ _$j_03d6c:
 	MOV R1, #BYTE2 (_mode_ram+660)
 	MOV R2, #BYTE1 (_mode_ram+650)
 	MOV R3, #BYTE2 (_mode_ram+650)
-	BL _f_1553C
+	BL _num_cpy_cmplx
 	MOV ER2, ER0
 	MOV R0, #BYTE1 (_mode_ram+740)
 	MOV R1, #BYTE2 (_mode_ram+700)
-	BL _f_1553C
+	BL _num_cpy_cmplx
 	MOV ER0, ER2
 	MOV R2, #BYTE1 _num_1
 	MOV R3, #BYTE2 _num_1
@@ -5868,7 +5872,7 @@ _f_03DE6:
 	BNE _$j_03e68
 	POP ER0
 	PUSH ER0
-	BL _num_cpy_bp_er0
+	BL _num_cpy_cmplx_er0_bp
 	MOV R0, #8H
 	MOV ER2, ER8
 	ADD ER2, #-4H
@@ -5913,7 +5917,7 @@ ENDIF
 ; FUNCTION: GY454XE  Re 03E72
 ; FUNCTION: GY455XE  Im 03F7E
 ; FUNCTION: GY460XF  Im 034D0
-_f_03E72:
+_num_ddx:
 IF ENABLE_DDX == 1
 	PUSH LR
 	CMP R6, #0H
@@ -5943,7 +5947,7 @@ _$j_03ea2:
 	BL _num_to_str_std_lineo
 	MOV ER0, ER8
 	ADD ER0, #-4H
-	BL _num_cpy_bp_er0
+	BL _num_cpy_cmplx_er0_bp
 	CMP R2, #-1H
 	BEQ _$j_03eee
 	BL _num_eval__
@@ -5964,7 +5968,7 @@ _$j_03ec4:
 _$j_03eda:
 	MOV ER0, ER8
 	ADD ER0, #32H
-	BL _num_cpy_bp_er0
+	BL _num_cpy_cmplx_er0_bp
 	MOV ER0, ER8
 	ADD R0, #46H
 	ADDC R1, #0H
@@ -5974,19 +5978,19 @@ _$j_03eda:
 _$j_03eee:
 	MOV R0, #BYTE1 _num_1
 	MOV R1, #BYTE2 _num_1
-	BL _num_cpy_er0_bp
+	BL _num_cpy_cmplx_bp_er0
 	MOV R0, #90H
 	MOV R1, #0H
 	ST ER0, 8H[BP]
 	MOV ER0, ER8
 	ADD ER0, #32H
-	BL _num_cpy_bp_er0
+	BL _num_cpy_cmplx_er0_bp
 	MOV R0, #93H
 	ST R0, 8H[BP]
 	MOV ER0, ER8
 	ADD R0, #46H
 	ADDC R1, #0H
-	BL _num_cpy_bp_er0
+	BL _num_cpy_cmplx_er0_bp
 	MOV R2, #-1H
 	ADD ER0, #0AH
 	ST R2, [ER0]
@@ -6007,7 +6011,7 @@ _$j_03f18:
 _$j_03f38:
 	MOV ER0, ER8
 	ADD ER0, #-4H
-	BL _num_cpy_er0_bp
+	BL _num_cpy_cmplx_bp_er0
 	MOV ER0, BP
 	BL _num_invalid__
 	MOV R2, #98H
@@ -6015,7 +6019,7 @@ _$j_03f38:
 	BEQ _$j_03f82
 	MOV R0, #BYTE1 _num_1
 	MOV R1, #BYTE2 _num_1
-	BL _num_cpy_er0_bpp20
+	BL _num_cpy_cmplx_bpp20_er0
 	MOV R2, #97H
 	MOV R3, #0H
 	ST ER2, 1CH[BP]
@@ -6046,7 +6050,7 @@ _$j_03f82:
 _$j_03f88:
 	MOV ER0, ER8
 	ADD ER0, #-18H
-	BL _num_cpy_bp_er0
+	BL _num_cpy_cmplx_er0_bp
 	B _$j_04150
 _$j_03f94:
 	MOV ER0, ER8
@@ -6056,7 +6060,7 @@ _$j_03f94:
 	ADD ER0, #-18H
 	MOV ER2, ER8
 	ADD ER2, #1EH
-	BL _f_1553C
+	BL _num_cpy_cmplx
 	PUSH ER0
 	MOV ER0, ER2
 	POP ER2
@@ -6078,14 +6082,14 @@ _$j_03fce:
 	ADD ER0, #-18H
 	MOV ER2, ER8
 	ADD ER2, #1EH
-	BL _f_1553C
+	BL _num_cpy_cmplx
 	MOV R2, #BYTE1 _num_2
 	MOV R3, #BYTE2 _num_2
 	BL _f_1A44C
 	MOV ER0, ER8
 	MOV ER2, ER8
 	ADD ER2, #0AH
-	BL _f_1553C
+	BL _num_cpy_cmplx
 	MOV ER0, ER8
 	ADD ER0, ER6
 	POP FP
@@ -6103,7 +6107,7 @@ _$j_04008:
 	MOV R1, #BYTE2 _num_3
 	MOV ER2, ER8
 	ADD ER2, #14H
-	BL _f_1553C
+	BL _num_cpy_cmplx
 	MOV R0, #6H
 	ST R0, 9H[ER2]
 	PUSH ER6
@@ -6191,7 +6195,7 @@ _$j_040bc:
 	MOV ER2, ER8
 	ADD R2, #50H
 	ADDC R3, #0H
-	BL _f_1553C
+	BL _num_cpy_cmplx
 	ADD ER2, #-0AH
 	L R0, 8H[ER2]
 	CMP R0, #-6FH
@@ -6236,7 +6240,7 @@ _$j_0411a:
 	CMP R2, #-1H
 	BEQ _$j_0412e
 	MOV ER2, ER8
-	BL _f_1553C
+	BL _num_cpy_cmplx
 	BAL _$j_04138
 _$j_0412e:
 	MOV R0, #0BH
@@ -6248,7 +6252,7 @@ _$j_04132:
 _$j_04138:
 	MOV ER0, ER8
 _$j_0413a:
-	BL _num_cpy_er0_bp
+	BL _num_cpy_cmplx_bp_er0
 	MOV R0, #0H
 _$j_04140:
 	ADD SP, #2H
@@ -6298,7 +6302,7 @@ _$j_0419c:
 	BL _num_to_str_std_lineo
 	MOV ER0, ER8
 	ADD ER0, #0EH
-	BL _num_cpy_bp_er0
+	BL _num_cpy_cmplx_er0_bp
 	MOV ER0, ER8
 	ADD ER0, #4H
 	MOV R2, #0H
@@ -6309,7 +6313,7 @@ _$j_041b6:
 	ADD ER0, #-4H
 	MOV ER2, ER8
 	ADD ER2, #18H
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	MOV ER0, ER2
 	MOV ER2, ER8
 	ADD ER2, #-18H
@@ -6343,7 +6347,7 @@ _$j_041ec:
 	BL _num_to_str_std_lineo
 	MOV ER0, ER8
 	ADD ER0, #4H
-	BL _num_cpy_bp_er0
+	BL _num_cpy_cmplx_er0_bp
 	MOV ER0, ER8
 	ADD ER0, #4H
 	BL _get_num_err_type
@@ -6365,7 +6369,7 @@ _$j_04224:
 	BEQ _$j_042a6
 	MOV ER0, ER8
 	ADD ER0, #4H
-	BL _num_cpy_er0_bp
+	BL _num_cpy_cmplx_bp_er0
 	MOV ER2, ER8
 	ADD ER2, #0EH
 	MOV ER0, BP
@@ -6445,7 +6449,7 @@ _f_042AA:
 	BNE _$j_043a4
 	MOV R0, #BYTE1 (_mode_ram+10)
 	MOV R1, #BYTE2 (_mode_ram+10)
-	BL _num_cpy_er0_bp
+	BL _num_cpy_cmplx_bp_er0
 	MOV ER0, BP
 	MOV R2, #BYTE1 _mode_ram
 	MOV R3, #BYTE2 _mode_ram
@@ -6484,7 +6488,7 @@ _$j_04320:
 	MOV R1, #BYTE2 _mode_ram
 	MOV R2, #BYTE1 _var_x
 	MOV R3, #BYTE2 _var_x
-	BL _f_1553C
+	BL _num_cpy_cmplx
 	PUSH FP
 _$j_04338:
 	MOV ER10, #0H
@@ -6837,6 +6841,9 @@ _st_var:
 _$j_04584:
 	POP QR8
 	POP PC
+
+; ==== POTENTIAL SPLIT ===
+; Extra code found at this area in LY710XA. Needs more investigation.
 
 ; Unused since ES
 ; FUNCTION: GY454XE  Re 04588
@@ -7293,12 +7300,12 @@ ELSE
 	BL _delay
 	MOV ER0, #0H
 	L R2, [ER4]
-	BC EQ, _$j_04936
+	BC EQ, _$j_04936_e
 	MOV R0, #4H
 	MOV R1, #10H
 	ST ER0, _last_key_scancode
 	MOV ER0, #1H
-_$j_04936:
+_$j_04936_e:
 	MOV R2, #0H
 	ST R2, [ER4]
 	MOV R0, R0
@@ -7465,9 +7472,9 @@ PUBLIC _filter_chars_table
 PUBLIC _filter_chars_cmplx
 PUBLIC _filter_chars_verif
 PUBLIC _f_03714
-PUBLIC _num_sum_1__
-PUBLIC _f_03A72
-PUBLIC _f_03E72
+PUBLIC _num_sum
+PUBLIC _num_integral
+PUBLIC _num_ddx
 PUBLIC _f_042AA
 PUBLIC _f_043AC
 PUBLIC _table_stat_get_cell_addr
@@ -7537,11 +7544,11 @@ EXTRN CODE	: _f_0B05A
 EXTRN CODE	: _is_eqn_result
 EXTRN CODE	: _f_0B8B8
 EXTRN CODE	: _num_to_str_std_lineo
-EXTRN CODE	: _num_cpy_er2_er0
-EXTRN CODE	: _num_cpy_bp_er0
-EXTRN CODE	: _num_cpy_er0_bp
-EXTRN CODE	: _num_cpy_er0_bpp20
-EXTRN CODE	: _f_1553C
+EXTRN CODE	: _num_cpy_r
+EXTRN CODE	: _num_cpy_cmplx_er0_bp
+EXTRN CODE	: _num_cpy_cmplx_bp_er0
+EXTRN CODE	: _num_cpy_cmplx_bpp20_er0
+EXTRN CODE	: _num_cpy_cmplx
 EXTRN CODE	: _num_eval__
 EXTRN CODE	: _f_15EE4
 EXTRN CODE	: _f_16CF0

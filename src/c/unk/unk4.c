@@ -31,8 +31,8 @@ typedef struct {
 	char cursor_toggle;
 	char cursor_enable_flash;
 	char *screen_addr;
-	char unk_0x2c;
-	char unk_0x2d;
+	char cursor_toggle_timer;
+	char cursor_toggle_timer_curr;
 	int shutdown_timer;
 } getscancode_struct;
 
@@ -1897,8 +1897,8 @@ void getscancode(scancode *sc) {
 	draw_mode = 0;
 #if REAL == 1
 	gsc.cursor_toggle = 1;
-	gsc.unk_0x2c = 0xac;
-	gsc.unk_0x2d = 0xac;
+	gsc.cursor_toggle_timer = 0xac;
+	gsc.cursor_toggle_timer_curr = 0xac;
 	do {
 		f_0B226(&gsc);
 		if (!(v0--) && f_046CC()) {
@@ -1909,8 +1909,8 @@ void getscancode(scancode *sc) {
 		} else delay(19);
 	} while (check_key_kio(&loc_m50));
 #endif
-	gsc.unk_0x2c = 1;
-	gsc.unk_0x2d = 1;
+	gsc.cursor_toggle_timer = 1;
+	gsc.cursor_toggle_timer_curr = 1;
 	gsc.cursor_toggle = 0;
 #if REAL == 1
 	goto j_0b1ee;
@@ -1963,10 +1963,10 @@ j_0b1cc:
 // FUNCTION: GY455XE  Im 0BAEA
 // FUNCTION: GY460XF  Im 0B5B0
 static void f_0B226(getscancode_struct *a) {
-	--a->unk_0x2d;
-	if (!a->unk_0x2d) {
+	--a->cursor_toggle_timer_curr;
+	if (!a->cursor_toggle_timer_curr) {
 		a->cursor_toggle ^= 1;
-		a->unk_0x2d = a->unk_0x2c;
+		a->cursor_toggle_timer_curr = a->cursor_toggle_timer;
 		
 #if REAL == 1
 		if (!a->shutdown_timer--) shutdown();

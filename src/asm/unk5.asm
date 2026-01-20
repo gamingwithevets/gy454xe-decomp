@@ -183,264 +183,265 @@ _const_tokens:
 	DB 0D6H
 	DB 0
 
+; TY: Type, AL: Argument low nibble, AH: Argument high nibble
 ; DATA: GY454XE  Re 01628
-_num_parser_indices:
-	;            --00   --01    
-	DB  00H, 00001010B, 01100000B
-	;            --02   --03    
-	DB  01H, 00100110B, 01100000B
-	;            --04   --05    
-	DB  03H, 01000110B, 01100000B
-	;            --06   --07    
-	DB  05H, 01100110B, 01100000B
-	;            --08   --09    
-	DB  07H, 10000110B, 01100000B
-	;            --0A   --0B    
-	DB  09H, 10100110B, 01100000B
-	;            --0C   --0D    
-	DB  0BH, 11000110B, 01100000B
-	;            --0E   --0F    
-	DB  0DH, 11100110B, 01100000B
-	;            --10   --11    
-	DB  2BH, 11000110B, 01100010B
-	;            --12   --13    
-	DB  2DH, 11100110B, 01100010B
-	;            --14   --15    
-	DB  2FH, 00000110B, 01100011B
-	;            --16   --17    
-	DB  31H, 00100110B, 01100011B
-	;            --18   --19    
-	DB  33H, 01000110B, 01100011B
-	;            --1A   --1B    
-	DB  35H, 01100110B, 01100011B
-	;            --1C   --1D    
-	DB  37H, 11110110B, 01100000B
-	;            --1E   --1F    
-	DB  10H, 00010110B, 01100001B
-	;            --20   --21    
-	DB  00H, 00001111B, 11110000B
-	;            --22   --23    
-	DB  12H, 00110110B, 01100001B
-	;            --24   --25    
-	DB  14H, 11100110B, 00110110B
-	;            --26   --27    
-	DB  15H, 01100110B, 01100001B
-	;            --28   --29    
-	DB  03H, 01110001B, 00110110B
-	;            --2A   --2B    
-	DB  17H, 10110110B, 00100010B
-	;            --2C   --2D    
-	DB  00H, 11001001B, 00100010B
-	;            --2E   --2F    
-	DB  10H, 01010100B, 00100111B
-	;            --30   --31    
-	DB  00H, 00010100B, 01000000B
-	;            --32   --33    
-	DB  02H, 00110100B, 01000000B
-	;            --34   --35    
-	DB  04H, 01010100B, 01000000B
-	;            --36   --37    
-	DB  06H, 01110100B, 01000000B
-	;            --38   --39    
-	DB  08H, 10010100B, 01000000B
-	;            --3A   --3B    
-	DB  01H, 10001010B, 01100001B
-	;            --3C   --3D    
-	DB  02H, 10101010B, 00100010B
-	;            --3E   --3F    
-	DB  03H, 00001010B, 11110000B
-	;            --40   --41    
-	DB  19H, 00100110B, 01010000B
-	;            --42   --43    
-	DB  03H, 01000101B, 01010000B
-	;            --44   --45    
-	DB  05H, 01100101B, 01010000B
-	;            --46   --47    
-	DB  07H, 00100101B, 10000000B
-	;            --48   --49    
-	DB  03H, 01001000B, 10000000B
-	;            --4A   --4B    
-	DB  05H, 00001000B, 10000000B
-	;            --4C   --4D    
-	DB  08H, 10011000B, 10000000B
-	;            --4E   --4F    
-	DB  2DH, 11100010B, 00100010B
-	;            --50   --51    
-	DB  63H, 00100001B, 00010110B
-	;            --52   --53    
-	DB  61H, 00000001B, 00010110B
-	;            --54   --55    
-	DB  00H, 10010101B, 00110110B
-	;            --56   --57    
-	DB  6AH, 11110011B, 00110110B
-	;            --58   --59    
-	DB  08H, 10010101B, 01010000B
-	;            --5A   --5B    
-	DB  00H, 00001111B, 11110000B
-	;            --5C   --5D    
-	DB  73H, 00000011B, 11110000B
-	;            --5E   --5F    
-	DB  65H, 01000010B, 00100111B
-	;            --60   --61    
-	DB  5FH, 01110001B, 00010000B
-	;            --62   --63    
-	DB  08H, 10110001B, 00010000B
-	;            --64   --65    
-	DB  35H, 00110011B, 00110011B
-	;            --66   --67    
-	DB  34H, 01100011B, 00110011B
-	;            --68   --69    
-	DB  20H, 00000001B, 00000000B
-	;            --6A   --6B    
-	DB  01H, 00100000B, 00000000B
-	;            --6C   --6D    
-	DB  21H, 00100001B, 00010010B
-	;            --6E   --6F    
-	DB  29H, 01100010B, 00100010B
-	;            --70   --71    
-	DB  0FH, 00000001B, 00010001B
-	;            --72   --73    
-	DB  11H, 01010001B, 00010001B
-	;            --74   --75    
-	DB  11H, 11000100B, 00110110B
-	;            --76   --77    
-	DB  6DH, 10110011B, 00110110B
-	;            --78   --79    
-	DB  1AH, 10110110B, 01100001B
-	;            --7A   --7B    
-	DB  1CH, 00000110B, 11110000B
-	;            --7C   --7D    
-	DB  00H, 00001111B, 11110000B
-	;            --7E   --7F    
-	DB  27H, 10000010B, 00100010B
-	;            --80   --81    
-	DB  28H, 10010110B, 01100010B
-	;            --82   --83    
-	DB  2AH, 01100110B, 10000000B
-	;            --84   --85    
-	DB  07H, 00001000B, 00110111B
-	;            --86   --87    
-	DB  71H, 00100011B, 00110111B
-	;            --88   --89    
-	DB  09H, 10000001B, 01100011B
-	;            --8A   --8B    
-	DB  39H, 00010110B, 01010000B
-	;            --8C   --8D    
-	DB  42H, 00000110B, 11110000B
-	;            --8E   --8F    
-	DB  00H, 00001111B, 11110000B
-	;            --90   --91    
-	DB  12H, 00110001B, 00010001B
-	;            --92   --93    
-	DB  14H, 01100001B, 00010001B
-	;            --94   --95    
-	DB  04H, 01011010B, 10100000B
-	;            --96   --97    
-	DB  06H, 00001010B, 11110000B
-	;            --98   --99    
-	DB  17H, 10100001B, 10000000B
-	;            --9A   --9B    
-	DB  3AH, 10110110B, 01100011B
-	;            --9C   --9D    
-	DB  3CH, 11010110B, 01100011B
-	;            --9E   --9F    
-	DB  2FH, 01100010B, 00100110B
-	;            --A0   --A1    
-	DB  1AH, 10110001B, 00010001B
-	;            --A2   --A3    
-	DB  1CH, 10000001B, 00010001B
-	;            --A4   --A5    
-	DB  12H, 01100100B, 00110111B
-	;            --A6   --A7    
-	DB  0AH, 10110101B, 01010000B
-	;            --A8   --A9    
-	DB  19H, 10110001B, 10000000B
-	;            --AA   --AB    
-	DB  3EH, 11110110B, 01100011B
-	;            --AC   --AD    
-	DB  40H, 00010110B, 01100100B
-	;            --AE   --AF    
-	DB  64H, 00000010B, 00100011B
-	;            --B0   --B1    
-	DB  1DH, 11100001B, 00010001B
-	;            --B2   --B3    
-	DB  1FH, 11000001B, 00010000B
-	;            --B4   --B5    
-	DB  1DH, 11100110B, 01100001B
-	;            --B6   --B7    
-	DB  1FH, 00000110B, 01100010B
-	;            --B8   --B9    
-	DB  0AH, 10110100B, 01000000B
-	;            --BA   --BB    
-	DB  0CH, 11010100B, 01000000B
-	;            --BC   --BD    
-	DB  0EH, 11110100B, 01000000B
-	;            --BE   --BF    
-	DB  31H, 00100010B, 00100011B
-	;            --C0   --C1    
-	DB  0DH, 11100001B, 00010000B
-	;            --C2   --C3    
-	DB  77H, 10100001B, 00010000B
-	;            --C4   --C5    
-	DB  21H, 00100110B, 01100010B
-	;            --C6   --C7    
-	DB  23H, 01000110B, 01100010B
-	;            --C8   --C9    
-	DB  60H, 00010111B, 01110110B
-	;            --CA   --CB    
-	DB  62H, 00110111B, 01110110B
-	;            --CC   --CD    
-	DB  90H, 00010111B, 01111001B
-	;            --CE   --CF    
-	DB  92H, 00110111B, 01111001B
-	;            --D0   --D1    
-	DB  04H, 01010001B, 00010000B
-	;            --D2   --D3    
-	DB  06H, 10000001B, 00110110B
-	;            --D4   --D5    
-	DB  25H, 01100110B, 01100010B
-	;            --D6   --D7    
-	DB  27H, 01110110B, 00110011B
-	;            --D8   --D9    
-	DB  38H, 10010011B, 00110011B
-	;            --DA   --DB    
-	DB  3AH, 10110011B, 00110011B
-	;            --DC   --DD    
-	DB  3CH, 11010011B, 00110011B
-	;            --DE   --DF    
-	DB  3EH, 11110011B, 00110011B
-	;            --E0   --E1    
-	DB  40H, 00010011B, 00110100B
-	;            --E2   --E3    
-	DB  42H, 00110011B, 00110100B
-	;            --E4   --E5    
-	DB  44H, 01010011B, 00110100B
-	;            --E6   --E7    
-	DB  46H, 01110011B, 00110100B
-	;            --E8   --E9    
-	DB  48H, 10100011B, 00110100B
-	;            --EA   --EB    
-	DB  49H, 10110011B, 00110100B
-	;            --EC   --ED    
-	DB  4CH, 11010011B, 00110100B
-	;            --EE   --EF    
-	DB  4EH, 11110011B, 00110100B
-	;            --F0   --F1    
-	DB  50H, 00010011B, 00110101B
-	;            --F2   --F3    
-	DB  52H, 00110011B, 00110101B
-	;            --F4   --F5    
-	DB  54H, 01010011B, 00110101B
-	;            --F6   --F7    
-	DB  56H, 01110011B, 00110101B
-	;            --F8   --F9    
-	DB  58H, 10010011B, 00110101B
-	;            --FA   --FB    
-	DB  5AH, 11000011B, 00110101B
-	;            --FC   --FD    
-	DB  5BH, 11100011B, 00110101B
-	;            --FE   --FF    
-	DB  5DH, 00000011B, 11110000B
+_token_types_args:
+	;  AH00AL00   AL01TY00   TY01AH01
+	DB 00000000B, 00001010B, 01100000B
+	;  AH02AL02   AL03TY02   TY03AH03
+	DB 00000001B, 00100110B, 01100000B
+	;  AH04AL04   AL05TY04   TY05AH05
+	DB 00000011B, 01000110B, 01100000B
+	;  AH06AL06   AL07TY06   TY07AH07
+	DB 00000101B, 01100110B, 01100000B
+	;  AH08AL08   AL09TY08   TY09AH09
+	DB 00000111B, 10000110B, 01100000B
+	;  AH0AAL0A   AL0BTY0A   TY0BAH0B
+	DB 00001001B, 10100110B, 01100000B
+	;  AH0CAL0C   AL0DTY0C   TY0DAH0D
+	DB 00001011B, 11000110B, 01100000B
+	;  AH0EAL0E   AL0FTY0E   TY0FAH0F
+	DB 00001101B, 11100110B, 01100000B
+	;  AH10AL10   AL11TY10   TY11AH11
+	DB 00101011B, 11000110B, 01100010B
+	;  AH12AL12   AL13TY12   TY13AH13
+	DB 00101101B, 11100110B, 01100010B
+	;  AH14AL14   AL15TY14   TY15AH15
+	DB 00101111B, 00000110B, 01100011B
+	;  AH16AL16   AL17TY16   TY17AH17
+	DB 00110001B, 00100110B, 01100011B
+	;  AH18AL18   AL19TY18   TY19AH19
+	DB 00110011B, 01000110B, 01100011B
+	;  AH1AAL1A   AL1BTY1A   TY1BAH1B
+	DB 00110101B, 01100110B, 01100011B
+	;  AH1CAL1C   AL1DTY1C   TY1DAH1D
+	DB 00110111B, 11110110B, 01100000B
+	;  AH1EAL1E   AL1FTY1E   TY1FAH1F
+	DB 00010000B, 00010110B, 01100001B
+	;  AH20AL20   AL21TY20   TY21AH21
+	DB 00000000B, 00001111B, 11110000B
+	;  AH22AL22   AL23TY22   TY23AH23
+	DB 00010010B, 00110110B, 01100001B
+	;  AH24AL24   AL25TY24   TY25AH25
+	DB 00010100B, 11100110B, 00110110B
+	;  AH26AL26   AL27TY26   TY27AH27
+	DB 00010101B, 01100110B, 01100001B
+	;  AH28AL28   AL29TY28   TY29AH29
+	DB 00000011B, 01110001B, 00110110B
+	;  AH2AAL2A   AL2BTY2A   TY2BAH2B
+	DB 00010111B, 10110110B, 00100010B
+	;  AH2CAL2C   AL2DTY2C   TY2DAH2D
+	DB 00000000B, 11001001B, 00100010B
+	;  AH2EAL2E   AL2FTY2E   TY2FAH2F
+	DB 00010000B, 01010100B, 00100111B
+	;  AH30AL30   AL31TY30   TY31AH31
+	DB 00000000B, 00010100B, 01000000B
+	;  AH32AL32   AL33TY32   TY33AH33
+	DB 00000010B, 00110100B, 01000000B
+	;  AH34AL34   AL35TY34   TY35AH35
+	DB 00000100B, 01010100B, 01000000B
+	;  AH36AL36   AL37TY36   TY37AH37
+	DB 00000110B, 01110100B, 01000000B
+	;  AH38AL38   AL39TY38   TY39AH39
+	DB 00001000B, 10010100B, 01000000B
+	;  AH3AAL3A   AL3BTY3A   TY3BAH3B
+	DB 00000001B, 10001010B, 01100001B
+	;  AH3CAL3C   AL3DTY3C   TY3DAH3D
+	DB 00000010B, 10101010B, 00100010B
+	;  AH3EAL3E   AL3FTY3E   TY3FAH3F
+	DB 00000011B, 00001010B, 11110000B
+	;  AH40AL40   AL41TY40   TY41AH41
+	DB 00011001B, 00100110B, 01010000B
+	;  AH42AL42   AL43TY42   TY43AH43
+	DB 00000011B, 01000101B, 01010000B
+	;  AH44AL44   AL45TY44   TY45AH45
+	DB 00000101B, 01100101B, 01010000B
+	;  AH46AL46   AL47TY46   TY47AH47
+	DB 00000111B, 00100101B, 10000000B
+	;  AH48AL48   AL49TY48   TY49AH49
+	DB 00000011B, 01001000B, 10000000B
+	;  AH4AAL4A   AL4BTY4A   TY4BAH4B
+	DB 00000101B, 00001000B, 10000000B
+	;  AH4CAL4C   AL4DTY4C   TY4DAH4D
+	DB 00001000B, 10011000B, 10000000B
+	;  AH4EAL4E   AL4FTY4E   TY4FAH4F
+	DB 00101101B, 11100010B, 00100010B
+	;  AH50AL50   AL51TY50   TY51AH51
+	DB 01100011B, 00100001B, 00010110B
+	;  AH52AL52   AL53TY52   TY53AH53
+	DB 01100001B, 00000001B, 00010110B
+	;  AH54AL54   AL55TY54   TY55AH55
+	DB 00000000B, 10010101B, 00110110B
+	;  AH56AL56   AL57TY56   TY57AH57
+	DB 01101010B, 11110011B, 00110110B
+	;  AH58AL58   AL59TY58   TY59AH59
+	DB 00001000B, 10010101B, 01010000B
+	;  AH5AAL5A   AL5BTY5A   TY5BAH5B
+	DB 00000000B, 00001111B, 11110000B
+	;  AH5CAL5C   AL5DTY5C   TY5DAH5D
+	DB 01110011B, 00000011B, 11110000B
+	;  AH5EAL5E   AL5FTY5E   TY5FAH5F
+	DB 01100101B, 01000010B, 00100111B
+	;  AH60AL60   AL61TY60   TY61AH61
+	DB 01011111B, 01110001B, 00010000B
+	;  AH62AL62   AL63TY62   TY63AH63
+	DB 00001000B, 10110001B, 00010000B
+	;  AH64AL64   AL65TY64   TY65AH65
+	DB 00110101B, 00110011B, 00110011B
+	;  AH66AL66   AL67TY66   TY67AH67
+	DB 00110100B, 01100011B, 00110011B
+	;  AH68AL68   AL69TY68   TY69AH69
+	DB 00100000B, 00000001B, 00000000B
+	;  AH6AAL6A   AL6BTY6A   TY6BAH6B
+	DB 00000001B, 00100000B, 00000000B
+	;  AH6CAL6C   AL6DTY6C   TY6DAH6D
+	DB 00100001B, 00100001B, 00010010B
+	;  AH6EAL6E   AL6FTY6E   TY6FAH6F
+	DB 00101001B, 01100010B, 00100010B
+	;  AH70AL70   AL71TY70   TY71AH71
+	DB 00001111B, 00000001B, 00010001B
+	;  AH72AL72   AL73TY72   TY73AH73
+	DB 00010001B, 01010001B, 00010001B
+	;  AH74AL74   AL75TY74   TY75AH75
+	DB 00010001B, 11000100B, 00110110B
+	;  AH76AL76   AL77TY76   TY77AH77
+	DB 01101101B, 10110011B, 00110110B
+	;  AH78AL78   AL79TY78   TY79AH79
+	DB 00011010B, 10110110B, 01100001B
+	;  AH7AAL7A   AL7BTY7A   TY7BAH7B
+	DB 00011100B, 00000110B, 11110000B
+	;  AH7CAL7C   AL7DTY7C   TY7DAH7D
+	DB 00000000B, 00001111B, 11110000B
+	;  AH7EAL7E   AL7FTY7E   TY7FAH7F
+	DB 00100111B, 10000010B, 00100010B
+	;  AH80AL80   AL81TY80   TY81AH81
+	DB 00101000B, 10010110B, 01100010B
+	;  AH82AL82   AL83TY82   TY83AH83
+	DB 00101010B, 01100110B, 10000000B
+	;  AH84AL84   AL85TY84   TY85AH85
+	DB 00000111B, 00001000B, 00110111B
+	;  AH86AL86   AL87TY86   TY87AH87
+	DB 01110001B, 00100011B, 00110111B
+	;  AH88AL88   AL89TY88   TY89AH89
+	DB 00001001B, 10000001B, 01100011B
+	;  AH8AAL8A   AL8BTY8A   TY8BAH8B
+	DB 00111001B, 00010110B, 01010000B
+	;  AH8CAL8C   AL8DTY8C   TY8DAH8D
+	DB 01000010B, 00000110B, 11110000B
+	;  AH8EAL8E   AL8FTY8E   TY8FAH8F
+	DB 00000000B, 00001111B, 11110000B
+	;  AH90AL90   AL91TY90   TY91AH91
+	DB 00010010B, 00110001B, 00010001B
+	;  AH92AL92   AL93TY92   TY93AH93
+	DB 00010100B, 01100001B, 00010001B
+	;  AH94AL94   AL95TY94   TY95AH95
+	DB 00000100B, 01011010B, 10100000B
+	;  AH96AL96   AL97TY96   TY97AH97
+	DB 00000110B, 00001010B, 11110000B
+	;  AH98AL98   AL99TY98   TY99AH99
+	DB 00010111B, 10100001B, 10000000B
+	;  AH9AAL9A   AL9BTY9A   TY9BAH9B
+	DB 00111010B, 10110110B, 01100011B
+	;  AH9CAL9C   AL9DTY9C   TY9DAH9D
+	DB 00111100B, 11010110B, 01100011B
+	;  AH9EAL9E   AL9FTY9E   TY9FAH9F
+	DB 00101111B, 01100010B, 00100110B
+	;  AHA0ALA0   ALA1TYA0   TYA1AHA1
+	DB 00011010B, 10110001B, 00010001B
+	;  AHA2ALA2   ALA3TYA2   TYA3AHA3
+	DB 00011100B, 10000001B, 00010001B
+	;  AHA4ALA4   ALA5TYA4   TYA5AHA5
+	DB 00010010B, 01100100B, 00110111B
+	;  AHA6ALA6   ALA7TYA6   TYA7AHA7
+	DB 00001010B, 10110101B, 01010000B
+	;  AHA8ALA8   ALA9TYA8   TYA9AHA9
+	DB 00011001B, 10110001B, 10000000B
+	;  AHAAALAA   ALABTYAA   TYABAHAB
+	DB 00111110B, 11110110B, 01100011B
+	;  AHACALAC   ALADTYAC   TYADAHAD
+	DB 01000000B, 00010110B, 01100100B
+	;  AHAEALAE   ALAFTYAE   TYAFAHAF
+	DB 01100100B, 00000010B, 00100011B
+	;  AHB0ALB0   ALB1TYB0   TYB1AHB1
+	DB 00011101B, 11100001B, 00010001B
+	;  AHB2ALB2   ALB3TYB2   TYB3AHB3
+	DB 00011111B, 11000001B, 00010000B
+	;  AHB4ALB4   ALB5TYB4   TYB5AHB5
+	DB 00011101B, 11100110B, 01100001B
+	;  AHB6ALB6   ALB7TYB6   TYB7AHB7
+	DB 00011111B, 00000110B, 01100010B
+	;  AHB8ALB8   ALB9TYB8   TYB9AHB9
+	DB 00001010B, 10110100B, 01000000B
+	;  AHBAALBA   ALBBTYBA   TYBBAHBB
+	DB 00001100B, 11010100B, 01000000B
+	;  AHBCALBC   ALBDTYBC   TYBDAHBD
+	DB 00001110B, 11110100B, 01000000B
+	;  AHBEALBE   ALBFTYBE   TYBFAHBF
+	DB 00110001B, 00100010B, 00100011B
+	;  AHC0ALC0   ALC1TYC0   TYC1AHC1
+	DB 00001101B, 11100001B, 00010000B
+	;  AHC2ALC2   ALC3TYC2   TYC3AHC3
+	DB 01110111B, 10100001B, 00010000B
+	;  AHC4ALC4   ALC5TYC4   TYC5AHC5
+	DB 00100001B, 00100110B, 01100010B
+	;  AHC6ALC6   ALC7TYC6   TYC7AHC7
+	DB 00100011B, 01000110B, 01100010B
+	;  AHC8ALC8   ALC9TYC8   TYC9AHC9
+	DB 01100000B, 00010111B, 01110110B
+	;  AHCAALCA   ALCBTYCA   TYCBAHCB
+	DB 01100010B, 00110111B, 01110110B
+	;  AHCCALCC   ALCDTYCC   TYCDAHCD
+	DB 10010000B, 00010111B, 01111001B
+	;  AHCEALCE   ALCFTYCE   TYCFAHCF
+	DB 10010010B, 00110111B, 01111001B
+	;  AHD0ALD0   ALD1TYD0   TYD1AHD1
+	DB 00000100B, 01010001B, 00010000B
+	;  AHD2ALD2   ALD3TYD2   TYD3AHD3
+	DB 00000110B, 10000001B, 00110110B
+	;  AHD4ALD4   ALD5TYD4   TYD5AHD5
+	DB 00100101B, 01100110B, 01100010B
+	;  AHD6ALD6   ALD7TYD6   TYD7AHD7
+	DB 00100111B, 01110110B, 00110011B
+	;  AHD8ALD8   ALD9TYD8   TYD9AHD9
+	DB 00111000B, 10010011B, 00110011B
+	;  AHDAALDA   ALDBTYDA   TYDBAHDB
+	DB 00111010B, 10110011B, 00110011B
+	;  AHDCALDC   ALDDTYDC   TYDDAHDD
+	DB 00111100B, 11010011B, 00110011B
+	;  AHDEALDE   ALDFTYDE   TYDFAHDF
+	DB 00111110B, 11110011B, 00110011B
+	;  AHE0ALE0   ALE1TYE0   TYE1AHE1
+	DB 01000000B, 00010011B, 00110100B
+	;  AHE2ALE2   ALE3TYE2   TYE3AHE3
+	DB 01000010B, 00110011B, 00110100B
+	;  AHE4ALE4   ALE5TYE4   TYE5AHE5
+	DB 01000100B, 01010011B, 00110100B
+	;  AHE6ALE6   ALE7TYE6   TYE7AHE7
+	DB 01000110B, 01110011B, 00110100B
+	;  AHE8ALE8   ALE9TYE8   TYE9AHE9
+	DB 01001000B, 10100011B, 00110100B
+	;  AHEAALEA   ALEBTYEA   TYEBAHEB
+	DB 01001001B, 10110011B, 00110100B
+	;  AHECALEC   ALEDTYEC   TYEDAHED
+	DB 01001100B, 11010011B, 00110100B
+	;  AHEEALEE   ALEFTYEE   TYEFAHEF
+	DB 01001110B, 11110011B, 00110100B
+	;  AHF0ALF0   ALF1TYF0   TYF1AHF1
+	DB 01010000B, 00010011B, 00110101B
+	;  AHF2ALF2   ALF3TYF2   TYF3AHF3
+	DB 01010010B, 00110011B, 00110101B
+	;  AHF4ALF4   ALF5TYF4   TYF5AHF5
+	DB 01010100B, 01010011B, 00110101B
+	;  AHF6ALF6   ALF7TYF6   TYF7AHF7
+	DB 01010110B, 01110011B, 00110101B
+	;  AHF8ALF8   ALF9TYF8   TYF9AHF9
+	DB 01011000B, 10010011B, 00110101B
+	;  AHFAALFA   ALFBTYFA   TYFBAHFB
+	DB 01011010B, 11000011B, 00110101B
+	;  AHFCALFC   ALFDTYFC   TYFDAHFD
+	DB 01011011B, 11100011B, 00110101B
+	;  AHFEALFE   ALFFTYFE   TYFFAHFF
+	DB 01011101B, 00000011B, 11110000B
 
 ; Parsers are mapped to tokens via the above table. The categorization is as follows:
 ;  0  Sum, Integral, Derivative
@@ -456,10 +457,11 @@ _num_parser_indices:
 ;  9  ','
 ; 10  (null), ':', '<', '>', ≤, ≠, ≥
 ; 15  All remaining characters (invalid)
+; Each token also has an associated argument value for the parser. This lets the parser identify the token being parsed for handling special cases.
 ; DATA: GY454XE  Re 017A8
 ; DATA: GY455XE  Im 017A8
 _num_parsers:
-	DW _num_parse_int_ddx_sum
+	DW _num_parse_calculus
 	DW _num_parse_func
 	DW _num_parse_op
 	DW _num_parse_postfix
@@ -469,7 +471,7 @@ _num_parsers:
 	DW _num_parse_matvct
 	DW _num_parse_sto
 	DW _num_parse_sep
-	DW _num_calculate
+	DW _num_parse_exec
 
 ; DATA: GY454XE  Re 017BE
 ; DATA: GY455XE  Im 017BE
@@ -1992,7 +1994,7 @@ _f_10962:
 	MOV R1, #BYTE2 _num_4
 	MOV ER2, BP
 	ADD ER2, #1EH
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	POP R6
 	PUSH R6
 	MOV R5, #0H
@@ -2034,7 +2036,7 @@ _$j_109d8:
 	MOV R1, #BYTE2 _num_1
 	MOV ER2, BP
 	ADD ER2, #0AH
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	ADD FP, #0AH
 	MOV ER0, FP
 	BL _f_154CE
@@ -2052,13 +2054,13 @@ _$j_10a02:
 	MOV ER0, BP
 	ADD ER0, #0AH
 	MOV ER2, FP
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	MOV ER2, ER0
 	MOV ER0, BP
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	MOV ER0, FP
 	MOV ER2, BP
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	BAL _$j_10a02
 _$j_10a34:
 	POP R9
@@ -2068,10 +2070,10 @@ _$j_10a34:
 	MOV R1, #BYTE2 _num_1
 	MOV ER2, BP
 	ADD ER2, #14H
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	MOV ER0, BP
 	ADD ER2, #-0AH
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	MOV ER4, ER2
 	ADD FP, #0AH
 _$j_10a52:
@@ -2093,13 +2095,13 @@ _$j_10a52:
 	MOV ER0, BP
 	ADD ER0, #14H
 	MOV ER2, ER4
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	MOV ER2, ER0
 	MOV ER0, BP
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	MOV ER0, ER4
 	MOV ER2, BP
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	BAL _$j_10a52
 _$j_10a90:
 	TB R7.0
@@ -2109,7 +2111,7 @@ _$j_10a90:
 	BL _f_1A424
 	MOV ER0, ER4
 	MOV ER2, FP
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	L R0, 14H[BP]
 	BEQ _$j_10acc
 	MOV ER0, FP
@@ -2141,10 +2143,10 @@ _$j_10ace:
 	MOV R0, #BYTE1 _num_1
 	MOV R1, #BYTE2 _num_1
 	MOV ER2, BP
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	MOV ER0, FP
 	ADD ER2, #0AH
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	MOV R6, R7
 _$j_10af0:
 	ADD R6, #-1H
@@ -2154,7 +2156,7 @@ _$j_10af0:
 	ADD ER0, #0AH
 	MOV ER2, BP
 	ADD ER2, #14H
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	MOV ER0, ER2
 	MOV ER2, FP
 	BL _f_1A438
@@ -2165,10 +2167,10 @@ _$j_10af0:
 	MOV ER0, BP
 	ADD ER0, #0AH
 	MOV ER2, BP
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	ADD ER0, #0AH
 	ADD ER2, #0AH
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	BAL _$j_10af0
 _$j_10b28:
 	POP FP
@@ -2190,7 +2192,7 @@ _$j_10b34:
 	MOV ER0, ER10
 	MOV ER2, BP
 	ADD ER2, #-0AH
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	MOV R0, #1H
 	BAL _$j_10b58
 _$j_10b56:
@@ -2251,7 +2253,7 @@ _$j_10ba6:
 _$j_10baa:
 	MOV ER2, BP
 	ADD ER2, #28H
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	PUSH BP
 	ADD BP, #28H
 	BL _f_10B60
@@ -2264,10 +2266,10 @@ _$j_10baa:
 	MOV R1, #BYTE2 _num_0
 	MOV ER2, BP
 	ADD ER2, #0AH
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	ADD ER0, #0AH
 	ADD ER2, #0AH
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 _$j_10bda:
 	MOV R0, #1H
 	BAL _$j_10bf2
@@ -2312,8 +2314,8 @@ _$j_10c12:
 ; FUNCTION: GY460XF  Im 102BE
 _f_10C1E:
 	PUSH LR
-	BL _f_10B7E
-	CMP R0, #-1H
+	BL _f_10B7E    ; result = _f_10B7E();
+	CMP R0, #-1H   ; return result == -1 ? 0 : result;
 	BNE _$j_10c2a
 	MOV R0, #0H
 _$j_10c2a:
@@ -2354,9 +2356,9 @@ _$j_10c4c:
 	MOV R0, #BYTE1 _num_25200
 	MOV R1, #BYTE2 _num_25200
 	MOV ER2, FP
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	ADD ER2, #0AH
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	MOV ER0, ER2
 	MOV ER2, BP
 	BL _f_1ACD6
@@ -2371,7 +2373,7 @@ _$j_10c4c:
 	MOV ER0, FP
 	MOV ER2, BP
 	ADD ER2, #-0AH
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	MOV ER0, BP
 	BL _num_unk_1_1__
 	MOV R0, #-1H
@@ -3040,7 +3042,7 @@ _$j_110be:
 ; FUNCTION: GY454XE  Re 110C4
 ; FUNCTION: GY455XE  Im 110C4
 ; FUNCTION: GY460XF  Im 10764
-_f_110C4:
+_num_float_to_frac:
 	PUSH LR
 	PUSH FP
 	MOV FP, SP
@@ -3057,37 +3059,37 @@ _f_110C4:
 	ADD ER8, #-32H
 	MOV ER2, ER4
 	MOV ER0, ER8
-	BL _num_cpy
+	BL _num_cpy        ; num_cpy(FP-50, num)
 	MOV ER0, ER8
-	BL _get_numtype
-	CMP R0, #20H
+	BL _get_numtype    ; get_numtype(FP-50)
+	CMP R0, #20H       ; If fraction or radical, return 0
 	BEQ _$j_11130
 	CMP R0, #80H
 	BEQ _$j_11130
 	CMP R0, #0H
-	BNE _$j_1113e
+	BNE _$j_1113e      ; If not floating point, return 1
 	MOV ER0, ER8
-	BL _f_10C1E
+	BL _f_10C1E        ; If this function returns 0, return 1
 	CMP R0, #0H
 	BEQ _$j_1113e
-	MOV ER0, ER10
+	MOV ER0, ER10      ; If this function returns 1... copy and return 0
 	BL _num_invalid__
 	CMP R0, #1H
 	BEQ _$j_11128
 	MOV ER0, ER10
 	MOV ER2, BP
-	BL _f_1ACEA
+	BL _f_1ACEA        ; f_1ACEA(FP-40, BP-30)
 	MOV ER0, ER8
 	MOV ER2, ER10
-	BL _num_add_1
+	BL _num_add_1      ; num_add_1(FP-50, FP-40)
 	MOV ER0, ER8
-	BL _get_numtype
+	BL _get_numtype    ; If not fraction, return 1
 	CMP R0, #20H
 	BNE _$j_1113e
 _$j_11128:
 	MOV ER2, ER8
 	MOV ER0, ER4
-	BL _num_cpy
+	BL _num_cpy        ; num_cpy(num, FP-50)
 _$j_11130:
 	MOV R0, #0H
 _$j_11132:
@@ -3134,7 +3136,7 @@ _f_11142:
 	BGE _$j_111c2
 	CMP R0, #20H
 	BEQ _$j_111a6
-	L ER0, 8H[BP]  ;  Unnecessary Disp16 used instead of Disp6!
+	L ER0, 8H[ER12]  ; Oddity: Disp16 used instead of Disp6
 	CMP R1, #4H
 	BLT _$j_111a6
 	MOV ER0, ER8
@@ -5250,7 +5252,7 @@ _$j_121c6:
 	MOV ER0, ER10
 	MOV R2, #1H
 	BL _num_fromdigit
-	L ER0, 8H[BP]  ;  Unnecessary Disp16 used instead of Disp6!
+	L ER0, 8H[ER12]  ; Oddity: Disp16 used instead of Disp6
 	CMP R1, #4H
 	BGE _$j_122a6
 	MOV ER2, ER10
@@ -7263,19 +7265,19 @@ IF ENABLE_RATIO == 1
 	CMP R2, #2H
 	BEQ _$j_128ac_460f
 	MOV ER2, FP
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	MOV ER2, BP
 	BAL _$j_128b4_460f
 _$j_128ac_460f:
 	MOV ER2, BP
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	MOV ER2, FP
 _$j_128b4_460f:
 	ADD ER0, #0AH
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	ADD ER0, #0AH
 	MOV ER2, ER10
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	BL _f_16CF0
 	CMP R0, #1H
 	BEQ _$j_128dc_460f
@@ -7453,7 +7455,7 @@ _$j_128d4_465g:
 	BEQ _$j_1291a_465g
 	MOV ER0, BP
 	MOV ER2, FP
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	AND R10, #00001111B
 	CMP R10, #0DH
 	BEQ _$j_128b6_465g
@@ -7581,7 +7583,7 @@ _$j_12a4e_460f:
 	ADD ER2, #0AH
 	MOV ER0, ER2
 	ADD ER0, #0AH
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	POP R0
 _$j_12a6c_460f:
 	MOV R8, #1H
@@ -7621,21 +7623,21 @@ _f_12A84_460F:
 	MOV R0, #BYTE1 (_mode_ram+450)
 	MOV R1, #BYTE2 (_mode_ram+450)
 	MOV ER2, FP
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	MOV ER2, ER0
 	ADD ER0, #1EH
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	MOV ER2, ER0
 	MOV ER0, FP
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 _$j_12ac2_460f:
 	MOV R0, #BYTE1 (_mode_ram+450)
 	MOV R1, #BYTE2 (_mode_ram+450)
 	MOV ER2, FP
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	ADD ER0, #1EH
 	MOV ER2, BP
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	MOV ER0, FP
 	BL _num_to_str_std_lineo
 	MOV ER0, BP
@@ -7673,13 +7675,13 @@ _f_12AFE_460F:
 	MOV R7, #BYTE2 (_mode_ram+450)
 	MOV ER0, ER6
 	MOV ER2, FP
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	ADD ER0, #1EH
 	MOV ER2, BP
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	ADD ER0, #1EH
 	MOV ER2, ER10
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	MOV ER0, FP
 	BL _num_to_str_std_lineo
 	MOV ER0, BP
@@ -7699,16 +7701,16 @@ _f_12AFE_460F:
 	MOV ER0, ER6
 	ADD ER0, #3CH
 	MOV ER2, ER8
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	ADD ER0, #-3CH
 	ADD ER2, #0AH
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	ADD ER0, #1EH
 	BAL _$j_12bfa_460f
 _$j_12b6e_460f:
 	MOV ER0, ER6
 	MOV ER2, ER8
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	MOV ER2, ER10
 	MOV ER0, BP
 	BL _num_cmp
@@ -7718,16 +7720,16 @@ _$j_12b6e_460f:
 	ADD ER0, #3CH
 	MOV ER2, ER8
 	ADD ER2, #0AH
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	ADD ER0, #-1EH
 	BAL _$j_12bfa_460f
 _$j_12b92_460f:
 	MOV ER0, ER6
 	MOV ER2, ER8
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	ADD ER0, #1EH
 	ADD ER2, #0AH
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	ADD ER0, #1EH
 	BAL _$j_12bfa_460f
 _$j_12ba6_460f:
@@ -7739,17 +7741,17 @@ _$j_12ba6_460f:
 	MOV ER0, ER6
 	ADD ER0, #3CH
 	MOV ER2, ER8
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	ADD ER0, #-1EH
 	ADD ER2, #0AH
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	ADD ER0, #-1EH
 	BAL _$j_12bfa_460f
 _$j_12bc8_460f:
 	MOV ER0, ER6
 	ADD ER0, #1EH
 	MOV ER2, ER8
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	MOV ER2, ER10
 	MOV ER0, FP
 	BL _num_cmp
@@ -7759,18 +7761,18 @@ _$j_12bc8_460f:
 	ADD ER0, #3CH
 	MOV ER2, ER8
 	ADD ER2, #0AH
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	ADD ER0, #-3CH
 	BAL _$j_12bfa_460f
 _$j_12bee_460f:
 	MOV ER0, ER6
 	MOV ER2, ER8
 	ADD ER2, #0AH
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	ADD ER0, #3CH
 _$j_12bfa_460f:
 	ADD ER2, #0AH
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	POP QR8
 	POP XR4
 	POP PC
@@ -7788,10 +7790,10 @@ _f_12C06_460F:
 	MOV R9, #BYTE2 (_mode_ram+450)
 	MOV ER0, ER8
 	MOV ER2, FP
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	ADD ER0, #1EH
 	MOV ER2, BP
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	MOV ER0, FP
 	BL _num_to_str_std_lineo
 	MOV ER0, BP
@@ -7803,18 +7805,18 @@ _f_12C06_460F:
 	BEQ _$j_12c4c_460f
 	MOV ER0, ER8
 	MOV ER2, ER10
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	ADD ER0, #1EH
 	BAL _$j_12c58_460f
 _$j_12c4c_460f:
 	MOV ER0, ER8
 	ADD ER0, #1EH
 	MOV ER2, ER10
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	ADD ER0, #-1EH
 _$j_12c58_460f:
 	ADD ER2, #0AH
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	POP QR8
 	POP PC
 
@@ -7826,7 +7828,7 @@ _f_12C62_460F:
 	ADD ER2, #0AH
 	MOV R0, #BYTE1 (_mode_ram+450)
 	MOV R1, #BYTE2 (_mode_ram+450)
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	POP PC
 ELSE
 	RT
@@ -7851,14 +7853,14 @@ IF ENABLE_FACT == 1
 	MOV R0, #BYTE1 _num_2
 	MOV R1, #BYTE2 _num_2
 	MOV ER2, BP
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	MOV ER2, FP
 	ADD ER2, #14H
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	MOV ER0, ER6
 	MOV ER2, BP
 	ADD ER2, #0AH
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	MOV R8, #0A8H
 	MOV R10, #4H
 	MOV R11, #5H
@@ -7874,10 +7876,10 @@ _$j_12986_465g:
 	MOV ER0, BP
 	ADD ER0, #0AH
 	MOV ER2, FP
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	MOV ER0, BP
 	ADD ER2, #0AH
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	MOV ER0, FP
 	MOV ER2, FP
 	ADD ER2, #0AH
@@ -7888,7 +7890,7 @@ _$j_12986_465g:
 	BC NE, _$j_129b8_465g
 	MOV ER0, BP
 	MOV ER2, ER4
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	LEA _mode_ram+462
 	INC [EA]
 _$j_129b8_465g:
@@ -7898,7 +7900,7 @@ _$j_129b8_465g:
 	ADD ER0, #0AH
 	MOV ER2, BP
 	ADD ER2, #0AH
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	L R0, 0AH[FP]
 	BC NE, _$j_12986_465g
 	BC AL, _$j_12a28_465g
@@ -7960,7 +7962,7 @@ _$j_12a32_465g:
 	MOV ER0, BP
 	ADD ER0, #0AH
 	MOV ER2, ER4
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	LEA [ER6]
 	INC [EA]
 	LEA _mode_ram+462
@@ -8534,7 +8536,7 @@ _$j_13594:
 _$j_1359a:
 	BL _f_1B208
 	MOV ER0, ER6
-	BL _f_110C4
+	BL _num_float_to_frac
 	MOV R0, #0H
 	BAL _$j_135ac
 _$j_135a8:
@@ -8791,7 +8793,7 @@ _$j_13762:
 	MOV ER0, ER6
 	BL _f_1B208
 	MOV ER0, ER6
-	BL _f_110C4
+	BL _num_float_to_frac
 	BL _check_ac
 	BNE _$j_136b0
 	ADD R13, #1H
@@ -10365,7 +10367,7 @@ _f_14430:
 	PUSH ER0
 	MOV R0, #BYTE1 _num_1
 	MOV R1, #BYTE2 _num_1
-	BL _num_cpy_er0_bpp20
+	BL _num_cpy_cmplx_bpp20_er0
 	MOV R0, #6H
 	ST R0, 1DH[BP]
 	POP ER0
@@ -10478,7 +10480,7 @@ _f_144F4:
 	PUSH R4
 	PUSH FP
 	MOV R2, R0
-	BL _get_num_parser_idx
+	BL _get_token_type
 	MOV R0, #1H
 	CMP R2, #2H
 	BEQ _$j_14510
@@ -10501,7 +10503,7 @@ _f_14516:
 	PUSH R4
 	PUSH FP
 	MOV R2, R0
-	BL _get_num_parser_idx
+	BL _get_token_type
 	CMP R2, #1H
 	BNE _$j_1450e
 	CMP R0, #5FH
@@ -10520,7 +10522,7 @@ _f_14532:
 	PUSH R4
 	PUSH FP
 	MOV R2, R0
-	BL _get_num_parser_idx
+	BL _get_token_type
 	MOV R0, #1H
 	CMP R2, #3H
 	BEQ _$j_1455a
@@ -10543,31 +10545,31 @@ _$j_1455a:
 ; FUNCTION: GY454XE  Re 14560
 ; FUNCTION: GY455XE  Im 14560
 ; FUNCTION: GY460XF  Im 1401A
-_get_num_parser_idx_fp:
+_get_token_type_fp:
 	L R2, [FP]
 
 ; FUNCTION: GY454XE  Re 14562
 ; FUNCTION: GY455XE  Im 14562
 ; FUNCTION: GY460XF  Im 1401C
-_get_num_parser_idx:
+_get_token_type:
 	MOV R4, #0H
 	MOV R3, #0H   ; Sign-extend R2 (force unsigned)
 	MOV ER0, ER2  ; Multiply ER2 by 3
 	ADD ER2, ER2
 	ADD ER2, ER0
-	MOV R0, #BYTE1 _num_parser_indices
-	MOV R1, #BYTE2 _num_parser_indices
+	MOV R0, #BYTE1 _token_types_args
+	MOV R1, #BYTE2 _token_types_args
 	SRLC R2, #1   ; Shift right ER2 by 1 (//2). We also retrieve the LSB that's shifted out...
-	ADDC R4, R4   ; ...and add it to R4
-	SRL R3, #1    ; Shift right R3 by 1
+	ADDC R4, R4   ; ...and add it to R4. Now R4 = 1 if our token ID was even, 0 otherwise
+	SRL R3, #1
 	SLL R4, #2    ; Shift left R4 by 2 (×4)
 	ADD ER2, ER0
-	L R0, [ER2]   ; Now we load in the index
+	L R0, [ER2]   ; Now we load in the index and its corresponding argument value
 	L R1, 1H[ER2]
-	SRLC R0, R4   ; Shift it by 4
+	SRLC R0, R4   ; Right shift by 0 or 4. R0 now holds the argument value
 	SRL R1, R4
 	AND R1, #00001111B
-	MOV R2, R1    ; Return the low nibble of the high byte
+	MOV R2, R1    ; R2 holds the index
 	ADD FP, #1H
 	RT
 
@@ -10808,12 +10810,12 @@ _f_1470E:
 ; FUNCTION: GY454XE  Re 14712
 ; FUNCTION: GY455XE  Im 14712
 ; FUNCTION: GY460XF  Im 141CC
-_f_14712:
+_copy_bp40_r10:
 	MOV R1, #0FH
 _$j_14714:
 	SUB R1, R10      ; Return if R10 is 15
 	BEQ _$j_14724
-	MOV ER2, BP      ; [BP+R10+40] = R0
+	MOV ER2, BP      ; [BP+40+R10] = R0
 	ADD R2, R10
 	ADDC R3, #0H
 	ST R0, 28H[ER2]
@@ -10871,12 +10873,12 @@ _f_14758:
 	PUSH XR0
 	MOV ER2, BP
 	ADD ER2, #14H
-	BL _f_151D6
+	BL _num_cpy_er2_numstack
 	MOV ER0, BP
 	ADD ER0, #14H
-	BL _num_cpy_bp_er0
+	BL _num_cpy_cmplx_er0_bp
 	MOV ER2, BP
-	BL _f_15204
+	BL _num_cpy_numstack_er2
 	POP XR0
 	POP PC
 
@@ -11002,13 +11004,13 @@ _f_1481C:
 	ADD SP, #-0AH
 	MOV ER2, SP
 	ADD ER0, #14H
-	BL _f_1553C
+	BL _num_cpy_cmplx
 	PUSH ER0
 	ADD ER0, #-14H
 	BL _num_rnd
 	POP ER2
 	MOV ER0, SP
-	BL _f_1553C
+	BL _num_cpy_cmplx
 	ADD SP, #0AH
 	POP PC
 
@@ -11055,7 +11057,7 @@ _$j_14868:
 	MOV R1, #BYTE2 _num_1
 	MOV ER2, BP
 	ADD ER2, #14H
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	L R0, _setup_num_fmt_n
 	ST R0, 8H[ER2]
 	MOV ER0, BP
@@ -11229,7 +11231,7 @@ _f_149D8:
 	PUSH R6
 	ADD SP, #-32H
 	MOV ER2, SP
-	BL _f_1553C
+	BL _num_cpy_cmplx
 	MOV BP, ER2
 	MOV R0, #0H
 	MOV R6, #2H
@@ -11267,7 +11269,7 @@ _f_14A00:
 _$j_14a24:
 	MOV ER2, BP
 	ADD ER2, #28H
-	BL _f_1553C
+	BL _num_cpy_cmplx
 	POP R0
 	CMP R0, #4H
 	BEQ _$j_14a46
@@ -11470,16 +11472,16 @@ _$j_14b52:
 	BNE _$j_14ba0
 	POP XR0
 	PUSH ER2
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	MOV ER2, ER0
 	ADD ER0, #0AH
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	PUSH ER0
 	ADD ER0, #-0AH
 	BL _num_negate
 	POP ER2
 	POP ER0
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	L R0, [ER2]
 	RB R0.6
 	ST R0, [ER2]
@@ -11540,7 +11542,7 @@ _num_frac:
 	CMP R10, #0H
 	BEQ _$j_14c02
 	PUSH ER4
-	BL _f_15228
+	BL _load_op_from_stack_r10_m1
 	CMP R4, #64H
 	BEQ _$j_14c0c
 	POP ER4
@@ -11600,14 +11602,14 @@ _$j_14c6e:
 	PUSH ER4
 	CMP R10, #0H
 	BEQ _$j_14cd0
-	BL _f_15228
+	BL _load_op_from_stack_r10_m1
 	CMP R4, #64H
 	BNE _$j_14cd0
 	ADD R10, #-1H
 	MOV ER0, ER8
 	MOV ER2, BP
-	BL _num_cpy_bp_er0
-	BL _f_15204
+	BL _num_cpy_cmplx_er0_bp
+	BL _num_cpy_numstack_er2
 	MOV ER0, BP
 	CMP R6, #-3CH
 	BNE _$j_14c96
@@ -11755,20 +11757,20 @@ _$j_14d68:
 	POP PC
 _$j_14d70:
 	PUSH XR4
-	BL _get_num_parser_idx_fp
+	BL _get_token_type_fp
 	CMP R2, #4H
 	BNE _$j_14de0
 	CMP R0, #0AH
 	BGE _$j_14de0
 	MOV R7, R0
-	BL _get_num_parser_idx_fp
+	BL _get_token_type_fp
 	CMP R2, #4H
 	BNE _$j_14de0
 	CMP R0, #0AH
 	BGE _$j_14de0
 	MOV R6, R0
 	SLL R6, #4
-	BL _get_num_parser_idx_fp
+	BL _get_token_type_fp
 	CMP R2, #4H
 	BNE _$j_14de0
 	CMP R0, #0AH
@@ -11894,7 +11896,7 @@ _$j_14e5c:
 _$j_14e6c:
 	MOV ER0, ER8
 	MOV ER2, FP
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	POP R2
 	CMP R2, #1H
 	BLE _$j_14e56
@@ -12024,9 +12026,9 @@ _$j_14f42:
 	PUSH R1
 	MOV ER0, BP
 	ADD ER0, #14H
-	BL _num_cpy_bp_er0
+	BL _num_cpy_cmplx_er0_bp
 	MOV ER2, BP
-	BL _f_15204
+	BL _num_cpy_numstack_er2
 	POP R1
 	BAL _$j_14ebe
 _$j_14f5a:
@@ -12080,7 +12082,7 @@ _$j_14fb4:
 	PUSH ER0
 	MOV ER0, BP
 	ADD ER0, #14H
-	BL _num_cpy_bp_er0
+	BL _num_cpy_cmplx_er0_bp
 	POP ER0
 	L R5, [BP]
 	AND R5, #11110000B
@@ -12307,11 +12309,11 @@ _$j_1515c:
 ; FUNCTION: GY455XE  Im 15160
 ; FUNCTION: GY460XF  Im 14C1A
 _f_15160:
-	CMP R4, #77H
+	CMP R4, #77H   ; If operator ID >= 119, subtract 121 from R4 and set PSW flags
 	BGE _$j_15170
-	CMP R4, #65H
+	CMP R4, #65H   ; If operator ID < 101, subtract 38 from R4 and set PSW flags
 	BLT _$j_1516c
-	CMP R4, #67H
+	CMP R4, #67H   ; Subtract 103 from ID temporarily and set PSW flags
 	RT
 _$j_1516c:
 	CMP R4, #26H
@@ -12347,7 +12349,7 @@ _$j_1517e:
 _$j_15186:
 	CMP R10, #0H
 	BEQ _$j_151ce
-	BL _f_15228
+	BL _load_op_from_stack_r10_m1
 	CMP R4, #73H
 	BEQ _$j_151d2
 	CMP R4, #2H
@@ -12390,37 +12392,37 @@ _$j_151d2:
 ; FUNCTION: GY454XE  Re 151D6
 ; FUNCTION: GY455XE  Im 151D6
 ; FUNCTION: GY460XF  Im 14C90
-_f_151D6:
+_num_cpy_er2_numstack:
 	PUSH LR
-	CMP R11, #0AH
+	CMP R11, #0AH  ; If R11 >= 10, return Stack ERROR
 	BLT _$j_151e0
 	MOV R2, #7H
 	POP PC
 _$j_151e0:
 	PUSH QR0
 	MOV ER0, ER2
-	MOV R2, #BYTE1 _d_08078
-	MOV R3, #BYTE2 _d_08078
+	MOV R2, #BYTE1 _number_stack
+	MOV R3, #BYTE2 _number_stack
 	MOV R4, #0AH
 	MUL ER4, R11
-	ADD ER2, ER4
+	ADD ER2, ER4   ; ER2 holds address 8078H[10*R11]
 	ADD R11, #1H
-	L R4, _mode
-	CMP R4, #-3CH
+	L R4, _mode    ; If current mode is CMPLX, add 1 to R11
+	CMP R4, #0C4H
 	BNE _$j_151fa
 	ADD R11, #1H
 _$j_151fa:
-	BL _f_1553C
+	BL _num_cpy_cmplx
 	POP QR0
-	MOV R2, #0H
+	MOV R2, #0H    ; No error
 	POP PC
 
 ; FUNCTION: GY454XE  Re 15204
 ; FUNCTION: GY455XE  Im 15204
 ; FUNCTION: GY460XF  Im 14CBE
-_f_15204:
+_num_cpy_numstack_er2:
 	PUSH LR
-	CMP R11, #0H
+	CMP R11, #0H   ; If R11 = 0, return Stack ERROR
 	BNE _$j_1520e
 	MOV R2, #7H
 	POP PC
@@ -12428,78 +12430,78 @@ _$j_1520e:
 	PUSH QR0
 	ADD R11, #-1H
 	L R4, _mode
-	CMP R4, #0C4H  ; CMPLX mode
+	CMP R4, #0C4H  ; If current mode is CMPLX, subtract 1 from R11
 	BNE _$j_1521c
 	ADD R11, #-1H
 _$j_1521c:
-	MOV R4, #0AH
+	MOV R4, #0AH   ; ER0 holds address 8078H[10*R11]
 	MUL ER4, R11
-	MOV R0, #BYTE1 _d_08078
-	MOV R1, #BYTE2 _d_08078
+	MOV R0, #BYTE1 _number_stack
+	MOV R1, #BYTE2 _number_stack
 	ADD ER0, ER4
 	BAL _$j_151fa
 
 ; FUNCTION: GY454XE  Re 15228
 ; FUNCTION: GY455XE  Im 15228
 ; FUNCTION: GY460XF  Im 14CE2
-_f_15228:
+_load_op_from_stack_r10_m1:
 	PUSH ER8
-	MOV R8, #BYTE1 (_d_08060-1)  ; Load 805FH[R10] into R4
-	MOV R9, #BYTE2 (_d_08060-1)
+	MOV R8, #BYTE1 (_operator_stack-1)  ; Oddity: Stack is 1-indexed in this load function,
+	MOV R9, #BYTE2 (_operator_stack-1)  ;         but 0-indexed in the store function?
 	ADD R8, R10
 	ADDC R9, #0H
-	L R4, [ER8]
+	L R4, [ER8]                         ; Oddity: Load function uses R4, store function uses R0. Inconsistency!
 	POP ER8
 	RT
 
 ; FUNCTION: GY454XE  Re 15238
 ; FUNCTION: GY455XE  Im 15238
 ; FUNCTION: GY460XF  Im 14CF2
-_f_15238:
-	CMP R10, #18H            ; If R10 >= 0x18, return 7 in R2
+_sto_op_in_stack_r10:
+	CMP R10, #18H            ; If index >= 24, return Stack ERROR
 	BLT _$j_15240
 	MOV R2, #7H
 	RT
 _$j_15240:
-	MOV R2, #BYTE1 _d_08060  ; Otherwise, store R0 in 8060H[R10]
-	MOV R3, #BYTE2 _d_08060
+	MOV R2, #BYTE1 _operator_stack  ; Otherwise, store
+	MOV R3, #BYTE2 _operator_stack
 	ADD R2, R10
 	ADDC R3, #0H
-	ADD R10, #1H             ; Increment R10
+	ADD R10, #1H             ; Increment index
 	ST R0, [ER2]
-	MOV R2, #0H              ; Return 0 in R2
+	MOV R2, #0H              ; Return no error
 	RT
 
 ; FUNCTION: GY454XE  Re 15250
 ; FUNCTION: GY455XE  Im 15250
 ; FUNCTION: GY460XF  Im 14D0A
 _f_15250:
-	CMP R4, #75H
+	CMP R4, #75H   ; If ID = 117, jump ahead
 	BEQ _$j_1528a
-	CMP R4, #74H
+	CMP R4, #74H   ; If ID != 116 (remainder), skip force set
 	BNE _$j_1525a
-	MOV R4, #2EH
+	MOV R4, #2EH   ; Force ID to 46 (divide)
 _$j_1525a:
-	CMP R4, #76H
+	CMP R4, #76H   ; If ID != 118, skip force set
 	BNE _$j_15260
-	MOV R4, #37H
+	MOV R4, #37H   ; Force ID to 55 (in>cm)
 _$j_15260:
 	MOV R5, #0H
-	CMP R4, #25H
+	CMP R4, #25H   ; If ID <= 37, return 0 in R5
 	BLE _$j_152a2
 	MOV R5, #0CH
-	CMP R4, #67H
+	CMP R4, #67H   ; If ID >= 103, return 12 in R5
 	BGE _$j_152a2
-	CMP R4, #33H
+	CMP R4, #33H   ; If ID >= 51, jump
 	BGE _$j_1528a
 	MOV R5, R4
-	CMP R5, #2FH
+	CMP R5, #2FH   ; If ID >= 47, return (ID+8)//8 in R5
 	BGE _$j_15284
-	CMP R5, #2BH
+	CMP R5, #2BH   ; If ID >= 43, return (ID-5)//8 in R5
 	BGE _$j_15282
-	CMP R5, #29H
+	CMP R5, #29H   ; If ID >= 41, return (ID-18)//8 in R5
 	BGE _$j_15280
-	ADD R5, #-7H
+	ADD R5, #-7H   ; Return (ID-25)//8 in R5
 _$j_15280:
 	ADD R5, #-0DH
 _$j_15282:
@@ -12510,13 +12512,13 @@ _$j_15284:
 	RT
 _$j_1528a:
 	MOV R5, #8H
-	CMP R4, #75H
+	CMP R4, #75H   ; If ID = 117, return 8 in R5
 	BEQ _$j_152a2
-	CMP R4, #5EH
+	CMP R4, #5EH   ; If ID <= 94, return 9 in R5
 	BLE _$j_152a0
-	CMP R4, #64H
+	CMP R4, #64H   ; If ID < 100, return 10 in R5
 	BLT _$j_1529e
-	BEQ _$j_1529c
+	BEQ _$j_1529c  ; If ID = 100 (fraction), return 11 in R5
 	ADD R5, #1H
 _$j_1529c:
 	ADD R5, #1H
@@ -12532,19 +12534,19 @@ _$j_152a2:
 ; FUNCTION: GY460XF  Im 14D5E
 _f_152A4:
 	PUSH LR
-	CMP R0, R4
+	CMP R0, R4     ; If R0 is not equal to the operator ID, skip this part
 	BNE _$j_152b4
-	BL _f_15160
+	BL _f_15160    ; If ID < compared value, return 1 in R4
 	BLT _$j_152be
 	MOV R4, #1H
 	POP PC
 _$j_152b4:
-	BL _f_15160
+	BL _f_15160    ; If ID >= compared value, skip this part
 	BGE _$j_152c2
-	CMP R0, #2AH
+	CMP R0, #2AH   ; If current token is equals sign, skip returning
 	BEQ _$j_152d4
 _$j_152be:
-	MOV R4, #0H
+	MOV R4, #0H    ; Return 0 in R4
 	POP PC
 _$j_152c2:
 	BL _f_15250
@@ -12552,10 +12554,10 @@ _$j_152c2:
 	MOV R4, R0
 	BL _f_15250
 	POP R4
-	CMP R4, R5
+	CMP R4, R5     ; If ID < R5, return 0 in R4
 	BLT _$j_152be
 _$j_152d4:
-	MOV R4, #2H
+	MOV R4, #2H    ; Return 2 in R4
 	POP PC
 
 ; FUNCTION: GY454XE  Re 152D8
@@ -12565,29 +12567,29 @@ _f_152D8:
 	PUSH LR
 _$j_152da:
 	PUSH R0
-	CMP R10, #0H
+	CMP R10, #0H   ; If index is 0, return 0
 	BEQ _$j_1530e
-	BL _f_15228
-	CMP R4, #73H
+	BL _load_op_from_stack_r10_m1
+	CMP R4, #73H   ; If operator ID != 115 (sexagesimal), skip this part
 	BNE _$j_152f0
-	CMP R0, #73H
+	CMP R0, #73H   ; If current token is sexagesimal, skip this part
 	BEQ _$j_152f0
-	MOV R2, #2H
+	MOV R2, #2H    ; Return Syntax ERROR
 	BAL _$j_15310
 _$j_152f0:
 	MOV R1, R4
 	BL _f_152A4
-	CMP R4, #1H
+	CMP R4, #1H    ; If return value < 1, return 0
 	BLT _$j_1530e
-	BNE _$j_15300
-	CMP R0, #64H
+	BNE _$j_15300  ; If not exactly 1, skip the below compare
+	CMP R0, #64H   ; If current token is fraction, return 0
 	BEQ _$j_1530e
 _$j_15300:
-	ADD R10, #-1H
-	BL _f_14EB4
-	CMP R2, #0H
+	ADD R10, #-1H  ; Subtract 1 from index
+	BL _f_14EB4    ; Calculate
+	CMP R2, #0H    ; If return value is nonzero, return it 
 	BNE _$j_15310
-	POP R0
+	POP R0         ; Otherwise, parse previous operator in stack
 	BAL _$j_152da
 _$j_1530e:
 	MOV R2, #0H
@@ -12600,21 +12602,21 @@ _$j_15310:
 ; FUNCTION: GY460XF  Im 14DCE
 _f_15314:
 	PUSH LR
-	CMP R1, #0H
+	CMP R1, #0H    ; If index is 0, return
 	BNE _$j_1531c
 	POP PC
 _$j_1531c:
-	MOV R2, #BYTE1 (_arg1_ref+1)
-	MOV R3, #BYTE2 (_arg1_ref+1)
+	MOV R2, #BYTE1 (_operator_stack-1)
+	MOV R3, #BYTE2 (_operator_stack-1)
 	ADD R2, R1
 	ADDC R3, #0H
 _$j_15324:
-	L R4, [ER2]
+	L R4, [ER2]    ; Get operator at index (R1-1) from stack
 	BL _f_152A4
-	CMP R4, #1H
+	CMP R4, #1H    ; If return value is 1, return index
 	BEQ _$j_15338
-	BLT _$j_15336
-	ADD ER2, #-1H
+	BLT _$j_15336  ; If lower than 1, return 0
+	ADD ER2, #-1H  ; Try again with previous index
 	ADD R1, #-1H
 	BNE _$j_15324
 _$j_15336:
@@ -12625,7 +12627,7 @@ _$j_15338:
 ; FUNCTION: GY454XE  Re 1533A
 ; FUNCTION: GY455XE  Im 1533A
 ; FUNCTION: GY460XF  Im 14DF4
-_f_1533A:
+_num_cpy_ea_bp:
 	PUSH BP
 	L R0, [EA+]    ; Copy [EA+] to [BP+]
 _$j_1533e:
@@ -12668,7 +12670,7 @@ _$j_15376:
 	ADD R8, #6H
 	ADD R9, #-5H
 _$j_1537a:
-	BL _get_num_parser_idx_fp
+	BL _get_token_type_fp
 	CMP R2, #0AH
 	BLE _$j_15388
 _$j_15382:
@@ -12784,7 +12786,7 @@ _$j_15448:
 	ADD R0, #-1H
 	MOV R1, #1H
 	ST ER0, 8H[BP]
-	BL _f_1533A
+	BL _num_cpy_ea_bp
 	L R0, _submode
 	CMP R0, #1H
 	BNE _$j_15442
@@ -12798,7 +12800,7 @@ _$j_15448:
 _$j_1546c:
 	MOV R0, #BYTE1 _num_0
 	MOV R1, #BYTE2 _num_0
-	BL _num_cpy_er0_bp
+	BL _num_cpy_cmplx_bp_er0
 _$j_15474:
 	POP XR8
 	ADD FP, #-1H
@@ -12886,7 +12888,7 @@ _f_154D6:
 ; FUNCTION: GY454XE  Re 154E0
 ; FUNCTION: GY455XE  Im 154E0
 ; FUNCTION: GY460XF  Im 14F9A
-_num_cpy_er2_er0:
+_num_cpy_r:
 	PUSH LR
 	PUSH XR0
 	PUSH ER0
@@ -12900,7 +12902,7 @@ _$j_154ea:
 ; FUNCTION: GY454XE  Re 154F2
 ; FUNCTION: GY455XE  Im 154F2
 ; FUNCTION: GY460XF  Im 14FAC
-_num_cpy_bp_er0:
+_num_cpy_cmplx_er0_bp:
 	PUSH QR0
 	PUSH XR8
 	MOV ER10, ER0
@@ -12930,7 +12932,7 @@ _$j_15520:
 ; FUNCTION: GY454XE  Re 15526
 ; FUNCTION: GY455XE  Im 15526
 ; FUNCTION: GY460XF  Im 14FE0
-_num_cpy_er0_bp:
+_num_cpy_cmplx_bp_er0:
 	PUSH QR0
 	PUSH XR8
 	MOV ER10, BP
@@ -12942,7 +12944,7 @@ _$j_1552c:
 ; FUNCTION: GY454XE  Re 15532
 ; FUNCTION: GY455XE  Im 15532
 ; FUNCTION: GY460XF  Im 14FEC
-_num_cpy_er0_bpp20:
+_num_cpy_cmplx_bpp20_er0:
 	PUSH QR0
 	PUSH XR8
 	MOV ER10, BP
@@ -12952,7 +12954,7 @@ _num_cpy_er0_bpp20:
 ; FUNCTION: GY454XE  Re 1553C
 ; FUNCTION: GY455XE  Im 1553C
 ; FUNCTION: GY460XF  Im 14FF6
-_f_1553C:
+_num_cpy_cmplx:
 	PUSH QR0
 	PUSH XR8
 	MOV ER10, ER2
@@ -12969,15 +12971,15 @@ _f_15544:
 ; FUNCTION: GY460XF  Im 15000
 _f_15546:
 	MOV R2, #0H
-	L R3, [BP]
-	SRL R3, #4
-	CMP R3, #0FH
+	L R3, [BP]     ; Grab out number type
+	SRL R3, #4     ; Right shift by 4 to remove first nibble of Area 2
+	CMP R3, #0FH   ; If ERROR value, set carry and return Math ERROR
 	BEQ _$j_15590
-	CMP R0, #-1H
-	BGE _$j_15562
-	CMP R0, #0H
+	CMP R0, #-1H   ; Add 1 to R0 temporarily
+	BGE _$j_15562  ; If carry bit cleared, return no error
+	CMP R0, #0H    ; If R0 is nonzero, skip this part
 	BNE _$j_15564
-	CMP R3, #8H
+	CMP R3, #8H    ; If out number is radical or matrix, set carry and return Math ERROR
 	BEQ _$j_15590
 	CMP R3, #6H
 	BLT _$j_15592
@@ -12986,29 +12988,29 @@ _$j_15560:
 _$j_15562:
 	RT
 _$j_15564:
-	SRL R0, #1
-	BGE _$j_1556c
-	CMP R3, #9H
+	SRL R0, #1     ; Shift right R0 by 1
+	BGE _$j_1556c  ; If R0 was even before shifting, skip below compare
+	CMP R3, #9H    ; If out number is vector, set carry and return Math ERROR
 	BEQ _$j_15590
 _$j_1556c:
-	SRL R0, #1
-	BGE _$j_15574
-	CMP R3, #6H
+	SRL R0, #1     ; Shift right R0 by 1
+	BGE _$j_15574  ; If R0 was even before shifting, skip below compare
+	CMP R3, #6H    ; If out number is matrix, set carry and return Math ERROR
 	BEQ _$j_15590
 _$j_15574:
-	SRL R0, #1
-	BGE _$j_15562
-	CMP R3, #2H
+	SRL R0, #1     ; Shift right R0 by 1
+	BGE _$j_15562  ; If R0 was even before shifting (carry bit cleared), return no error
+	CMP R3, #2H    ; If out number is fraction, radical or floating point, skip ahead
 	BEQ _$j_15584
 	CMP R3, #8H
 	BEQ _$j_15584
 	CMP R3, #0H
-	BNE _$j_15562
+	BNE _$j_15562  ; Otherwise return no error
 _$j_15584:
-	L R3, _mode
+	L R3, _mode    ; If current mode is not CMPLX, clear carry bit and return no error
 	CMP R3, #-3CH
 	BNE _$j_15560
-	L ER2, 12H[BP]
+	L ER2, 12H[BP] ; If first 4 digits of decimal part in imaginary part is 0, clear carry and return no error
 	BEQ _$j_15560
 _$j_15590:
 	SC
@@ -13021,13 +13023,13 @@ _$j_15592:
 ; FUNCTION: GY460XF  Im 15050
 _f_15596:
 	PUSH LR
-	CMP R6, #-1H
+	CMP R6, #-1H           ; If R6 != -1, return
 	BNE _$j_155aa
-	CMP R2, #3H
+	CMP R2, #3H            ; If last token type was not postfix (?), return
 	BNE _$j_155aa
-	MOV R0, #BYTE1 _num_0
+	MOV R0, #BYTE1 _num_0  ; 
 	MOV R1, #BYTE2 _num_0
-	BL _num_cpy_er0_bp
+	BL _num_cpy_cmplx_bp_er0
 	MOV R2, #0H
 _$j_155aa:
 	POP PC
@@ -13040,20 +13042,20 @@ _f_155AC:
 	PUSH ER8
 	PUSH FP
 	MOV ER8, BP
-	ADD ER8, #14H
+	ADD ER8, #20
 	MOV FP, BP
-	ADD FP, #28H
+	ADD FP, #40
 	MOV R2, #0H
 	MOV ER0, FP
 	BL _num_fromdigit
 	CMP R10, #0H
 	BEQ _$j_15628
-	BL _f_15228
+	BL _load_op_from_stack_r10_m1
 	CMP R4, #73H
 	BNE _$j_15628
 	ADD R10, #-1H
 	BEQ _$j_15600
-	BL _f_15228
+	BL _load_op_from_stack_r10_m1
 	CMP R4, #73H
 	BNE _$j_15600
 	ADD R10, #-1H
@@ -13067,9 +13069,9 @@ _f_155AC:
 	BL _num_to_str_std_lineo
 	BL _num_div_1
 	MOV ER0, FP
-	BL _num_cpy_bp_er0
+	BL _num_cpy_cmplx_er0_bp
 	MOV ER2, BP
-	BL _f_15204
+	BL _num_cpy_numstack_er2
 _$j_15600:
 	MOV R2, #3CH
 	MOV ER0, ER8
@@ -13082,9 +13084,9 @@ _$j_15600:
 	MOV ER2, FP
 	BL _num_add_1
 	MOV ER0, FP
-	BL _num_cpy_bp_er0
+	BL _num_cpy_cmplx_er0_bp
 	MOV ER2, BP
-	BL _f_15204
+	BL _num_cpy_numstack_er2
 _$j_15628:
 	MOV ER0, BP
 	MOV ER2, FP
@@ -13117,26 +13119,26 @@ _$j_15656:
 ; FUNCTION: GY454XE  Re 15662
 ; FUNCTION: GY455XE  Im 15662
 ; FUNCTION: GY460XF  Im 1511C
-_f_15662:
+_num_parse_2f:
 	PUSH LR
 	PUSH R0
-	MOV R0, #75H
+	MOV R0, #75H      ; Parse token 0x2F
 	BL _num_parse_op
-	CMP R2, #0H
+	CMP R2, #0H       ; Set PSW flags for R2
 	POP R0
 	POP PC
 
 ; FUNCTION: GY454XE  Re 15672
 ; FUNCTION: GY455XE  Im 15672
 ; FUNCTION: GY460XF  Im 1512C
-_num_parse_int_ddx_sum:
+_num_parse_calculus:
 	PUSH LR
-	TB _table_mode.6
+	TB _table_mode.6         ; If this bit is set, return Syntax ERROR
 	BNE _$j_1567e
-	CMP R6, #0H
+	CMP R6, #0H              ; If R6 is 0, jump to a part in regular function parser
 	BEQ _$j_1569a
 _$j_1567e:
-	MOV R2, #2H
+	MOV R2, #2H              ; Syntax ERROR
 	POP PC
 
 ; FUNCTION: GY454XE  Re 15682
@@ -13144,68 +13146,68 @@ _$j_1567e:
 ; FUNCTION: GY460XF  Im 1513C
 _num_parse_func:
 	PUSH LR
-	TB _table_mode.6
+	TB _table_mode.6         ; If this bit is set, jump to below block
 	BNE _$j_15692
-	CMP R6, #1H
+	CMP R6, #1H              ; If R6 is 1, jump to below block
 	BEQ _$j_15692
-	CMP R6, #-1H
+	CMP R6, #-1H             ; If R6 is not -1, skip below block
 	BNE _$j_1569a
 _$j_15692:
-	CMP R0, #21H
+	CMP R0, #21H             ; If Pol( or Rec(, return Syntax ERROR
 	BEQ _$j_156a2
 	CMP R0, #22H
 	BEQ _$j_156a2
 _$j_1569a:
-	CMP R7, #3H
+	CMP R7, #3H              ; If R7 < 3, jump below
 	BLT _$j_156ae
-	CMP R0, #5FH
+	CMP R0, #5FH             ; If not negative sign, skip the below
 	BNE _$j_156a6
 _$j_156a2:
-	MOV R2, #2H
+	MOV R2, #2H              ; Syntax ERROR
 	POP PC
 _$j_156a6:
-	BL _f_15662
-	BEQ _$j_156ae
+	BL _num_parse_2f         ; Parse token 0X2F
+	BEQ _$j_156ae            ; If not successful, return the error code
 	POP PC
 _$j_156ae:
-	CMP R0, #77H
+	CMP R0, #77H             ; If function ID >= 119, jump below
 	BGE _$j_156c6
-	CMP R0, #60H
+	CMP R0, #60H             ; If function ID >= 96, call a function and return
 	BGE _$j_1570c
 _$j_156b6:
-	BL _f_15238
-	CMP R2, #0H
+	BL _sto_op_in_stack_r10  ; Store function ID in stack
+	CMP R2, #0H              ; If error occured, return the thrown error again
 	BNE _$j_156c2
-	CMP R0, #2H
+	CMP R0, #2H              ; If not a calculus function, return the thrown error again
 	BLE _$j_156ce
 _$j_156c2:
 	MOV R7, #1H
 	POP PC
 _$j_156c6:
-	TB _table_mode.6
+	TB _table_mode.6         ; If this bit is set, return Syntax ERROR
 	BNE _$j_156a2
-	BAL _$j_156b6
+	BAL _$j_156b6            ; If not, loop
 _$j_156ce:
-	ADD SP, #-14H
+	ADD SP, #-14H            ; Allocate stack space
 	PUSH XR0
-	MOV ER2, SP
+	MOV ER2, SP              ; Load variable X
 	ADD ER2, #4H
 	MOV R0, #8H
 	BL _l_var
 	POP XR0
-	CMP R0, #1H
+	CMP R0, #1H              ; If function ID 1, call integral function
 	BEQ _$j_156ea
-	BGE _$j_156f0
-	BL _num_sum_1__
+	BGE _$j_156f0            ; If >= 1, call derivative function
+	BL _num_sum              ; Otherwise call sum function
 	BAL _$j_156f4
 _$j_156ea:
-	BL _f_03A72
+	BL _num_integral
 	BAL _$j_156f4
 _$j_156f0:
-	BL _f_03E72
+	BL _num_ddx
 _$j_156f4:
 	PUSH XR0
-	MOV ER2, SP
+	MOV ER2, SP              ; Store in variable X
 	ADD ER2, #4H
 	MOV R0, #8H
 	BL _st_var
@@ -13213,7 +13215,7 @@ _$j_156f4:
 	ADD SP, #14H
 	MOV R6, #0H
 	MOV R7, #4H
-	ADD R10, #-1H
+	ADD R10, #-1H            ; Decrement index
 	POP PC
 _$j_1570c:
 	BL _f_1535A
@@ -13225,80 +13227,80 @@ _$j_1570c:
 _num_parse_op:
 	PUSH LR
 	L R1, _mode
-	CMP R1, #89H  ; VERIF mode
+	CMP R1, #89H   ; If not VERIF mode, jump
 	BNE _$j_15724
-	CMP R0, #2AH
+	CMP R0, #2AH   ; If equals sign, jump to calculate routine
 	BNE _$j_15724
 	B _$j_15cb8
 _$j_15724:
-	CMP R1, #88H  ; TABLE mode
+	CMP R1, #88H   ; If TABLE mode, skip this part
 	BEQ _$j_1573a
 	TB _table_mode.6
-	BNE _$j_15736
-	CMP R6, #1H
+	BNE _$j_15736  ; If this bit is set, jump
+	CMP R6, #1H    ; If R6 is 1 or -1, jump
 	BEQ _$j_15736
 	CMP R6, #-1H
-	BNE _$j_1573a
+	BNE _$j_1573a  ; Otherwise, skip the part below
 _$j_15736:
-	CMP R0, #74H
+	CMP R0, #74H   ; If remainder operator, throw Syntax ERROR
 	BEQ _$j_15746
 _$j_1573a:
-	CMP R7, #3H
+	CMP R7, #3H    ; If R7 >= 3, jump below
 	BGE _$j_15758
-	CMP R0, #2CH
+	CMP R0, #2CH   ; If minus sign, parse negative sign
 	BEQ _$j_1574a
-	CMP R0, #2BH
+	CMP R0, #2BH   ; If plus sign, set R7 to 1 and return no error
 	BEQ _$j_15752
 _$j_15746:
-	MOV R2, #2H
+	MOV R2, #2H    ; Syntax ERROR
 	POP PC
 _$j_1574a:
-	MOV R0, #5FH
+	MOV R0, #5FH   ; Parse negative sign
 	BL _num_parse_func
 	POP PC
 _$j_15752:
 	MOV R7, #1H
-	MOV R2, #0H
+	MOV R2, #0H    ; No error
 	POP PC
 _$j_15758:
-	CMP R0, #64H
+	CMP R0, #64H   ; If not fraction sign, skip this part
 	BNE _$j_15770
 	MOV R1, R10
 	BL _f_15314
-	CMP R1, #0H
+	CMP R1, #0H    ; If return value is 0, jump below
 	BEQ _$j_15780
-	ADD R1, #-1H
+	ADD R1, #-1H   ; Otherwise, subtract 1 from index and try again
 	BL _f_15314
-	CMP R1, #0H
+	CMP R1, #0H    ; If still nonzero, return Syntax ERROR
 	BNE _$j_15746
 _$j_15770:
-	CMP R0, #2AH
+	CMP R0, #2AH   ; If not equals sign, skip this part
 	BNE _$j_15780
 	TB _table_mode.6
-	BEQ _$j_15746
-	SB _d_08121.0
-	BNE _$j_15746
+	BEQ _$j_15746  ; If this bit is cleared, return Syntax ERROR
+	SB _d_08121.0  ; Set this bit
+	BNE _$j_15746  ; If bit was already set, return Syntax ERROR
 _$j_15780:
 	BL _f_152D8
-	CMP R2, #0H
+	CMP R2, #0H    ; If return value is nonzero, return Syntax ERROR
 	BNE _$j_157ac
-	CMP R0, #64H
+	CMP R0, #64H   ; If not fraction sign, skip this part
 	BNE _$j_15796
 	MOV R0, #3H
 	BL _f_15546
-	BLT _$j_157ac
-	MOV R0, #64H
+	BLT _$j_157ac  ; If carry set, return Syntax ERROR
+	MOV R0, #64H   ; Set to fraction sign again
 _$j_15796:
 	MOV ER2, BP
-	BL _f_151D6
-	CMP R2, #0H
+	BL _num_cpy_er2_numstack
+	CMP R2, #0H    ; If error occured, return it
 	BNE _$j_157ae
-	CMP R10, #0H
+	CMP R10, #0H   ; If index is 0, store operator in that index
 	BEQ _$j_157a8
-	CMP R0, #2AH
+	CMP R0, #2AH   ; If equals sign, return Syntax ERROR
 	BEQ _$j_15746
 _$j_157a8:
-	BL _f_15238
+	BL _sto_op_in_stack_r10
 _$j_157ac:
 	MOV R7, #2H
 _$j_157ae:
@@ -13309,145 +13311,145 @@ _$j_157ae:
 ; FUNCTION: GY460XF  Im 1526A
 _num_parse_postfix:
 	PUSH LR
-	CMP R7, #3H
+	CMP R7, #3H            ; If R7 < 3, throw Syntax ERROR
 	BGE _$j_157ba
 _$j_157b6:
 	MOV R2, #2H
 	POP PC
 _$j_157ba:
-	CMP R0, #73H
+	CMP R0, #73H           ; If not sexagesimal token, jump below
 	BNE _$j_15850
-	CMP R7, #3H
+	CMP R7, #3H            ; If R7 = 3, throw Syntax ERROR
 	BEQ _$j_157b6
 	BL _f_15544
-	BGE _$j_157cc
+	BGE _$j_157cc          ; If carry set, throw Math ERROR
 	MOV R2, #3H
 	POP PC
 _$j_157cc:
-	BL _get_num_parser_idx_fp
-	ADD FP, #-1H
-	CMP R2, #4H
+	BL _get_token_type_fp  ; Get next token
+	ADD FP, #-1H           ; Decrement input pointer
+	CMP R2, #4H            ; If number literal, jump below
 	BEQ _$j_1581c
-	CMP R2, #1H
+	CMP R2, #1H            ; If not regular function, skip this part
 	BNE _$j_157e2
-	CMP R0, #5FH
+	CMP R0, #5FH           ; If not negative sign, skip this part
 	BNE _$j_157e2
-	ADD FP, #1H
-	BAL _$j_157b6
+	ADD FP, #1H            ; Increment input pointer again
+	BAL _$j_157b6          ; Throw Syntax ERROR
 _$j_157e2:
 	PUSH XR0
 	BL _f_155AC
-	CMP R2, #0H
+	CMP R2, #0H            ; If no error occurred, skip the below
 	BEQ _$j_157f4
-	MOV R4, R2
+	MOV R4, R2             ; Otherwise, return the error code
 	POP XR0
 	MOV R2, R4
 	POP PC
 _$j_157f4:
-	CMP R10, #0H
+	CMP R10, #0H           ; If index is nonzero, skip this part
 	BNE _$j_15800
-	MOV R0, #73H
-	BL _f_15238
-	MOV R10, #0H
+	MOV R0, #73H           ; Store negative sign in operator stack
+	BL _sto_op_in_stack_r10
+	MOV R10, #0H           ; Reset index to 0 (as it may have been trashed)
 _$j_15800:
 	POP XR0
 	MOV R7, #3H
-	CMP R2, #2H
+	CMP R2, #2H            ; If operator, return no error
 	BEQ _$j_15818
-	CMP R2, #3H
+	CMP R2, #3H            ; If postfix, return no error
 	BEQ _$j_15818
-	CMP R2, #8H
+	CMP R2, #8H            ; If variable store, seperator or end of input, return no error
 	BGE _$j_15818
-	BL _f_15662
+	BL _num_parse_2f       ; Otherwise, parse token 0x2F
 	MOV R7, #2H
 	POP PC
 _$j_15818:
 	MOV R2, #0H
 	POP PC
 _$j_1581c:
-	CMP R10, #2H
+	CMP R10, #2H           ; If index < 2, skip this part
 	BLT _$j_1583a
-	MOV R2, #2H
+	MOV R2, #2H            ; Loop twice
 	PUSH R10
 _$j_15824:
-	BL _f_15228
-	CMP R4, #73H
+	BL _load_op_from_stack_r10_m1
+	CMP R4, #73H           ; If not negative sign, break
 	BNE _$j_15838
 	ADD R10, #-1H
 	ADD R2, #-1H
-	BNE _$j_15824
+	BNE _$j_15824          ; Loop
 	POP R10
-	ADD FP, #1H
-	BAL _$j_157b6
+	ADD FP, #1H            ; Increment input pointer
+	BAL _$j_157b6          ; Throw Syntax ERROR
 _$j_15838:
 	POP R10
 _$j_1583a:
 	MOV ER2, BP
-	BL _f_151D6
-	CMP R2, #0H
+	BL _num_cpy_er2_numstack
+	CMP R2, #0H            ; If error occurred, return the error code
 	BEQ _$j_15846
 	POP PC
 _$j_15846:
-	MOV R0, #73H
-	BL _f_15238
+	MOV R0, #73H           ; Store negative sign in operator stack
+	BL _sto_op_in_stack_r10
 	MOV R7, #1H
 	POP PC
 _$j_15850:
-	CMP R0, #67H
+	CMP R0, #67H           ; If not closing parenthesis, skip this part
 	BNE _$j_15882
-	CMP R10, #0H
+	CMP R10, #0H           ; If index is 0, return Syntax ERROR
 	BEQ _$j_157b6
 	PUSH R10
 _$j_1585a:
-	BL _f_15228
+	BL _load_op_from_stack_r10_m1
 	BL _f_15160
-	BLT _$j_1586c
-	ADD R10, #-1H
-	BNE _$j_1585a
+	BLT _$j_1586c          ; If operator ID < value compared, break
+	ADD R10, #-1H          ; Decrement index
+	BNE _$j_1585a          ; Loop
 	POP R10
-	BAL _$j_157b6
+	BAL _$j_157b6          ; Throw Syntax ERROR
 _$j_1586c:
 	POP R10
 	PUSH R4
 	BL _f_15178
 	POP R4
-	CMP R2, #0H
+	CMP R2, #0H            ; If return value is nonzero, set R7 to 4 and return the error
 	BNE _$j_158c2
-	CMP R4, #2H
+	CMP R4, #2H            ; If operator ID <= 2, return -1
 	BGT _$j_158c2
 	MOV R2, #-1H
 	POP PC
 _$j_15882:
 	BL _f_152D8
-	CMP R2, #0H
+	CMP R2, #0H            ; If return value is nonzero, set R7 to 4 and return the error
 	BNE _$j_158c2
-	CMP R0, #69H
+	CMP R0, #69H           ; If >a+bi or >r∠θ, jump below
 	BEQ _$j_15892
 	CMP R0, #6AH
 	BNE _$j_158b2
 _$j_15892:
 	MOV R7, R0
-	BL _get_num_parser_idx_fp
-	CMP R2, #0AH
+	BL _get_token_type_fp  ; Get next token
+	CMP R2, #0AH           ; If not end of input token, return Syntax ERROR
 	BNE _$j_157b6
 	PUSH R7
-	ADD FP, #-1H
+	ADD FP, #-1H           ; Decrement input pointer
 	BL _f_15174
 	POP R0
-	CMP R2, #0H
+	CMP R2, #0H            ; If return value is nonzero, set R7 to 4 and return the error
 	BNE _$j_158c2
-	ADD FP, #1H
-	MOV R2, R0
+	ADD FP, #1H            ; Otherwise, increment input pointer again
+	MOV R2, R0             ; Return function ID - 108
 	ADD R2, #-6CH
 	POP PC
 _$j_158b2:
-	CMP R10, #0H
+	CMP R10, #0H           ; If index is nonzero, skip this part
 	BNE _$j_158bc
-	BL _f_15238
+	BL _sto_op_in_stack_r10
 	MOV R10, #0H
 _$j_158bc:
 	MOV R1, R0
-	BL _f_14EB4
+	BL _f_14EB4            ; Calculate
 _$j_158c2:
 	MOV R7, #4H
 	POP PC
@@ -13457,265 +13459,265 @@ _$j_158c2:
 ; FUNCTION: GY460XF  Im 15380
 _num_parse_numlit:
 	PUSH LR
-	CMP R7, #3H         ; Return Syntax ERROR if R7 >= 3
+	CMP R7, #3H            ; Return Syntax ERROR if R7 >= 3
 	BLT _$j_158d0
 	MOV R2, #2H
 	POP PC
 _$j_158d0:
-	L R2, _mode         ; If we're not in BASE-N mode, jump below
+	L R2, _mode            ; If we're not in BASE-N mode, jump below
 	CMP R2, #2H
 	BNE _$j_158ea
-	ADD FP, #-1H        ; Return to previous character in input
+	ADD FP, #-1H           ; Return to previous character in input
 	L R0, _submode
-	AND R0, #00001100B  ; Clear 2 LSBs of submode...
-	SRL R0, #2          ; Multiply by 4, add 0x60
-	ADD R0, #60H
-	BL _f_1535A
+	AND R0, #00001100B     ; Only the 3rd and 4th LSBs of submode are used, therefore we delete all other bits
+	SRL R0, #2             ; Shift right by 2 so our 2 bits are in front
+	ADD R0, #60H           ; Add 0x60 to make our argument value
+	BL _f_1535A            ; Call the Base-N number parser(?)
 	POP PC
 _$j_158ea:
 	PUSH XR8
-	MOV ER8, #-1H       ; R8 = R9 = -1
-	MOV ER10, #0H
+	MOV ER8, #-1H          ; R8: exponent in BCD; R9: highest digit position
+	MOV ER10, #0H          ; R10: buffer index; R11: Number state (bit 0: Only zeroes, bit 1: Nonzero; bit 2: recurring decimal; bit 7: exponent negative)
 	BAL _$j_15904
 _$j_158f2:
-	BL _get_num_parser_idx_fp
-	CMP R2, #10         ; If index above 10, return Syntax ERROR
+	BL _get_token_type_fp  ; Get next token
+	CMP R2, #10            ; If invalid type, return Syntax ERROR
 	BLE _$j_15900
 _$j_158fa:
-	MOV R2, #2H
+	MOV R2, #2H            ; Syntax ERROR
 	POP XR8
 	POP PC
 _$j_15900:
-	CMP R2, #4          ; If index is not for number literal, jump below
+	CMP R2, #4             ; If not number literal, jump to pre-parse BCD exponent block
 	BNE _$j_1599c
-_$j_15904:
-	CMP R0, #12H        ; If R0 is 0x12, return Syntax ERROR
+_$j_15904:                 ; === Initial block ===
+	CMP R0, #12H           ; If recurring decimal, return Syntax ERROR
 	BEQ _$j_158fa
-	ADD R0, #0H         ; Set PSW flags. If R0 is nonzero jump below
+	ADD R0, #0H            ; If not number 0 jump below
 	BNE _$j_15914
-	CMP R11, #2H        ; If R11 is 2, jump below
+	CMP R11, #2H           ; If nonzero state, jump below
 	BEQ _$j_1591c
-	MOV R11, #1H        ; Otherwise set R11 to 1 and jump above
+	MOV R11, #1H           ; Otherwise set only zeroes state and parse next token
 	BAL _$j_158f2
 _$j_15914:
-	CMP R0, #10H        ; If R0 is 0x10, jump below
+	CMP R0, #10H           ; If decimal point, jump below
 	BEQ _$j_15924
-	BGT _$j_15956       ; If above 0x10, jump (further) below
-	MOV R11, #2H
+	BGT _$j_15956          ; If x10 character, jump (further) below
+	MOV R11, #2H           ; Set nonzero state
 _$j_1591c:
-	ADD R9, #1H
-	BL _f_14712         ; [BP+R10+40] = R0; ++R10
-	BAL _$j_158f2
+	ADD R9, #1H            ; Add 1 to highest digit position
+	BL _copy_bp40_r10      ; Store in buffer
+	BAL _$j_158f2          ; Parse next token
 _$j_15924:
-	CMP R11, #1H        ; If R11 is 0, add 1
+	CMP R11, #1H           ; Force set only zeroes state if no number state flags have been set
 	ADDC R11, #0H
-_$j_15928:
-	BL _get_num_parser_idx_fp
-	CMP R2, #10         ; If index above 10, return Syntax ERROR
+_$j_15928:                 ; === Post-decimal point block ===
+	BL _get_token_type_fp  ; Get next token
+	CMP R2, #10            ; If invalid type, return Syntax ERROR
 	BGT _$j_158fa
-	CMP R2, #4          ; If index is not for number literal, jump below
+	CMP R2, #4             ; If not number literal, jump to pre-parse exponent block
 	BNE _$j_1599c
 	CMP R0, #12H
-	BNE _$j_1593c       ; If R0 is 0x12, jump below
+	BNE _$j_1593c          ; If recurring decimal, jump to recurring decimal block
 	B _$j_15a42
 _$j_1593c:
-	ADD R0, #0H         ; Set PSW flags. If R0 is nonzero, break
+	ADD R0, #0H            ; If not number 0, jump below
 	BNE _$j_15948
-	CMP R11, #2H        ; If R11 is 2, jump below
+	CMP R11, #2H           ; If nonzero state, store in buffer and parse next token
 	BEQ _$j_15950
-	ADD R9, #-1H        ; Otherwise subtract 1 from R9 and go back to start of loop
-	BAL _$j_15928
+	ADD R9, #-1H           ; Otherwise subtract 1 from highest digit position
+	BAL _$j_15928          ; Parse next token
 _$j_15948:
-	CMP R0, #10H        ; If R0 is 0x10, return Syntax ERROR
+	CMP R0, #10H           ; If decimal point, return Syntax ERROR
 	BEQ _$j_158fa
-	BGT _$j_15964       ; If R0 > 0x10, jump below
-	MOV R11, #2H
+	BGT _$j_15964          ; If x10 character, go to exponent parse block
+	MOV R11, #2H           ; Otherwise, set nonzero state
 _$j_15950:
-	BL _f_14712         ; [BP+40] = R0; ++R10
-	BAL _$j_15928
+	BL _copy_bp40_r10      ; Store in buffer
+	BAL _$j_15928          ; Parse next token
 _$j_15956:
-	CMP R11, #0H        ; If R11 is nonzero jump below
+	CMP R11, #0H           ; If no digits state, skip adding number 1
 	BNE _$j_15964
-	MOV R11, #2H
-	ADD R9, #1H
+	MOV R11, #2H           ; Set nonzero state
+	ADD R9, #1H            ; Add 1 to highest digit position
 	MOV R0, #1H
-	BL _f_14712         ; [BP+R10+40] = 1; ++R10
-_$j_15964:
-	BL _get_num_parser_idx_fp
-	CMP R2, #10         ; If index above 10, return Syntax ERROR
+	BL _copy_bp40_r10      ; Store number 1 in buffer
+_$j_15964:                 ; === Exponent parse block ===
+	BL _get_token_type_fp  ; Get next token
+	CMP R2, #10            ; If invalid type, return Syntax ERROR
 	BGT _$j_158fa
-	CMP R2, #4          ; If index is not for number literal, break
+	CMP R2, #4             ; If not number literal, jump below
 	BNE _$j_1597e
-	CMP R0, #10H        ; If R0 >= 0x10 or R8 < 0xF0, return Syntax ERROR
+	CMP R0, #10H           ; If current token is not a digit or both digits have already been initialized, return Syntax ERROR
 	BGE _$j_1598a
 	CMP R8, #0F0H
 	BLT _$j_1598a
-	SLL R8, #4          ; R8 = (R8 * 16) | R0
+	SLL R8, #4             ; Insert the new digit in
 	OR R8, R0
-	BAL _$j_15964       ; Loop again
+	BAL _$j_15964          ; Loop again
 _$j_1597e:
-	CMP R8, #0FFH        ; If R8 is not 0xFF, jump below
+	CMP R8, #0FFH          ; If exponent has been initialized, jump to pre-parse BCD exponent block
 	BNE _$j_1599c
-	CMP R2, #1H          ; If R2 is not 1, jump below
+	CMP R2, #1H            ; Otherwise, if not regular function, jump to plus/minus sign check
 	BNE _$j_15990
-	CMP R0, #5FH         ; If R2 is not 0x5F, jump below
+	CMP R0, #5FH           ; If negative sign, jump below
 	BEQ _$j_15998
 _$j_1598a:
-	MOV R2, #2H          ; Syntax ERROR
+	MOV R2, #2H            ; Syntax ERROR
 	POP XR8
 	POP PC
 _$j_15990:
-	CMP R0, #2BH         ; If R0 is 0x2B, jump to above loop
+	CMP R0, #2BH           ; If plus sign, go back to main parse loop
 	BEQ _$j_15964
-	CMP R0, #2CH         ; If R0 is not 0x2C, return Syntax ERROR
+	CMP R0, #2CH           ; If not minus sign, return Syntax ERROR
 	BNE _$j_1598a
-_$j_15998:
-	XOR R11, #10000000B  ; Invert MSB of R11
-	BAL _$j_15964        ; Jump to above loop
+_$j_15998:                 ; === Pre-parse BCD exponent ===
+	XOR R11, #10000000B    ; Toggle negative bit (to handle multiple minus/negative signs)
+	BAL _$j_15964          ; Go back to main parse loop
 _$j_1599c:
-	CMP R2, #1H          ; If R2 is not 1, jump below
+	CMP R2, #1H            ; If not regular function, go to parse BCD exponent block
 	BNE _$j_159a4
-	CMP R0, #5FH         ; If R0 is 0x5F, return Syntax ERROR
+	CMP R0, #5FH           ; If negative sign, return Syntax ERROR
 	BEQ _$j_1598a
-_$j_159a4:
-	TB R11.1             ; If bit 2 of R11 is cleared, jump below
+_$j_159a4:                 ; === Parse BCD exponent ===
+	TB R11.1               ; If nonzero flag cleared, store 0
 	BEQ _$j_15a10
-	CMP R8, #0F0H        ; If R8 < 0xF0, jump below
+	CMP R8, #0F0H          ; If both digits have been initialized, start BCD to byte conversion
 	BLT _$j_159b4
-	AND R8, #00001111B   ; Clear high nibble of R8
-	CMP R8, #0FH         ; If low nibble is 0xF, set R8 to 0
+	AND R8, #00001111B     ; Clear the uninitialized tens digit
+	CMP R8, #0FH           ; If ones digit also uninitialized...
 	BLT _$j_159b4
-	MOV R8, #0H
+	MOV R8, #0H            ; Initialize it to 0
 _$j_159b4:
-	MOV R2, #0H
-_$j_159b6:
-	ADD R8, #-10H
-	BGE _$j_159be        ; If no carry, break
-	ADD R2, #0AH         ; Add 10 to R2 and repeat
+	MOV R2, #0H            ; R2: exponent value as byte
+_$j_159b6:                 ; === Convert exponent from BCD to byte ===
+	ADD R8, #-10H          ; Subtract 0x10 from BCD exponent
+	BGE _$j_159be          ; If no carry, break
+	ADD R2, #0AH           ; Add 10 to byte exponent and repeat
 	BAL _$j_159b6
 _$j_159be:
-	AND R8, #00001111B   ; Clear high nibble of R8
-	ADD R2, R8           ; Add R8 to R2
-	RB R11.7             ; Clear MSB of R11
-	BEQ _$j_159c8        ; If MSB of R11 was already cleared, jump below
-	NEG R2               ; Otherwise invert all bits of R2
+	AND R8, #00001111B     ; Clear tens digit of BCD exponent
+	ADD R2, R8             ; Add the remainder to the byte exponent
+	RB R11.7               ; Clear negative flag
+	BEQ _$j_159c8          ; If negative flag was already cleared, jump below
+	NEG R2                 ; Otherwise negate the byte exponent
 _$j_159c8:
-	ADD R2, R9           ; Add R9 to R2
-	BNV _$j_159d4        ; If no overflow occured, jump below
-	BLT _$j_15a10        ; If carry occured, jump (further) below
+	ADD R2, R9             ; Add highest digit position to byte exponent
+	BNV _$j_159d4          ; If no overflow occured, go to post-exponent block
+	BLT _$j_15a10          ; If carry occured, store 0
 _$j_159ce:
-	MOV R2, #3H          ; Math ERROR
+	MOV R2, #3H            ; Math ERROR
 	POP XR8
 	POP PC
-_$j_159d4:
-	BPS _$j_159e0        ; If R2 (signed) is positive, jump below
-	CMP R2, #-63H        ; If R2 < -99, jump (further) below
-	BLTS _$j_15a10
-	ADD R2, #64H         ; Add 100 to R2
-	MOV R0, #0H
+_$j_159d4:                 ; === Post-exponent block ===
+	BPS _$j_159e0          ; If exponent (signed) is positive, skip this part
+	CMP R2, #-63H          ; If exponent < -99, jump below
+	BLTS _$j_15a10         ; Oddity: exponent cannot be below -99, as only 2 digits can be inputted
+	ADD R2, #64H           ; Add 100 to R2
+	MOV R0, #0H            ; Area 4 value: 0 (value > 0, exponent < 0)
 	BAL _$j_159e6
 _$j_159e0:
-	CMP R2, #63H         ; If R2 > 99, return Math ERROR
+	CMP R2, #63H           ; If R2 > 99, return Math ERROR
 	BGTS _$j_159ce
-	MOV R0, #1H
+	MOV R0, #1H            ; Area 4 value: 1 (value > 0, exponent > 0)
 _$j_159e6:
-	ST R0, 9H[BP]        ; Set Area 4 (?)
-	MOV ER8, #1H
-_$j_159ea:
-	SRL R2, #1           ; Divide R2 by 2
-	BGE _$j_159f2        ; If R2 was even before division, jump below
-	ADD R9, R8           ; Add R8 to R9
-	DAA R9               ; Adjust for BCD
+	ST R0, 9H[BP]          ; Set Area 4
+	MOV ER8, #1H           ; R8 = current bit value as BCD; R9: BCD exponent
+_$j_159ea:                 ; === Convert exponent from byte to BCD ===
+	SRL R2, #1             ; Shift right exponent by 1
+	BGE _$j_159f2          ; If bit shifted out was cleared (even), jump below
+	ADD R9, R8             ; Add current bit value to BCD exponent
+	DAA R9                 ; Adjust for BCD
 _$j_159f2:
-	ADD R8, R8           ; Multiply R8 by 2
-	DAA R8               ; Adjust for BCD
-	CMP R2, #0H          ; If R2 is nonzero, jump aboe
+	ADD R8, R8             ; Multiply current bit by 2
+	DAA R8                 ; Adjust for BCD
+	CMP R2, #0H            ; If exponent is nonzero, jump above
 	BNE _$j_159ea
-	ST R9, 8H[BP]        ; Set Area 3 (?)
+	ST R9, 8H[BP]          ; Store in Area 3
 	LEA 28H[BP]
-	MOV ER0, #0H         ; Blank out Area 2
+	MOV ER0, #0H           ; Blank out Area 2
 	ST ER0, 6H[BP]
 	ST ER0, 4H[BP]
 	ST ER0, 2H[BP]
 	ST R0, 1H[BP]
-	BL _f_1533A
+	BL _num_cpy_ea_bp      ; Copy number buffer to Area 2
 	BAL _$j_15a18
 _$j_15a10:
-	MOV R0, #BYTE1 _num_0
+	MOV R0, #BYTE1 _num_0  ; Store 0
 	MOV R1, #BYTE2 _num_0
-	BL _num_cpy_er0_bp
+	BL _num_cpy_cmplx_bp_er0
 _$j_15a18:
-	TB R11.2            ; If bit 2 of R11 is cleared, jump below
+	TB R11.2               ; If recurring decimal flag is cleared, skip this part
 	BEQ _$j_15a26
 	PUSH XR0
 	MOV ER0, BP
-	BL _f_110C4
+	BL _num_float_to_frac
 	POP XR0
 _$j_15a26:
 	POP XR8
-	L R2, _mode         ; If we're not in CMPLX mode, return no error
+	L R2, _mode            ; If we're not in CMPLX mode, return no error
 	CMP R2, #0C4H
 	BNE _$j_15a3a
-	MOV ER0, BP         ; Otherwise put a value of 0 in [BP+10]
+	MOV ER0, BP            ; Otherwise put a value of 0 in imaginary part
 	ADD ER0, #0AH
 	MOV R2, #0H
 	BL _num_fromdigit
 _$j_15a3a:
-	ADD FP, #-1H        ; Subtract 1 from input pointer
+	ADD FP, #-1H           ; Subtract 1 from input pointer
 	MOV R7, #4H
 	MOV R2, #0H
 	POP PC
-_$j_15a42:
-	BL _get_num_parser_idx_fp
-	CMP R2, #4H         ; If index is not for number literal, return Syntax ERROR
+_$j_15a42:                 ; === Recurring decimal ===
+	BL _get_token_type_fp  ; Get next token
+	CMP R2, #4H            ; If not number literal, return Syntax ERROR
 	BNE _$j_15a9a
-	ADD FP, #-1H        ; Subtract 1 from input pointer
+	ADD FP, #-1H           ; Subtract 1 from input pointer
 _$j_15a4c:
 	PUSH FP
-	CMP R10, #0FH       ; If R10 >= 0xF, jump below
+	CMP R10, #0FH          ; If buffer index >= 15, skip recurring decimal block
 	BGE _$j_15a82
-_$j_15a52:
-	BL _get_num_parser_idx_fp
-	CMP R2, #0AH         ; If index above 10, return Syntax ERROR
+_$j_15a52:                 ; === Recurring decimal main block ===
+	BL _get_token_type_fp  ; Get next token
+	CMP R2, #0AH           ; If invalid type, return Syntax ERROR
 	BGT _$j_15a98
-	CMP R2, #4H          ; If index is for number literal, jump below
+	CMP R2, #4H            ; If number literal, jump below
 	BEQ _$j_15a66
-	CMP R11, #2H         ; If R11 is not 2, jump below
+	CMP R11, #2H           ; If not nonzero state, jump to exponent parse
 	BNE _$j_15a94
 	POP FP
-	BAL _$j_15a4c
+	BAL _$j_15a4c          ; Check buffer index
 _$j_15a66:
-	CMP R0, #10H         ; If R0 >= 0x10, return Syntax ERROR
+	CMP R0, #10H           ; If not a digit, return Syntax ERROR
 	BGE _$j_15a98
-	ADD R0, #0H          ; Set PSW flags. If R0 is nonzero, jump below
+	ADD R0, #0H            ; If not number 0, store in buffer
 	BNE _$j_15a76
-	CMP R11, #2H         ; If R11 is 2, jump below
+	CMP R11, #2H           ; If nonzero state, store in buffer
 	BEQ _$j_15a78
-	ADD R9, #-1H         ; Otherwise subtract 1 from R9 and jump above
-	BAL _$j_15a52
+	ADD R9, #-1H           ; Otherwise subtract 1 from highest digit position (add extra zero)
+	BAL _$j_15a52          ; Parse next token
 _$j_15a76:
-	MOV R11, #2H
+	MOV R11, #2H           ; Set nonzero state
 _$j_15a78:
-	BL _f_14712          ; [BP+R10+40] = R0; ++R10
-	CMP R10, #0FH        ; If R10 < 0xF, jump above
+	BL _copy_bp40_r10      ; Store in buffer
+	CMP R10, #0FH          ; If buffer index < 15, parse next token
 	BLT _$j_15a52
-	OR R11, #00000100B   ; Set bit 2 of R11
-_$j_15a82:
-	BL _get_num_parser_idx_fp
-	CMP R2, #0AH         ; If index above 10, return Syntax ERROR
+	OR R11, #00000100B     ; Set recurring decimal flag
+_$j_15a82:                 ; === Out of space, skipping past remaining digits ===
+	BL _get_token_type_fp  ; Get next token
+	CMP R2, #0AH           ; If invalid type, return Syntax ERROR
 	BGT _$j_15a98
-	CMP R2, #4H          ; If index is not for number literal, jump below
+	CMP R2, #4H            ; If not number literal, jump to exponent parse
 	BNE _$j_15a94
-	CMP R0, #10H         ; If R0 >= 0x10, return Syntax ERROR
+	CMP R0, #10H           ; If not a digit, return Syntax ERROR
 	BGE _$j_15a98
-	BAL _$j_15a82        ; Otherwise, loop
+	BAL _$j_15a82          ; Otherwise, parse next token
 _$j_15a94:
 	ADD SP, #2H
-	BAL _$j_1599c
+	BAL _$j_1599c          ; Jump to pre-parse BCD exponent block
 _$j_15a98:
 	ADD SP, #2H
 _$j_15a9a:
-	MOV R2, #2H
+	MOV R2, #2H            ; Syntax ERROR
 	POP XR8
 	POP PC
 
@@ -13731,7 +13733,7 @@ _num_parse_var:
 	CMP R0, #1H
 	BEQ _$j_15ad8
 	PUSH XR0
-	BL _get_num_parser_idx_fp
+	BL _get_token_type_fp
 	CMP R2, #2H
 	BNE _$j_15ad4
 	CMP R0, #2AH
@@ -13754,7 +13756,7 @@ _$j_15ad4:
 _$j_15ad8:
 	CMP R7, #3H
 	BLT _$j_15ae4
-	BL _f_15662
+	BL _num_parse_2f
 	BEQ _$j_15ae4
 	POP PC
 _$j_15ae4:
@@ -13779,7 +13781,7 @@ _num_parse_const:
 	PUSH LR
 	CMP R7, #3H
 	BLT _$j_15b0a
-	BL _f_15662
+	BL _num_parse_2f
 	BNE _$j_15b5e
 _$j_15b0a:
 	CMP R0, #42H
@@ -13805,14 +13807,14 @@ _$j_15b14:
 _$j_15b32:
 	MOV R0, #BYTE1 _num_0
 	MOV R1, #BYTE2 _num_0
-	BL _num_cpy_er0_bp
+	BL _num_cpy_cmplx_bp_er0
 	BAL _$j_15b5a
 _$j_15b3c:
 	MOV R1, #0AH
 	MUL ER0, R1
 	ADD R0, #BYTE1 _num_consts
 	ADDC R1, #BYTE2 _num_consts
-	BL _num_cpy_er0_bp
+	BL _num_cpy_cmplx_bp_er0
 _$j_15b48:
 	L R2, _mode
 	CMP R2, #0C4H  ; CMPLX mode
@@ -13838,7 +13840,7 @@ _num_parse_matvct:
 	PUSH LR
 	CMP R7, #3H
 	BLT _$j_15b70
-	BL _f_15662
+	BL _num_parse_2f
 	BNE _$j_15b94
 _$j_15b70:
 	MOV R2, R0
@@ -13855,7 +13857,7 @@ _$j_15b70:
 _$j_15b86:
 	MOV R0, #BYTE1 _num_0
 	MOV R1, #BYTE2 _num_0
-	BL _num_cpy_er0_bp
+	BL _num_cpy_cmplx_bp_er0
 	ST R2, [BP]
 	MOV R2, #0H
 	MOV R7, #4H
@@ -13876,7 +13878,7 @@ _$j_15ba2:
 	POP PC
 _$j_15ba6:
 	PUSH R0
-	BL _get_num_parser_idx_fp
+	BL _get_token_type_fp
 	CMP R2, #0AH
 	BEQ _$j_15bb6
 _$j_15bb0:
@@ -13900,15 +13902,15 @@ _$j_15bca:
 	BL _f_15546
 	BLT _$j_15bb0
 	MOV R0, #-1H
-	BL _f_15238
+	BL _sto_op_in_stack_r10
 	MOV R10, #0H
 	POP R0
 	CMP R0, #0AH
 	MOV R3, #0H
 	BLT _$j_15c12
 	PUSH R0
-	MOV R2, #BYTE1 _d_08078
-	MOV R3, #BYTE2 _d_08078
+	MOV R2, #BYTE1 _number_stack
+	MOV R3, #BYTE2 _number_stack
 	MOV R0, #0AH
 	MUL ER0, R11
 	ADD ER2, ER0
@@ -13940,7 +13942,7 @@ _$j_15c14:
 	BEQ _$j_15c2c
 	MOV ER0, BP
 	ADD ER0, #14H
-	BL _num_cpy_er0_bp
+	BL _num_cpy_cmplx_bp_er0
 _$j_15c2c:
 	MOV R2, #-1H
 	POP PC
@@ -13959,12 +13961,12 @@ _$j_15c38:
 _$j_15c3a:
 	TB _table_mode.6
 	BEQ _$j_15c64
-	BL _get_num_parser_idx_fp
+	BL _get_token_type_fp
 	CMP R2, #5H
 	BNE _$j_15c62
 	CMP R0, #1H
 	BEQ _$j_15c62
-	BL _get_num_parser_idx_fp
+	BL _get_token_type_fp
 	ADD FP, #-2H
 	CMP R2, #0AH
 	BNE _$j_15c64
@@ -13981,7 +13983,7 @@ _$j_15c64:
 	BNE _$j_15c38
 	CMP R10, #0H
 	BEQ _$j_15c36
-	BL _f_15228
+	BL _load_op_from_stack_r10_m1
 	CMP R4, #2H
 	BLE _$j_15ca8
 	CMP R4, #77H
@@ -13992,9 +13994,9 @@ _$j_15c64:
 	MOV R0, R4
 	ADD R0, #3H
 _$j_15c86:
-	BL _f_15238
+	BL _sto_op_in_stack_r10
 	MOV ER2, BP
-	BL _f_151D6
+	BL _num_cpy_er2_numstack
 	MOV R7, #1H
 	POP PC
 _$j_15c94:
@@ -14015,32 +14017,32 @@ _$j_15ca8:
 ; FUNCTION: GY454XE  Re 15CAC
 ; FUNCTION: GY455XE  Im 15CAC
 ; FUNCTION: GY460XF  Im 15766
-_num_calculate:
+_num_parse_exec:
 	PUSH LR
-	TB _table_mode.6
+	TB _table_mode.6  ; If this bit is cleared, jump
 	BEQ _$j_15cb8
-	CMP R0, #1H
+	CMP R0, #1H       ; If R0 is 1, return Syntax ERROR
 	BEQ _$j_15cbc
 _$j_15cb8:
-	CMP R7, #2H
+	CMP R7, #2H       ; If R7 <= 2, return Syntax ERROR
 	BGT _$j_15cc0
 _$j_15cbc:
 	MOV R2, #2H
 	POP PC
 _$j_15cc0:
-	BL _f_15174
-	CMP R2, #0H
+	BL _f_15174       ; Calculate
+	CMP R2, #0H       ; If return value is nonzero, return the error code
 	BNE _$j_15ce2
-	TB _table_mode.5
+	TB _table_mode.5  ; If this bit is cleared, skip this part
 	BEQ _$j_15cda
-	L R0, _d_08121
+	L R0, _d_08121    ; If all bits of this address is cleared, skip this part
 	BEQ _$j_15cda
 	ADD R0, #-1H
 	MOV R3, #0H
 	BAL _$j_15c14
 _$j_15cda:
 	MOV R2, #-1H
-	CMP R6, #0H
+	CMP R6, #0H       ; If R6 is nonzero, decrement input pointer
 	BEQ _$j_15ce2
 	ADD FP, #-1H
 _$j_15ce2:
@@ -14063,7 +14065,7 @@ _num_parse:
 	PUSH QR8
 	PUSH XR4
 	PUSH ER0
-	MOV R11, #0H   ; [8121H] = mode == MODE_MATRIX ? 24 : 0;
+	MOV R11, #0H       ; [8121H] = mode == MODE_MATRIX ? 24 : 0;
 	L R8, _mode
 	CMP R8, #6H
 	BNE _$j_15d02
@@ -14071,35 +14073,35 @@ _num_parse:
 _$j_15d02:
 	ST R11, _d_08121
 	MOV FP, ER0
-	MOV ER6, #0H   ; Set R6 to 0 to enable popping later. Also set R7 to 0
-	MOV ER8, ER2   ; ER8 = numout
-	L FP, [FP]     ; Load the input pointer
+	MOV ER6, #0H       ; Set R6 to 0 to enable popping later. Also set R7 to 0
+	MOV ER8, ER2       ; ER8 = numout
+	L FP, [FP]         ; Load the input pointer
 	ADD SP, #-3CH
 	MOV BP, SP
-	MOV R0, #-1H
+	MOV R0, #-1H       ; Store no-op operator (255)
 	MOV R10, #0H
-	BL _f_15238    ; 8060H = #0FFH
+	BL _sto_op_in_stack_r10
 	MOV ER10, #0H
 _$j_15d1c:
-	BL _get_num_parser_idx_fp
-	CMP R2, #10    ; Skip if index is above 10 (invalid)
+	BL _get_token_type_fp
+	CMP R2, #10        ; If invalid type, throw Syntax ERROR
 	BGT _$j_15dc4
-	SLL R2, #1     ; Shift left by 1 (×2)
+	SLL R2, #1         ; Shift left by 1 (×2)
 	MOV R4, #BYTE1 _num_parsers
 	MOV R5, #BYTE2 _num_parsers
 	ADD R4, R2
 	ADDC R5, #0H
 	L ER4, [ER4]
-	BL ER4         ; Call the corresponding function
-	CMP R2, #0H    ; If return value is 0, loop
+	BL ER4             ; Call the corresponding function
+	CMP R2, #0H        ; If return value is 0, parse next token
 	BEQ _$j_15d1c
-	BNS _$j_15d52  ; If return value is negative, jump
+	BNS _$j_15d52      ; If return value is negative, jump
 _$j_15d38:
-	CMP R6, #0H    ; If R6 is 0...
+	CMP R6, #0H        ; If R6 is 0...
 	BNE _$j_15d46
-	L R0, -1H[FP]  ; If [FP-1] is 0, subtract FP by 1
+	L R0, -1H[FP]      ; If previous token is null, subtract 1 from input pointer
 	BEQ _$j_15d44
-	CMP R2, #1H    ; Do the same if R2 is not 1
+	CMP R2, #1H        ; If error is not AC Break, subtract 1 from input pointer
 	BEQ _$j_15d46
 _$j_15d44:
 	ADD FP, #-1H
@@ -14112,13 +14114,13 @@ _$j_15d46:
 _$j_15d52:
 	L R0, [BP]
 	CMP R0, #90H
-	BGE _$j_15d60      ; Throw Syntax ERROR if number type ID (Area 1) >= 9
+	BGE _$j_15d60      ; Throw Syntax ERROR if not in a table mode and number type ID (Area 1) >= 9
 	CMP R0, #80H
-	BGE _$j_15d76      ; ...or if type ID is 6 or 7
+	BGE _$j_15d76      ; ...or if type ID is 6 (matrix) or 7
 	CMP R0, #60H
 	BLT _$j_15d76
 _$j_15d60:
-	L R0, _table_mode  ; If not in a table mode...
+	L R0, _table_mode  ; If not in a table mode, skip the below
 	CMP R0, #1H
 	BEQ _$j_15d6c
 	MOV R2, #2H
@@ -14132,28 +14134,28 @@ _$j_15d76:
 	MOV R0, R2
 	CMP R6, #0H        ; If R6 != 0, exit (skip popping)
 	BNE _$j_15dbc
-	MOV ER0, ER8
-	BL _num_cpy_bp_er0
+	MOV ER0, ER8       ; Copy [BP] to output number buffer
+	BL _num_cpy_cmplx_er0_bp
 	MOV R0, R2
-	CMP R0, #-1H
+	CMP R0, #-1H       ; If parser return value was -1, skip the below
 	BEQ _$j_15d8e
-	XOR R0, #11111111B
-	ADD R0, #21H
-	BAL _$j_15db2
+	XOR R0, #11111111B ; Invert all bits
+	ADD R0, #21H       ; Add with 33
+	BAL _$j_15db2      ; Return it
 _$j_15d8e:
-	MOV R10, #1H
-	BL _f_15228        ; L R4, 8060H
-	MOV R0, #25H       ; If R4 = 0x74, R0 = 0x25
+	MOV R10, #1H       ; Get first operator in stack
+	BL _load_op_from_stack_r10_m1
+	MOV R0, #25H       ; If remainder, R0 = 37
 	CMP R4, #74H
 	BEQ _$j_15dd6
-	MOV R0, #22H       ; If R4 = 0x24, R0 = 0x22
+	MOV R0, #22H       ; If Pol, R0 = 34
 	CMP R4, #24H
 	BEQ _$j_15dd6
-	MOV R0, #23H       ; If R4 = 0x25, R0 = 0x23
+	MOV R0, #23H       ; If Rec, R0 = 35
 	CMP R4, #25H
 	BEQ _$j_15dd6
 	MOV R0, #0H        ; else R0 = 0
-	TB _table_mode.6
+	TB _table_mode.6   ; If this bit is not set, jump below
 	BNE _$j_15dc8
 _$j_15dae:
 	CMP R6, #0H        ; If R6 != 0, exit (skip popping)
@@ -14166,25 +14168,25 @@ _$j_15db2:
 	POP QR8
 _$j_15dbc:
 	RB _d_08120.0      ; Clear bit 0 of 8120H
-	CMP R0, #-2H       ; Subtract 0xFE from (Add 2 to) R0, set PSW flags
+	CMP R0, #-2H       ; Subtract 0xFE from (Add 2 to) R0 temporarily, set PSW flags
 	POP PC
 _$j_15dc4:
 	MOV R2, #2H
 	BAL _$j_15d38      ; Throw Syntax ERROR
 _$j_15dc8:
-	CMP R4, #2AH
+	CMP R4, #2AH       ; If equals sign, skip this part
 	BEQ _$j_15dd6
 	MOV R0, #BYTE1 _num_0
 	MOV R1, #BYTE2 _num_0
-	BL _num_cpy_er0_bpp20
+	BL _num_cpy_cmplx_bpp20_er0
 	MOV R0, #0H
 _$j_15dd6:
-	PUSH R0            ; Back up R0
-	MOV ER2, ER8       ; num_cpy(ER8+10, ER2+20)
+	PUSH R0
+	MOV ER2, ER8       ; num_cpy_r(BP+20, ER8+10)
 	ADD ER2, #10
 	MOV ER0, BP
 	ADD ER0, #20
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	POP R0
 	BAL _$j_15db2      ; Return
 
@@ -14210,7 +14212,7 @@ _f_15DE8:
 	MOV R14, #BYTE1 (_mode_ram+250)
 	MOV R15, #BYTE2 (_mode_ram+250)
 _$j_15e0c:
-	BL _get_num_parser_idx_fp
+	BL _get_token_type_fp
 	CMP R2, #5H
 	BEQ _$j_15e70
 	MOV R9, #1H
@@ -14220,7 +14222,7 @@ _$j_15e0c:
 	BNE _$j_15e0c
 	TB R8.6
 	BEQ _$j_15e0c
-	BL _get_num_parser_idx_fp
+	BL _get_token_type_fp
 	CMP R2, #0AH
 	BEQ _$j_15e4a
 	CMP R2, #5H
@@ -14228,7 +14230,7 @@ _$j_15e0c:
 	CMP R0, #1H
 	BEQ _$j_15e0c
 	PUSH R0
-	BL _get_num_parser_idx_fp
+	BL _get_token_type_fp
 	POP R1
 	CMP R2, #0AH
 	BNE _$j_15e6c
@@ -14273,7 +14275,7 @@ _$j_15e78:
 	SB R9.0
 	BNE _$j_15e98
 	PUSH R0
-	BL _get_num_parser_idx_fp
+	BL _get_token_type_fp
 	MOV R1, R0
 	POP R0
 	CMP R2, #2H
@@ -14593,13 +14595,13 @@ _f_16100:
 	L R10, [FP]
 	BEQ _$j_161b0
 _$j_16118:
-	L R10, 8H[FP]  ;  Unnecessary Disp16 used instead of Disp6!
+	L R10, 8H[ER14]  ; Oddity: Disp16 used instead of Disp6
 	CMP R10, #2H
 	BGE _$j_161ea
-	L R10, 12H[FP]  ;  Unnecessary Disp16 used instead of Disp6!
+	L R10, 12H[ER14]  ; Oddity: Disp16 used instead of Disp6
 	CMP R10, #3H
 	BGE _$j_161ea
-	L R10, 1CH[FP]  ;  Unnecessary Disp16 used instead of Disp6!
+	L R10, 1CH[ER14]  ; Oddity: Disp16 used instead of Disp6
 	CMP R10, #2H
 	BGE _$j_161ea
 	L R10, 26H[FP]
@@ -14638,7 +14640,7 @@ _$j_16168:
 	BL _f_161F6
 	MOV R2, R11
 	OR R9, #10000000B
-	L R1, 9H[FP]  ;  Unnecessary Disp16 used instead of Disp6!
+	L R1, 9H[ER14]  ; Oddity: Disp16 used instead of Disp6
 	L R0, 27H[FP]
 	LEA _reg1
 	ST QR0, [EA+]
@@ -14656,7 +14658,7 @@ _$j_161aa:
 	MOV ER6, #1H
 	BAL _$j_16168
 _$j_161b0:
-	L R10, 1EH[FP]  ;  Unnecessary Disp16 used instead of Disp6!
+	L R10, 1EH[ER14]  ; Oddity: Disp16 used instead of Disp6
 	BEQ _$j_161da
 	L R10, 30H[FP]
 	BNE _$j_16118
@@ -14691,8 +14693,8 @@ _$j_161ea:
 _f_161F6:
 	PUSH LR
 	L R11, [BP]
-	L R10, 1H[BP]  ;  Unnecessary Disp16 used instead of Disp6!
-	L R0, 8H[BP]  ;  Unnecessary Disp16 used instead of Disp6!
+	L R10, 1H[ER12]  ; Oddity: Disp16 used instead of Disp6
+	L R0, 8H[ER12]  ; Oddity: Disp16 used instead of Disp6
 	BEQ _$j_16206
 	SLLC R11, #4
 _$j_16206:
@@ -14704,8 +14706,8 @@ _$j_16206:
 _f_16208:
 	PUSH LR
 	L R11, [BP]
-	L R10, 1H[BP]  ;  Unnecessary Disp16 used instead of Disp6!
-	L R0, 8H[BP]  ;  Unnecessary Disp16 used instead of Disp6!
+	L R10, 1H[ER12]  ; Oddity: Disp16 used instead of Disp6
+	L R0, 8H[ER12]  ; Oddity: Disp16 used instead of Disp6
 	BEQ _$j_1621e
 	CMP R0, #2H
 	BEQ _$j_16222
@@ -14897,38 +14899,38 @@ _f_16398:
 	MOV R0, R2
 	BL _f_16CE4
 	MOV FP, ER0
-	L R10, 2H[BP]  ;  Unnecessary Disp16 used instead of Disp6!
+	L R10, 2H[ER12]  ; Oddity: Disp16 used instead of Disp6
 	BEQ _$j_1641e
 	BL _f_16454
-	L R9, 9H[BP]  ;  Unnecessary Disp16 used instead of Disp6!
+	L R9, 9H[ER12]   ; Oddity: Disp16 used instead of Disp6
 	LEA [FP]
 	ST QR0, [EA+]
 	ST ER8, [EA+]
-	L R11, 0H[BP]  ;  Unnecessary Disp16 used instead of Disp6!
-	L R10, 1H[BP]  ;  Unnecessary Disp16 used instead of Disp6!
+	L R11, 0H[ER12]  ; Oddity: Disp16 used instead of Disp6
+	L R10, 1H[ER12]  ; Oddity: Disp16 used instead of Disp6
 	BL _f_16424
 	LEA 0AH[FP]
 	ST QR0, [EA+]
 	ST ER8, [EA+]
-	L R10, 3H[BP]  ;  Unnecessary Disp16 used instead of Disp6!
+	L R10, 3H[ER12]  ; Oddity: Disp16 used instead of Disp6
 	BL _f_16454
 	LEA 14H[FP]
 	ST QR0, [EA+]
 	ST ER8, [EA+]
 _$j_163e0:
-	L R10, 6H[BP]  ;  Unnecessary Disp16 used instead of Disp6!
+	L R10, 6H[ER12]  ; Oddity: Disp16 used instead of Disp6
 	BL _f_16454
-	L R9, 8H[BP]  ;  Unnecessary Disp16 used instead of Disp6!
+	L R9, 8H[ER12]   ; Oddity: Disp16 used instead of Disp6
 	LEA 1EH[FP]
 	ST QR0, [EA+]
 	ST ER8, [EA+]
-	L R11, 4H[BP]  ;  Unnecessary Disp16 used instead of Disp6!
-	L R10, 5H[BP]  ;  Unnecessary Disp16 used instead of Disp6!
+	L R11, 4H[ER12]  ; Oddity: Disp16 used instead of Disp6
+	L R10, 5H[ER12]  ; Oddity: Disp16 used instead of Disp6
 	BL _f_16424
 	LEA 28H[FP]
 	ST QR0, [EA+]
 	ST ER8, [EA+]
-	L R10, 7H[BP]  ;  Unnecessary Disp16 used instead of Disp6!
+	L R10, 7H[ER12]  ; Oddity: Disp16 used instead of Disp6
 	BL _f_16454
 	LEA 32H[FP]
 	ST QR0, [EA+]
@@ -15102,12 +15104,12 @@ _f_16524:
 	MOV R0, #BYTE1 _num_1
 	MOV R1, #BYTE2 _num_1
 	MOV ER2, ER4
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	L R8, 8H[ER6]
 	BNE _$j_1656c
 	MOV ER0, ER6
 	ADD ER2, #0AH
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	MOV R8, #2H
 	MOV R9, #1H
 	L R10, [ER6]
@@ -15127,14 +15129,14 @@ _$j_16564:
 _$j_1656c:
 	ADD ER0, #0AH
 	MOV ER2, BP
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	MOV ER2, FP
 	ADD ER2, #14H
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	MOV ER0, ER6
 	MOV ER2, BP
 	ADD ER2, #0AH
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	MOV R8, #1CH
 	MOV R10, #4H
 	MOV R11, #5H
@@ -15142,10 +15144,10 @@ _$j_1658c:
 	MOV ER0, BP
 	ADD ER0, #0AH
 	MOV ER2, FP
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	MOV ER0, BP
 	ADD ER2, #0AH
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	MOV ER0, ER2
 	BL _f_1A438
 	MOV ER0, FP
@@ -15161,7 +15163,7 @@ _$j_1658c:
 	ADD ER0, #0AH
 	MOV ER2, BP
 	ADD ER2, #0AH
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	L R0, 0AH[FP]
 	BNE _$j_1658c
 	BAL _$j_165fe
@@ -15196,7 +15198,7 @@ _$j_165fe:
 	ADD ER0, #0AH
 	MOV ER2, ER4
 	ADD ER2, #0AH
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 _$j_1660a:
 	ADD SP, #32H
 	POP QR8
@@ -15262,7 +15264,7 @@ _f_16666:
 	PUSH LR
 	PUSH XR8
 	MOV ER8, ER0
-	BL _f_110C4
+	BL _num_float_to_frac
 	MOV ER0, ER8
 	MOV R10, #1H
 	BL _get_numtype
@@ -24183,7 +24185,7 @@ _$j_1abae:
 	BGE _$j_1aac8
 _$j_1abbc:
 	PUSH ER0
-	BL _f_110C4
+	BL _num_float_to_frac
 	MOV R2, R0
 	POP ER0
 	BEQ _$j_1aafe
@@ -24551,16 +24553,16 @@ _$j_1ae40:
 	MOV ER0, FP
 	ADD ER0, #0AH
 	MOV ER2, FP
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	MOV R0, #0H
 	BAL _$j_1aece
 _$j_1ae6c:
 	MOV ER0, FP
 	MOV ER2, BP
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	ADD ER0, #0AH
 	ADD ER2, #0AH
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	MOV ER0, BP
 	BL _num_to_str_std_lineo
 	ADD ER0, #0AH
@@ -24596,7 +24598,7 @@ _$j_1aea8:
 	BL _f_1A460
 	MOV ER0, BP
 	MOV ER2, FP
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	MOV ER0, FP
 	BL _num_sqrt
 _$j_1aece:
@@ -24613,18 +24615,18 @@ _$j_1aed4:
 	MOV ER0, FP
 	MOV ER2, FP
 	ADD ER2, #0AH
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	MOV ER0, BP
 	ADD ER0, #0AH
 	MOV ER2, FP
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	MOV ER0, FP
 	MOV ER2, BP
 	BAL _$j_1af0a
 _$j_1aefc:
 	MOV ER0, BP
 	MOV ER2, FP
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	MOV ER0, FP
 	MOV ER2, BP
 	ADD ER2, #0AH
@@ -24648,7 +24650,7 @@ _$j_1af32:
 	PUSH R0
 	MOV R0, #BYTE1 _num_0
 	MOV R1, #BYTE2 _num_0
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	POP R0
 	ADD SP, #14H
 	POP XR12
@@ -24704,11 +24706,11 @@ _$j_1af9a:
 	MOV ER0, BP
 	MOV ER2, BP
 	ADD ER2, #0AH
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 	MOV R0, #BYTE1 _num_0
 	MOV R1, #BYTE2 _num_0
 	ADD ER2, #-0AH
-	BL _num_cpy_er2_er0
+	BL _num_cpy_r
 _$j_1afb2:
 	MOV R0, #0H
 	POP XR12
@@ -24798,19 +24800,19 @@ _num_invalid__:
 	PUSH XR4
 	PUSH QR8
 	BL _l_reg0
-	L R0, _mathi_enable_draw   ; If first 2 nibbles are 0, return 1
+	L R0, _d_08009            ; If first 2 nibbles are 0, return 1
 	BEQ _$j_1b06c
 	AND R0, #11110000B
-	CMP R0, #80H     ; Radical format...
+	CMP R0, #80H              ; Radical format...
 	BEQ _$j_1b078
-	CMP R0, #50H     ; If type 5 or higher, return 0xF0
+	CMP R0, #50H              ; If type 5 or higher, return 0xF0
 	BGE _$j_1b070
-	L ER0, _d_08000  ; If Area 3 and 4 are both 0, return 1
+	L ER0, _d_08000           ; If Area 3 and 4 are both 0, return 1
 	BEQ _$j_1b06c
 _$j_1b064:
-	CMP R1, #4H      ; If Area 3 >= 4, return 2
+	CMP R1, #4H               ; If Area 3 >= 4, return 2
 	BGE _$j_1b074
-	MOV R0, #4H      ; If not, return 4
+	MOV R0, #4H               ; If not, return 4
 	BAL _$j_1b0d2
 _$j_1b06c:
 	MOV R0, #1H
@@ -24823,12 +24825,12 @@ _$j_1b074:
 	BAL _$j_1b0d2
 _$j_1b078:
 	L ER0, _d_08000
-	CMP R1, #0H      ; If Area 3 is non-zero, jump below
+	CMP R1, #0H               ; If Area 3 is nonzero, jump below
 	BNE _$j_1b084
 	MOV R1, R0
-	BAL _$j_1b064    ; If not, copy Area 4 to Area 3 and jump above...
+	BAL _$j_1b064             ; If not, copy Area 4 to Area 3 and jump above...
 _$j_1b084:
-	ADD R1, R0       ; If Area 4 + Area 3 != 7, jump above...
+	ADD R1, R0                ; If Area 4 + Area 3 != 7, jump above...
 	CMP R1, #7H
 	BNE _$j_1b064
 	L ER0, _arg0_ref
@@ -24839,8 +24841,8 @@ _$j_1b084:
 	MOV ER2, ER0
 	MOV R0, #0H
 	BL _f_16060
-	L ER0, _d_08000
-	BAL _$j_1b064  ; Jump above
+	L ER0, _d_08000           ; Reload Area 3 and 4
+	BAL _$j_1b064             ; Jump above
 
 ; FUNCTION: GY454XE  Re 1B0A8
 ; FUNCTION: GY455XE  Im 1B0A8
@@ -25554,11 +25556,11 @@ PUBLIC _num_to_str_std_lineo
 PUBLIC _f_149D8
 PUBLIC _f_1547E
 PUBLIC _f_15486
-PUBLIC _num_cpy_er2_er0
-PUBLIC _num_cpy_bp_er0
-PUBLIC _num_cpy_er0_bp
-PUBLIC _num_cpy_er0_bpp20
-PUBLIC _f_1553C
+PUBLIC _num_cpy_r
+PUBLIC _num_cpy_cmplx_er0_bp
+PUBLIC _num_cpy_cmplx_bp_er0
+PUBLIC _num_cpy_cmplx_bpp20_er0
+PUBLIC _num_cpy_cmplx
 PUBLIC _num_eval__
 PUBLIC _num_parse
 PUBLIC _f_15DE8
@@ -25618,9 +25620,9 @@ EXTRN CODE	: _set_result_store_fmt
 EXTRN CODE	: _buffer_clear
 EXTRN CODE	: _f_02D52
 EXTRN CODE	: _line_print
-EXTRN CODE	: _num_sum_1__
-EXTRN CODE	: _f_03A72
-EXTRN CODE	: _f_03E72
+EXTRN CODE	: _num_sum
+EXTRN CODE	: _num_integral
+EXTRN CODE	: _num_ddx
 EXTRN CODE	: _table_stat_get_cell_addr
 EXTRN CODE	: _table_stat_get_col_addr
 EXTRN CODE	: _table_stat_get_num_cols
@@ -25648,7 +25650,8 @@ EXTRN DATA	: _d_08005
 EXTRN DATA	: _d_08006
 EXTRN DATA	: _d_08007
 EXTRN DATA	: _d_08008
-EXTRN DATA	: _mathi_enable_draw
+EXTRN DATA	: _d_08009            ; } same address
+EXTRN DATA	: _mathi_enable_draw  ; }
 EXTRN DATA	: _d_0800A
 EXTRN DATA	: _d_0800B
 EXTRN DATA	: _d_0800C
@@ -25678,8 +25681,8 @@ EXTRN DATA	: _d_0805A
 EXTRN DATA	: _d_0805B
 EXTRN DATA	: _arg0_ref
 EXTRN DATA	: _arg1_ref
-EXTRN DATA	: _d_08060
-EXTRN DATA	: _d_08078
+EXTRN DATA	: _operator_stack
+EXTRN DATA	: _number_stack
 EXTRN DATA	: _matvct_dims
 EXTRN DATA	: _last_key_keycode
 EXTRN DATA	: _modifiers
