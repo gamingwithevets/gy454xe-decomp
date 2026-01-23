@@ -277,18 +277,18 @@ char show_menu_matvct(char idx, char mode_enter) {
 				if (loc_m13 == 1 || loc_m13 == 2) {
 					v1 = loc_m13;
 					v2 = v0;
-					v0 = 9;
+					v0 = MATRIX_MENU_START+1;
 					prompt = menu_matrix_sel;
 					continue;
 				} else if (loc_m13 == 18 || loc_m13 == 19) {
 					v1 = loc_m13;
 					v2 = v0;
-					v0 = 15;
+					v0 = VECTOR_MENU_START+1;
 					prompt = menu_vector_sel;
 				} else if (loc_m13 == 3 || loc_m13 == 4 || loc_m13 == 5) {
 					v3 = v0;
 					v4 = loc_m13 - 3;
-					v0 = 11;
+					v0 = MATRIX_MENU_START+3;
 					prompt = prompt_sel[loc_m13 - 3];
 					if (mode_enter) mode_init(MODE_MATRIX, v4);
 					if (v1 == 2 && matvct_dims[v4].b.m && matvct_dims[v4].b.n) {}
@@ -296,8 +296,8 @@ char show_menu_matvct(char idx, char mode_enter) {
 				} else if (loc_m13 == 20 || loc_m13 == 21 || loc_m13 == 22) {
 					v3 = v0;
 					v4 = loc_m13 - 20;
-					v0 = 17;
-					prompt = prompt_sel[loc_m13 - 20];
+					v0 = VECTOR_MENU_START+3;
+					prompt = prompt_sel[loc_m13 - 20 + 3];
 					if (mode_enter) mode_init(MODE_VECTOR, v4);
 					if (v1 == 19 && matvct_dims[v4].b.m && matvct_dims[v4].b.n) {}
 					else continue;

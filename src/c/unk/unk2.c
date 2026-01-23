@@ -4,6 +4,7 @@
 #include "unk2.h"
 #include "unk4.h"
 #include "unk5.h"
+#include "unk6.h"
 
 // Static functions
 static void num_to_str_norm(char *num, char *out, char n, char d);

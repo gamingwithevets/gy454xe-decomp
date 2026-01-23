@@ -125,8 +125,8 @@ _unk_0080a:
 	DB 1, 3
 	DB 1, 3
 
-; DATA: GY454XE  Re 0080A
-; DATA: GY455XE  Im 0080A
+; DATA: GY454XE  Re 00812
+; DATA: GY455XE  Im 00812
 ; DATA: GY460XF  Im 00884
 _unk_00812:
 	DB 2, 3
@@ -363,7 +363,8 @@ _s_table_freq:
 	;  " FREQ"
 	DB "\xec\xe5\xe9\xe4\xe8", 0
 	
-	
+
+; Unused
 ; DATA: GY454XE  Re 00936
 ; DATA: GY455XE  Im 00936
 ; DATA: GY460XF  Im 009A8

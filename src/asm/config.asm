@@ -34,7 +34,7 @@ TSEG #1 AT 0FFD4H
 	DB 0
 ; Decimal output toggle.
 	DB 0
-; Unused
+; Unused.
 	DB 0
 
 ; == Display Settings ==
@@ -51,7 +51,7 @@ TSEG #1 AT 0FFD4H
 ; Unknown.
 	DB 0
 
-; Unknown
+; Unknown. Seems to be padding bytes.
 DB 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
 
 TSEG #1 AT 0FFF4H
@@ -64,7 +64,7 @@ TSEG #1 AT 0FFF4H
 	DB "--"
 ; ROM checksum (see _diag_get_checksum for checksum algorithm).
 ; Must be manually filled in.
-	DW 1BBAH
+	DW 1234H
 
 ; Filler bytes. They don't do anything.
 DB 1, 1

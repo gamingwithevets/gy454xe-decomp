@@ -1,3 +1,4 @@
+#include "consts.h"
 #include "generals.h"
 
 // These tables are initialized into RAM.
@@ -23,4 +24,5 @@ const char *ineq_result[] = {
 	s_ineq_nosolution
 };
 
-const char **init_unk_1 = &d_080DC;
+// Seems to be unused. RAM variables are accessed directly via their addresses without using this pointer.
+const char **ram_main_start = &d_080DC;

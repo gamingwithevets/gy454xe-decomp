@@ -1,4 +1,5 @@
 #include "unk5.h"
+#include "unk6.h"
 
 typedef union { char byte[4]; unsigned int word[2]; } num_unk_2_struct;
 

@@ -117,6 +117,20 @@ typedef struct {
 	char unk_0x17;
 } num_struct;
 
+// Weird struct used in f_09962 and the functions that it calls from a jump table.
+typedef struct {
+	char *input_area;
+	char *result;
+	char unk_0x04;
+	char is_func;
+	char mode;
+	char unk_0x07;
+	char is_mathi;
+	char is_matho;
+	char unk_0x0a;
+	char unk_0x0b;
+} keyfunc_struct;
+
 // Mode constants (mode 80F9H)
 enum mode {
 	MODE_COMP	= 0xC1,

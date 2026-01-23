@@ -7,6 +7,7 @@
 #include "../unk/unk2.h"
 #include "../unk/unk4.h"
 #include "../unk/unk5.h"
+#include "../unk/unk6.h"
 
 // Static declarations
 static void update_cursor(char x, char y);
