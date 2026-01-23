@@ -30,17 +30,10 @@ This may not be related to this decomp at all, but it is worth mentioning.
 ### Naming scheme
 As of now, we have not decided on a real naming scheme for the decomp. Scripts and headers that have not been given actual names are named `unk[n]`, where `[n]` is the order of the file's code in the final binary.
 
-### Sourced ROMs
-Currently, this decomp includes code sourced from the following ROM(s):
-- fx-570ES PLUS `GY454X VerE` (real)
-- fx-991ES PLUS `GY455X VerE` (emulator)
-- fx-500VN PLUS `GY460X VerF` (emulator)
-- fx-83GT PLUS `GY465X VerG` (emulator)
-
-Additionally, the following ROM(s) were used to determine exact data locations:
-- fx-92 Collège 2D+ `GY468X VerB` (emulator)
-
-fx-570/991ES PLUS `GY454XE VerF`/`GY455XE VerF` adds the debug menu from ES PLUS 2nd edition, which can be accessed in diagnostic mode. Unfortunately, this ROM has not been dumped, therefore the debug menu code is unable to be added as of now.
+### Missing features
+Currently, this decomp is missing the following features:
+- Diagnostic mode present on fx-570/991ES PLUS `GY454X VerF`/`GY455X VerF`. This specific version of the diagnostic mode includes a [debug menu](https://gwe.42web.io/calcupedia/Calculator_self-test?i=1#Debug_menu) similar to that of the 2nd edition series.
+- Japanese models' extra conversions, which includes an extra 160 conversions (80 conversion pairs). Unfortunately, no ROM of a Japanese ES PLUS GYX model has been dumped, nor has Casio distributed an emulator for the fx-510AZ. It is possible the code responsible is the exact same as the one used on the LY series.
 
 ### Building custom ROMs
 To configure ROMs, edit `src/asm/features.inc`. Note that this is just for feature toggles; you will need to edit other scripts to modify menus, key layouts, etc. See the comment in the aforementioned file for more information.

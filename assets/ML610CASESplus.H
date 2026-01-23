@@ -4,9 +4,9 @@
 
 	 #CORE			  "nX-U8/100"
 	 #TARGET			"ML610CASESplus"
-	 #VERSION		  "1.00"
-	 Last Edition  May 12, 2025
-	 Copyright (C) 2025 GamingWithEvets Inc.
+	 #VERSION		  "1.01"
+	 Last Edition  January 23, 2026
+	 Copyright (C) 2026 GamingWithEvets Inc.
 **************************************************************/
 #ifndef _ML610CASESplus_H_
 #define _ML610CASESplus_H_
@@ -81,17 +81,11 @@ typedef struct{
 #define IE1 (*(volatile unsigned char __near *)0xF011)
 #define _B_IE1 (*(volatile _BYTE_FIELD __near *)0xF011)
 
-#define IE2 (*(volatile unsigned char __near *)0xF012)
-#define _B_IE2 (*(volatile _BYTE_FIELD __near *)0xF012)
-
 #define IRQ0 (*(volatile unsigned char __near *)0xF014)
 #define _B_IRQ0 (*(volatile _BYTE_FIELD __near *)0xF014)
 
 #define IRQ1 (*(volatile unsigned char __near *)0xF015)
 #define _B_IRQ1 (*(volatile _BYTE_FIELD __near *)0xF015)
-
-#define IRQ2 (*(volatile unsigned char __near *)0xF016)
-#define _B_IRQ2 (*(volatile _BYTE_FIELD __near *)0xF016)
 
 #define EXICON0 (*(volatile unsigned char __near *)0xF018)
 #define _B_EXICON0 (*(volatile _BYTE_FIELD __near *)0xF018)
