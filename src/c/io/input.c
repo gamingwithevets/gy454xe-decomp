@@ -6,6 +6,7 @@
 #include "../modes/ineq.h"
 #include "../unk/unk2.h"
 #include "../unk/unk4.h"
+#include "../unk/unk4_1.h"
 #include "../unk/unk5.h"
 #include "../unk/unk6.h"
 

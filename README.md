@@ -30,6 +30,9 @@ This may not be related to this decomp at all, but it is worth mentioning.
 ### Naming scheme
 As of now, we have not decided on a real naming scheme for the decomp. Scripts and headers that have not been given actual names are named `unk[n]`, where `[n]` is the order of the file's code in the final binary.
 
+### Linking order
+Linking order is important when recompiling. Exactly how the linker orders segments is not known, however it is known that it is not a random order. Linking order is also important when using near pointers; if a jump table contains addresses for code outside the segment where the jump table is actually used, garbage code will be executed instead.
+
 ### Missing features
 Currently, this decomp is missing the following features:
 - Diagnostic mode present on fx-570/991ES PLUS `GY454X VerF`/`GY455X VerF`. This specific version of the diagnostic mode includes a [debug menu](https://gwe.42web.io/calcupedia/Calculator_self-test#Debug_menu) similar, but not the same as that of 2nd edition series. Currently, this ROM has not been dumped, nor is there an emulator ROM available.

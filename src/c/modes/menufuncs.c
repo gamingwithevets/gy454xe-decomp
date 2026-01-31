@@ -2,6 +2,7 @@
 #include "setup.h"
 #include "menufuncs.h"
 #include "../unk/unk4.h"
+#include "../unk/unk4_1.h"
 #include "../unk/unk5.h"
 
 static char menufunc_base_n(void);

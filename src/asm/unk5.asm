@@ -322,7 +322,7 @@ _token_types_args:
 	;  AHC0ALC0   ALC1TYC0   TYC1AHC1
 	DB 00001101B, 11100001B, 00010000B
 	;  AHC2ALC2   ALC3TYC2   TYC3AHC3
-	DB 01110111B, 10100001B, 00010000B
+	DB 01111001B, 10100001B, 00010000B
 	;  AHC4ALC4   ALC5TYC4   TYC5AHC5
 	DB 00100001B, 00100110B, 01100010B
 	;  AHC6ALC6   ALC7TYC6   TYC7AHC7
@@ -12249,7 +12249,7 @@ _$j_1515c:
 ; FUNCTION: GY454XE  Re 15160
 ; FUNCTION: GY455XE  Im 15160
 ; FUNCTION: GY460XF  Im 14C1A
-_f_15160:
+_token_classify:
 	CMP R4, #77H   ; If operator ID >= 119, subtract 121 from R4 and set PSW flags
 	BGE _$j_15170
 	CMP R4, #65H   ; If operator ID < 101, subtract 38 from R4 and set PSW flags
@@ -12295,7 +12295,7 @@ _$j_15186:
 	BEQ _$j_151d2
 	CMP R4, #2H
 	BLE _$j_151ce
-	BL _f_15160
+	BL _token_classify
 	BGE _$j_151be
 	CMP R8, #1H
 	BLT _$j_151be
@@ -12477,12 +12477,12 @@ _f_152A4:
 	PUSH LR
 	CMP R0, R4     ; If R0 is not equal to the operator ID, skip this part
 	BNE _$j_152b4
-	BL _f_15160    ; If ID < compared value, return 1 in R4
+	BL _token_classify    ; If ID < compared value, return 1 in R4
 	BLT _$j_152be
 	MOV R4, #1H
 	POP PC
 _$j_152b4:
-	BL _f_15160    ; If ID >= compared value, skip this part
+	BL _token_classify    ; If ID >= compared value, skip this part
 	BGE _$j_152c2
 	CMP R0, #2AH   ; If current token is equals sign, skip returning
 	BEQ _$j_152d4
@@ -12968,7 +12968,7 @@ _f_15596:
 	BNE _$j_155aa
 	CMP R2, #3H            ; If last token type was not postfix (?), return
 	BNE _$j_155aa
-	MOV R0, #BYTE1 _num_0  ; 
+	MOV R0, #BYTE1 _num_0
 	MOV R1, #BYTE2 _num_0
 	BL _num_cpy_cmplx_bp_er0
 	MOV R2, #0H
@@ -13343,7 +13343,7 @@ _$j_15850:
 	PUSH R10
 _$j_1585a:
 	BL _load_op_from_stack_r10_m1
-	BL _f_15160
+	BL _token_classify
 	BLT _$j_1586c          ; If operator ID < value compared, break
 	ADD R10, #-1H          ; Decrement index
 	BNE _$j_1585a          ; Loop

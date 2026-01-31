@@ -2235,12 +2235,12 @@ j_0c4a6:
  				table_home();
  				goto j_0c390;
  			} else {
- 				if (!v1 || v1 == 36) {
+ 				if (v1 == 0 || v1 == 36) {
 	 				if (table_mode == TABLE_SOLVE && !a->unk_0x0a) {
 	 					char tmp;
 	 					result_template = RESTMP_SOLVE;
-	 					if (v1 == 36) tmp = 0x40;
-	 					else tmp = 0x20;
+	 					if (v1 == 36) tmp = 0x40;	// "Continue" screen
+	 					else tmp = 0x20;			// "Solved" screen
 	 					d_080FD = tmp;
 	 				} else if (a->mode != MODE_CMPLX) num_fromdigit(&a->result[10], 0);
 	 			} else if (v1 == 34) {
