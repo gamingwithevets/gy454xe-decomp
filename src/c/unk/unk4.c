@@ -9,7 +9,6 @@
 #include "unk4.h"
 #include "unk4_1.h"
 #include "unk5.h"
-#include "unk6.h"
 
 // Struct used by the menu list. NOTE: For any index, if the index has the MSB set, it is returned directly with a return code of 1.
 typedef struct {

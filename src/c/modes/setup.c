@@ -5,6 +5,7 @@
 #include "setup.h"
 #include "menufuncs.h"
 #include "../unk/unk4.h"
+#include "../unk/unk4_1.h"
 
 static void f_08EBA(char a);
 static char show_eqn_select(void);

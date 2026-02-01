@@ -16,7 +16,7 @@ _reg6_2				EQU 8052H
 _reg6_9				EQU 8059H
 
 $$NTABunk6 SEGMENT TABLE 2H #0
-$$NCODunk6 SEGMENT CODE 2H ANY
+$$NCODunk6 SEGMENT CODE 2H #1
 
 RSEG $$NTABunk6
 
@@ -1982,7 +1982,7 @@ _f_16DCA:
 	ADD ER6, #-0AH
 	MOV ER8, FP
 	ADD ER8, #-14H
-	BL _num_invalid__
+	BL _num_sign
 	CMP R0, #2H
 	BEQ _$j_16e30
 	MOV ER2, BP
@@ -9302,7 +9302,7 @@ _$j_1a710:
 _num_abs:
 	PUSH LR
 	PUSH ER0
-	BL _num_invalid__
+	BL _num_sign
 	CMP R0, #0F0H
 	BEQ _$j_1a738
 	MOV R2, R0
@@ -10402,7 +10402,7 @@ _f_1AF44:
 _$j_1af56:
 	MOV ER0, BP
 	ADD ER0, #0AH
-	BL _num_invalid__
+	BL _num_sign
 	CMP R0, #1H
 	BEQ _$j_1af70
 _$j_1af62:
@@ -10415,7 +10415,7 @@ _$j_1af62:
 _$j_1af70:
 	MOV ER0, BP
 	BL _f_15EE4
-	BL _num_invalid__
+	BL _num_sign
 	MOV R15, R0
 	CMP R0, #0F0H
 	BEQ _$j_1af62
@@ -10524,24 +10524,24 @@ _$j_1b038:
 ; FUNCTION: GY455XE  Im 1B03E
 ; FUNCTION: GY460XF  Im 1A79A
 ; FUNCTION: GY465XG  Im 19636
-_num_invalid__:
+_num_sign:
 	PUSH LR
 	LEA _arg0_ref
 	ST XR0, [EA+]
 	PUSH XR4
 	PUSH QR8
 	BL _l_reg0
-	L R0, _d_08009            ; If first 2 nibbles are 0, return 1
+	L R0, _d_08009            ; If first 2 nibbles are 0 (number is 0), return 1
 	BEQ _$j_1b06c
 	AND R0, #11110000B
-	CMP R0, #80H              ; Radical format...
+	CMP R0, #80H              ; If radical format, jump below
 	BEQ _$j_1b078
 	CMP R0, #50H              ; If type 5 or higher, return 0xF0
 	BGE _$j_1b070
 	L ER0, _d_08000           ; If Area 3 and 4 are both 0, return 1
 	BEQ _$j_1b06c
 _$j_1b064:
-	CMP R1, #4H               ; If Area 3 >= 4, return 2
+	CMP R1, #4H               ; If Area 4 >= 4 (negative number (radical 1 for radical format)), return 2
 	BGE _$j_1b074
 	MOV R0, #4H               ; If not, return 4
 	BAL _$j_1b0d2
@@ -10556,12 +10556,12 @@ _$j_1b074:
 	BAL _$j_1b0d2
 _$j_1b078:
 	L ER0, _d_08000
-	CMP R1, #0H               ; If Area 3 is nonzero, jump below
+	CMP R1, #0H               ; If Area 4 is nonzero (radical 1 has unspecified sign), jump below
 	BNE _$j_1b084
 	MOV R1, R0
-	BAL _$j_1b064             ; If not, copy Area 4 to Area 3 and jump above...
+	BAL _$j_1b064             ; If not, copy Area 3 to Area 4  (use radical 2's sign) and jump above...
 _$j_1b084:
-	ADD R1, R0                ; If Area 4 + Area 3 != 7, jump above...
+	ADD R1, R0                ; If Area 3 + Area 4 != 7 (both radicals positive/negative), jump above...
 	CMP R1, #7H
 	BNE _$j_1b064
 	L ER0, _arg0_ref
@@ -10571,7 +10571,7 @@ _$j_1b084:
 	BL _f_16CE4
 	MOV ER2, ER0
 	MOV R0, #0H
-	BL _f_16060
+	BL _f_16060               ; Convert to floating point
 	L ER0, _d_08000           ; Reload Area 3 and 4
 	BAL _$j_1b064             ; Jump above
 
@@ -11217,6 +11217,10 @@ _unk_1ac86_460f:
 	DB 0DH, 86H
 	DB 0EH, 87H
 	DB 86H, 0DH
+
+PUBLIC _unk_1ac5e_460f
+PUBLIC _unk_1ac76_460f
+PUBLIC _unk_1ac86_460f
 ENDIF
 
 IF ENABLE_VERIF == 1
@@ -11228,6 +11232,8 @@ _jmp_19afa_465g:
 	DW _f_157AE_465G
 	DW _f_157BE_465G
 	DW _f_1579E_465G
+
+PUBLIC _jmp_19afa_465g
 ENDIF
 
 PUBLIC _f_15EE4
@@ -11312,7 +11318,7 @@ PUBLIC _f_1AF44
 PUBLIC _f_1AFB8
 PUBLIC _f_1AFC8
 PUBLIC _f_1AFD8
-PUBLIC _num_invalid__
+PUBLIC _num_sign
 PUBLIC _num_cmp
 PUBLIC _f_1B0DC
 PUBLIC _get_numtype
@@ -11335,10 +11341,6 @@ PUBLIC _f_1B4A0
 PUBLIC _f_1B4B6
 PUBLIC _f_1B4D0
 PUBLIC _invalid_var
-PUBLIC _unk_1ac5e_460f
-PUBLIC _unk_1ac76_460f
-PUBLIC _unk_1ac86_460f
-PUBLIC _jmp_19afa_465g
 
 EXTRN TABLE	: _num_0
 EXTRN TABLE	: _num_1

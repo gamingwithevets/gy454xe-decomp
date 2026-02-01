@@ -24,7 +24,7 @@ def process_ins_param(param, is_lea):
 		val = disas.conv_sign(param.disp.value, param.disp.bits)
 		if param.disp.bits == 16 and ((val >= 0 and val <= 0x1f) or (val >= -0x20 and val < 0)):
 			param.register.ptr = False
-			return str(param) + '  ;  Unnecessary Disp16 used instead of Disp6!'
+			return str(param) + '  ;  Oddity: Disp16 used instead of Disp6'
 
 	return str(param)
 

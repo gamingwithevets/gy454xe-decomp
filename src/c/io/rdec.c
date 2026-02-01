@@ -81,7 +81,7 @@ char num_to_str_rdec(char *out, char *num) {
 	char loc_m515;
 	char loc_m516;
 
-	if (num_invalid__(&num[10]) == 2) concat_negative(out);
+	if (num_sign(&num[10]) == NUM_SIGN_NEGATIVE) concat_negative(out);
 	num_abs(num);
 	concat_num_str(out, num);
 	// STRING: GY460XF  Im 01F22

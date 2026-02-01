@@ -5,6 +5,7 @@
 #include "modes/setup.h"
 #include "modes/menufuncs.h"
 #include "unk/unk4.h"
+#include "unk/unk4_1.h"
 
 // FUNCTION: GY454XE  Re 09712
 // FUNCTION: GY455XE  Im 0A036

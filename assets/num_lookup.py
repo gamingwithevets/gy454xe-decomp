@@ -52,7 +52,8 @@ def num_conv(numb):
 
 		# Radical format
 		case 8:
-			neg1 = -1 if area4 in (0, 1) else 1
+			if area4 == 0: area4 = area3
+			neg1 = -1 if area4 == 1 else 1
 			if neg1 == 1 and area4 != 6: return sympy.nan
 			neg2 = -1 if area3 == 1 else 1
 			if neg2 == 1 and area3 != 6: return sympy.nan

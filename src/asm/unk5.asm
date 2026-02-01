@@ -9,7 +9,7 @@ $$NTABunk5_1 SEGMENT TABLE 2H #0
 $$NTABunk5_2 SEGMENT TABLE 2H #0
 $$NTABunk5_3 SEGMENT TABLE 2H #0
 $$NTABunk5_4 SEGMENT TABLE 2H #0
-$$NCODunk5 SEGMENT CODE 2H ANY
+$$NCODunk5 SEGMENT CODE 2H #1
 
 RSEG $$NTABunk5_0
 
@@ -322,7 +322,7 @@ _token_types_args:
 	;  AHC0ALC0   ALC1TYC0   TYC1AHC1
 	DB 00001101B, 11100001B, 00010000B
 	;  AHC2ALC2   ALC3TYC2   TYC3AHC3
-	DB 01111001B, 10100001B, 00010000B
+	DB 01110111B, 10100001B, 00010000B
 	;  AHC4ALC4   ALC5TYC4   TYC5AHC5
 	DB 00100001B, 00100110B, 01100010B
 	;  AHC6ALC6   ALC7TYC6   TYC7AHC7
@@ -728,10 +728,10 @@ _num_sin_consts:
 	DB 05H, 00H, 00H, 00H, 00H, 00H, 00H, 00H, 99H, 00H  ;  sin(30°) | 1/2
 	DB 07H, 07H, 10H, 67H, 81H, 18H, 65H, 48H, 99H, 00H  ;  sin(45°) | sqrt(2)/2
 	DB 08H, 66H, 02H, 54H, 03H, 78H, 44H, 39H, 99H, 00H  ;  sin(60°) | sqrt(3)/2
-	DB 09H, 65H, 92H, 58H, 26H, 28H, 90H, 68H, 99H, 00H  ;  sin(75°)
+	DB 09H, 65H, 92H, 58H, 26H, 28H, 90H, 68H, 99H, 00H  ;  sin(75°) | (sqrt(6) + sqrt(2))/4
 	DB 80H, 02H, 01H, 04H, 00H, 06H, 01H, 04H, 01H, 06H  ; -sin(15°) | (-sqrt(6) + sqrt(2))/4
 	DB 21H,0A2H, 00H, 00H, 00H, 00H, 00H, 00H, 03H, 01H  ; -sin(30°) | -1/2
-	DB 80H, 00H, 00H, 01H, 00H, 02H, 01H, 02H, 01H, 00H  ; -sin(45°) |-sqrt(2)/2
+	DB 80H, 00H, 00H, 01H, 00H, 02H, 01H, 02H, 01H, 00H  ; -sin(45°) | -sqrt(2)/2
 	DB 80H, 00H, 00H, 01H, 00H, 03H, 01H, 02H, 01H, 00H  ; -sin(60°) | -sqrt(3)/2
 	DB 80H, 02H, 01H, 04H, 00H, 06H, 01H, 04H, 01H, 01H  ; -sin(75°) | -(sqrt(2) + sqrt(6))/4
 
@@ -898,7 +898,7 @@ _$j_1009a:
 	BL _num_cpy
 	MOV ER0, #-3CH
 	ADD ER0, FP
-	BL _num_invalid__
+	BL _num_sign
 	CMP R0, #1H
 	BNE _$j_100da
 	MOV R2, #1H
@@ -931,7 +931,7 @@ _$j_100f4:
 	MOV R0, #4CH
 	MOV R1, #0FFH
 	ADD ER0, FP
-	BL _num_invalid__
+	BL _num_sign
 	CMP R0, #1H
 	BNE _$j_10112
 	B _$j_10216
@@ -1024,7 +1024,7 @@ _$j_101be:
 	MOV ER0, ER10
 	BL _f_1A424
 	MOV ER0, ER10
-	BL _num_invalid__
+	BL _num_sign
 	CMP R0, #4H
 	BGE _$j_101f8
 	B _$j_103bc
@@ -1049,13 +1049,13 @@ _$j_1021e:
 	MOV R5, #0H
 	MOV ER0, #-3CH
 	ADD ER0, FP
-	BL _num_invalid__
+	BL _num_sign
 	CMP R0, #1H
 	BNE _$j_1023e
 	MOV R0, #0B0H
 	MOV R1, #0FFH
 	ADD ER0, FP
-	BL _num_invalid__
+	BL _num_sign
 	CMP R0, #1H
 	BNE _$j_1023e
 	B _$j_104f2
@@ -1229,11 +1229,11 @@ _$j_103c8:
 	MOV R0, #4CH
 	MOV R1, #0FFH
 	ADD ER0, FP
-	BL _num_invalid__
+	BL _num_sign
 	CMP R0, #2H
 	BNE _$j_103e4
 	MOV ER0, BP
-	BL _num_invalid__
+	BL _num_sign
 	CMP R0, #4H
 	BNE _$j_103e4
 	B _$j_104f2
@@ -1241,11 +1241,11 @@ _$j_103e4:
 	MOV R0, #4CH
 	MOV R1, #0FFH
 	ADD ER0, FP
-	BL _num_invalid__
+	BL _num_sign
 	CMP R0, #4H
 	BNE _$j_103fe
 	MOV ER0, BP
-	BL _num_invalid__
+	BL _num_sign
 	CMP R0, #2H
 	BNE _$j_103fe
 	BAL _$j_104f2
@@ -1638,7 +1638,7 @@ _f_106EC:
 	MOV R0, #0A6H
 	MOV R1, #0FFH
 	ADD ER0, FP
-	BL _num_invalid__
+	BL _num_sign
 	POP PC
 
 ; FUNCTION: GY454XE  Re 1071A
@@ -1734,7 +1734,7 @@ _f_107AA:
 	MOV ER0, #7H
 	ST ER0, -20H[FP]
 	MOV ER0, BP
-	BL _num_invalid__
+	BL _num_sign
 	CMP R0, #1H
 	BNE _$j_107ec
 	MOV R2, #1H
@@ -3013,8 +3013,8 @@ _num_float_to_frac:
 	BL _f_10C1E        ; If this function returns 0, return 1
 	CMP R0, #0H
 	BEQ _$j_1113e
-	MOV ER0, ER10      ; If this function returns 1... copy and return 0
-	BL _num_invalid__
+	MOV ER0, ER10      ; If [FP-40] is 0, copy and return 0
+	BL _num_sign
 	CMP R0, #1H
 	BEQ _$j_11128
 	MOV ER0, ER10
@@ -3198,7 +3198,7 @@ _f_1126A:
 	BEQ _$j_112a6
 	MOV ER0, FP
 	ADD ER0, #-3CH
-	BL _num_invalid__
+	BL _num_sign
 	CMP R0, #1H
 	BEQ _$j_112a6
 	MOV ER0, FP
@@ -3369,7 +3369,7 @@ _f_11344:
 	MOV ER0, BP
 	BL _f_1AC56
 	MOV ER0, BP
-	BL _num_invalid__
+	BL _num_sign
 	CMP R0, #1H
 	BNE _$j_11384
 	MOV ER2, #5H
@@ -3492,7 +3492,7 @@ _f_11478:
 	MOV R0, #0BAH
 	MOV R1, #0FFH
 	ADD ER0, FP
-	BL _num_invalid__
+	BL _num_sign
 	CMP R0, #4H
 	BEQ _$j_11494
 	MOV R0, #3H
@@ -5104,7 +5104,7 @@ _f_121A6:
 	MOV R0, #0BAH
 	MOV R1, #0FFH
 	ADD ER0, FP
-	BL _num_invalid__
+	BL _num_sign
 	CMP R0, #4H
 	BEQ _$j_121c6
 	MOV R2, #3H
@@ -5276,7 +5276,7 @@ _f_1232A:
 	MOV R0, #0BAH
 	MOV R1, #0FFH
 	ADD ER0, FP
-	BL _num_invalid__
+	BL _num_sign
 	CMP R0, #4H
 	BEQ _$j_1234a
 	MOV R2, #3H
@@ -5751,7 +5751,7 @@ _$j_12700:
 	BL _num_cpy
 	MOV ER0, FP
 	ADD ER0, #-28H
-	BL _num_invalid__
+	BL _num_sign
 	CMP R0, #4H
 	BEQ _$j_12760
 	MOV ER0, #-14H
@@ -7040,7 +7040,7 @@ _num_stat_P:
 	BGE _$j_1313e
 	BL _f_11344
 	L ER0, -2H[FP]
-	BL _num_invalid__
+	BL _num_sign
 	CMP R0, #2H
 	BEQ _$j_130ec
 _$j_130d4:
@@ -7138,7 +7138,7 @@ _num_stat_R:
 	BGE _$j_1313e
 	BL _f_11344
 	L ER0, -2H[FP]
-	BL _num_invalid__
+	BL _num_sign
 	CMP R0, #2H
 	BEQ _$j_130d4
 	BAL _$j_130ec
@@ -7553,12 +7553,12 @@ _f_12A84_460F:
 	ADD BP, #0AH
 	MOV R0, #BYTE1 (_mode_ram+90)
 	MOV R1, #BYTE2 (_mode_ram+90)
-	BL _num_invalid__
+	BL _num_sign
 	CMP R0, #1H
 	BNE _$j_12ac2_460f
 	MOV R0, #BYTE1 (_mode_ram+20)
 	MOV R1, #BYTE2 (_mode_ram+20)
-	BL _num_invalid__
+	BL _num_sign
 	CMP R0, #1H
 	BEQ _$j_12ac2_460f
 	MOV R0, #BYTE1 (_mode_ram+450)
@@ -7596,7 +7596,7 @@ _f_12AF0_460F:
 	PUSH LR
 	MOV R0, #BYTE1 _mode_ram
 	MOV R1, #BYTE2 _mode_ram
-	BL _num_invalid__
+	BL _num_sign
 	CMP R0, #2H
 	POP PC
 
@@ -8056,7 +8056,7 @@ _f_132F6:
 	MOV FP, SP
 	ADD SP, #-0AH
 	MOV ER10, ER0
-	BL _num_invalid__
+	BL _num_sign
 	MOV R12, R0
 	MOV ER0, FP
 	ADD ER0, #-0AH
@@ -8113,7 +8113,7 @@ _num_randint:
 	BL _f_1ADF0
 	BNE _$j_133bc
 	MOV ER0, BP
-	BL _num_invalid__
+	BL _num_sign
 	CMP R0, #4H
 	BNE _$j_133bc
 	MOV ER0, BP
@@ -8216,7 +8216,7 @@ _mv_n0_n2:
 ; FUNCTION: GY460XF  Im 12E80
 _num_invalid_zf__:
 	PUSH LR
-	BL _num_invalid__
+	BL _num_sign
 	CMP R0, #1H
 	POP PC
 
@@ -9477,7 +9477,7 @@ _$j_13d1a:
 	MOV R12, #0H
 _$j_13d30:
 	BL _f_13E54
-	BL _num_invalid__
+	BL _num_sign
 	MOV R9, R0
 	MOV ER0, ER10
 	MOV ER2, ER4
@@ -9487,7 +9487,7 @@ _$j_13d30:
 	B _$j_1438a
 _$j_13d4a:
 	MOV ER0, ER10
-	BL _num_invalid__
+	BL _num_sign
 	CMP R0, #1H
 	BNE _$j_13d5e
 	MOV R0, #3H
@@ -9559,7 +9559,7 @@ _$j_13dd2:
 	B _$j_1438a
 _$j_13df6:
 	MOV ER0, ER4
-	BL _num_invalid__
+	BL _num_sign
 	CMP R0, #4H
 	BEQ _$j_13e98
 	MOV R9, R0
@@ -9573,7 +9573,7 @@ _$j_13df6:
 	B _$j_1438a
 _$j_13e1a:
 	CMP R9, #2H
-	BEQ _$j_13e60
+	BEQ _f_13E60
 	MOV R0, #1H
 	SUB R8, R0
 	B _$j_14312
@@ -9607,7 +9607,22 @@ _f_13E54:
 	ADD ER0, ER6
 	MOV ER10, ER0
 	RT
-_$j_13e60:
+
+; FUNCTION: GY454XE  Re 13E60
+; FUNCTION: GY455XE  Im 13E60
+; FUNCTION: GY460XF  Im 138E6
+_f_13E60:
+IF ENABLE_INEQ == 1
+	L R0, _mode
+	CMP R0, #4BH           ; INEQ mode
+	BC NE, _$j_138fc_460f
+	MOV R0, #2H
+	SUB R8, R0
+	MOV ER0, ER10
+	BL _memzero_90
+	B _$j_14312
+_$j_138fc_460f:
+ENDIF
 	MOV ER2, ER10
 	BL _f_141BC
 	MOV ER0, ER4
@@ -9634,7 +9649,7 @@ _$j_13e98:
 	MOV ER0, ER6
 	ADD ER0, #0AH
 	MOV BP, ER0
-	BL _num_invalid__
+	BL _num_sign
 	MOV R9, R0
 	MOV ER0, BP
 	BL _num_abs
@@ -10071,7 +10086,7 @@ _$j_14250:
 	MOV R2, #1H
 	BL _num_frombyte
 	MOV ER0, BP
-	BL _num_invalid__
+	BL _num_sign
 	ST R0, -2H[FP]
 	CMP R0, #2H
 	BNE _$j_14298
@@ -10532,7 +10547,7 @@ _f_1458C:
 ; FUNCTION: GY460XF  Im 14056
 _f_1459C:
 	PUSH LR
-	BL _num_invalid__
+	BL _num_sign
 	MOV R10, R0
 	MOV ER2, BP
 	ADD SP, #-14H
@@ -10991,7 +11006,7 @@ _$j_14868:
 	BNE _$j_14866
 	MOV ER0, BP
 	ADD ER0, #14H
-	BL _num_invalid__
+	BL _num_sign
 	ADD R0, #-1H
 	BEQ _$j_14866
 	MOV R0, #BYTE1 _num_1
@@ -11197,7 +11212,7 @@ _f_14A00:
 	CMP R6, #2H
 	BNE _$j_14a52
 	MOV ER0, BP
-	BL _num_invalid__
+	BL _num_sign
 	CMP R0, #1H
 	BEQ _$j_14a50
 	L R2, _submode
@@ -11265,13 +11280,13 @@ _num_cmplx_pow:
 	BNE _$j_14aac
 	PUSH ER2
 	ADD ER0, #0AH
-	BL _num_invalid__
+	BL _num_sign
 	CMP R0, #1H
 	BNE _$j_14a9e
 	POP ER0
 	PUSH ER0
 	ADD ER0, #0AH
-	BL _num_invalid__
+	BL _num_sign
 	CMP R0, #1H
 	BEQ _$j_14aa8
 _$j_14a9e:
@@ -11335,12 +11350,12 @@ _f_14AEC:
 	PUSH LR
 	PUSH XR0
 	ADD ER0, #0AH
-	BL _num_invalid__
+	BL _num_sign
 	CMP R0, #1H
 	BNE _$j_14b04
 	MOV ER0, BP
 	ADD ER0, #1EH
-	BL _num_invalid__
+	BL _num_sign
 	CMP R0, #1H
 _$j_14b04:
 	POP XR0
@@ -11398,7 +11413,7 @@ _$j_14b52:
 	PUSH XR0
 	PUSH ER2
 	MOV ER0, ER2
-	BL _num_invalid__
+	BL _num_sign
 	POP ER2
 	CMP R0, #1H
 	BNE _$j_14ba0
@@ -11501,12 +11516,12 @@ _$j_14c10:
 _$j_14c14:
 	PUSH ER4
 	MOV ER0, ER2
-	BL _num_invalid__
+	BL _num_sign
 	CMP R0, #1H
 	BEQ _$j_14c0c
 	MOV R4, R0
 	MOV ER0, BP
-	BL _num_invalid__
+	BL _num_sign
 	CMP R0, #1H
 	BEQ _$j_14c6c
 	MOV R5, R0
@@ -11560,12 +11575,12 @@ _$j_14c96:
 	L R4, [ER0]
 	RB R4.6
 	ST R4, [ER0]
-	BL _num_invalid__
+	BL _num_sign
 	CMP R0, #1H
 	BEQ _$j_14cc6
 	MOV R4, R0
 	MOV ER0, ER8
-	BL _num_invalid__
+	BL _num_sign
 	CMP R0, #1H
 	BEQ _$j_14cc6
 	MOV R5, R0
@@ -14452,7 +14467,7 @@ EXTRN CODE	: _cmplx_abs
 EXTRN CODE	: _f_1AF44
 EXTRN CODE	: _f_1AFB8
 EXTRN CODE	: _f_1AFD8
-EXTRN CODE	: _num_invalid__
+EXTRN CODE	: _num_sign
 EXTRN CODE	: _num_cmp
 EXTRN CODE	: _get_numtype
 EXTRN CODE	: _num_fromdigit

@@ -4259,7 +4259,7 @@ _$j_031bc:
 _$j_031c6:
 	MOV R0, #BYTE1 _var_m
 	MOV R1, #BYTE2 _var_m
-	BL _num_invalid__
+	BL _num_sign
 	CMP R0, #1H
 	BEQ _$j_031d6
 	SB (_screen_buffer+1).4  ; M
@@ -4270,7 +4270,7 @@ _$j_031d6:
 	SB (_screen_buffer+4).7  ; CMPLX
 	MOV R0, #BYTE1 (_mode_ram+362)
 	MOV R1, #BYTE2 (_mode_ram+362)
-	BL _num_invalid__
+	BL _num_sign
 	CMP R0, #1H
 	BEQ _$j_031f2
 	SB (_screen_buffer+1).4  ; M
@@ -5281,7 +5281,7 @@ _f_038C8:
 	BL _f_1A44C
 	MOV R0, #BYTE1 (_mode_ram+740)
 	MOV R1, #BYTE2 (_mode_ram+740)
-	BL _num_invalid__
+	BL _num_sign
 	CMP R0, #0F0H
 	BEQ _$j_039ac
 	CMP R0, #1H
@@ -5510,7 +5510,7 @@ _$j_03ad8:
 _$j_03adc:
 	MOV ER0, BP
 	BL _num_to_str_std_lineo
-	BL _num_invalid__
+	BL _num_sign
 	CMP R0, #2H
 	BNE _$j_03afe
 	MOV R0, #8H
@@ -5961,7 +5961,7 @@ _$j_03ec4:
 	MOV ER0, BP
 	BL _num_to_str_std_lineo
 	MOV ER0, BP
-	BL _num_invalid__
+	BL _num_sign
 	CMP R0, #4H
 	BEQ _$j_03eda
 	MOV R0, #8H
@@ -6014,7 +6014,7 @@ _$j_03f38:
 	ADD ER0, #-4H
 	BL _num_cpy_cmplx_bp_er0
 	MOV ER0, BP
-	BL _num_invalid__
+	BL _num_sign
 	MOV R2, #98H
 	CMP R0, #1H
 	BEQ _$j_03f82
@@ -6360,12 +6360,12 @@ _$j_041ec:
 _$j_04224:
 	MOV ER0, ER8
 	ADD ER0, #0EH
-	BL _num_invalid__
+	BL _num_sign
 	CMP R0, #1H
 	BEQ _$j_042a6
 	MOV ER0, ER8
 	ADD ER0, #4H
-	BL _num_invalid__
+	BL _num_sign
 	CMP R0, #1H
 	BEQ _$j_042a6
 	MOV ER0, ER8
@@ -6376,7 +6376,7 @@ _$j_04224:
 	MOV ER0, BP
 	BL _f_1A44C
 	MOV ER0, BP
-	BL _num_invalid__
+	BL _num_sign
 	CMP R0, #1H
 	BEQ _$j_0425c
 	CMP R0, #4H
@@ -6389,7 +6389,7 @@ _$j_0425c:
 	MOV ER0, BP
 	BL _f_1A424
 	MOV ER0, BP
-	BL _num_invalid__
+	BL _num_sign
 	CMP R0, #1H
 	BEQ _$j_0427a
 	CMP R0, #4H
@@ -6445,7 +6445,7 @@ _f_042AA:
 	BEQ _$j_043a4
 	MOV R0, #BYTE1 (_mode_ram+20)
 	MOV R1, #BYTE2 (_mode_ram+20)
-	BL _num_invalid__
+	BL _num_sign
 	CMP R0, #4H
 	BNE _$j_043a4
 	MOV R0, #BYTE1 (_mode_ram+10)
@@ -7563,7 +7563,7 @@ EXTRN CODE	: _num_add_1
 EXTRN CODE	: _f_1AE06
 EXTRN CODE	: _f_1AFC8
 EXTRN CODE	: _f_1AFD8
-EXTRN CODE	: _num_invalid__
+EXTRN CODE	: _num_sign
 EXTRN CODE	: _num_cmp
 EXTRN CODE	: _f_1B0DC
 EXTRN CODE	: _num_fromdigit

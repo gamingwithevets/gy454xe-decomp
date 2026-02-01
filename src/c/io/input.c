@@ -2206,7 +2206,7 @@ char num_to_str_std(char *out, char *num, char c) {
 		if (v0 == RESULT_FACT) return num_to_str_fact(out, num);
 #endif
 		f_1B378(loc_m50);
-		if (num_invalid__(loc_m50) == 1)
+		if (num_sign(loc_m50) == NUM_SIGN_ZERO)
 j_0781e:
 			v0 = RESULT_DECIMAL;
 		else {
@@ -2229,19 +2229,19 @@ j_0781e:
 					goto j_0781e;
 				} else {
 					f_16C54(loc_m50);
-					v2 = num_invalid__(&loc_m50[20]);
-					v0 = num_invalid__(loc_m50);
+					v2 = num_sign(&loc_m50[20]);
+					v0 = num_sign(loc_m50);
 					v1 = is_num_1(&loc_m50[40]);
 					v4 = is_eqn_result();
-					if (v0 == 2) {
-						if (v2 == 1) {
+					if (v0 == NUM_SIGN_NEGATIVE) {
+						if (v2 == NUM_SIGN_ZERO) {
 							num_abs(loc_m50);
 							concat_negative(out);
 						} else if (!v4 && v2 == 2 && (c || v1 != 1)) {
 							num_abs(loc_m50);
 							num_abs(&loc_m50[20]);
-							v0 = 4;
-							v2 = 4;
+							v0 = NUM_SIGN_POSITIVE;
+							v2 = NUM_SIGN_POSITIVE;
 							concat_negative(out);
 						}
 					}
@@ -2284,8 +2284,8 @@ j_07b16:
 						if (!v1) goto j_0781e;
 					} else goto j_0781e;
 				}
-				v4 = num_invalid__(&loc_m50[10]);
-				if (v4 == 1) {
+				v4 = num_sign(&loc_m50[10]);
+				if (v4 == NUM_SIGN_ZERO) {
 					if (v1 == -1) concat_num_str(out, loc_m50);
 					else goto j_0781e;
 				} else {
@@ -2297,9 +2297,9 @@ j_07b16:
 					v2 = 0;
 					if (v0 == RESULT_FRAC_MIX) v2 = 1;
 					else if ((v0 == 0 || v0 == 13) && setup_frac_result != FRAC_RESULT_IMP) v2 = 1;
-					tmp = num_invalid__(loc_m50);
+					tmp = num_sign(loc_m50);
 					tmp2 = 0;
-					if (tmp != 1) tmp2 = 1;
+					if (tmp != NUM_SIGN_ZERO) tmp2 = 1;
 					v0 = tmp2;
 					if (v4 == 2) concat_negative(out);
 					if (!v2 && v0 == 1) {
@@ -2464,17 +2464,17 @@ j_07bfe:
 				*v6 = 0;
 				cursor_pos_byte = 0;
 				num_cpy_im(loc_m56, result);
-				loc_m130 = num_invalid__(loc_m56);
-				v1 = num_invalid__(&loc_m56[10]);
+				loc_m130 = num_sign(loc_m56);
+				v1 = num_sign(&loc_m56[10]);
 				loc_m131 = 0;
 				if (!v2) {
 					v2 = 1;
-					if (loc_m130 != 1 || v1 != 1) {
+					if (loc_m130 != NUM_SIGN_ZERO || v1 != NUM_SIGN_ZERO) {
 						if (!is_dms_num(loc_m56) || v1 != 1 || loc_m130 != 4) {
 							f_16E44(loc_m56, &loc_m56[10]);
-							loc_m130 = num_invalid__(loc_m56);
-							v1 = num_invalid__(&loc_m56[10]);
-							if (v1 != 1) {
+							loc_m130 = num_sign(loc_m56);
+							v1 = num_sign(&loc_m56[10]);
+							if (v1 != NUM_SIGN_ZERO) {
 								v2 = 0;
 								loc_m131 = 6;
 							}
@@ -2484,7 +2484,7 @@ j_07bfe:
 				if (!v5) buffer_clear_lastnline(12);
 				loc_m134 = v6;
 				if (v4) loc_m134 = loc_m92;
-				if (loc_m130 != 1 || v1 == 1 || v4) {
+				if (loc_m130 != NUM_SIGN_ZERO || v1 == NUM_SIGN_ZERO || v4) {
 					loc_m129 = 1;
 					loc_m130 = num_to_str(loc_m56, loc_m134, loc_m131);
 				} else {

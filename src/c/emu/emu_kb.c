@@ -1,7 +1,7 @@
 #if REAL == 0
 
 #include "emu_kb.h"
-#include "../unk/unk4.h"
+#include "../unk/unk4_1.h"
 #include "../consts.h"
 #include <string.h>
 
@@ -264,8 +264,8 @@ void init_emu_kb(emu_kb *kb) {
 	return;
 }
 
-// STUB: GY455XE  Im 05338
-// STUB: GY460XF  Im 04454
+// FUNCTION: GY455XE  Im 05338
+// FUNCTION: GY460XF  Im 04454
 void f_05338_E(char *a) {
 	memset(a, 0, 48);
 	a[0] = 0x11;

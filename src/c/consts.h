@@ -429,6 +429,14 @@ enum result_fmt {
 	RESULT_FACT		= 15
 };
 
+// num_sign return values
+enum numsign {
+	NUM_SIGN_ZERO			= 1,
+	NUM_SIGN_NEGATIVE		= 2,
+	NUM_SIGN_POSITIVE		= 4,
+	NUM_SIGN_UNSUPPORTED	= 0xF0
+};
+
 // RAM addresses
 
 extern void *ram_start;

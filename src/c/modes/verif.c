@@ -6,6 +6,7 @@
 #include "../io/input.h"
 #include "../generals.h"
 #include "../unk/unk5.h"
+#include "../unk/unk6.h"
 
 // FUNCTION: GY465XG  Im 049C4
 static char is_compare_operator(char tok) {
@@ -42,7 +43,7 @@ void num_to_str_verif(char *num, char *out) {
 	char v0;
 
 	v0 = 0;
-	if (num_invalid__(num) != 1) v0 = 1;
+	if (num_sign(num) != NUM_SIGN_ZERO) v0 = 1;
 	smart_strcpy(out, verif_result[v0]);
 	return;
 }

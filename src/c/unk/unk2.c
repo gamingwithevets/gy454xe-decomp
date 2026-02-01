@@ -3,6 +3,7 @@
 #include "../io/input.h"
 #include "unk2.h"
 #include "unk4.h"
+#include "unk4_1.h"
 #include "unk5.h"
 #include "unk6.h"
 
@@ -61,7 +62,7 @@ static void num_to_str_fix(char *num, char *out, char n, char d) {
 	out[0] = '\0';
 	if (!num) return;
 	num_cpy(num_tmp, num);
-	if (num_invalid__(num) == 1) {
+	if (num_sign(num) == NUM_SIGN_ZERO) {
 		memzero(&nts, 24);
 		nts.unk_0x14 = n + 1;
 		nts.unk_0x15 = 2;
@@ -225,7 +226,7 @@ static char num_to_str_dms(char *num, char *out) {
 			}
 			if (num_get_exp(num_deg) >= 7) goto j_085b2;
 		}
-		if (num_invalid__(num) == 2 && (num_invalid__(num_deg) != 1 || num_invalid__(num_min) != 1 || num_invalid__(num_sec) != 1)) concat_negative(out);;
+		if (num_sign(num) == 2 && (num_sign(num_deg) != 1 || num_sign(num_min) != 1 || num_sign(num_sec) != 1)) concat_negative(out);;
 		if (init_num_struct(num_deg, &nts)) {
 			char tmp = 0;
 			if (nts.exponent == 4) tmp = 1;

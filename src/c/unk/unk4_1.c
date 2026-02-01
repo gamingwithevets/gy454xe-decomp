@@ -1779,7 +1779,7 @@ void write_replay_entry(void) {
 		v0 = input_area_ptr;
 		v1 = 10;
 		loc_m1 = result_template;
-		if (num_invalid__(&result[10]) != 1) {
+		if (num_sign(&result[10]) != NUM_SIGN_ZERO) {
 			loc_m1 |= 0x80;
 			v1 = 20;
 		}
@@ -2045,7 +2045,7 @@ char f_0C1D4(keyfunc_struct *a) {
 
 	if (f_02C76() || get_result_disp_fmt() || d_0812C) return 4;
 	num_cpy_im(loc_m20, a->result);
-	if (num_invalid__(&loc_m20[10]) == 1 || !cmplx_abs(loc_m20)) return 4;
+	if (num_sign(&loc_m20[10]) == NUM_SIGN_ZERO || !cmplx_abs(loc_m20)) return 4;
 	return f_0C148(a);
 }
 
@@ -2079,7 +2079,7 @@ static char keyfunc_sto_rcl(keyfunc_struct *a) {
 
 	v0 = 0;
 	v1 = last_key_keycode;
-	v2 = is_rcl_keycode(v2);
+	v2 = is_rcl_keycode(v1);
 	if (!v2) {
 		if (a->unk_0x07)
 j_0c27a:
@@ -2340,10 +2340,10 @@ static char keyfunc_dms(keyfunc_struct *a) {
 	if (result_template & (1 << 4))
 j_0c6ea:
 		return 0;
-	if (num_invalid__(&a->result[10]) == 1) {
+	if (num_sign(&a->result[10]) == NUM_SIGN_ZERO) {
 		char tmp;
 		char tmp2;
-		if (!f_02C76() && num_invalid__(a->result) == 2) goto j_0c6ea;
+		if (!f_02C76() && num_sign(a->result) == NUM_SIGN_NEGATIVE) goto j_0c6ea;
 		tmp = get_result_disp_fmt();
 		tmp2 = RESULT_DMS;
 		if (tmp == RESULT_DMS) tmp2 = RESULT_DECIMAL;
