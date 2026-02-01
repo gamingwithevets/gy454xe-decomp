@@ -226,7 +226,7 @@ static char num_to_str_dms(char *num, char *out) {
 			}
 			if (num_get_exp(num_deg) >= 7) goto j_085b2;
 		}
-		if (num_sign(num) == 2 && (num_sign(num_deg) != 1 || num_sign(num_min) != 1 || num_sign(num_sec) != 1)) concat_negative(out);;
+		if (num_sign(num) == NUM_SIGN_NEGATIVE && (num_sign(num_deg) != NUM_SIGN_ZERO || num_sign(num_min) != NUM_SIGN_ZERO || num_sign(num_sec) != NUM_SIGN_ZERO)) concat_negative(out);;
 		if (init_num_struct(num_deg, &nts)) {
 			char tmp = 0;
 			if (nts.exponent == 4) tmp = 1;
