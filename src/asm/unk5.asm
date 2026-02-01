@@ -7991,7 +7991,7 @@ _$j_1325c:
 	CMP R0, #0H
 	BNE _mv_n4_1d10
 	MOV ER0, ER4
-	BL _num_invalid_zf__
+	BL _num_iszero
 	BEQ _mv_n4_1d10
 	MOV ER0, ER4
 	BL _num_normalize
@@ -8214,7 +8214,7 @@ _mv_n0_n2:
 ; FUNCTION: GY454XE  Re 133FA
 ; FUNCTION: GY455XE  Im 133FA
 ; FUNCTION: GY460XF  Im 12E80
-_num_invalid_zf__:
+_num_iszero:
 	PUSH LR
 	BL _num_sign
 	CMP R0, #1H
@@ -8844,7 +8844,7 @@ _f_13860:
 _$j_13870:
 	MOV R2, #3H
 	MOV ER0, ER6
-	BL _num_invalid_zf__
+	BL _num_iszero
 	BNE _$j_1387e
 	B _$j_136b2
 _$j_1387e:
@@ -9520,7 +9520,7 @@ _$j_13d86:
 _$j_13d90:
 	MOV ER0, ER6
 	ADD ER0, #14H
-	BL _num_invalid_zf__
+	BL _num_iszero
 	BEQ _$j_13e26
 	MOV ER0, ER6
 	ADD ER0, #28H
@@ -9582,7 +9582,7 @@ _$j_13e26:
 	MOV ER0, ER10
 	BL _f_141C6
 	MOV R8, #1H
-	BL _num_invalid_zf__
+	BL _num_iszero
 	BNE _$j_13e3a
 	B _$j_14312
 _$j_13e3a:
@@ -9693,7 +9693,7 @@ _$j_13ef4:
 _$j_13f10:
 	MOV ER0, ER6
 	ADD ER0, #1EH
-	BL _num_invalid_zf__
+	BL _num_iszero
 	BNE _$j_13f1e
 	B _$j_1423e
 _$j_13f1e:
@@ -9830,7 +9830,7 @@ _$j_1405a:
 	B _$j_1438a
 _$j_1407e:
 	MOV ER0, ER4
-	BL _num_invalid_zf__
+	BL _num_iszero
 	BNE _$j_1408a
 	B _$j_141e8
 _$j_1408a:
@@ -10053,14 +10053,14 @@ _$j_14212:
 _$j_14230:
 	MOV R8, #2H
 	MOV ER0, BP
-	BL _num_invalid_zf__
+	BL _num_iszero
 	BNE _$j_14312
 	MOV R8, #1H
 	BAL _$j_14312
 _$j_1423e:
 	MOV ER0, ER6
 	ADD ER0, #14H
-	BL _num_invalid_zf__
+	BL _num_iszero
 	BEQ _$j_1424c
 	B _$j_13d90
 _$j_1424c:
