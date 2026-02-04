@@ -64,7 +64,7 @@ TSEG #1 AT 0FFF4H
 	DB "--"
 ; ROM checksum (see _diag_get_checksum for checksum algorithm).
 ; Must be manually filled in.
-	DW 1234H
+	DW 7589H
 
 ; Filler bytes. They don't do anything.
 DB 1, 1

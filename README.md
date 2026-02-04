@@ -50,3 +50,5 @@ As the U8/U16 SDK only officially supports Windows, these instructions below ass
 3. Assuming you have the SDK installed at `C:\LAPIS\LEXIDE`, copy `assets/ML610CASESplus.DCL` to `C:\LAPIS\LEXIDE\Dcl`.
 4. Run `build.bat` in the root directory.
 5. If needed, convert the outputted Intel Hex file to binary. There are many tools online, however this project uses the [Python Intel HEX library](https://pypi.org/project/intelhex/) for this.
+
+The resulting binary is a build that has all currently implemented features enabled, with the version code `GY45DX Ver--`. To build for a specific model, see [Building custom ROMs](#building-custom-roms).

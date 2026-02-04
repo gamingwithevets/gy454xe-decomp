@@ -37,13 +37,14 @@ static void table_matvct_draw_cols(char a, char b);
 
 // DATA: GY454XE  Re 02216
 // DATA: GY455XE  Im 023A8
-const char menu_mode[] = {
+const char menu_mode_0[] = {
 	"1:COMP  2:CMPLX \0"
 	"3:STAT  4:BASE-N\0"
 	"5:EQN   6:MATRIX\0"
 	"7:TABLE 8:VECTOR"
 };
 
+// Custom page 2.
 const char menu_mode_1[] = {
 	"1:INEQ  2:VERIF \0"
 	"3:RATIO         \0"
@@ -181,20 +182,32 @@ const menu menus[] = {
 /* 23 */	{menu_hyp,					0xff,	0xfc,	{0x70, 0x71, 0x72, 0x90, 0x91, 0x92},				NULL,	NULL,	NULL,	K_HYP},
 
 // STAT mode (SHIFT 1)
-/* 24 */	{menu_stat_table,			0x5f,	0,		{27, 20, 28},										NULL,	NULL,	NULL,	K_SD},
-/* 25 */	{menu_stat_1var,			0x43,	0,		{27, 20, 29, 31, 35, 33},							NULL,	NULL,	NULL,	K_SD},
-/* 26 */	{menu_stat_2var,			0x4b,	0,		{27, 20, 30, 32, 23, 34},							NULL,	NULL,	NULL,	K_SD},
+/* 24 */	{menu_stat_table,			0x5f,	0,		{STAT_MENU_START+3, 20, STAT_MENU_START+4},			NULL,	NULL,	NULL,	K_SD},
+/* 25 */	{menu_stat_1var,			0x43,	0,		{STAT_MENU_START+3, 20, STAT_MENU_START+5, STAT_MENU_START+7, STAT_MENU_START+11, STAT_MENU_START+9},
+																											NULL,	NULL,	NULL,	K_SD},
+/* 26 */	{menu_stat_2var,			0x4b,	0,		{STAT_MENU_START+3, 20, STAT_MENU_START+6, STAT_MENU_START+8, 23, STAT_MENU_START+10},
+																											NULL,	NULL,	NULL,	K_SD},
 /* 27 */	{menu_stat_type,			0xff,	0,		{1, 2, 3, 4, 5, 6, 7, 8},							NULL,	NULL,	0xff,	K_SD},
-/* 28 */	{menu_stat_data_edit,		0xff,	0,		{21, 22},											NULL,	NULL,	24,		K_SD},
-/* 29 */	{menu_stat_1var_sum,		0xff,	0,		{0x10, 0x11},										NULL,	NULL,	25,		K_SD},
-/* 30 */	{menu_stat_2var_sum,		0xff,	0,		{0x10, 0x11, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18},	NULL,	NULL,	26,		K_SD},
-/* 31 */	{menu_stat_1var_var,		0xff,	0,		{0x12, 0x89, 0xaa, 0xab},							NULL,	NULL,	25,		K_SD},
-/* 32 */	{menu_stat_2var_var,		0xff,	0,		{0x12, 0x89, 0xaa, 0xab, 0x8a, 0xac, 0xad},			NULL,	NULL,	26,		K_SD},
-/* 33 */	{menu_stat_1var_minmax,		0xff,	0xc0,	{0x19, 0x1a},										NULL,	NULL,	25,		K_SD},
-/* 34 */	{menu_stat_2var_minmax,		0xff,	0xf0,	{0x19, 0x1a, 0x1b, 0x1c},							NULL,	NULL,	26,		K_SD},
-/* 35 */	{menu_stat_distr,			0xff,	0xf0,	{0xd0, 0xd1, 0xd2, 0xd3},							NULL,	NULL,	25,		K_SD},
-/* 36 */	{menu_stat_reg,				0xff,	0xf8,	{0x9a, 0x9b, 0x9d, 0x65, 0x66},						NULL,	NULL,	26,		K_SD},
-/* 37 */	{menu_stat_reg_quad,		0xff,	0xfc,	{0x9a, 0x9b, 0x9c, 0x64, 0x67, 0x66},				NULL,	NULL,	26,		K_SD},
+/* 28 */	{menu_stat_data_edit,		0xff,	0,		{21, 22},											NULL,	NULL,	STAT_MENU_START,
+																																	K_SD},
+/* 29 */	{menu_stat_1var_sum,		0xff,	0,		{0x10, 0x11},										NULL,	NULL,	STAT_MENU_START+1,
+																																	K_SD},
+/* 30 */	{menu_stat_2var_sum,		0xff,	0,		{0x10, 0x11, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18},	NULL,	NULL,	STAT_MENU_START+2,
+																																	K_SD},
+/* 31 */	{menu_stat_1var_var,		0xff,	0,		{0x12, 0x89, 0xaa, 0xab},							NULL,	NULL,	STAT_MENU_START+1,
+																																	K_SD},
+/* 32 */	{menu_stat_2var_var,		0xff,	0,		{0x12, 0x89, 0xaa, 0xab, 0x8a, 0xac, 0xad},			NULL,	NULL,	STAT_MENU_START+2,
+																																	K_SD},
+/* 33 */	{menu_stat_1var_minmax,		0xff,	0xc0,	{0x19, 0x1a},										NULL,	NULL,	STAT_MENU_START+1,
+																																	K_SD},
+/* 34 */	{menu_stat_2var_minmax,		0xff,	0xf0,	{0x19, 0x1a, 0x1b, 0x1c},							NULL,	NULL,	STAT_MENU_START+2,
+																																	K_SD},
+/* 35 */	{menu_stat_distr,			0xff,	0xf0,	{0xd0, 0xd1, 0xd2, 0xd3},							NULL,	NULL,	STAT_MENU_START+1,
+																																	K_SD},
+/* 36 */	{menu_stat_reg,				0xff,	0xf8,	{0x9a, 0x9b, 0x9d, 0x65, 0x66},						NULL,	NULL,	STAT_MENU_START+2,
+																																	K_SD},
+/* 37 */	{menu_stat_reg_quad,		0xff,	0xfc,	{0x9a, 0x9b, 0x9c, 0x64, 0x67, 0x66},				NULL,	NULL,	STAT_MENU_START+2,
+																																	K_SD},
 
 // EQN mode
 /* 38 */	{menu_eqn,					0xff,	0,		{1, 2, 3, 4},										NULL,	NULL,	NULL,	NULL},
@@ -213,7 +226,7 @@ const menu menus[] = {
 /* 41 */	{menu_stat_type,			0xff,	0,		{1, 2, 3, 4, 5, 6, 7, 8},							NULL,	NULL,	NULL,	NULL},
 
 // MODE menu
-/* 42 */	{menu_mode,					0xff,	0,		{MODE_COMP, MODE_CMPLX, MODE_STAT, MODE_BASE_N,
+/* 42 */	{menu_mode_0,				0xff,	0,		{MODE_COMP, MODE_CMPLX, MODE_STAT, MODE_BASE_N,
 														MODE_EQN, MODE_MATRIX, MODE_TABLE, MODE_VECTOR},	NULL,	MODE_MENU_START+1,
 																															NULL,	K_MODE},
 			{menu_mode_1,				0xff,	0,		{MODE_INEQ, MODE_VERIF, MODE_RATIO},				MODE_MENU_START,

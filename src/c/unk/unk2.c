@@ -443,7 +443,7 @@ int f_088AA(void) {
 // FUNCTION: GY460XF  Im 08AFE
 char *concat_angle(char *input) {
 	input[0] = 0xaf;  // Angle token
-	if (use_output_charset) input[0] = 0x88;  // Angle character
+	if (!use_output_charset) input[0] = 0x88;  // Angle character
 	input[1] = '\0';
 	return input;
 }

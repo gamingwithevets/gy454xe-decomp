@@ -703,7 +703,7 @@ _menu_stat_data_edit:
 ; DATA: GY455XE  Im 00C9B
 ; DATA: GY460XF  Im 00D0D
 _menu_stat_1var_sum:
-	DB "1:\xc0x\xa2   2:\xc0x\xa", 0
+	DB "1:\xc0x\xa2   2:\xc0x", 0
 	DB "", 0
 	DB "", 0
 	DB "", 0
@@ -4612,7 +4612,7 @@ _f_0345E:
 	ST R0, _font_size
 	MOV R0, #0H
 	ST R0, _use_rambuf
-	BL _f_0479C
+	BL _set_scr_calculating
 	MOV R0, #0H
 	MOV R1, #2H
 	BL _fill_screen
@@ -5104,7 +5104,7 @@ _$j_0378a:
 	MOV R0, #8H
 	BAL _$j_0380c
 _$j_0378e:
-	BL _f_0479C
+	BL _set_scr_calculating
 	MOV ER0, ER8
 	ADD ER0, #14H
 	BL _num_cpy_cmplx_er0_bp
@@ -7190,18 +7190,18 @@ _f_04796:
 ; FUNCTION: GY454XE  Re 0479C
 ; FUNCTION: GY455XE  Im 048A8
 ; FUNCTION: GY460XF  Im 039C4
-_f_0479C:
+_set_scr_calculating:
 	MOV R0, #6H
-	ST R0, 0F031H
+	ST R0, 0F031H  ; Hide main screen area
 _$j_047a2:
-	RB 0F800H.4
-	RB 0F800H.2
-	RB 0F801H.1
-	RB 0F802H.6
-	RB 0F80BH.7
-	RB 0F80AH.3
+	RB 0F800H.4    ; Turn off [S]
+	RB 0F800H.2    ; Turn off [A]
+	RB 0F801H.1    ; Turn off STO
+	RB 0F802H.6    ; Turn off RCL
+	RB 0F80BH.7    ; Turn off ▲
+	RB 0F80AH.3    ; Turn off ▼
 _$j_047ba:
-	RB 0F80BH.4
+	RB 0F80BH.4    ; Turn off Disp
 	RT
 
 ; FUNCTION: GY454XE  Re 047C0
@@ -7210,7 +7210,7 @@ _$j_047ba:
 _set_disp_indicator:
 	CMP R0, #0H
 	BEQ _$j_047ba
-	SB 0F80BH.4
+	SB 0F80BH.4    ; Turn on Disp
 	RT
 
 ; FUNCTION: GY454XE  Re 047CA
@@ -7508,7 +7508,7 @@ PUBLIC _clr_port0
 PUBLIC _set_contrast_sfr
 PUBLIC _set_scr_normal
 PUBLIC _f_04796
-PUBLIC _f_0479C
+PUBLIC _set_scr_calculating
 PUBLIC _set_disp_indicator
 PUBLIC _set_contrast2_0
 PUBLIC _set_all_kimask
