@@ -38,9 +38,6 @@ Currently, this decomp is missing the following features:
 - Diagnostic mode present on fx-570/991ES PLUS `GY454X VerF`/`GY455X VerF`. This specific version of the diagnostic mode includes a [debug menu](https://gwe.42web.io/calcupedia/Calculator_self-test#Debug_menu) similar, but not the same as that of 2nd edition series. Currently, this ROM has not been dumped, nor is there an emulator ROM available.
 - Japanese models' extra conversions, which includes an extra 160 conversions (80 conversion pairs). Unfortunately, no ROM of a Japanese ES PLUS GYX model has been dumped, nor has Casio distributed an emulator for the fx-510AZ. It is possible the code responsible is the exact same as the one used on the LY series.
 
-### Building custom ROMs
-To configure ROMs, edit `src/asm/features.inc`. Note that this is just for feature toggles; you will need to edit other scripts to modify menus, key layouts, etc. See the comment in the aforementioned file for more information.
-
 As of currently, not all toggles have been implemented.
 
 ## Building
@@ -52,3 +49,6 @@ As the U8/U16 SDK only officially supports Windows, these instructions below ass
 5. If needed, convert the outputted Intel Hex file to binary. There are many tools online, however this project uses the [Python Intel HEX library](https://pypi.org/project/intelhex/) for this.
 
 The resulting binary is a build that has all currently implemented features enabled, with the version code `GY45DX Ver--`. To build for a specific model, see [Building custom ROMs](#building-custom-roms).
+
+### Building custom ROMs
+To configure ROMs, edit `src/asm/features.inc`. Note that this is just for feature toggles; you will need to edit other scripts to modify menus, key layouts, etc. See the comment in the aforementioned file for more information.
