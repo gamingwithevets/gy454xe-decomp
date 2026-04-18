@@ -408,12 +408,13 @@ j_09c7c:
 // FUNCTION: GY454XE  Re 09D54
 // FUNCTION: GY455XE  Im 0A678
 // FUNCTION: GY460XF  Im 0A01E
-char f_09D54(char tmode) {
+void f_09D54(char tmode) {
 	if (table_mode & (1 << 7)) smart_strcpy(input_area, cache_area);
 	table_mode = tmode;
 	d_080FD = 1;
 	d_080FE = 4;
 	f_044CE();
+	return;
 }
 
 // FUNCTION: GY454XE  Re 09D84

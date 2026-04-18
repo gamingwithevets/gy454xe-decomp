@@ -29,7 +29,7 @@ static char find_compare_operator(char *input) {
 }
 
 // FUNCTION: GY465XG  Im 049FC
-char verif_try_insert_eq0(char *input) {
+void verif_try_insert_eq0(char *input) {
 	if (mode == MODE_VERIF && !find_compare_operator(input)) {
 		cursor_pos_byte = smart_strlen(input);
 		insert_token('=', 0);

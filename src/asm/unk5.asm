@@ -10779,41 +10779,46 @@ _$j_14714:
 _$j_14724:
 	RT
 
+; Finds the number of consecutive MSBs set in R0.
+; Result is returned in R4 (3 is added for some reason).
+; If R0 has 5 or more MSBs set, 0 is returned in R4.
 ; FUNCTION: GY454XE  Re 14726
 ; FUNCTION: GY455XE  Im 14726
 ; FUNCTION: GY460XF  Im 141E0
-_f_14726:
+_find_zero_bit:
 	MOV R4, #0H
-	CMP R0, #-8H
+	CMP R0, #0F8H  ; If R0 >= 0xF8, return 0 in R4
 	BGE _$j_14736
 	MOV R4, #3H
-	MOV R5, R0
+	MOV R5, R0     ; R5 is used as temporary register
 _$j_14730:
-	ADD R4, #1H
-	ADD R5, R5
-	BLT _$j_14730
+	ADD R4, #1H    ; Add 1 to R4
+	ADD R5, R5     ; Double R5
+	BLT _$j_14730  ; If carry occurred, loop
 _$j_14736:
-	MOV R4, R4
+	MOV R4, R4     ; Set PSW flags for R4
 	RT
 
+; Sets bit (11 - R4) of R0.
 ; FUNCTION: GY454XE  Re 1473A
 ; FUNCTION: GY455XE  Im 1473A
 ; FUNCTION: GY460XF  Im 141F4
-_f_1473A:
+_set_bit:
 	PUSH R4
-	MOV R5, #-80H
+	MOV R5, #10000000B  ; R0 | (0x80 >> (R4 - 4))
 	ADD R4, #-4H
 	SRL R5, R4
 	OR R0, R5
 	POP R4
 	RT
 
+; Clears bit (11 - R4) of R0.
 ; FUNCTION: GY454XE  Re 14748
 ; FUNCTION: GY455XE  Im 14748
 ; FUNCTION: GY460XF  Im 14202
-_f_14748:
+_clear_bit:
 	PUSH R4
-	MOV R5, #-80H
+	MOV R5, #10000000B  ; R0 & ((0x80 >> (R4 - 4)) ^ 0xFF)
 	ADD R4, #-4H
 	SRL R5, R4
 	XOR R5, #11111111B
@@ -11898,182 +11903,182 @@ _$j_14eaa:
 ; FUNCTION: GY460XF  Im 1496E
 _f_14EB4:
 	PUSH LR
-	CMP R1, #75H
+	CMP R1, #75H       ; If not token 0x2F, skip this part
 	BNE _$j_14ebc
-	MOV R1, #2DH
+	MOV R1, #2DH       ; Set to multiply
 _$j_14ebc:
 	MOV R5, #1H
 _$j_14ebe:
 	MOV R0, #0H
-	CMP R1, #0DH
+	CMP R1, #0DH       ; If matrix det, Trn or vector dot product...
 	BEQ _$j_14ecc
 	CMP R1, #0EH
 	BEQ _$j_14ecc
 	CMP R1, #2FH
 	BNE _$j_14ed8
 _$j_14ecc:
-	BL _f_15546
+	BL _is_num_banned  ; If ERROR value, return; if matrix or vector pointer, skip ahead
 	BGE _$j_14f26
 _$j_14ed2:
-	BL _f_15596
+	BL _f_15596        ; Clean up and return
 	POP PC
 _$j_14ed8:
-	CMP R1, #77H
+	CMP R1, #77H       ; If RanInt#( or <ID 118>, ban matrix/vector/complex
 	BEQ _$j_14f1a
 	CMP R1, #78H
 	BEQ _$j_14f1a
-	CMP R1, #0FH
+	CMP R1, #0FH       ; If ID <= 0xE, ban ERROR value
 	BLT _$j_14f5a
-	CMP R1, #25H
+	CMP R1, #25H       ; If 0x10 <= ID <= 0x25, ban matrix/vector/complex
 	BLE _$j_14f1a
-	CMP R1, #30H
+	CMP R1, #30H       ; If 0x26 <= ID <= 0x2F, skip below check
 	BLT _$j_14ef0
-	CMP R1, #5FH
+	CMP R1, #5FH       ; If 0x30 <= ID < 0x5F, matrix/vector/complex
 	BLT _$j_14f1a
 _$j_14ef0:
-	CMP R1, #65H
+	CMP R1, #65H       ; If exponentation, skip ahead
 	BEQ _$j_14f0a
-	CMP R1, #66H
+	CMP R1, #66H       ; If nth root, ban matrix/vector/complex
 	BEQ _$j_14f1a
-	CMP R1, #6EH
+	CMP R1, #6EH       ; If >= 0x6E, ban matrix/vector/complex
 	BGE _$j_14f1a
-	CMP R1, #6BH
+	CMP R1, #6BH       ; If inverse, square, or cube, ban vector
 	BGE _$j_14f1e
-	CMP R1, #64H
+	CMP R1, #64H       ; If fraction or equals, ban matrix/vector
 	BEQ _$j_14f1c
 	CMP R1, #2AH
 	BEQ _$j_14f1c
-	BAL _$j_14f26
+	BAL _$j_14f26      ; Skip ahead
 _$j_14f0a:
-	CMP R5, #1H
+	CMP R5, #1H        ; If R5 = 1, ban matrix/vector
 	BEQ _$j_14f1c
-	L R3, [BP]
+	L R3, [BP]         ; If out number type is not matrix pointer, ban vector
 	SRL R3, #4
 	CMP R3, #6H
 	BNE _$j_14f1e
-	MOV R2, #2H
+	MOV R2, #2H        ; Syntax ERROR
 	POP PC
 _$j_14f1a:
-	OR R0, #00000111B
+	OR R0, #00000111B  ; Ban matrix/vector/complex
 _$j_14f1c:
-	OR R0, #00000011B
+	OR R0, #00000011B  ; Ban matrix/vector
 _$j_14f1e:
-	OR R0, #00000001B
-	BL _f_15546
-	BLT _$j_14ed2
+	OR R0, #00000001B  ; Ban vector
+	BL _is_num_banned
+	BLT _$j_14ed2      ; If banned, return
 _$j_14f26:
-	CMP R1, #77H
+	CMP R1, #77H       ; If RanInt#(, skip further ahead
 	BEQ _$j_14f62
-	CMP R1, #78H
+	CMP R1, #78H       ; If <ID 118>, skip ahead
 	BEQ _$j_14f42
-	CMP R1, #74H
+	CMP R1, #74H       ; If remainder, skip ahead
 	BEQ _$j_14f42
-	CMP R1, #23H
+	CMP R1, #23H       ; If ID < 0x23, skip further ahead
 	BLT _$j_14f62
-	CMP R1, #32H
+	CMP R1, #32H       ; If 0x23 <= ID <= 0x32, skip ahead
 	BLE _$j_14f42
-	CMP R1, #64H
+	CMP R1, #64H       ; If 0x33 <= ID <= 0x64, skip ahead
 	BLT _$j_14f62
-	CMP R1, #66H
+	CMP R1, #66H       ; If ID > 0x66 (exponentation or nth root), skip ahead
 	BGT _$j_14f62
 _$j_14f42:
-	ADD R5, #-1H
-	BNE _$j_14f62
+	ADD R5, #-1H       ; Subtract 1 from R5
+	BNE _$j_14f62      ; If still non-zero, jump ahead
 	PUSH R1
-	MOV ER0, BP
-	ADD ER0, #14H
+	MOV ER0, BP        ; Copy number at [BP] to [BP+20]
+	ADD ER0, #20
 	BL _num_cpy_cmplx_er0_bp
-	MOV ER2, BP
+	MOV ER2, BP        ; Copy number at [BP] to number stack
 	BL _num_cpy_numstack_er2
 	POP R1
-	BAL _$j_14ebe
+	BAL _$j_14ebe      ; Loop
 _$j_14f5a:
-	MOV R0, #-1H
-	BL _f_15546
+	MOV R0, #-1H       ; If ERROR value, return
+	BL _is_num_banned
 	BLT _$j_14ed2
 _$j_14f62:
-	CMP R1, #3H
+	CMP R1, #3H        ; If open parenthesis, jump ahead
 	BNE _$j_14f6a
 	B _$j_150f6
 _$j_14f6a:
 	L R0, _d_08121
 	L R2, [BP]
-	L R3, 14H[BP]
-	CMP R2, #90H
+	L R3, 20[BP]
+	CMP R2, #90H       ; If out number type >= 9, jump below
 	BGE _$j_14fe8
-	CMP R2, #80H
+	CMP R2, #80H       ; If out number type is radical, skip below check
 	BGE _$j_14f7e
-	CMP R2, #60H
+	CMP R2, #60H       ; If out number type >= 6, jump a little ahead
 	BGE _$j_14f9a
 _$j_14f7e:
-	CMP R5, #1H
+	CMP R5, #1H        ; If R5 is 1, jump ahead
 	BNE _$j_14f86
 	B _$j_150f6
 _$j_14f86:
-	CMP R3, #90H
+	CMP R3, #90H       ; If [BP+20] number type >= 9, jump below
 	BGE _$j_1501e
-	CMP R3, #80H
+	CMP R3, #80H       ; If [BP+20] number type is radical, jump further below
 	BLT _$j_14f92
 	B _$j_150f6
 _$j_14f92:
-	CMP R3, #60H
-	BGE _$j_1501e
+	CMP R3, #60H       ; If [BP+20] number type >= 6, jump further below
+	BGE _$j_1501e      ; otherwise jump a little ahead
 	B _$j_150f6
 _$j_14f9a:
-	CMP R5, #-1H
+	CMP R5, #-1H       ; If R5 = -1, jump ahead
 	BEQ _$j_1502c
-	AND R2, #00001111B
-	ADD R1, #-0AH
-	CMP R1, #3H
+	AND R2, #00001111B ; Extract first nibble of Area 2
+	ADD R1, #-0AH      ; Subtract 10 from operator ID
+	CMP R1, #3H        ; If matrix det(?), jump below
 	BEQ _$j_14fdc
-	CMP R1, #62H
+	CMP R1, #62H       ; If ID < 0x6C, jump further below
 	BLT _$j_14ff4
-	BL _f_14726
-	BNE _$j_14fb4
+	BL _find_zero_bit  ; Find a cleared bit in [8121H]
+	BNE _$j_14fb4      ; If more than 5 bits set, jump below
 	B _$j_150ec
 _$j_14fb4:
-	BL _f_1473A
-	L R5, [BP]
+	BL _set_bit        ; Set the bit we found earlier
+	L R5, [BP]         ; Back up first byte of number for later
 	PUSH R5
 	PUSH ER0
-	MOV ER0, BP
-	ADD ER0, #14H
+	MOV ER0, BP        ; Copy [BP] to [BP+20]
+	ADD ER0, #20
 	BL _num_cpy_cmplx_er0_bp
 	POP ER0
 	L R5, [BP]
-	AND R5, #11110000B
+	AND R5, #11110000B ; Set first nibble of Area 2 in out number to R4
 	OR R5, R4
 	ST R5, [BP]
 	POP R4
-	MOV R2, R4
+	MOV R2, R4         ; Grab old first nibble of Area 2
 	AND R2, #00001111B
 	BL _f_1548E
-	ADD R1, #-5BH
+	ADD R1, #-5BH      ; Subtract 91 from operator ID
 _$j_14fdc:
-	CMP R2, #4H
+	CMP R2, #4H        ; If first nibble of Area 2 < 4, jump below
 	BLT _$j_15092
-	MOV R4, R2
-	BL _f_14748
-	BAL _$j_15092
+	MOV R4, R2         ; If not, clear the bit of R0 specified by that nibble
+	BL _clear_bit
+	BAL _$j_15092      ; And jump
 _$j_14fe8:
-	CMP R5, #-1H
+	CMP R5, #-1H       ; If R5 = -1, jump ahead
 	BEQ _$j_1502c
-	AND R2, #00001111B
-	ADD R1, #-0BH
-	BEQ _$j_14fdc
-	ADD R1, #1H
+	AND R2, #00001111B ; Extract first nibble of Area 2
+	ADD R1, #-0BH      ; Subtract 11 from operator ID
+	BEQ _$j_14fdc      ; If Abs(?), jump below
+	ADD R1, #1H        ; Add 1 to operator ID
 _$j_14ff4:
-	CMP R2, #4H
+	CMP R2, #4H        ; If first nibble of Area 2 >= 4, jump ahead
 	BGE _$j_15012
-	BL _f_14726
-	BEQ _$j_150ec
-	BL _f_1473A
-	L R5, [BP]
+	BL _find_zero_bit  ; Find a cleared bit in [8121H]
+	BEQ _$j_150ec      ; If more than 5 bits set, jump below
+	BL _set_bit        ; Set the bit
+	L R5, [BP]         ; Set first nibble of Area 2 in out number to R4
 	MOV R2, R5
 	AND R5, #11110000B
 	OR R5, R4
 	ST R5, [BP]
-	MOV R4, R2
+	MOV R4, R2         ; Grab old first nibble of Area 2
 	BL _f_1548E
 _$j_15012:
 	CMP R1, #55H
@@ -12111,9 +12116,9 @@ _$j_15046:
 	AND R4, #00001111B
 	CMP R4, #4H
 	BGE _$j_1507a
-	BL _f_14726
+	BL _find_zero_bit
 	BEQ _$j_150ec
-	BL _f_1473A
+	BL _set_bit
 	L R5, [BP]
 	MOV R2, R5
 	AND R5, #11110000B
@@ -12128,7 +12133,7 @@ _$j_1506c:
 	AND R4, #00001111B
 	CMP R4, #4H
 	BLT _$j_1507a
-	BL _f_14748
+	BL _clear_bit
 _$j_1507a:
 	CMP R3, #-70H
 	BGE _$j_15086
@@ -12141,7 +12146,7 @@ _$j_15086:
 	AND R4, #00001111B
 	CMP R4, #4H
 	BLT _$j_15092
-	BL _f_14748
+	BL _clear_bit
 _$j_15092:
 	ST R0, _d_08121
 	MOV R4, #BYTE1 _operator_handlers
@@ -12804,14 +12809,14 @@ _$j_15494:
 	ADD ER4, ER6
 	ST ER2, [ER4]
 	MOV R2, R1
-	MOV R3, #5AH
+	MOV R3, #90
 	MUL ER0, R3
 	MUL ER2, R3
 	MOV R6, #BYTE1 _mode_ram
 	MOV R7, #BYTE2 _mode_ram
 	ADD ER0, ER6
 	ADD ER2, ER6
-	MOV R6, #2DH
+	MOV R6, #45
 _$j_154be:
 	L ER4, [ER0]
 	ST ER4, [ER2]
@@ -12922,23 +12927,34 @@ _num_cpy_cmplx:
 _f_15544:
 	MOV R0, #7H
 
+; Check if out number is of a banned type.
+; Ban conditions:
+; 1. ERROR value is always banned.
+; 2. Value of R0:
+;   a. If R0 is -1, all numbers are allowed.
+;   b. If R0 is 0, all numbers with type < 6 (incl. float and fraction) and radical are banned.
+;   c. If not, use R0 for ban flags:
+;     + Bit 0: vector pointer
+;     + Bit 1: matrix pointer
+;     + Bit 2: fraction/radical/float with complex imaginary part (CMPLX mode)
+; Result is stored in carry bit (set = banned, cleared = allowed)
 ; FUNCTION: GY454XE  Re 15546
 ; FUNCTION: GY455XE  Im 15546
 ; FUNCTION: GY460XF  Im 15000
-_f_15546:
+_is_num_banned:
 	MOV R2, #0H
 	L R3, [BP]     ; Grab out number type
 	SRL R3, #4     ; Right shift by 4 to remove first nibble of Area 2
 	CMP R3, #0FH   ; If ERROR value, set carry and return Math ERROR
 	BEQ _$j_15590
-	CMP R0, #-1H   ; Add 1 to R0 temporarily
-	BGE _$j_15562  ; If carry bit cleared, return no error
+	CMP R0, #-1H   ; If R0 >= -1, return no error (>= is used to clear carry bit)
+	BGE _$j_15562
 	CMP R0, #0H    ; If R0 is nonzero, skip this part
 	BNE _$j_15564
-	CMP R3, #8H    ; If out number is radical or matrix, set carry and return Math ERROR
+	CMP R3, #8H    ; If out number is radical, set carry and return Math ERROR
 	BEQ _$j_15590
 	CMP R3, #6H
-	BLT _$j_15592
+	BLT _$j_15592  ; If out number type below 6, return Math ERROR (carry already set)
 _$j_15560:
 	RC
 _$j_15562:
@@ -12981,12 +12997,12 @@ _f_15596:
 	PUSH LR
 	CMP R6, #-1H           ; If R6 != -1, return
 	BNE _$j_155aa
-	CMP R2, #3H            ; If last token type was not postfix (?), return
+	CMP R2, #3H            ; If last error was not Math ERROR, return it
 	BNE _$j_155aa
-	MOV R0, #BYTE1 _num_0
+	MOV R0, #BYTE1 _num_0  ; Set out number to 0
 	MOV R1, #BYTE2 _num_0
 	BL _num_cpy_cmplx_bp_er0
-	MOV R2, #0H
+	MOV R2, #0H            ; Return no error
 _$j_155aa:
 	POP PC
 
@@ -13132,9 +13148,9 @@ _$j_156ae:
 	BGE _$j_1570c
 _$j_156b6:
 	BL _sto_op_in_stack_r10  ; Store function ID in stack
-	CMP R2, #0H              ; If error occured, return the thrown error again
+	CMP R2, #0H              ; If error occurred, return the thrown error again
 	BNE _$j_156c2
-	CMP R0, #2H              ; If not a calculus function, return the thrown error again
+	CMP R0, #2H              ; If not a calculus function, return success(?)
 	BLE _$j_156ce
 _$j_156c2:
 	MOV R7, #1H
@@ -13242,14 +13258,14 @@ _$j_15780:
 	BNE _$j_157ac
 	CMP R0, #64H   ; If not fraction sign, skip this part
 	BNE _$j_15796
-	MOV R0, #3H
-	BL _f_15546
-	BLT _$j_157ac  ; If carry set, return Syntax ERROR
+	MOV R0, #00000011B
+	BL _is_num_banned
+	BLT _$j_157ac  ; If ERROR value, matrix or vector pointer, return Syntax ERROR
 	MOV R0, #64H   ; Set to fraction sign again
 _$j_15796:
 	MOV ER2, BP
 	BL _num_cpy_er2_numstack
-	CMP R2, #0H    ; If error occured, return it
+	CMP R2, #0H    ; If error occurred, return it
 	BNE _$j_157ae
 	CMP R10, #0H   ; If index is 0, store operator in that index
 	BEQ _$j_157a8
@@ -13559,8 +13575,8 @@ _$j_159be:
 	NEG R2                 ; Otherwise negate the byte exponent
 _$j_159c8:
 	ADD R2, R9             ; Add highest digit position to byte exponent
-	BNV _$j_159d4          ; If no overflow occured, go to post-exponent block
-	BLT _$j_15a10          ; If carry occured, store 0
+	BNV _$j_159d4          ; If no overflow occurred, go to post-exponent block
+	BLT _$j_15a10          ; If carry occurred, store 0
 _$j_159ce:
 	MOV R2, #3H            ; Math ERROR
 	POP XR8
@@ -13855,7 +13871,7 @@ _$j_15bb6:
 	BAL _$j_15bb2
 _$j_15bca:
 	MOV R0, #3H
-	BL _f_15546
+	BL _is_num_banned
 	BLT _$j_15bb0
 	MOV R0, #-1H
 	BL _sto_op_in_stack_r10

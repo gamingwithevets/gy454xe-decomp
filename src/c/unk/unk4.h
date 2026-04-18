@@ -3,7 +3,7 @@
 char keyfunc_nop(keyfunc_struct *a);
 char f_09962(char no_keyfunc);
 char f_09BDC(char a);
-char f_09D54(char tmode);
+void f_09D54(char tmode);
 char f_09D84(void);
 char display_menu(char *val, char *head);
 char display_token_menu(char m, char menu_idx);

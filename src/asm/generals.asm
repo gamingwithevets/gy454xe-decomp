@@ -3864,7 +3864,7 @@ _$j_02f00:
 	MOV R0, R2
 	MOV ER2, FP
 	ADD ER2, #-15H
-	BL _f_02FEC
+	BL _copy_char_data
 	ST ER0, -0CH[FP]
 	MOV R12, #BYTE1 _font_big_0
 	MOV R13, #BYTE2 _font_big_0
@@ -3992,7 +3992,7 @@ _$j_02fea:
 ; FUNCTION: GY454XE  Re 02FEC
 ; FUNCTION: GY455XE  Im 0317E
 ; FUNCTION: GY460XF  Im 02E18
-_f_02FEC:
+_copy_char_data:
 	PUSH ER8
 	L R1, _font_size
 	CMP R1, #6H
@@ -4020,7 +4020,7 @@ _$j_0301e:
 	CMP R0, #7CH
 	BNE _$j_03034
 	MOV R1, R8
-	MOV R4, #-40H
+	MOV R4, #11000000B  ; Hardcode character 0x7C
 _$j_0302a:
 	ST R4, [ER2]
 	ADD ER2, #1H
@@ -4065,7 +4065,7 @@ _$j_03074:
 	AND R0, #01111100B
 	ST R0, [ER2]
 	ADD ER2, #1H
-	INC [EA]            ; Random ROM address increment?
+	INC [EA]            ; Oddity: Random ROM address increment?
 	ADD R5, #-1H
 	BNE _$j_03052
 	POP ER6
