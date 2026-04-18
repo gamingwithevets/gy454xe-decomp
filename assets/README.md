@@ -5,5 +5,5 @@ to find out how to use the script.
 Some scripts may depend on libraries that need to be installed through pip.
 
 Some scripts use fonts named "ES PLUS Display". These fonts can be downloaded from Calcupedia (personal use only):
-- [ES PLUS Display Big](https://gwe.42web.io/calcupedia/resources/assets/fonts/espd_b.otf)
-- [ES PLUS Display Small](https://gwe.42web.io/calcupedia/resources/assets/fonts/espd_s.otf)
+- [ES PLUS Display Big](https://gwe.dpdns.org/calcupedia/resources/assets/fonts/espd_b.otf)
+- [ES PLUS Display Small](https://gwe.dpdns.org/calcupedia/resources/assets/fonts/espd_s.otf)
