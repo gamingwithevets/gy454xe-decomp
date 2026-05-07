@@ -35,7 +35,7 @@ Linking order is important when recompiling. Exactly how the linker orders segme
 
 ### Missing features
 Currently, this decomp is missing the following features:
-- Diagnostic mode present on fx-570/991ES PLUS `GY454X VerF`/`GY455X VerF`. This specific version of the diagnostic mode includes a [debug menu](https://gwe.42web.io/calcupedia/Calculator_self-test#Debug_menu) similar, but not the same as that of 2nd edition series. Currently, this ROM has not been dumped, nor is there an emulator ROM available.
+- Diagnostic mode present on fx-570/991ES PLUS `GY454X VerF`/`GY455X VerF`. This specific version of the diagnostic mode includes a [debug menu](https://gwe.dpdns.org/calcupedia/Calculator_self-test#Debug_menu) similar, but not the same as that of 2nd edition series. Currently, this ROM has not been dumped, nor is there an emulator ROM available.
 - Japanese models' extra conversions, which includes an extra 160 conversions (80 conversion pairs). Unfortunately, no ROM of a Japanese ES PLUS GYX model has been dumped, nor has Casio distributed an emulator for the fx-510AZ. It is possible the code responsible is the exact same as the one used on the LY series.
 
 As of currently, not all toggles have been implemented.
