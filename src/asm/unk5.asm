@@ -11680,7 +11680,7 @@ _$j_14d1c:
 ; FUNCTION: GY460XF  Im 147DE
 _f_14D24:
 	PUSH LR
-	CMP R1, #76H
+	CMP R1, #76H   ; If current operator is >Conv, jump below
 	BEQ _$j_14d70
 _$j_14d2a:
 	MOV ER4, ER0
@@ -11717,27 +11717,27 @@ _$j_14d68:
 	BL _f_1B238
 	POP PC
 _$j_14d70:
-	PUSH XR4
-	BL _get_token_type_fp
-	CMP R2, #4H
+	PUSH XR4               ; == >Conv handler ==
+	BL _get_token_type_fp  ; Get first digit
+	CMP R2, #4H            ; If not a digit, return Syntax ERROR
 	BNE _$j_14de0
 	CMP R0, #0AH
 	BGE _$j_14de0
-	MOV R7, R0
-	BL _get_token_type_fp
-	CMP R2, #4H
+	MOV R7, R0             ; Store in R7
+	BL _get_token_type_fp  ; Get second digit
+	CMP R2, #4H            ; If not a digit, return Syntax ERROR
 	BNE _$j_14de0
 	CMP R0, #0AH
 	BGE _$j_14de0
-	MOV R6, R0
+	MOV R6, R0             ; Store in high nibble of R6
 	SLL R6, #4
-	BL _get_token_type_fp
-	CMP R2, #4H
+	BL _get_token_type_fp  ; Get third digit
+	CMP R2, #4H            ; If not a digit, return Syntax ERROR
 	BNE _$j_14de0
 	CMP R0, #0AH
 	BGE _$j_14de0
-	OR R6, R0
-	MOV R1, #2H
+	OR R6, R0              ; OR with second digit
+	MOV R1, #2H            ; ER0 = 0x201
 	MOV R0, #1H
 	CMP ER6, ER0
 	BGE _$j_14de0
@@ -11923,7 +11923,7 @@ _$j_14ed2:
 	BL _f_15596        ; Clean up and return
 	POP PC
 _$j_14ed8:
-	CMP R1, #77H       ; If RanInt#( or <ID 118>, ban matrix/vector/complex
+	CMP R1, #77H       ; If RanInt#( or <ID 120>, ban matrix/vector/complex
 	BEQ _$j_14f1a
 	CMP R1, #78H
 	BEQ _$j_14f1a
@@ -11969,7 +11969,7 @@ _$j_14f1e:
 _$j_14f26:
 	CMP R1, #77H       ; If RanInt#(, skip further ahead
 	BEQ _$j_14f62
-	CMP R1, #78H       ; If <ID 118>, skip ahead
+	CMP R1, #78H       ; If <ID 120>, skip ahead
 	BEQ _$j_14f42
 	CMP R1, #74H       ; If remainder, skip ahead
 	BEQ _$j_14f42
@@ -11983,7 +11983,7 @@ _$j_14f26:
 	BGT _$j_14f62
 _$j_14f42:
 	ADD R5, #-1H       ; Subtract 1 from R5
-	BNE _$j_14f62      ; If still non-zero, jump ahead
+	BNE _$j_14f62      ; If result is non-zero, jump ahead
 	PUSH R1
 	MOV ER0, BP        ; Copy number at [BP] to [BP+20]
 	ADD ER0, #20
@@ -12201,19 +12201,19 @@ _$j_150ec:
 _$j_150f0:
 	MOV R2, #3H
 	B _$j_14ed2
-_$j_150f6:
+_$j_150f6:         ; == Set index based on token ==
 	L R0, _mode
-	CMP R1, #77H
+	CMP R1, #77H   ; RanInt#( => index 38
 	BEQ _$j_15158
-	CMP R1, #78H
+	CMP R1, #78H   ; <ID 120> => index 92
 	BEQ _$j_1515c
-	CMP R1, #76H
+	CMP R1, #76H   ; >Conv => see below
 	BEQ _$j_15114
-	CMP R1, #37H
+	CMP R1, #37H   ; IDs 0-54 => see below
 	BLT _$j_15122
-	CMP R1, #74H
+	CMP R1, #74H   ; ÷R => see below
 	BEQ _$j_1511e
-	CMP R1, #5FH
+	CMP R1, #5FH   ; IDs >= 95 => see below
 	BGE _$j_15120
 	ADD R1, #-37H
 _$j_15114:
@@ -13582,9 +13582,9 @@ _$j_159ce:
 	POP XR8
 	POP PC
 _$j_159d4:                 ; === Post-exponent block ===
-	BPS _$j_159e0          ; If exponent (signed) is positive, skip this part
+	BPS _$j_159e0          ; If exponent (signed) is not negative, skip this part
 	CMP R2, #-63H          ; If exponent < -99, jump below
-	BLTS _$j_15a10         ; Oddity: exponent cannot be below -99, as only 2 digits can be inputted
+	BLTS _$j_15a10
 	ADD R2, #64H           ; Add 100 to R2
 	MOV R0, #0H            ; Area 4 value: 0 (value > 0, exponent < 0)
 	BAL _$j_159e6
