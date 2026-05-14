@@ -224,7 +224,7 @@ class MenuViewer(tk.Tk):
         self.label_id.grid(row=0, column=0, pady=5, sticky='n')
 
         # Menu string display
-        self.menu_text = tk.Text(self, width=60, height=10, font=("ES PLUS Display", 18), wrap='none')
+        self.menu_text = tk.Text(self, width=60, height=10, font=("ES PLUS Display Small", 18), wrap='none')
         self.menu_text.grid(row=1, column=0, pady=5, sticky='nsew')
         self.menu_text.config(state=tk.DISABLED)
 
