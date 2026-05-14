@@ -2864,7 +2864,7 @@ _$j_0287a:
 	MOV R8, #0DCH
 	L R0, _setup_decimal_mark
 	BNE _$j_02886
-	MOV R8, #-13H
+	MOV R8, #0EDH
 _$j_02886:
 	L R0, [BP]
 	BEQ _$j_02956

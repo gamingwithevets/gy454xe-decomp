@@ -1,6 +1,6 @@
 This is a decompilation of the Casio ES PLUS **GYX** firmware, which includes code from the latest revisions of all calculators released before the fx-55 PLUS.
 
-Feel free to contribute by forking this repo and making a pull request.
+Feel free to contribute by forking this repo and making a pull request. For more information, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## General information
 All ES PLUS models use the nX-U8/100 architecture by ROHM Co., Ltd.

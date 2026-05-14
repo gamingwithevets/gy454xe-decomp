@@ -2153,7 +2153,7 @@ _f_10B60:
 	CMP R0, #50H
 	MOV R0, #0H
 	BLT _$j_10b6c
-	MOV R0, #-67H
+	MOV R0, #99H
 _$j_10b6c:
 	ST R0, 7H[BP]
 	MOV ER0, BP
