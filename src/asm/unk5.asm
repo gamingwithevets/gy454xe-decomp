@@ -3223,7 +3223,7 @@ _$j_112a6:
 ; FUNCTION: GY454XE  Re 112AA
 ; FUNCTION: GY455XE  Im 112AA
 ; FUNCTION: GY460XF  Im 1094A
-_get_disp_setting_unk3:
+_get_disp_setting_convmax:
 	PUSH XR12
 	MOV BP, #3H
 	BAL _$j_112c0
@@ -11744,7 +11744,7 @@ _$j_14d70:
 	MOV ER0, ER6           ; Convert to byte
 	BL _bcd_to_byte
 	PUSH R0
-	BL _get_disp_setting_unk3
+	BL _get_disp_setting_convmax
 	MOV R1, R0             ; Store result in R1
 	POP R0
 	ADD R1, #1H            ; Add 1
