@@ -11699,7 +11699,7 @@ _$j_14d3e:
 	ADD R2, #BYTE1 _num_convs
 	ADDC R3, #BYTE2 _num_convs
 	MOV ER0, BP
-	TB R5.0                ; If the number is negative, divide instead
+	TB R5.0                ; If the number is odd, divide instead
 	BNE _$j_14d56
 	BL _f_1A438            ; Multiply
 	BAL _$j_14d5a
@@ -11760,7 +11760,7 @@ _$j_14d70:
 	BGE _$j_14dd6
 _$j_14dcc:
 	MOV R1, #1H
-	TB R0.0                ; If number is even, subtract 1, otherwise add 1
+	TB R0.0                ; If number is odd, subtract 1, otherwise add 1
 	BNE _$j_14dd4
 	MOV R1, #-1H
 _$j_14dd4:
