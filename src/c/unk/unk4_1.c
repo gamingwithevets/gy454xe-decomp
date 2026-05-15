@@ -844,7 +844,7 @@ j_0bd2e:
 #if REAL == 0
 		if (v0.b.ko == 0x80) {
 			if (v0.b.ki == 0x80 || v0.b.ki == 0x40) {
-				f_04DF6_E();
+				emu_update_screen();
 				f_04E44_E();
 				f_082A2_E(&kb);
 				f_05428_E(&kb);

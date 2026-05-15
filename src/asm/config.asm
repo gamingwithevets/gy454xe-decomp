@@ -30,15 +30,17 @@ TSEG #1 AT 0FFD4H
 	DB 0
 ; Recurring decimal result toggle. Only relevant on models with this feature.
 	DB 0
-; Manual simplification toggle. Only relevant on models with this feature.
+; Unused in this codebase, however it is the manual simplification toggle in LY.
 	DB 0
 ; Decimal output toggle.
 	DB 0
 ; Unused.
 	DB 0
 
+; Padding byte.
+DB 0
+
 ; == Display Settings ==
-; Unknown.
 	DB 0
 ; Disable radical format.
 	DB 0
@@ -48,10 +50,11 @@ TSEG #1 AT 0FFD4H
 ;   2 = Underline. Unused.
 ;   3 = Parentheses. Used in VN models.
 	DB 0
-; Maximum value of the input number for >Conv.
+; Maximum value of the input number for >Conv operator.
+; If the conversion index is higher than this value a Syntax ERROR will be returned.
 	DB 40
 
-; Unknown. Seems to be padding bytes.
+; Padding bytes.
 DB 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
 
 TSEG #1 AT 0FFF4H
@@ -64,7 +67,9 @@ TSEG #1 AT 0FFF4H
 	DB "--"
 ; ROM checksum (see _diag_get_checksum for checksum algorithm).
 ; Must be manually filled in.
-	DW 74BFH
+; * The checksum used here is the checksum of the resulting binary,
+;   compiled from the current source using U8 SDK R1.10.0a.
+	DW 7551H
 
 ; Filler bytes. They don't do anything.
 DB 1, 1

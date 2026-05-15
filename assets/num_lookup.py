@@ -19,7 +19,7 @@ class PrettyFloat(sympy.Float):
 	__repr__ = __str__  # Make sure it prints the same in lists etc.
 
 def num_conv(numb):
-	if len(numb) != 10: raise ValueError('number data must be exactly 10 bytes')
+	if len(numb) not in (10, 14): raise ValueError('number data must be exactly 10 bytes')
 	if len(numb) == 14: raise ValueError('14 byte numbers are not supported yet, sorry!')
 	if numb == b'\0'*10: return sympy.S.Zero
 	numh = numb.hex()

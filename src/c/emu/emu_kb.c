@@ -5,11 +5,11 @@
 #include "../consts.h"
 #include <string.h>
 
-static int f_04F6E_E(char *num, char *out);
+static int emu_num_to_str(char *num, char *out);
 
 // FUNCTION: GY455XE  Im 04DF6
 // FUNCTION: GY460XF  Im 03F08
-void f_04DF6_E(void) {
+void emu_update_screen(void) {
 	char *tmp;
 	int i;
 	int j;
@@ -32,45 +32,49 @@ void f_04DF6_E(void) {
 // FUNCTION: GY455XE  Im 04E44
 // FUNCTION: GY460XF  Im 03F60
 void f_04E44_E(void) {
-	char loc_m1;
-	char loc_m2;
+	char loc_m2[2];
 	char loc_m12[10];
 	char loc_m22[10];
 	char loc_m46[24];
 	char loc_m70[24];
 	emu_kb kb;
 
-	loc_m2 = 0x8b;
-	loc_m1 = 0;
+	loc_m2[0] = '\x8b';
+	loc_m2[1] = '\0';
 	memcpy(loc_m12, var_ans, 10);
 	if (mode == MODE_CMPLX) memcpy(loc_m22, &mode_ram[174], 10);
-	else memset(loc_m12, 0, 10);
-	f_04F6E_E(loc_m22, loc_m46);
+	else memset(loc_m22, 0, 10);
+	emu_num_to_str(loc_m22, loc_m46);
 	memset(loc_m70, 0, 23);
 	memset(loc_m46, 0, 23);
-	f_04F6E_E(loc_m12, loc_m70);
-	f_04F6E_E(loc_m22, loc_m46);
+	emu_num_to_str(loc_m12, loc_m70);
+	emu_num_to_str(loc_m22, loc_m46);
 	init_emu_kb(&kb);
-	*(*kb.d_08E10)++ = 0x30;
-	*(*kb.d_08E10)++ = 0;
-	*(*kb.d_08E10)++ = 0x43;
-	*(*kb.d_08E10)++ = 9;
-	memcpy(*kb.d_08E10, loc_m70, 23);
-	*kb.d_08E10 += 0x16;
-	*(*kb.d_08E10)++ = 9;
-	memcpy(*kb.d_08E10, loc_m46, 23);
+	*kb.d_08E10 = 0x30;
+	++kb.d_08E10;
+	*kb.d_08E10 = 0;
+	++kb.d_08E10;
+	*kb.d_08E10 = 0x43;
+	++kb.d_08E10;
+	*kb.d_08E10 = 9;
+	++kb.d_08E10;
+	memcpy(kb.d_08E10, loc_m70, 23);
+	kb.d_08E10 += 22;
+	*kb.d_08E10 = 9;
+	++kb.d_08E10;
+	memcpy(kb.d_08E10, loc_m46, 23);
 	return;
 }
 
 // FUNCTION: GY455XE  Im 04F6E
 // FUNCTION: GY460XF  Im 0408A
-static int f_04F6E_E(char *num, char *out) {
+static int emu_num_to_str(char *num, char *out) {
 	int v0;
 	char loc_m10[10];
 	int loc_m12;
 	signed char loc_m13;
 	char loc_m14;
-	int loc_m16;
+	unsigned int loc_m16;
 	int loc_m18;
 
 	// ERROR value
@@ -85,7 +89,7 @@ static int f_04F6E_E(char *num, char *out) {
 	}
 	v0 = 1;
 	memcpy(loc_m10, num, 10);
-	if (!loc_m10[8]) {
+	if (!*(unsigned int *)(loc_m10+8)) {
 		out[0] = '+';
 		loc_m16 = 1;
 		do out[loc_m16] = '0';
@@ -99,7 +103,7 @@ static int f_04F6E_E(char *num, char *out) {
 		out[22] = '\0';
 		return 0;
 	}
-	if (loc_m10[8] >= 5) {
+	if (*(unsigned int *)(loc_m10+8) >= 0x500) {
 		out[0] = '-';
 		*(int *)(&loc_m10[8]) -= 0x500;
 	} else out[0] = '+';
@@ -138,7 +142,7 @@ static int f_04F6E_E(char *num, char *out) {
 	{
 		int tmp, tmp2, tmp3, tmp4;
 
-		tmp = (char)(v0 >> 8) & 0xf;
+		tmp = loc_m10[9] & 0xf;
 		tmp2 = tmp << 6;
 		tmp3 = (tmp << 5) + tmp2;
 		tmp <<= 2;
@@ -177,7 +181,7 @@ static int f_04F6E_E(char *num, char *out) {
 		out[12] = out[13];
 		out[13] = 'r';
 		out[10] = '+';
-		if (loc_m10[8] >= 5) out[10] = '-';
+		if ((*(unsigned int *)(loc_m10+8) & 0xff) >= 5) out[10] = '-';
 		out[9] = out[7];
 		out[8] = out[6];
 		out[7] = 's';
