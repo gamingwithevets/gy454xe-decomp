@@ -48,8 +48,8 @@ TSEG #1 AT 0FFD4H
 ;   2 = Underline. Unused.
 ;   3 = Parentheses. Used in VN models.
 	DB 3
-; Unknown.
-	DB 0
+; Maximum value of the input number for >Conv.
+	DB 40
 
 ; Unknown. Seems to be padding bytes.
 DB 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15

@@ -196,7 +196,7 @@ const char keycodes_shift[64] = {
 const char keycodes_alpha[64] = {
 	NULL,		NULL,		NULL,		NULL,		NULL,		NULL,		K_EXECUTE,	K_APPROX,
 	NULL,		NULL,		NULL,		NULL,		NULL,		NULL,		NULL,		NULL,
-	NULL,		NULL,		NULL,		K_DEL,		K_AC,		NULL,		K_EULER,	NULL,
+	NULL,		K_CONV_N,	NULL,		K_DEL,		K_AC,		NULL,		K_EULER,	NULL,
 	K_RCL,		NULL,		NULL,		K_VAR_X,	K_VAR_Y,	K_VAR_M,	K_RANINT,	NULL,
 	K_VAR_A,	K_VAR_B,	K_VAR_C,	K_VAR_D,	K_VAR_E,	K_VAR_F,	NULL,		NULL,
 	NULL,		K_RDEC,		NULL,		NULL,		NULL,		NULL,		NULL,		NULL,

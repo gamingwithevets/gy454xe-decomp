@@ -3223,7 +3223,7 @@ _$j_112a6:
 ; FUNCTION: GY454XE  Re 112AA
 ; FUNCTION: GY455XE  Im 112AA
 ; FUNCTION: GY460XF  Im 1094A
-_f_112AA:
+_get_disp_setting_unk3:
 	PUSH XR12
 	MOV BP, #3H
 	BAL _$j_112c0
@@ -11678,9 +11678,9 @@ _$j_14d1c:
 ; FUNCTION: GY454XE  Re 14D24
 ; FUNCTION: GY455XE  Im 14D24
 ; FUNCTION: GY460XF  Im 147DE
-_f_14D24:
+_num_get_conv:
 	PUSH LR
-	CMP R1, #76H   ; If current operator is >Conv, jump below
+	CMP R1, #76H           ; If current operator is >Conv, jump below
 	BEQ _$j_14d70
 _$j_14d2a:
 	MOV ER4, ER0
@@ -11694,7 +11694,7 @@ _$j_14d2a:
 _$j_14d3e:
 	MOV R2, R5
 	SRL R2, #1
-	MOV R3, #0AH
+	MOV R3, #10
 	MUL ER2, R3
 	ADD R2, #BYTE1 _num_convs
 	ADDC R3, #BYTE2 _num_convs
@@ -11706,7 +11706,7 @@ _$j_14d3e:
 _$j_14d56:
 	BL _f_1A44C
 _$j_14d5a:
-	CMP R5, #24H
+	CMP R5, #36
 	BNE _$j_14d68
 	MOV ER0, BP
 	MOV R2, #BYTE1 _num_32
@@ -11723,13 +11723,13 @@ _$j_14d70:
 	BNE _$j_14de0
 	CMP R0, #0AH
 	BGE _$j_14de0
-	MOV R7, R0             ; Store in R7
+	MOV R7, R0             ; Store in R7 (high byte)
 	BL _get_token_type_fp  ; Get second digit
 	CMP R2, #4H            ; If not a digit, return Syntax ERROR
 	BNE _$j_14de0
 	CMP R0, #0AH
 	BGE _$j_14de0
-	MOV R6, R0             ; Store in high nibble of R6
+	MOV R6, R0             ; Store in high nibble of R6 (low byte)
 	SLL R6, #4
 	BL _get_token_type_fp  ; Get third digit
 	CMP R2, #4H            ; If not a digit, return Syntax ERROR
@@ -11739,38 +11739,38 @@ _$j_14d70:
 	OR R6, R0              ; OR with second digit
 	MOV R1, #2H            ; ER0 = 0x201
 	MOV R0, #1H
-	CMP ER6, ER0
+	CMP ER6, ER0           ; If inputted number >= 201, return Syntax ERROR
 	BGE _$j_14de0
-	MOV ER0, ER6
+	MOV ER0, ER6           ; Convert to byte
 	BL _bcd_to_byte
 	PUSH R0
-	BL _f_112AA
-	MOV R1, R0
+	BL _get_disp_setting_unk3
+	MOV R1, R0             ; Store result in R1
 	POP R0
-	ADD R1, #1H
-	CMP R0, R1
+	ADD R1, #1H            ; Add 1
+	CMP R0, R1             ; If Conv input number >= this number, return Syntax ERROR
 	BGE _$j_14de0
-	CMP R0, #13H
+	CMP R0, #19            ; Conversion for m/s -> km/h is stored instead of the reverse
+	BEQ _$j_14dcc          ; so special cases need to be done for these 2 conversions
+	CMP R0, #20
 	BEQ _$j_14dcc
-	CMP R0, #14H
-	BEQ _$j_14dcc
-	CMP R0, #25H
+	CMP R0, #37            ; Same for Celsius <-> Fahrenheit and cal <-> J
 	BLT _$j_14dd6
-	CMP R0, #29H
+	CMP R0, #41
 	BGE _$j_14dd6
 _$j_14dcc:
 	MOV R1, #1H
-	TB R0.0
+	TB R0.0                ; If number is even, subtract 1, otherwise add 1
 	BNE _$j_14dd4
 	MOV R1, #-1H
 _$j_14dd4:
 	ADD R0, R1
 _$j_14dd6:
-	ADD R0, #-1H
-	BGE _$j_14de0
+	ADD R0, #-1H           ; Subtract 1 for indexing
+	BGE _$j_14de0          ; If number was 0 before subtraction, return Syntax ERROR
 	POP XR4
 	MOV R1, R0
-	BAL _$j_14d2a
+	BAL _$j_14d2a          ; Jump back to regular CONV handler
 _$j_14de0:
 	POP XR4
 	MOV R0, #2H
@@ -12218,7 +12218,7 @@ _$j_150f6:         ; == Set index based on token ==
 	ADD R1, #-37H
 _$j_15114:
 	PUSH R0
-	BL _f_14D24
+	BL _num_get_conv
 	POP R1
 	BAL _$j_150c0
 _$j_1511e:

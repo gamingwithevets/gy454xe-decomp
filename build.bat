@@ -76,10 +76,12 @@ if %nopython% equ 1 (
 	echo Done!
 	goto exit
 )
-pip show intelhex >nul 2>&1
+python -m pip show intelhex >nul 2>&1
 if %errorlevel% equ 1 (
-	echo Installing Intel HEX module first.
-	pip install intelhex
+	echo Error: intelhex library not installed. Please install it yourself, then
+	echo copy the "scripts" directory from the source code to where intelhex
+	echo is installed.
+	goto exit
 )
 echo Converting to binary file...
 python -m intelhex.scripts.hex2bin -p %pad% rom.hex rom.bin
