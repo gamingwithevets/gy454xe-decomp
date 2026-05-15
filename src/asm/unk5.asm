@@ -11678,38 +11678,38 @@ _$j_14d1c:
 ; FUNCTION: GY454XE  Re 14D24
 ; FUNCTION: GY455XE  Im 14D24
 ; FUNCTION: GY460XF  Im 147DE
-_num_get_conv:
+_num_conv:
 	PUSH LR
-	CMP R1, #76H           ; If current operator is >Conv, jump below
+	CMP R1, #118           ; If current operator is >Conv, jump below
 	BEQ _$j_14d70
 _$j_14d2a:
 	MOV ER4, ER0
 	MOV ER0, BP
 	BL _num_to_str_std_lineo
-	CMP R5, #25H
+	CMP R5, #37            ; If not Fahrenheit -> Celsius, jump below
 	BNE _$j_14d3e
-	MOV R2, #BYTE1 _num_32
+	MOV R2, #BYTE1 _num_32 ; Subtract 32
 	MOV R3, #BYTE2 _num_32
 	BL _f_1A3FC
 _$j_14d3e:
-	MOV R2, R5
+	MOV R2, R5             ; Get the multiplier
 	SRL R2, #1
 	MOV R3, #10
 	MUL ER2, R3
 	ADD R2, #BYTE1 _num_convs
 	ADDC R3, #BYTE2 _num_convs
 	MOV ER0, BP
-	TB R5.0
+	TB R5.0                ; If the number is negative, divide instead
 	BNE _$j_14d56
-	BL _f_1A438
+	BL _f_1A438            ; Multiply
 	BAL _$j_14d5a
 _$j_14d56:
-	BL _f_1A44C
+	BL _f_1A44C            ; Divide
 _$j_14d5a:
-	CMP R5, #36
+	CMP R5, #36            ; If not Celsius -> Fahrenheit, jump below
 	BNE _$j_14d68
 	MOV ER0, BP
-	MOV R2, #BYTE1 _num_32
+	MOV R2, #BYTE1 _num_32 ; Add 32
 	MOV R3, #BYTE2 _num_32
 	BL _f_1A410
 _$j_14d68:
@@ -12215,10 +12215,10 @@ _$j_150f6:         ; == Set index based on token ==
 	BEQ _$j_1511e
 	CMP R1, #5FH   ; IDs >= 95 => see below
 	BGE _$j_15120
-	ADD R1, #-37H
+	ADD R1, #55   ; IDs 55-94 => subtracted by 55 to get conversion index
 _$j_15114:
 	PUSH R0
-	BL _num_get_conv
+	BL _num_conv
 	POP R1
 	BAL _$j_150c0
 _$j_1511e:

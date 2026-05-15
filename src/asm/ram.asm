@@ -64,6 +64,7 @@ _d_0801C:
 ; 0801D
 _d_0801D:
 	DS 1
+; From user202729's labelfile: (-, +, ÷, ×) = 9, 8, 7, 6
 ; 0801E
 _arith_op:
 	DS 1
