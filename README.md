@@ -48,7 +48,7 @@ As the U8/U16 SDK only officially supports Windows, these instructions below ass
 4. Run `build.bat` in the root directory.
 5. If needed, convert the outputted Intel Hex file to binary. There are many tools online, however this project uses the [Python Intel HEX library](https://pypi.org/project/intelhex/) for this.
 
-The resulting binary is a build that has all currently implemented features enabled, with the version code `GY45DX Ver--`. To build for a specific model, see [Building custom ROMs](#building-custom-roms).
+The resulting binary is a build that has all currently implemented features enabled and recurring decimals in dot notation, with the version code `GY45DX Ver--`. To build for a specific model, see [Building custom ROMs](#building-custom-roms).
 
 ### Building custom ROMs
 To configure ROMs, edit `src/features/features.inc`. Note that this is just for feature toggles; you will need to edit other scripts to modify menus, key layouts, etc. See the comment in the aforementioned file for more information.

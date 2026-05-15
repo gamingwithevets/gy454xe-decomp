@@ -43,11 +43,11 @@ TSEG #1 AT 0FFD4H
 ; Disable radical format.
 	DB 0
 ; Recurring decimal display.
-;   0 = Dot above first and last repeating digit. Used in JP and UK models.
-;   1 = Overline. Used in American models.
+;   0 = Dot notation (dot above first and last repeating digit). Used in JP and GT models.
+;   1 = Vinculum notation (overline). Used in American models.
 ;   2 = Underline. Unused.
 ;   3 = Parentheses. Used in VN models.
-	DB 3
+	DB 0
 ; Maximum value of the input number for >Conv.
 	DB 40
 
@@ -64,7 +64,7 @@ TSEG #1 AT 0FFF4H
 	DB "--"
 ; ROM checksum (see _diag_get_checksum for checksum algorithm).
 ; Must be manually filled in.
-	DW 7589H
+	DW 74BFH
 
 ; Filler bytes. They don't do anything.
 DB 1, 1

@@ -28,8 +28,8 @@ static void draw_rdec_notation(mathi_bbox *a, int x, char y) {
 	} else a->word[0] += 12;
 	if (v0 == 2) a->byte[3] += 2;
 	if (mathi_enable_draw) {
-		if (v0 <= 1) y -= f_0898C() + 1;
-		if (v0 == 2) y += get_font_width() + 1;
+		if (v0 <= 1) y -= get_font_width() + 1;
+		if (v0 == 2) y += f_0898C() + 1;
 		if (v0 == 0) {
 			mathi_plot_pixel(x + 3, y);
 			mathi_plot_pixel(a->word[0] + x - 5, y);
