@@ -5,7 +5,7 @@ import sympy
 import msvcrt
 import pyperclip
 
-cls = lambda: os.system('cls')
+clear = lambda: os.system('cls')
 
 class PrettyFloat(sympy.Float):
 	def __new__(cls, value, **kwargs):
@@ -82,7 +82,7 @@ def num_conv(numb):
 
 def lookup(rom, addr):
 	while True:
-		cls()
+		clear()
 		string = ''
 		numb = rom[addr:addr+10]
 		for byte in numb:
@@ -101,7 +101,7 @@ def lookup(rom, addr):
 			case 'e':
 				pyperclip.copy(f'DB{string}  ; {num}')
 			case 'q':
-				cls()
+				clear()
 				break
 
 if __name__ == '__main__':

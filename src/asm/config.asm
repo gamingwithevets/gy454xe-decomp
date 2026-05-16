@@ -69,7 +69,7 @@ TSEG #1 AT 0FFF4H
 ; Must be manually filled in.
 ; * The checksum used here is the checksum of the resulting binary,
 ;   compiled from the current source using U8 SDK R1.10.0a.
-	DW 7551H
+	DW 7650H
 
 ; Filler bytes. They don't do anything.
 DB 1, 1

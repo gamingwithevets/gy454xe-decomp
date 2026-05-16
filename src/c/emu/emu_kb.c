@@ -70,15 +70,16 @@ void f_04E44_E(void) {
 // FUNCTION: GY460XF  Im 0408A
 static int emu_num_to_str(char *num, char *out) {
 	int v0;
-	char loc_m10[10];
-	int loc_m12;
-	signed char loc_m13;
-	char loc_m14;
-	unsigned int loc_m16;
-	int loc_m18;
+	char num_tmp[10];
+	int out_idx;
+	signed char bytetmp;
+	char num_type;
+	unsigned int i;
+	int period_pos;
 
-	// ERROR value
+	// If ERROR value
 	if ((num[0] & 0xf0) == 0xf0) {
+		// Write "ERROR"
 		out[0] = 'E';
 		out[1] = 'R';
 		out[2] = 'R';
@@ -87,13 +88,17 @@ static int emu_num_to_str(char *num, char *out) {
 		out[5] = '\0';
 		return 1;
 	}
+	// Nibble toggle (0 = high nibble, 1 = low nibble)
 	v0 = 1;
-	memcpy(loc_m10, num, 10);
-	if (!*(unsigned int *)(loc_m10+8)) {
+	memcpy(num_tmp, num, 10);
+	// If both Area 3 and Area 4 are zero
+	if (!*(unsigned int *)(num_tmp+8)) {
+
+		// Write "+0.00000000000000E+000"
 		out[0] = '+';
-		loc_m16 = 1;
-		do out[loc_m16] = '0';
-		while (++loc_m16 <= 16);
+		i = 1;
+		do out[i] = '0';
+		while (++i <= 16);
 		out[2] = '.';
 		out[17] = 'E';
 		out[18] = '+';
@@ -103,72 +108,110 @@ static int emu_num_to_str(char *num, char *out) {
 		out[22] = '\0';
 		return 0;
 	}
-	if (*(unsigned int *)(loc_m10+8) >= 0x500) {
+	// If Area 9 is 5 or 6 (negative number)
+	if (*(unsigned int *)(num_tmp+8) >= 0x500) {
+		// Put a negative sign, subtract 5 from Area 9
 		out[0] = '-';
-		*(int *)(&loc_m10[8]) -= 0x500;
+		*(int *)(&num_tmp[8]) -= 0x500;
+	// Otherwise put a positive sign
 	} else out[0] = '+';
-	loc_m12 = 1;
-	loc_m18 = 2;
-	loc_m14 = 0;
-	if ((loc_m10[0] & 0xf0) == 0x20) {
-		loc_m14 = 1;
-		loc_m18 = 0;
+	out_idx = 1;
+	period_pos = 2;
+	num_type = 0;
+	// Fraction format
+	if ((num_tmp[0] & 0xf0) == 0x20) {
+		num_type = 1;
+		period_pos = 0;  // No period
 	}
-	if ((loc_m10[0] & 0xf0) == 0x80) {
-		loc_m14 = 2;
-		loc_m18 = 0;
+	// Radical format
+	if ((num_tmp[0] & 0xf0) == 0x80) {
+		num_type = 2;
+		period_pos = 0;  // No period
 	}
-	loc_m16 = 0;
+	// === Area 2 decode step ===
+	i = 0;
 	do {
-		loc_m13 = loc_m10[loc_m16];
-		if (!v0) {
-			loc_m13 = (loc_m13 >> 4) & 0xf;
-			out[loc_m12] = '0' + loc_m13;
-			if (loc_m13 == 10) out[loc_m12] = 'a';
-			++loc_m12;
+		// Fetch a byte
+		bytetmp = num_tmp[i];
+		if (v0 == 0) {
+			// Parse high nibble
+			bytetmp = (bytetmp >> 4) & 0xf;
+			out[out_idx] = '0' + bytetmp;
+			// If high nibble is 0xA (fraction seperator), write a lowercase A instead
+			if (bytetmp == 10) out[out_idx] = 'a';
+			// Increment index and switch toggle
+			++out_idx;
 			++v0;
 		}
 		if (v0 == 1) {
-			loc_m10[loc_m16] &= 0xf;
-			out[loc_m12] = '0' + loc_m10[loc_m16];
-			if (loc_m10[loc_m16] == 10) out[loc_m12] = 'a';
-			++loc_m12;
-			if (loc_m18 == loc_m12) out[loc_m12++] = '.';
+			// Parse low nibble
+			num_tmp[i] &= 0xf;
+			out[out_idx] = '0' + num_tmp[i];
+			// If low nibble is 0xA (fraction seperator), write a lowercase A instead
+			if (num_tmp[i] == 10) out[out_idx] = 'a';
+			// Increment index and switch toggle
+			++out_idx;
+			// If out pointer index reached a certain point, add a period
+			if (period_pos == out_idx) out[out_idx++] = '.';
 			v0 = 0;
 		}
-	} while (++loc_m16 < 8);
-	out[loc_m12] = 'E';
-	v0 = *(int *)(&loc_m10[8]);
+	} while (++i < 8);
+	out[out_idx] = 'E';
+
+	// === Convert Area 3 and 4 from BCD to decimal ===
+	v0 = *(int *)(&num_tmp[8]);
 	{
+		// Code in this snippet was severely optimized for speed
 		int tmp, tmp2, tmp3, tmp4;
 
-		tmp = loc_m10[9] & 0xf;
-		tmp2 = tmp << 6;
-		tmp3 = (tmp << 5) + tmp2;
-		tmp <<= 2;
-		tmp4 = tmp + tmp3;
+		// Get low nibble of Area 4
+		tmp = num_tmp[9] & 0xf;
+		// Multiply by 100
+		tmp2 = tmp << 6;			// * 64
+		tmp3 = (tmp << 5) + tmp2;	// * 32 + * 64 = * 96
+		tmp <<= 2;					// * 4
+		tmp4 = tmp + tmp3;			// * 96 + * 4 = * 100
+
+		// Get high nibble of Area 3
 		tmp = (v0 >> 4) & 0xf;
-		tmp2 = tmp << 3;
-		tmp <<= 1;
-		tmp += tmp2;
+		// Multiply by 10
+		tmp2 = tmp << 3;			// * 8
+		tmp <<= 1;					// * 2
+		tmp += tmp2;				// * 8 + * 2 = * 10
+
+		// Add the 2 together
 		tmp2 = tmp + tmp4;
+		// Add the low nibble of Area 3, store in v0
 		v0 &= 0xf;
 		v0 += tmp2;
 	}
-	++loc_m12;
+
+	++out_idx;
+	// If Area 4 is 1, the exponent is positive
 	if (v0 >= 100) {
-		out[loc_m12] = '+';
+		out[out_idx] = '+';
+		// Subtract 1 from Area 4 (set to 0)
 		v0 -= 100;
+	// Otherwise (Area 4 = 0), the exponent is negative
 	} else {
 		v0 = 100 - v0;
-		out[loc_m12] = '-';
+		out[out_idx] = '-';
 	}
-	if (loc_m14 == 1) {
-		for (loc_m16 = v0 + 1; loc_m16 < 22; loc_m16++) out[loc_m16] = ' ';
-		out[loc_m16] = '\0';
+
+	// Fraction format
+	if (num_type == 1) {
+		// Area 4 is guaranteed to be 0 here; Area 3 is the length of the fraction
+		// Fill the rest of the string buffer with spaces
+		for (i = v0 + 1; i < 22; i++) out[i] = ' ';
+		// Null terminate
+		out[i] = '\0';
+		// Add a B, presumably so the emulator can detect a fraction
 		out[17] = 'B';
 		return 0;
-	} else if (loc_m14 == 2) {
+	// Radical format
+	} else if (num_type == 2) {
+		// Output buffer is written in reverse as it moves already written numbers
+		// Result will appear as: "±bbraaascc±eerdddsff T"
 		out[21] = 'T';
 		out[20] = ' ';
 		out[19] = out[15];
@@ -181,7 +224,7 @@ static int emu_num_to_str(char *num, char *out) {
 		out[12] = out[13];
 		out[13] = 'r';
 		out[10] = '+';
-		if ((*(unsigned int *)(loc_m10+8) & 0xff) >= 5) out[10] = '-';
+		if ((*(unsigned int *)(num_tmp+8) & 0xff) >= 5) out[10] = '-';
 		out[9] = out[7];
 		out[8] = out[6];
 		out[7] = 's';
@@ -194,17 +237,20 @@ static int emu_num_to_str(char *num, char *out) {
 		out[2] = out[3];
 		out[3] = 'r';
 		return 0;
+	// Floating point format
 	} else {
-		int tmp, tmp2;
-		for (tmp = 0; v0 >= 100; tmp++) v0 -= 100;
-		for (tmp2 = 0; v0 >= 10; tmp2++) v0 -= 10;
-		v0 = (char)tmp + (tmp2 << 4) + tmp;
-		loc_m12 += 3;
-		out[loc_m12+1] = '\0';
-		for (loc_m16 = 0; loc_m16 < 3; loc_m16++) {
-			out[loc_m12] = '0' + ((char)v0 & 0xf);
+		int a4, a3h;
+		// Oddity: a4 is guaranteed to be 0 here. Why calculate it?
+		for (a4 = 0; v0 >= 100; a4++) v0 -= 100;
+		for (a3h = 0; v0 >= 10; a3h++) v0 -= 10;
+		v0 += (char)a4 + (a3h << 4);
+		// Write exponent in reverse
+		out_idx += 3;
+		out[out_idx+1] = '\0';
+		for (i = 0; i < 3; i++) {
+			out[out_idx] = '0' + ((char)v0 & 0xf);
 			v0 >>= 4;
-			--loc_m12;
+			--out_idx;
 		}
 		return 0;
 	}
@@ -268,6 +314,7 @@ void init_emu_kb(emu_kb *kb) {
 	return;
 }
 
+// Seems to be a setting logging function. Unused.
 // FUNCTION: GY455XE  Im 05338
 // FUNCTION: GY460XF  Im 04454
 void f_05338_E(char *a) {
@@ -283,17 +330,24 @@ void f_05338_E(char *a) {
 	if (d_08117) a[8] = 1;
 	// INS
 	if (modifiers & (1 << 7)) a[10] = 1;
+	// SHIFT
 	if (modifiers & (1 << 3)) a[11] = 1;
+	// ALPHA
 	if (modifiers & (1 << 2)) a[12] = 1;
+	// RCL
 	if (modifiers & (1 << 1)) a[14] = 1;
+	// STO
 	if (modifiers & (1 << 0)) a[15] = 1;
 	switch (setup_angle_unit) {
+		// Deg
 		case 4:
 			a[9] = 1;
 			break;
+		// Rad
 		case 5:
 			a[9] = 2;
 			break;
+		// Gra
 		case 6:
 			a[9] = 3;
 			break;
